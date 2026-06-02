@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Promarket — Órdenes de Entrega</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --dark: #111; --dark2: #222; --orange: #F97316; --orange2: #EA6005;
+  --white: #fff; --light: #F5F5F5; --border: #DDD;
+  --text: #111; --muted: #666; --green: #16803C; --yellow: #F0A500; --red: #DC2626;
+}
+body { font-family: 'Segoe UI', system-ui, sans-serif; background: #E8E8E8; color: var(--text); }
+
+/* NAV */
+nav { background: var(--dark); height: 56px; padding: 0 24px; display: flex;
+      align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,.4); }
+.nav-left { display: flex; align-items: center; gap: 10px; }
+.nav-crown { width: 28px; height: 28px; }
+.nav-title { color: #fff; font-size: 15px; font-weight: 800; }
+.nav-title em { color: var(--orange); font-style: normal; }
+.nav-tag { background: var(--orange); color: #fff; font-size: 11px; font-weight: 700;
+           padding: 3px 11px; border-radius: 20px; }
+
+/* WRAP */
+.wrap { max-width: 860px; margin: 28px auto; padding: 0 16px 60px; }
+
+/* UPLOAD ZONE */
+.upload-zone {
+  background: #fff; border-radius: 12px; border: 2.5px dashed #CCC;
+  padding: 28px 24px; margin-bottom: 16px; text-align: center;
+  cursor: pointer; transition: all .2s; position: relative;
+  box-shadow: 0 1px 5px rgba(0,0,0,.06);
+}
+.upload-zone:hover, .upload-zone.drag { border-color: var(--orange); background: #FFF8F3; }
+.upload-zone.loading { border-color: var(--orange); background: #FFF8F3; pointer-events: none; }
+.upload-icon { font-size: 36px; margin-bottom: 8px; }
+.upload-title { font-size: 15px; font-weight: 800; color: var(--dark); margin-bottom: 4px; }
+.upload-sub { font-size: 12px; color: var(--muted); }
+.upload-sub span { color: var(--orange); font-weight: 700; }
+#file-input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+
+/* AI STATUS */
+.ai-status { display: none; align-items: center; gap: 10px; justify-content: center;
+             padding: 10px 0 2px; }
+.ai-status.show { display: flex; }
+.spinner { width: 20px; height: 20px; border: 2.5px solid #EEE;
+           border-top-color: var(--orange); border-radius: 50%; animation: spin .7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.ai-text { font-size: 13px; font-weight: 600; color: var(--dark2); }
+
+/* AI BADGE */
+.ai-badge { display: none; align-items: center; gap: 6px; background: #ECFDF5;
+            border: 1px solid #6EE7B7; border-radius: 6px; padding: 6px 12px;
+            font-size: 12px; font-weight: 700; color: var(--green); margin-bottom: 14px; }
+.ai-badge.show { display: flex; }
+
+/* ERROR BANNER */
+.error-banner { display: none; background: #FEF2F2; border: 1px solid #FECACA;
+                border-radius: 8px; padding: 10px 14px; font-size: 12.5px; color: var(--red);
+                font-weight: 600; margin-bottom: 14px; }
+.error-banner.show { display: block; }
+
+/* CARDS */
+.card { background: #fff; border-radius: 10px; padding: 20px 22px;
+        margin-bottom: 14px; box-shadow: 0 1px 5px rgba(0,0,0,.07); }
+.card-title { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .7px;
+              color: var(--dark2); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.card-title::before { content: ''; width: 3px; height: 15px; background: var(--orange);
+                       border-radius: 2px; display: block; }
+
+/* GRIDS */
+.g1 { display: grid; grid-template-columns: 1fr; gap: 13px; }
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+.g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 13px; }
+@media(max-width:580px){ .g2,.g3{ grid-template-columns:1fr; } }
+
+/* INPUTS */
+label { display: flex; flex-direction: column; gap: 5px; font-size: 11px; font-weight: 700;
+        color: var(--muted); text-transform: uppercase; letter-spacing: .3px; }
+input, select, textarea {
+  border: 1.5px solid var(--border); border-radius: 6px; padding: 9px 12px;
+  font-size: 13.5px; color: var(--text); background: var(--light); font-family: inherit;
+  transition: border-color .18s, box-shadow .18s;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--orange); outline: none; background: #fff;
+  box-shadow: 0 0 0 3px rgba(249,115,22,.13);
+}
+input.filled { background: #FFFBF5; border-color: #FDBA74; }
+textarea { resize: vertical; min-height: 56px; }
+
+/* NOTA */
+.nota-card { background: #FFFBF0; border: 1.5px solid var(--yellow); }
+.nota-card .card-title::before { background: var(--yellow); }
+.nota-card .card-title { color: #7A5000; }
+.nota-card input { background: #FFFDF4; border-color: #EEC84A; }
+
+/* BUTTONS */
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 4px; }
+.btn { padding: 11px 22px; border-radius: 7px; border: none; font-size: 13px; font-weight: 700;
+       cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+       transition: all .15s; font-family: inherit; }
+.btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,.18); }
+.btn-primary { background: var(--dark); color: #fff; }
+.btn-orange  { background: var(--orange); color: #fff; }
+.btn-ghost   { background: #E8E8E8; color: #444; }
+
+/* PREVIEW */
+#preview-section { display: none; margin-top: 20px; }
+#preview-section.visible { display: block; }
+.prev-toolbar { background: var(--dark); border-radius: 10px 10px 0 0; padding: 12px 18px;
+                display: flex; align-items: center; justify-content: space-between;
+                flex-wrap: wrap; gap: 8px; }
+.prev-toolbar p { color: #888; font-size: 11.5px; }
+#preview-frame { background: #fff; border: 1px solid var(--border); border-top: none;
+                 border-radius: 0 0 10px 10px; overflow: auto; }
+#order-output { padding: 24px; }
+
+/* ══ ORDER DOCUMENT ══ */
+.od { font-family: 'Segoe UI', Arial, sans-serif; max-width: 720px; margin: 0 auto;
+      border: 1px solid #C8C8C8; font-size: 11px; color: #111; }
+.od-head { background: #111; padding: 15px 20px 13px; display: flex;
+           justify-content: space-between; align-items: flex-start; gap: 10px; }
+.od-head-left h1 { color: #fff; font-size: 18px; font-weight: 800; }
+.od-head-left .sub { color: #888; font-size: 9px; margin-top: 3px; }
+.od-badge { display: inline-block; margin-top: 7px; padding: 3px 11px; border-radius: 4px;
+             font-size: 9.5px; font-weight: 800; text-transform: uppercase; }
+.badge-confirmado { background: #16803C; color: #fff; }
+.badge-pendiente  { background: #F0A500; color: #111; }
+.badge-camino     { background: #1A5FA8; color: #fff; }
+.od-head-right { text-align: right; }
+.od-num  { color: #fff; font-size: 15px; font-weight: 800; margin-top: 4px; }
+.od-date { color: #888; font-size: 9px; margin-top: 2px; }
+.od-bar  { height: 3px; background: #F97316; }
+.od-body { padding: 16px 20px; }
+.od-sec  { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .6px;
+           color: #111; border-bottom: 2px solid #F97316; padding-bottom: 3px; margin: 14px 0 9px; }
+.od-sec:first-child { margin-top: 0; }
+.od-g1 { display: grid; grid-template-columns: 1fr; gap: 5px; margin-bottom: 5px; }
+.od-g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-bottom: 5px; }
+.od-g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; margin-bottom: 5px; }
+.od-f  { background: #F5F5F5; border: .4px solid #CCC; border-radius: 3px; padding: 6px 8px; }
+.od-f .lbl { font-size: 7px; font-weight: 700; text-transform: uppercase; color: #888; }
+.od-f .val { font-size: 11px; font-weight: 600; color: #111; margin-top: 2px; word-break: break-word; }
+.od-tbl { width: 100%; border-collapse: collapse; margin-bottom: 8px; }
+.od-tbl thead td { background: #111; color: #fff; padding: 7px 8px;
+                   font-size: 9px; font-weight: 800; text-transform: uppercase; }
+.od-tbl tbody td { background: #F5F5F5; border: .4px solid #CCC; padding: 8px 8px; font-size: 11px; }
+.td-c { text-align: center; } .td-r { text-align: right; font-weight: 800; font-size: 13px; }
+.td-hi { font-weight: 800; }
+.od-nota { background: #FFF8E7; border: 1px solid #F0A500; border-left: 3.5px solid #F0A500;
+           border-radius: 3px; padding: 8px 11px; margin-bottom: 10px; }
+.od-nota .lbl { font-size: 8.5px; font-weight: 800; color: #7A5000; text-transform: uppercase; }
+.od-nota .val  { font-size: 11px; color: #333; margin-top: 3px; }
+.od-total-wrap { display: flex; justify-content: flex-end; margin-bottom: 14px; }
+.od-total-box  { width: 210px; }
+.od-tot-main   { background: #111; color: #fff; display: flex; justify-content: space-between;
+                 align-items: center; padding: 8px 11px; font-weight: 800; }
+.od-tot-main .label { font-size: 10px; color: #aaa; }
+.od-tot-main .amt   { font-size: 16px; color: #F97316; }
+.od-foot { background: #111; color: #555; font-size: 8px; font-weight: 700;
+           text-align: center; padding: 8px 16px; letter-spacing: .3px; }
+.od-foot em { color: #F97316; font-style: normal; }
+
+/* PRINT */
+@media print {
+  @page { margin: 10mm; size: A4; }
+  html, body { background: #fff !important; }
+  nav, .wrap > *, .btn-row, .prev-toolbar { display: none !important; }
+  #preview-section { display: block !important; }
+  #preview-frame { border: none !important; }
+  #order-output { padding: 0 !important; }
+  .od { border: none; max-width: 100%; }
+  .od-head, .od-bar, .od-tbl thead, .od-tot-main, .od-badge, .od-nota, .od-foot
+    { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-left">
+    <svg class="nav-crown" viewBox="0 0 100 80" fill="none">
+      <rect x="46" y="1" width="8" height="14" rx="2" fill="#F97316"/>
+      <rect x="40" y="6" width="20" height="7" rx="2" fill="#F97316"/>
+      <path d="M15 52 L8 24 L36 42 L50 8 L64 42 L92 24 L85 52 Z" fill="#F97316"/>
+      <rect x="12" y="52" width="76" height="14" rx="3" fill="#F97316"/>
+      <ellipse cx="40" cy="48" rx="8" ry="13" fill="#111"/>
+      <ellipse cx="60" cy="48" rx="8" ry="13" fill="#111"/>
+    </svg>
+    <div class="nav-title">Promarket <em>Órdenes</em></div>
+  </div>
+  <div class="nav-tag">Panel de Despacho</div>
+</nav>
+
+<div class="wrap">
+
+  <!-- UPLOAD -->
+  <div class="upload-zone" id="drop-zone">
+    <input type="file" id="file-input" accept="image/*">
+    <div class="upload-icon">📸</div>
+    <div class="upload-title">Sube la captura del pedido</div>
+    <div class="upload-sub">Arrastra la imagen aquí o <span>haz clic para seleccionar</span></div>
+  </div>
+
+  <div class="ai-status" id="ai-status">
+    <div class="spinner"></div>
+    <div class="ai-text">Claude está leyendo el pedido…</div>
+  </div>
+
+  <div class="ai-badge" id="ai-badge">
+    ✅ Datos extraídos automáticamente — revisa y ajusta si es necesario
+  </div>
+
+  <div class="error-banner" id="error-banner"></div>
+
+  <!-- FORM -->
+  <div class="card">
+    <div class="card-title">Datos del Pedido</div>
+    <div class="g3">
+      <label>N° de Pedido<input id="numero" placeholder="144356"></label>
+      <label>Fecha<input id="fecha" type="date"></label>
+      <label>Estado
+        <select id="estado">
+          <option value="CONFIRMADO">✅ Confirmado</option>
+          <option value="PENDIENTE">⏳ Pendiente</option>
+          <option value="EN CAMINO">🚚 En camino</option>
+        </select>
+      </label>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Producto</div>
+    <div class="g2" style="margin-bottom:13px">
+      <label>Nombre del producto<input id="producto" placeholder="Guante Robótico..."></label>
+      <label>Cantidad<input id="cantidad" type="number" value="1" min="1"></label>
+    </div>
+    <div class="g2">
+      <label>Talla
+        <select id="talla"><option>S</option><option>M</option><option>L</option><option>XL</option><option>Sin talla</option></select>
+      </label>
+      <label>Mano
+        <select id="mano"><option>Izquierda</option><option>Derecha</option><option>Ambas</option><option>N/A</option></select>
+      </label>
+    </div>
+  </div>
+
+  <div class="card nota-card">
+    <div class="card-title">📌 Solicitud especial del cliente</div>
+    <label>Detalle<input id="nota" placeholder="Ej: Guante mano izquierda, talla M"></label>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Datos del Cliente</div>
+    <div class="g2" style="margin-bottom:13px">
+      <label>Nombre completo<input id="cliente" placeholder="Nombre Apellido"></label>
+      <label>Teléfono<input id="telefono" placeholder="+593 99 000 0000"></label>
+    </div>
+    <div class="g1" style="margin-bottom:13px">
+      <label>Dirección<input id="direccion" placeholder="Av. ..."></label>
+    </div>
+    <div class="g3">
+      <label>Ciudad<input id="ciudad" placeholder="Quito"></label>
+      <label>Provincia<input id="provincia" placeholder="Pichincha"></label>
+      <label>País<input id="pais" placeholder="Ecuador"></label>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Envío y Pago</div>
+    <div class="g2" style="margin-bottom:13px">
+      <label>Empresa de transporte
+        <select id="transporte">
+          <option>Servientrega</option><option>Laar Courier</option>
+          <option>Tramaco Express</option><option>Speed</option><option>Otro</option>
+        </select>
+      </label>
+      <label>Método de pago
+        <select id="pago">
+          <option>Contraentrega</option><option>Transferencia</option><option>Pagado</option>
+        </select>
+      </label>
+    </div>
+    <div class="g2" style="margin-bottom:13px">
+      <label>💰 Monto a pagar<input id="monto" placeholder="$59.99"></label>
+      <label>Forma de entrega
+        <select id="entrega">
+          <option>Retiro en agencia</option><option>Entrega a domicilio</option>
+        </select>
+      </label>
+    </div>
+    <div class="g1">
+      <label>Agencia / Punto de retiro<textarea id="agencia" placeholder="Nombre agencia y dirección..."></textarea></label>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="generarOrden()">📄 Generar Orden</button>
+    <button class="btn btn-ghost" onclick="limpiar()">🗑 Limpiar</button>
+  </div>
+
+  <div id="preview-section">
+    <div class="prev-toolbar">
+      <p>Vista previa lista — en el diálogo de impresión selecciona <strong style="color:#fff">"Guardar como PDF"</strong> como destino</p>
+      <div class="btn-row" style="margin:0">
+        <button class="btn btn-orange" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('preview-section').classList.remove('visible')">✕ Cerrar</button>
+      </div>
+    </div>
+    <div id="preview-frame"><div id="order-output"></div></div>
+  </div>
+
+</div><!-- /wrap -->
+
+<script>
+// ── CONFIGURACIÓN ── reemplaza con tu URL de Apps Script al desplegar
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyiKm16NcNR1GhoWmT2j9E7my9dSazCwtAWeh-XpPu1tmQ-_p4Q7PkEUloFYL8Qhmdl/exec";
+
+document.getElementById('fecha').valueAsDate = new Date();
+function v(id){ return (document.getElementById(id).value||'').trim(); }
+
+// ── DRAG & DROP ──────────────────────────────────────────────────────────────
+const dropZone = document.getElementById('drop-zone');
+const fileInput = document.getElementById('file-input');
+
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault(); dropZone.classList.remove('drag');
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) processImage(file);
+});
+fileInput.addEventListener('change', () => {
+  if (fileInput.files[0]) processImage(fileInput.files[0]);
+});
+
+// ── PROCESS IMAGE ────────────────────────────────────────────────────────────
+async function processImage(file) {
+  setStatus('loading');
+
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    const dataUrl = e.target.result;
+    const base64 = dataUrl.split(',')[1];
+    const mediaType = file.type;
+
+    try {
+      if (!SCRIPT_URL || SCRIPT_URL === 'PEGAR_URL_APPS_SCRIPT_AQUI') {
+        showError('⚙️ Falta configurar el SCRIPT_URL. Despliega el Apps Script y pega la URL en index.html.');
+        return;
+      }
+
+      const res = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ accion: 'extraer_pedido', imagen: base64, mediaType }),
+      });
+
+      const json = await res.json();
+
+      if (!json.ok) {
+        showError('Error: ' + (json.msg || 'respuesta inesperada del servidor'));
+        return;
+      }
+
+      fillForm(json.data);
+      setStatus('done');
+    } catch (err) {
+      showError('No se pudo conectar con el servidor: ' + err.message);
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── FILL FORM ────────────────────────────────────────────────────────────────
+function fillForm(d) {
+  const fields = ['numero','cliente','telefono','direccion','ciudad','provincia','pais',
+                  'producto','cantidad','monto','nota','agencia'];
+  fields.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && d[id]) { el.value = d[id]; el.classList.add('filled'); }
+  });
+
+  // Selects
+  if (d.pago) {
+    const p = document.getElementById('pago');
+    [...p.options].forEach(o => { if (o.value.toLowerCase().includes(d.pago.toLowerCase())) p.value = o.value; });
+  }
+  if (d.transporte) {
+    const t = document.getElementById('transporte');
+    [...t.options].forEach(o => { if (o.value.toLowerCase().includes(d.transporte.toLowerCase())) t.value = o.value; });
+  }
+}
+
+// ── UI STATES ────────────────────────────────────────────────────────────────
+function setStatus(state) {
+  document.getElementById('ai-status').classList.toggle('show', state === 'loading');
+  document.getElementById('ai-badge').classList.toggle('show',  state === 'done');
+  document.getElementById('error-banner').classList.remove('show');
+  dropZone.classList.toggle('loading', state === 'loading');
+}
+function showError(msg) {
+  setStatus('idle');
+  const b = document.getElementById('error-banner');
+  b.textContent = msg; b.classList.add('show');
+}
+
+// ── ORDER CROWN SVG ──────────────────────────────────────────────────────────
+const CROWN = `<svg width="70" height="56" viewBox="0 0 140 112" fill="none">
+  <rect x="64" y="1" width="12" height="20" rx="3" fill="#F97316"/>
+  <rect x="56" y="8" width="28" height="10" rx="3" fill="#F97316"/>
+  <path d="M18 75 L8 32 L46 58 L70 10 L94 58 L132 32 L122 75 Z" fill="#F97316"/>
+  <rect x="14" y="75" width="112" height="20" rx="4" fill="#F97316"/>
+  <ellipse cx="52" cy="67" rx="12" ry="18" fill="#111"/>
+  <ellipse cx="88" cy="67" rx="12" ry="18" fill="#111"/>
+</svg>`;
+
+function badgeClass(s){ return s==='CONFIRMADO'?'badge-confirmado':s==='PENDIENTE'?'badge-pendiente':'badge-camino'; }
+
+// ── GENERATE ORDER ───────────────────────────────────────────────────────────
+function generarOrden() {
+  const d = {
+    numero: v('numero'), fecha: v('fecha'),
+    estado: v('estado').replace(/^[^\s]+ /,''),
+    producto: v('producto'), cantidad: v('cantidad'),
+    talla: v('talla'), mano: v('mano'), nota: v('nota'),
+    cliente: v('cliente'), telefono: v('telefono'),
+    direccion: v('direccion'), ciudad: v('ciudad'),
+    provincia: v('provincia'), pais: v('pais'),
+    transporte: v('transporte'), pago: v('pago'),
+    monto: v('monto'), entrega: v('entrega'),
+    agencia: document.getElementById('agencia').value.trim(),
+  };
+
+  document.getElementById('order-output').innerHTML = `
+<div class="od">
+  <div class="od-head">
+    <div class="od-head-left">
+      <h1>ORDEN DE ENTREGA</h1>
+      <div class="sub">Promarket Ecuador — Despacho de pedidos</div>
+      <span class="od-badge ${badgeClass(d.estado)}">${d.estado}</span>
+    </div>
+    <div class="od-head-right">
+      ${CROWN}
+      <div class="od-num">N° ${d.numero}</div>
+      <div class="od-date">${d.fecha}</div>
+    </div>
+  </div>
+  <div class="od-bar"></div>
+  <div class="od-body">
+    <div class="od-sec">Destinatario</div>
+    <div class="od-g2">
+      <div class="od-f"><div class="lbl">Nombre completo</div><div class="val">${d.cliente}</div></div>
+      <div class="od-f"><div class="lbl">Teléfono</div><div class="val">${d.telefono}</div></div>
+    </div>
+    <div class="od-g1">
+      <div class="od-f"><div class="lbl">Dirección</div><div class="val">${d.direccion}</div></div>
+    </div>
+    <div class="od-g3">
+      <div class="od-f"><div class="lbl">Ciudad</div><div class="val">${d.ciudad}</div></div>
+      <div class="od-f"><div class="lbl">Provincia</div><div class="val">${d.provincia}</div></div>
+      <div class="od-f"><div class="lbl">País</div><div class="val">${d.pais}</div></div>
+    </div>
+    <div class="od-sec">Envío y Pago</div>
+    <div class="od-g3">
+      <div class="od-f"><div class="lbl">Transporte</div><div class="val">${d.transporte}</div></div>
+      <div class="od-f"><div class="lbl">Método de pago</div><div class="val">${d.pago}</div></div>
+      <div class="od-f"><div class="lbl">Forma de entrega</div><div class="val">${d.entrega}</div></div>
+    </div>
+    <div class="od-g1">
+      <div class="od-f"><div class="lbl">Agencia / Punto de retiro</div><div class="val">${d.agencia.replace(/\n/g,'<br>')}</div></div>
+    </div>
+    <div class="od-sec">Detalle del Pedido</div>
+    <table class="od-tbl">
+      <thead><tr>
+        <td style="width:44%">Producto</td>
+        <td style="width:9%;text-align:center">Cant.</td>
+        <td style="width:11%;text-align:center">Talla</td>
+        <td style="width:14%;text-align:center">Mano</td>
+        <td style="width:22%;text-align:right">Monto</td>
+      </tr></thead>
+      <tbody><tr>
+        <td>${d.producto}</td>
+        <td class="td-c">${d.cantidad}</td>
+        <td class="td-c td-hi">${d.talla}</td>
+        <td class="td-c td-hi">${d.mano}</td>
+        <td class="td-r">${d.monto}</td>
+      </tr></tbody>
+    </table>
+    ${d.nota?`<div class="od-nota"><div class="lbl">📌 Solicitud especial del cliente</div><div class="val">${d.nota}</div></div>`:''}
+    <div class="od-total-wrap">
+      <div class="od-total-box">
+        <div class="od-tot-main">
+          <span class="label">TOTAL A PAGAR</span>
+          <span class="amt">${d.monto}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="od-foot">PROMARKET ECUADOR &nbsp;·&nbsp; <em>ORDEN #${d.numero}</em> &nbsp;·&nbsp; ${d.fecha} &nbsp;·&nbsp; ${d.transporte} &nbsp;·&nbsp; ${d.entrega}</div>
+</div>`;
+
+  const sec = document.getElementById('preview-section');
+  sec.classList.add('visible');
+  sec.scrollIntoView({ behavior: 'smooth' });
+}
+
+function limpiar() {
+  document.querySelectorAll('input:not([type=date]),textarea').forEach(el => { el.value=''; el.classList.remove('filled'); });
+  document.getElementById('fecha').valueAsDate = new Date();
+  document.getElementById('preview-section').classList.remove('visible');
+  document.getElementById('ai-badge').classList.remove('show');
+  document.getElementById('error-banner').classList.remove('show');
+  fileInput.value = '';
+}
+</script>
+</body>
+</html>
