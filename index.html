@@ -422,12 +422,21 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
   width:44px;height:44px;border-radius:var(--radius-sm);background:var(--bg3);
   display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;
 }
+.prod-meta{flex:1;min-width:0}
 .prod-meta h4{font-size:13.5px;font-weight:700;line-height:1.25}
 .prod-meta .ref{font-size:10px;color:var(--muted2);font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-top:3px}
 .prod-price-row{display:flex;gap:10px;align-items:center}
-.prod-price{font-size:18px;font-family:'IBM Plex Sans',sans-serif;color:var(--orange)}
-.prod-cost{font-size:11px;color:var(--muted);text-decoration:line-through}
+.prod-price{font-size:20px;font-weight:800;font-family:'IBM Plex Sans',sans-serif;color:var(--orange)}
+.prod-cost{font-size:11px;color:var(--muted)}
 .prod-margin{font-size:11px;font-weight:700;color:var(--green)}
+.prod-breakdown{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:9px 11px;font-size:12px}
+.pb-row{display:flex;justify-content:space-between;align-items:center;padding:3px 0}
+.pb-row .pb-lbl{color:var(--muted2)}
+.pb-row .pb-val{font-weight:700;font-variant-numeric:tabular-nums}
+.pb-neg{color:var(--red)}
+.pb-total{border-top:1px solid var(--border2);margin-top:4px;padding-top:6px}
+.pb-total .pb-lbl{color:var(--white);font-weight:800}
+.pb-total .pb-val{font-size:14px;font-weight:800}
 .prod-stock{display:flex;gap:6px;flex-wrap:wrap}
 .stock-pill{
   background:var(--bg3);border:1px solid var(--border);border-radius:4px;
@@ -1745,8 +1754,16 @@ function fillForm(d){
       if(found){sel.value=d.producto;onProdSelect(sel);}
       else{sel.value='__custom__';var ci=firstRow.querySelector('td:first-child input');if(ci){ci.style.display='block';ci.value=d.producto;}}
       var ni=firstRow.querySelectorAll('input[type=number]');
-      if(ni[0]&&d.cantidad) ni[0].value=d.cantidad;
-      if(ni[1]&&d.monto) ni[1].value=d.monto.replace(/[^0-9.]/g,'');
+      var cantN = parseInt(d.cantidad)||1;
+      if(ni[0]&&d.cantidad) ni[0].value=cantN;
+      // Precio UNITARIO: usar d.precio si viene; si solo hay monto (total), dividir entre cantidad
+      if(ni[1]){
+        if(d.precio){ ni[1].value = parseFloat((''+d.precio).replace(/[^0-9.]/g,''))||''; }
+        else if(d.monto){
+          var montoN = parseFloat((''+d.monto).replace(/[^0-9.]/g,''))||0;
+          ni[1].value = cantN>1 ? +(montoN/cantN).toFixed(2) : montoN;
+        }
+      }
       calcTotal();
     }
   }
@@ -1768,7 +1785,7 @@ function showConfidence(d){
   var row = document.getElementById('confidence-row');
   row.innerHTML = '';
   fields.forEach(f=>{
-    var val = d[f]||'';
+    var val = d[f]!=null ? String(d[f]) : '';
     var pct = val ? (val.length>5?90:70) : 0;
     var cls = pct>=85?'hi':pct>=50?'md':'lo';
     row.innerHTML += `<div class="conf-item"><div class="conf-lbl">${f}</div>
@@ -2513,10 +2530,15 @@ function renderCatalogo(){
   });
   if(!list.length){ grid.innerHTML='<div class="empty"><div class="empty-icon">📦</div><p>Sin productos aún</p></div>'; return; }
   grid.innerHTML = list.map(p=>{
-    var ganancia = p.precio ? (p.precio - (p.costo||0) - (p.fulfillment||0) - (p.envio||0)) : null;
-    var margin = (ganancia !== null && p.precio) ? Math.round(ganancia/p.precio*100) : null;
+    var precio = parseFloat(p.precio)||0;
+    var costo  = parseFloat(p.costo)||0;
+    var ful    = parseFloat(p.fulfillment)||0;
+    var envio  = parseFloat(p.envio)||0;
+    var ganancia = precio - costo - ful - envio;
+    var margin = precio>0 ? Math.round(ganancia/precio*100) : 0;
+    var ganColor = ganancia>0 ? 'var(--green)' : 'var(--red)';
     var ventas = ventasProd[p.nombre]||0;
-    var breakeven = ganancia && ganancia>0 && invActiva>0 ? Math.ceil(invActiva/ganancia) : 0;
+    var breakeven = ganancia>0 && invActiva>0 ? Math.ceil(invActiva/ganancia) : 0;
     var stockTotal = Object.values(p.stock||{}).reduce((s,v)=>s+v,0);
     var stockHtml = stockTotal
       ? Object.entries(p.stock||{}).filter(([,v])=>v>0).map(([t,v])=>`<span class="stock-pill ${v<3?'low':'ok'}">${t}: ${v}</span>`).join('')
@@ -2526,23 +2548,26 @@ function renderCatalogo(){
         <div class="prod-ico">${p.ico||'📦'}</div>
         <div class="prod-meta">
           <h4>${p.nombre}</h4>
-          <div class="ref">${p.ref}${p.peso?` · ${p.peso}kg`:''}</div>
+          <div class="ref">${p.ref||''}${p.peso?` · ${p.peso}kg`:''}</div>
         </div>
+        <div class="prod-price">$${precio.toFixed(2)}</div>
       </div>
-      <div class="prod-price-row">
-        <div class="prod-price">$${parseFloat(p.precio||0).toFixed(2)}</div>
-        ${p.costo?`<div class="prod-cost">$${parseFloat(p.costo).toFixed(2)}</div>`:''}
-        ${ganancia!==null?`<div class="prod-margin">+$${ganancia.toFixed(2)} (${margin}%)</div>`:''}
+      <div class="prod-breakdown">
+        <div class="pb-row"><span class="pb-lbl">Precio de venta</span><span class="pb-val">$${precio.toFixed(2)}</span></div>
+        <div class="pb-row"><span class="pb-lbl">Costo del producto</span><span class="pb-val pb-neg">−$${costo.toFixed(2)}</span></div>
+        <div class="pb-row"><span class="pb-lbl">Fulfillment Rocket-e</span><span class="pb-val pb-neg">−$${ful.toFixed(2)}</span></div>
+        <div class="pb-row"><span class="pb-lbl">Flete de envío</span><span class="pb-val pb-neg">−$${envio.toFixed(2)}</span></div>
+        <div class="pb-row pb-total"><span class="pb-lbl">Ganancia por venta</span><span class="pb-val" style="color:${ganColor}">$${ganancia.toFixed(2)} · ${margin}%</span></div>
       </div>
-      ${p.fulfillment?`<div class="fulfillment-tag">Fulfillment: $${parseFloat(p.fulfillment).toFixed(2)} · Envío: $${parseFloat(p.envio||0).toFixed(2)}</div>`:''}
+      ${ganancia<=0?`<div class="alert-strip" style="background:var(--red-bg);border-color:var(--red-border);color:var(--red);font-size:11px;padding:6px 10px">⚠️ Margen ≤ 0 — revisa precio o costos</div>`:''}
       <div class="prod-stock">${stockHtml}</div>
-      <div style="font-size:11px;color:var(--muted2);margin-top:4px;display:flex;gap:10px">
+      ${(ventas||breakeven)?`<div style="font-size:11px;color:var(--muted2);display:flex;gap:12px">
         ${ventas?`<span>📦 ${ventas} vendidas</span>`:''}
         ${breakeven?`<span title="Ventas necesarias para recuperar inversión activa">🎯 Breakeven: ${breakeven}</span>`:''}
-      </div>
-      <div style="font-size:11.5px;color:var(--muted2);margin-top:4px">${p.desc||''}</div>
+      </div>`:''}
+      ${p.desc?`<div style="font-size:11.5px;color:var(--muted2)">${p.desc}</div>`:''}
       <div class="prod-actions">
-        <button class="prod-use-btn" onclick="usarProducto('${p.nombre.replace(/'/g,"\\'")}',${p.precio})">Usar en orden</button>
+        <button class="prod-use-btn" onclick="usarProducto('${p.nombre.replace(/'/g,"\\'")}',${precio})">Usar en orden</button>
         <button class="prod-edit-btn" onclick="abrirModalProducto('${p.id}')">✏️</button>
         <button class="prod-edit-btn" onclick="duplicarProducto('${p.id}')" title="Duplicar">⧉</button>
       </div>
@@ -3407,12 +3432,8 @@ function toggleHideAmounts(){
 }
 
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.getRegistrations().then(regs=>{
-    regs.forEach(r=>r.unregister());
-  }).then(()=>{
-    caches.keys().then(keys=>keys.forEach(k=>caches.delete(k)));
-    navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).catch(()=>{});
-  });
+  // Registro limpio. El SW es network-first: siempre trae la última versión si hay internet.
+  navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).catch(()=>{});
 }
 </script>
 </body>
