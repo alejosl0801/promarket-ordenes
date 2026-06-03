@@ -1222,6 +1222,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
       </label>
     </div>
     <label style="margin-bottom:13px">Descripción<textarea id="p-desc" placeholder="Características del producto..."></textarea></label>
+    <label style="margin-bottom:13px">📄 Ficha técnica (PDF)<input id="p-ficha" placeholder="fichas/MiProducto.pdf  o  https://...pdf"></label>
     <input type="hidden" id="p-id">
     <div class="btn-row">
       <button class="btn btn-primary" onclick="guardarProducto()">💾 Guardar</button>
@@ -1346,6 +1347,23 @@ function saveCatalog(){ localStorage.setItem(CATALOG_KEY, JSON.stringify(catalog
   });
   if(cambiado) saveCatalog();
   localStorage.setItem(FIX_KEY,'1');
+})();
+
+// Auto-enlaza las fichas técnicas (PDF) ya incluidas en el repo al producto que les corresponde — una sola vez.
+(function linkFichas(){
+  var FK='pm_fichas_v1';
+  if(localStorage.getItem(FK)) return;
+  var fichas=[
+    {match:'olla',   url:'fichas/OllasInox_FichaTecnica.pdf'},
+    {match:'guante', url:'fichas/GuanteRobot_FichaTecnica.pdf'}
+  ];
+  var cambiado=false;
+  catalog.forEach(function(p){
+    var n=(p.nombre||'').toLowerCase();
+    fichas.forEach(function(f){ if(!p.ficha && n.indexOf(f.match)>=0){ p.ficha=f.url; cambiado=true; } });
+  });
+  if(cambiado) saveCatalog();
+  localStorage.setItem(FK,'1');
 })();
 
 // ════════════════════════════════════════════════════════
@@ -2145,9 +2163,9 @@ function abrirModalOrden(id){
       <div class="od-f" style="background:var(--bg4);border-color:var(--border2)"><div class="lbl" style="color:var(--muted2)">Guía</div><div class="val" style="color:var(--blue);font-weight:800">${o.guia||'-'}</div></div>
     </div>
     <div style="font-size:12px;color:var(--muted2)">
-      ${prods.map(p=>`<div style="padding:6px 0;border-bottom:1px solid var(--border)">
-        📦 <strong style="color:var(--white)">${p.nombre}</strong> · x${p.cantidad} · ${p.talla||''} ${p.lado||''} · <span style="color:var(--green)">$${parseFloat(p.precio||0).toFixed(2)}</span>
-      </div>`).join('')}
+      ${prods.map(p=>{var cat=prodMatch(p.nombre);return `<div style="padding:6px 0;border-bottom:1px solid var(--border)">
+        📦 <strong style="color:var(--white)">${p.nombre}</strong> · x${p.cantidad} · ${p.talla||''} ${p.lado||''} · <span style="color:var(--green)">$${parseFloat(p.precio||0).toFixed(2)}</span>${cat&&cat.ficha?` · <a href="${cat.ficha.replace(/"/g,'')}" target="_blank" style="color:var(--blue);font-weight:700;text-decoration:none">📄 Ficha</a>`:''}
+      </div>`;}).join('')}
     </div>
     <div style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
       <button class="btn btn-sm" style="background:var(--orange);color:#000;font-weight:700;border:none" onclick="cerrarModal('modal-orden');abrirModalGuia('${o.id}')">🚚 ${o.guia?'Cambiar guía':'Registrar guía'}</button>
@@ -3352,6 +3370,7 @@ function renderCatalogo(){
       ${p.desc?`<div style="font-size:11.5px;color:var(--muted2)">${p.desc}</div>`:''}
       <div class="prod-actions">
         <button class="prod-use-btn" onclick="usarProducto('${p.nombre.replace(/'/g,"\\'")}',${precio})">Usar en orden</button>
+        ${p.ficha?`<button class="prod-edit-btn" onclick="window.open('${p.ficha.replace(/'/g,"\\'")}','_blank')" title="Ver ficha técnica">📄</button>`:''}
         <button class="prod-edit-btn" onclick="abrirModalProducto('${p.id}')">✏️</button>
         <button class="prod-edit-btn" onclick="duplicarProducto('${p.id}')" title="Duplicar">⧉</button>
       </div>
@@ -3397,6 +3416,7 @@ function abrirModalProducto(id){
   document.getElementById('p-peso').value = p?.peso||'';
   document.getElementById('p-ico').value = p?.ico||'📦';
   document.getElementById('p-desc').value = p?.desc||'';
+  document.getElementById('p-ficha').value = p?.ficha||'';
   document.getElementById('p-activo').value = p?.activo!==undefined?p.activo:1;
   document.getElementById('p-s').value = p?.stock?.S||0;
   document.getElementById('p-m').value = p?.stock?.M||0;
@@ -3452,6 +3472,7 @@ function guardarProducto(){
     peso:parseFloat(document.getElementById('p-peso').value)||0,
     ico:document.getElementById('p-ico').value.trim()||'📦',
     desc:document.getElementById('p-desc').value.trim(),
+    ficha:document.getElementById('p-ficha').value.trim(),
     activo:parseInt(document.getElementById('p-activo').value),
     stock:{
       S:parseInt(document.getElementById('p-s').value)||0,
