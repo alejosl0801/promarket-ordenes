@@ -696,6 +696,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
     <div class="nav-logo">Promarket <em>Órdenes</em></div>
   </div>
   <div class="nav-right">
+    <button class="dark-toggle" onclick="abrirBusquedaGlobal()" title="Buscar en todo (atajo: g)">🔎 Buscar</button>
     <button class="dark-toggle" id="btn-hide-amounts" onclick="toggleHideAmounts()" title="Ocultar montos">💰</button>
     <button class="dark-toggle" onclick="exportarJSON()" title="Backup JSON">⬇ JSON</button>
     <label class="dark-toggle" style="cursor:pointer" title="Restaurar backup">⬆ JSON<input type="file" accept=".json" style="display:none" onchange="importarJSON(this)"></label>
@@ -703,6 +704,15 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
     <button class="dark-toggle" id="btn-apikey" onclick="abrirModalApiKey()" style="border-color:#F97316;color:#F97316">🔑 API Key</button>
   </div>
 </nav>
+
+<div class="modal-bg" id="modal-buscar">
+  <div class="modal-box" style="max-width:560px">
+    <div class="modal-title">🔎 Búsqueda global</div>
+    <input type="text" id="busqueda-global" placeholder="Busca órdenes, clientes o productos..." style="width:100%;margin-bottom:12px;font-size:15px" oninput="renderBusquedaGlobal()">
+    <div id="busqueda-resultados" style="max-height:50vh;overflow-y:auto"></div>
+    <div class="btn-row" style="margin-top:12px"><button class="btn btn-ghost" onclick="cerrarModal('modal-buscar')">Cerrar</button></div>
+  </div>
+</div>
 
 <div class="modal-bg" id="modal-apikey">
   <div class="modal-box" style="max-width:440px">
@@ -975,8 +985,10 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
     <input class="filter-input-sm" id="filter-hasta" type="date" placeholder="Hasta" onchange="renderOrderList()" title="Fecha hasta">
     <input class="filter-input-sm" id="filter-ciudad" placeholder="🏙 Ciudad" oninput="renderOrderList()" style="width:110px">
     <button class="qf-btn" onclick="limpiarFiltros()" style="margin-left:4px">✕ Limpiar</button>
+    <button class="qf-btn" onclick="guardarVista()" title="Guardar esta combinación de filtros">💾 Guardar vista</button>
     <span id="orders-count" style="font-size:12px;color:var(--muted2);margin-left:4px"></span>
   </div>
+  <div id="vistas-guardadas" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px"></div>
   <div id="bulk-bar" style="display:none;align-items:center;gap:10px;background:var(--bg3);border:1px solid var(--orange);border-radius:10px;padding:8px 12px;margin-bottom:10px;flex-wrap:wrap">
     <span style="font-size:13px;font-weight:700"><span id="bulk-count">0</span> seleccionada(s)</span>
     <span style="font-size:12px;color:var(--muted2)">Cambiar estado a:</span>
@@ -1097,7 +1109,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 </div><!-- /wrap -->
 
 <div style="background:var(--bg2);border-top:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--muted)" id="app-footer">
-  <span>Promarket Órdenes <strong style="color:var(--muted2)">v2.6</strong></span>
+  <span>Promarket Órdenes <strong style="color:var(--muted2)">v2.7</strong></span>
   <span id="storage-info">Storage: calculando...</span>
 </div>
 
@@ -1362,6 +1374,7 @@ document.addEventListener('keydown', function(e){
   }
   if(enCampo) return; // el resto de atajos no aplican mientras escribes
   if(e.key==='/'){ e.preventDefault(); switchTab('ordenes'); setTimeout(()=>document.getElementById('search-input')?.focus(),100); }
+  if(e.key==='g'||e.key==='G'){ e.preventDefault(); abrirBusquedaGlobal(); }
   if(e.key==='n'||e.key==='N'){ switchTab('nueva'); }
 });
 
@@ -2607,8 +2620,48 @@ function renderOrderList(){
     </tr>`;
   }).join('');
   refreshBulkBar();
+  renderVistas();
 }
 function goPage(p){ currentPage=p; renderOrderList(); }
+// ── Vistas (filtros) guardadas ──
+var VISTAS_KEY='pm_vistas_v1';
+function getVistas(){ try{ return JSON.parse(localStorage.getItem(VISTAS_KEY)||'[]'); }catch(e){ return []; } }
+function guardarVista(){
+  var nombre=prompt('Nombre para esta vista (ej: "Quito sin guía"):');
+  if(!nombre) return;
+  var v={ nombre:nombre.trim(),
+    filtro:currentFilter, q:document.getElementById('search-input')?.value||'',
+    desde:document.getElementById('filter-desde')?.value||'', hasta:document.getElementById('filter-hasta')?.value||'',
+    ciudad:document.getElementById('filter-ciudad')?.value||'', quick:JSON.parse(JSON.stringify(quickFilters)) };
+  var vistas=getVistas(); vistas.push(v);
+  localStorage.setItem(VISTAS_KEY, JSON.stringify(vistas));
+  renderVistas(); showToast('Vista guardada: '+v.nombre);
+}
+function aplicarVista(i){
+  var v=getVistas()[i]; if(!v) return;
+  currentFilter=v.filtro||'TODOS';
+  quickFilters=v.quick||{};
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.toggle('active', b.dataset.filter===currentFilter));
+  document.querySelectorAll('.qf-btn[id^=qf-]').forEach(b=>b.classList.remove('active'));
+  Object.keys(quickFilters).forEach(k=>{ if(quickFilters[k]){ var el=document.getElementById('qf-'+k); if(el) el.classList.add('active'); } });
+  var si=document.getElementById('search-input'); if(si) si.value=v.q||'';
+  var fd=document.getElementById('filter-desde'); if(fd) fd.value=v.desde||'';
+  var fh=document.getElementById('filter-hasta'); if(fh) fh.value=v.hasta||'';
+  var fc=document.getElementById('filter-ciudad'); if(fc) fc.value=v.ciudad||'';
+  currentPage=1; renderOrderList();
+}
+function eliminarVista(i,e){
+  e.stopPropagation();
+  var vistas=getVistas(); vistas.splice(i,1);
+  localStorage.setItem(VISTAS_KEY, JSON.stringify(vistas));
+  renderVistas();
+}
+function renderVistas(){
+  var c=document.getElementById('vistas-guardadas'); if(!c) return;
+  var vistas=getVistas();
+  c.innerHTML = vistas.map((v,i)=>'<span class="qf-btn" onclick="aplicarVista('+i+')" style="cursor:pointer">⭐ '+v.nombre+
+    ' <span onclick="eliminarVista('+i+',event)" style="color:var(--red);margin-left:4px">✕</span></span>').join('');
+}
 // ── Selección múltiple / cambio de estado en lote ──
 var selectedOrders = new Set();
 function toggleSelectOrder(id, el){
@@ -2972,7 +3025,37 @@ function renderTendencias(){
     '<div class="kpi kpi-green"><div class="kpi-val" style="font-size:16px">$'+(mejorMes?mejorMes[1].toFixed(0):'0')+'</div><div class="kpi-lbl">Mejor mes</div><div class="kpi-sub">'+(mejorMes?fmtMes(mejorMes[0]):'-')+'</div></div>'+
     '</div></div>';
 
-  cont.innerHTML = trend + mvm + recs;
+  // ── Mapa de calor por ciudad (facturación + tasa de devolución) ──
+  var ciudades={};
+  orders.forEach(o=>{
+    var c=o.ciudad||'Sin ciudad';
+    if(!ciudades[c]) ciudades[c]={fact:0,n:0,dev:0,cerradas:0};
+    ciudades[c].fact+=montoNum(o); ciudades[c].n++;
+    if(esDevuelta(o)) ciudades[c].dev++;
+    if(['ENTREGADO','DEVUELTO'].includes(o.status)||(o.status==='CANCELADO'&&o.guia)) ciudades[c].cerradas++;
+  });
+  var cArr=Object.entries(ciudades).sort((a,b)=>b[1].fact-a[1].fact).slice(0,16);
+  var maxC=Math.max(...cArr.map(x=>x[1].fact),1);
+  var heat='';
+  if(cArr.length){
+    heat='<div class="card" style="margin-bottom:16px"><div class="card-title">🗺️ Mapa de calor por ciudad</div>'+
+      '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px">'+
+      cArr.map(function(e){
+        var c=e[0], d=e[1];
+        var inten=d.fact/maxC; // 0..1
+        var bg='rgba(249,115,22,'+(0.12+inten*0.78).toFixed(2)+')';
+        var tasaDev=d.cerradas>0?Math.round(d.dev/d.cerradas*100):0;
+        return '<div style="background:'+bg+';border-radius:10px;padding:10px;color:#fff">'+
+          '<div style="font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+c+'</div>'+
+          '<div style="font-size:15px;font-weight:800">$'+d.fact.toFixed(0)+'</div>'+
+          '<div style="font-size:10px;opacity:.9">'+d.n+' pedido(s)'+(tasaDev>0?' · '+tasaDev+'% devol.':'')+'</div>'+
+          '</div>';
+      }).join('')+'</div>'+
+      '<div style="font-size:11px;color:var(--muted);margin-top:8px">Más naranja = más facturación. Revisa las ciudades con alta % de devolución.</div>'+
+      '</div>';
+  }
+
+  cont.innerHTML = trend + mvm + recs + heat;
 }
 
 // ════════════════════════════════════════════════════════
@@ -3462,7 +3545,17 @@ function renderClientes(){
   });
   var cont = document.getElementById('clientes-list');
   if(!arr.length){ cont.innerHTML='<div class="empty"><div class="empty-icon">👥</div><p>Sin clientes aún</p></div>'; return; }
-  cont.innerHTML = arr.slice(0,200).map(function(c){
+  // Top 10 por LTV (ganancia que te dejan) — siempre desde el universo completo
+  var top10 = Object.values(map).filter(c=>c.ganancia>0).sort((a,b)=>b.ganancia-a.ganancia).slice(0,10);
+  var topHtml = top10.length>=3 ? '<div class="card" style="margin-bottom:16px"><div class="card-title">🏆 Top 10 clientes (por ganancia que te dejan)</div>'+
+    top10.map(function(c,i){
+      var medal = i===0?'🥇':i===1?'🥈':i===2?'🥉':'<span style="color:var(--muted2)">'+(i+1)+'.</span>';
+      return '<div onclick="verOrdenesCliente(\''+c.telefono+'\')" style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);cursor:pointer;font-size:13px">'+
+        '<span style="width:24px;text-align:center">'+medal+'</span>'+
+        '<span style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(c.nombre||'(sin nombre)')+' <span style="color:var(--muted2);font-size:11px">· '+c.ordenes.length+' pedido(s)</span></span>'+
+        '<span style="color:var(--green);font-weight:800">'+money(c.ganancia)+'</span></div>';
+    }).join('')+'</div>' : '';
+  cont.innerHTML = topHtml + arr.slice(0,200).map(function(c){
     var sc = scoreCliente(c);
     var dias = c.ultima ? daysSince(c.ultima) : null;
     var inactivo = dias!=null && dias>=45;
@@ -4166,6 +4259,41 @@ function logOrden(o, accion){
   if(!o) return;
   if(!Array.isArray(o.historial)) o.historial = [];
   o.historial.push({ fecha: ts(), accion: accion });
+}
+
+// ════════════════════════════════════════════════════════
+//  BÚSQUEDA GLOBAL (órdenes + clientes + productos)
+// ════════════════════════════════════════════════════════
+function abrirBusquedaGlobal(){
+  document.getElementById('modal-buscar').classList.add('open');
+  var inp=document.getElementById('busqueda-global');
+  inp.value=''; renderBusquedaGlobal();
+  setTimeout(()=>inp.focus(),120);
+}
+function renderBusquedaGlobal(){
+  var q=(document.getElementById('busqueda-global').value||'').toLowerCase().trim();
+  var cont=document.getElementById('busqueda-resultados');
+  if(!q){ cont.innerHTML='<div style="font-size:12px;color:var(--muted2);padding:8px">Escribe para buscar en órdenes, clientes y productos…</div>'; return; }
+  function sec(t){ return '<div style="font-size:11px;font-weight:800;text-transform:uppercase;color:var(--muted2);margin:10px 0 4px">'+t+'</div>'; }
+  function item(html,onclick){ return '<div onclick="'+onclick+'" style="padding:8px 10px;border-bottom:1px solid var(--border);cursor:pointer;font-size:13px;border-radius:6px" onmouseover="this.style.background=\'var(--bg3)\'" onmouseout="this.style.background=\'\'">'+html+'</div>'; }
+  var html='';
+  // Órdenes
+  var ords=orders.filter(o=>(o.numero+' '+(o.cliente||'')+' '+(o.telefono||'')+' '+(o.producto||'')+' '+(o.guia||'')).toLowerCase().includes(q)).slice(0,8);
+  if(ords.length){ html+=sec('Órdenes ('+ords.length+')')+ords.map(o=>item(
+    '<span style="color:var(--orange)">#'+o.numero+'</span> '+(o.cliente||'')+' · '+(o.producto||'')+' '+pillHtml(o.status),
+    "cerrarModal('modal-buscar');abrirModalOrden('"+o.id+"')")).join(''); }
+  // Clientes
+  var mapa=agruparClientes();
+  var clis=Object.values(mapa).filter(c=>((c.nombre||'')+' '+(c.telefono||'')+' '+(c.ciudad||'')).toLowerCase().includes(q)).slice(0,6);
+  if(clis.length){ html+=sec('Clientes ('+clis.length+')')+clis.map(c=>item(
+    '👤 '+(c.nombre||'')+' · '+(c.telefono||'')+' · '+c.ordenes.length+' pedido(s)',
+    "cerrarModal('modal-buscar');switchTab('clientes');setTimeout(()=>{var i=document.getElementById('cli-search');if(i){i.value='"+(c.telefono||'').replace(/'/g,'')+"';renderClientes();}},150)")).join(''); }
+  // Productos
+  var prods=catalog.filter(p=>((p.nombre||'')+' '+(p.ref||'')).toLowerCase().includes(q)).slice(0,6);
+  if(prods.length){ html+=sec('Productos ('+prods.length+')')+prods.map(p=>item(
+    (p.ico||'📦')+' '+p.nombre+' · $'+(parseFloat(p.precio)||0).toFixed(2),
+    "cerrarModal('modal-buscar');switchTab('catalogo');setTimeout(()=>abrirModalProducto('"+p.id+"'),150)")).join(''); }
+  cont.innerHTML = html || '<div style="font-size:12px;color:var(--muted2);padding:8px">Sin resultados para "'+q+'"</div>';
 }
 
 // ════════════════════════════════════════════════════════
