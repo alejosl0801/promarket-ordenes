@@ -636,11 +636,11 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 .back-top{position:fixed;bottom:24px;right:24px;width:40px;height:40px;background:var(--orange);border:none;border-radius:50%;color:#fff;font-size:18px;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:500;box-shadow:0 4px 12px rgba(0,0,0,.4)}
 .back-top.show{display:flex}
-.bar-chart{display:flex;align-items:flex-end;gap:6px;height:80px;margin-top:12px}
-.bar-day{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
-.bar-fill{width:100%;background:var(--orange);border-radius:3px 3px 0 0;min-height:2px;transition:.3s}
-.bar-lbl{font-size:9px;color:var(--muted2);font-weight:600}
-.bar-val{font-size:9px;color:var(--white);font-weight:700}
+.chart7{display:flex;flex-direction:row;align-items:flex-end;gap:6px;height:80px;margin-top:12px}
+.chart7 .bar-day{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end}
+.chart7 .bar-fill{width:100%;background:var(--orange);border-radius:3px 3px 0 0;min-height:2px;transition:.3s}
+.chart7 .bar-lbl{font-size:9px;color:var(--muted2);font-weight:600;width:auto;text-align:center}
+.chart7 .bar-val{font-size:9px;color:var(--white);font-weight:700;width:auto}
 .dot-guia{width:7px;height:7px;border-radius:50%;display:inline-block;flex-shrink:0;margin-right:4px}
 .no-offline{display:none;position:fixed;top:58px;left:0;right:0;background:var(--red);color:#fff;text-align:center;font-size:12px;font-weight:700;padding:6px;z-index:600}
 .amounts-hidden .td-monto,.amounts-hidden .kpi-val,.amounts-hidden .stat-num{filter:blur(6px);user-select:none;cursor:pointer}
@@ -2389,7 +2389,7 @@ function renderDashboard(){
     days7.push({label:['Do','Lu','Ma','Mi','Ju','Vi','Sá'][d.getDay()], cnt});
   }
   var maxCnt = Math.max(...days7.map(d=>d.cnt),1);
-  var chartHtml = '<div class="card" style="margin-bottom:16px"><div class="card-title">Órdenes últimos 7 días</div><div class="bar-chart">'+
+  var chartHtml = '<div class="card" style="margin-bottom:16px"><div class="card-title">Órdenes últimos 7 días</div><div class="chart7">'+
     days7.map(d=>`<div class="bar-day"><div class="bar-val">${d.cnt||''}</div><div class="bar-fill" style="height:${Math.round(d.cnt/maxCnt*72)}px"></div><div class="bar-lbl">${d.label}</div></div>`).join('')+
     '</div></div>';
 
