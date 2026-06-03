@@ -345,6 +345,10 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 .order-table tbody tr{border-bottom:1px solid var(--border);transition:background var(--transition);cursor:pointer}
 .order-table tbody tr:hover{background:var(--bg3)}
 .order-table tbody td{padding:11px 12px;font-size:13px;vertical-align:middle}
+.order-table.compact tbody td{padding:4px 10px;font-size:12px}
+.order-table.compact tbody td div{font-size:10px!important}
+.order-table.compact td .btn{display:none}
+.order-table.compact td .row-select{display:inline}
 .td-num{font-weight:800;color:var(--orange);font-family:'IBM Plex Sans',sans-serif}
 .td-name{font-weight:600}
 .td-prod{color:var(--muted2);font-size:12px;max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -993,6 +997,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
     <input class="filter-input-sm" id="filter-ciudad" placeholder="🏙 Ciudad" oninput="renderOrderList()" style="width:110px">
     <button class="qf-btn" onclick="limpiarFiltros()" style="margin-left:4px">✕ Limpiar</button>
     <button class="qf-btn" onclick="guardarVista()" title="Guardar esta combinación de filtros">💾 Guardar vista</button>
+    <button class="qf-btn" id="qf-densidad" onclick="toggleDensidad(this)" title="Cambiar entre vista compacta y detallada">↕ Vista compacta</button>
     <span id="orders-count" style="font-size:12px;color:var(--muted2);margin-left:4px"></span>
   </div>
   <div id="vistas-guardadas" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px"></div>
@@ -1004,7 +1009,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
     <button class="btn btn-ghost btn-sm" onclick="limpiarSeleccion()">Cancelar</button>
   </div>
   <div style="overflow-x:auto">
-    <table class="order-table">
+    <table class="order-table" id="order-table">
       <thead>
         <tr>
           <td style="width:28px"><input type="checkbox" id="bulk-select-all" onclick="toggleSelectAll(this)" title="Seleccionar todo"></td>
@@ -1298,7 +1303,8 @@ var CAMP_KEY = 'pm_campanas_v1';
 var orders   = JSON.parse(localStorage.getItem(STORAGE_KEY)  || '[]');
 var catalog  = JSON.parse(localStorage.getItem(CATALOG_KEY)  || '[]');
 var campanas = JSON.parse(localStorage.getItem(CAMP_KEY)     || '[]');
-var currentFilter = 'TODOS';
+var currentFilter = localStorage.getItem('pm_last_filter') || 'TODOS';
+var ordenDensa    = localStorage.getItem('pm_orden_densa') === '1';
 var currentSort   = {key:'fecha',dir:-1};
 var currentPeriod = 'hoy';
 var modalOrderId  = null;
@@ -2562,9 +2568,22 @@ function renderReporteCEO(){
 // ════════════════════════════════════════════════════════
 function setFilter(f, btn){
   currentFilter = f;
+  localStorage.setItem('pm_last_filter', f);
   document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
   if(btn) btn.classList.add('active');
+  else { var fb=document.querySelector('.filter-btn[data-filter="'+f+'"]'); if(fb) fb.classList.add('active'); }
   renderOrderList();
+}
+// Vista compacta ↔ detallada (recuerda preferencia)
+function toggleDensidad(btn){
+  ordenDensa = !ordenDensa;
+  localStorage.setItem('pm_orden_densa', ordenDensa?'1':'0');
+  aplicarDensidad();
+}
+function aplicarDensidad(){
+  var t=document.getElementById('order-table'); if(t) t.classList.toggle('compact', ordenDensa);
+  var b=document.getElementById('qf-densidad');
+  if(b){ b.classList.toggle('active', ordenDensa); b.textContent = ordenDensa?'↕ Vista detallada':'↕ Vista compacta'; }
 }
 function sortBy(key){
   if(currentSort.key===key) currentSort.dir*=-1;
@@ -2572,6 +2591,9 @@ function sortBy(key){
   renderOrderList();
 }
 function renderOrderList(){
+  // Restaurar resaltado del filtro recordado y densidad
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.toggle('active', b.getAttribute('data-filter')===currentFilter));
+  aplicarDensidad();
   var q = (document.getElementById('search-input')?.value||'').toLowerCase();
   var desde = document.getElementById('filter-desde')?.value||'';
   var hasta = document.getElementById('filter-hasta')?.value||'';
@@ -3209,7 +3231,57 @@ function analisisOperativo(){
     '<div class="kpi kpi-green"><div class="kpi-val">'+cerradasHoy+'</div><div class="kpi-lbl">Cerrados hoy</div><div class="kpi-sub">Entregados/devueltos/cancelados</div></div>'+
     '</div></div>';
 
-  return cuelloHtml + patronHtml + rachaHtml + devHtml + efHtml;
+  // ── 6) Tiempo de entrega por ciudad (NUEVO→ENTREGADO) ──
+  var entCiudad={};
+  orders.forEach(o=>{
+    if(o.status==='ENTREGADO' && o.createdAt && o.updatedAt){
+      var d=(new Date(o.updatedAt)-new Date(o.createdAt))/(1000*3600*24);
+      if(d>=0 && d<120){ var c=o.ciudad||'Sin ciudad'; if(!entCiudad[c]) entCiudad[c]={t:0,n:0}; entCiudad[c].t+=d; entCiudad[c].n++; }
+    }
+  });
+  var ciuTiempos=Object.entries(entCiudad).map(e=>({c:e[0],prom:e[1].t/e[1].n,n:e[1].n}))
+    .filter(x=>x.n>=1).sort((a,b)=>b.prom-a.prom);
+  var maxT=Math.max(...ciuTiempos.map(x=>x.prom),1);
+  var tiempoCiudadHtml = ciuTiempos.length ? '<div class="card" style="margin-bottom:16px"><div class="card-title">🚚 Tiempo de entrega por ciudad</div>'+
+    ciuTiempos.slice(0,12).map(function(x){
+      var col=x.prom>=6?'var(--red)':x.prom>=4?'var(--yellow)':'var(--green)';
+      return '<div style="display:flex;align-items:center;gap:10px;padding:4px 0;font-size:12px">'+
+        '<span style="width:120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">📍 '+x.c+'</span>'+
+        '<div style="flex:1;background:var(--bg4);border-radius:4px;height:14px;overflow:hidden"><div style="background:'+col+';height:100%;width:'+Math.round(x.prom/maxT*100)+'%"></div></div>'+
+        '<span style="width:70px;text-align:right;color:'+col+';font-weight:700">'+x.prom.toFixed(1)+' d</span>'+
+        '<span style="width:55px;text-align:right;color:var(--muted)">'+x.n+' ent.</span>'+
+      '</div>';
+    }).join('')+
+    '<div style="font-size:11px;color:var(--muted);margin-top:8px">Las ciudades en rojo tardan más en entregar — más días en la calle = más riesgo de no cobrar.</div>'+
+    '</div>' : '';
+
+  // ── 7) Estacionalidad por producto (mes pico de cada producto) ──
+  var MESN=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  var prodMes={};
+  orders.forEach(o=>{
+    if(!o.producto) return;
+    var f=new Date(o.fecha||o.createdAt); if(isNaN(f)) return;
+    if(!prodMes[o.producto]) prodMes[o.producto]=new Array(12).fill(0);
+    prodMes[o.producto][f.getMonth()]+=montoNum(o)||1;
+  });
+  var prodArr=Object.entries(prodMes).map(function(e){
+    var arr=e[1], total=arr.reduce((s,v)=>s+v,0), pico=arr.indexOf(Math.max(...arr));
+    return {nombre:e[0],arr:arr,total:total,pico:pico,max:Math.max(...arr)};
+  }).filter(p=>p.total>0).sort((a,b)=>b.total-a.total).slice(0,8);
+  var estacHtml = prodArr.length ? '<div class="card" style="margin-bottom:16px"><div class="card-title">🗓️ Estacionalidad por producto</div>'+
+    '<div style="font-size:11px;color:var(--muted2);margin-bottom:10px">Mes pico de venta de cada producto — anticipa stock y publicidad antes de su temporada alta.</div>'+
+    prodArr.map(function(p){
+      return '<div style="margin-bottom:10px">'+
+        '<div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px"><b style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:60%">'+p.nombre+'</b><span style="color:var(--orange)">pico: '+MESN[p.pico]+'</span></div>'+
+        '<div style="display:flex;gap:2px;height:26px;align-items:flex-end">'+
+          p.arr.map((v,i)=>'<div title="'+MESN[i]+': $'+v.toFixed(0)+'" style="flex:1;background:'+(i===p.pico&&v>0?'var(--orange)':'var(--blue)')+';height:'+Math.max(Math.round(v/(p.max||1)*24),2)+'px;border-radius:2px 2px 0 0;opacity:'+(v?1:.25)+'"></div>').join('')+
+        '</div>'+
+        '<div style="display:flex;gap:2px;font-size:8px;color:var(--muted)">'+MESN.map(m=>'<span style="flex:1;text-align:center">'+m[0]+'</span>').join('')+'</div>'+
+      '</div>';
+    }).join('')+
+    '</div>' : '';
+
+  return cuelloHtml + patronHtml + rachaHtml + devHtml + efHtml + tiempoCiudadHtml + estacHtml;
 }
 
 // ════════════════════════════════════════════════════════
