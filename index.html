@@ -615,8 +615,21 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
   </div>
   <div class="nav-right">
     <button class="dark-toggle" onclick="toggleTheme()">☀️ Claro</button>
+    <button class="dark-toggle" id="btn-apikey" onclick="abrirModalApiKey()" style="border-color:#F97316;color:#F97316">🔑 API Key</button>
   </div>
 </nav>
+
+<div class="modal-bg" id="modal-apikey">
+  <div class="modal-box" style="max-width:440px">
+    <div class="modal-title">🔑 Gemini API Key</div>
+    <p style="color:var(--muted2);font-size:13px;margin-bottom:14px">Obtén tu key gratis en <strong>aistudio.google.com</strong> → "Get API key". Se guarda solo en tu navegador.</p>
+    <input type="text" id="input-apikey" placeholder="AIza..." style="width:100%;margin-bottom:12px;font-family:monospace;font-size:13px">
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="guardarApiKey()">💾 Guardar</button>
+      <button class="btn btn-secondary" onclick="cerrarModal('modal-apikey')">Cancelar</button>
+    </div>
+  </div>
+</div>
 
 <div class="tabs">
   <div class="tab active" data-tab="dashboard" onclick="switchTab('dashboard')">
@@ -974,7 +987,8 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 // ════════════════════════════════════════════════════════
 //  CONFIGURACIÓN
 // ════════════════════════════════════════════════════════
-var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyiKm16NcNR1GhoWmT2j9E7my9dSazCwtAWeh-XpPu1tmQ-_p4Q7PkEUloFYL8Qhmdl/exec";
+var GEMINI_KEY_STORAGE = 'pm_gemini_key';
+var GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=';
 var STORAGE_KEY  = 'pm_ordenes_v2';
 var CATALOG_KEY  = 'pm_catalogo_v1';
 var DRAFT_KEY    = 'pm_draft_v1';
@@ -1361,25 +1375,47 @@ async function extractFromText(){
   if(!texto){ showError('Pega texto de WhatsApp primero.'); return; }
   setStatus('loading');
   document.getElementById('ai-text-msg').textContent = 'Extrayendo datos del texto…';
+  var key = localStorage.getItem(GEMINI_KEY_STORAGE);
+  if(!key){ showError('Configura tu Gemini API Key primero — botón 🔑 arriba a la derecha.'); setStatus('idle'); return; }
   try {
-    var payload = { accion:'extraer_texto', texto };
-    var res = await fetch(SCRIPT_URL,{
-      method:'POST',
-      body:JSON.stringify(payload)
-    });
-    var json = await res.json();
-    if(json.ok){ fillForm(json.data); showConfidence(json.data); setStatus('done'); }
-    else showError('Error del servidor: '+(json.msg||'respuesta inválida'));
-  } catch(e){ showError('Error de conexión: '+e.message); }
+    var prompt = "Analiza este texto de pedido de WhatsApp y extrae todos los datos. " +
+      "Devuelve ÚNICAMENTE JSON válido sin texto adicional ni markdown:\n\n" +
+      "{\"numero\":\"\",\"cliente\":\"\",\"telefono\":\"\",\"direccion\":\"\",\"ciudad\":\"\",\"provincia\":\"\",\"pais\":\"Ecuador\"," +
+      "\"producto\":\"\",\"cantidad\":\"1\",\"precio\":\"\",\"monto\":\"\",\"talla\":\"\",\"lado\":\"\",\"pago\":\"\",\"transporte\":\"\",\"agencia\":\"\",\"nota\":\"\"}\n\nTexto:\n" + texto;
+    var data = await geminiRequest(key, [{parts:[{text:prompt}]}]);
+    fillForm(data); showConfidence(data); setStatus('done');
+  } catch(e){ showError('Error Gemini: '+e.message); }
+}
+
+function getGeminiKey(){
+  var key = localStorage.getItem(GEMINI_KEY_STORAGE);
+  if(!key) throw new Error('API Key no configurada. Usa el botón 🔑 arriba.');
+  return key;
+}
+
+async function geminiRequest(key, contents){
+  var res = await fetch(GEMINI_URL + key, {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({contents, generationConfig:{temperature:0.1, maxOutputTokens:1024}})
+  });
+  if(!res.ok){ var t=await res.text(); throw new Error('Gemini HTTP '+res.status+': '+t.slice(0,200)); }
+  var json = await res.json();
+  var text = json.candidates[0].content.parts[0].text.trim();
+  var match = text.match(/\{[\s\S]*\}/);
+  if(!match) throw new Error('Respuesta no es JSON: '+text.slice(0,100));
+  return JSON.parse(match[0]);
 }
 
 async function callGemini(base64, mediaType){
-  var res = await fetch(SCRIPT_URL,{
-    method:'POST',
-    body:JSON.stringify({accion:'extraer_pedido',imagen:base64,mediaType}),
-  });
-  if(!res.ok) throw new Error('HTTP '+res.status);
-  return await res.json();
+  var key = getGeminiKey();
+  var prompt = "Analiza esta captura de pantalla de un panel de pedidos y extrae TODOS los datos visibles. " +
+    "Devuelve ÚNICAMENTE un JSON válido con esta estructura exacta (sin texto adicional, sin markdown):\n\n" +
+    "{\"numero\":\"\",\"cliente\":\"\",\"telefono\":\"\",\"direccion\":\"\",\"ciudad\":\"\",\"provincia\":\"\",\"pais\":\"Ecuador\"," +
+    "\"producto\":\"\",\"cantidad\":\"1\",\"monto\":\"\",\"pago\":\"\",\"transporte\":\"\",\"agencia\":\"\",\"nota\":\"\"}";
+  var contents = [{parts:[{inline_data:{mime_type:mediaType,data:base64}},{text:prompt}]}];
+  var data = await geminiRequest(key, contents);
+  return {ok:true, data};
 }
 
 function checkDuplicate(data){
@@ -2173,6 +2209,28 @@ function limpiar(){
 // ════════════════════════════════════════════════════════
 //  PWA
 // ════════════════════════════════════════════════════════
+// ── API KEY MODAL ─────────────────────────────────────────────
+function abrirModalApiKey(){
+  var k = localStorage.getItem(GEMINI_KEY_STORAGE)||'';
+  document.getElementById('input-apikey').value = k;
+  document.getElementById('modal-apikey').classList.add('open');
+}
+function guardarApiKey(){
+  var k = document.getElementById('input-apikey').value.trim();
+  if(!k){ showError('Pega tu API Key primero.'); return; }
+  localStorage.setItem(GEMINI_KEY_STORAGE, k);
+  cerrarModal('modal-apikey');
+  document.getElementById('btn-apikey').style.borderColor='var(--green)';
+  document.getElementById('btn-apikey').style.color='var(--green)';
+  document.getElementById('btn-apikey').textContent='✅ API Key';
+  showSuccess('API Key guardada. ¡Listo para usar Gemini!');
+}
+// Indicar visualmente si la key ya está guardada
+(function(){ if(localStorage.getItem(GEMINI_KEY_STORAGE)){
+  var b=document.getElementById('btn-apikey');
+  b.style.borderColor='var(--green)';b.style.color='var(--green)';b.textContent='✅ API Key';
+}})();
+
 if('serviceWorker' in navigator){
   navigator.serviceWorker.getRegistrations().then(regs=>{
     regs.forEach(r=>r.unregister());
