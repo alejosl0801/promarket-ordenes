@@ -8,24 +8,24 @@
 <link rel="icon" type="image/png" href="icon-192.png">
 <meta name="theme-color" content="#111111">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700;800&display=swap');
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0E0E0E;--bg2:#161616;--bg3:#1E1E1E;--bg4:#262626;
-  --border:#2A2A2A;--border2:#333;
-  --orange:#F97316;--orange2:#EA6005;--orange3:#C04D00;
-  --white:#F5F5F5;--muted:#666;--muted2:#888;
-  --green:#22C55E;--green-bg:#0D2818;--green-border:#166534;
-  --yellow:#F59E0B;--yellow-bg:#1C1500;--yellow-border:#92400E;
-  --red:#EF4444;--red-bg:#1C0606;--red-border:#7F1D1D;
-  --blue:#3B82F6;--blue-bg:#0D1526;--blue-border:#1E40AF;
+  --bg:#0A0A0A;--bg2:#111111;--bg3:#181818;--bg4:#1E1E1E;
+  --border:#252525;--border2:#2E2E2E;
+  --orange:#E8650A;--orange2:#D05A08;--orange3:#A04506;
+  --white:#F0F0F0;--muted:#5A5A5A;--muted2:#808080;
+  --green:#22C55E;--green-bg:#0A1F10;--green-border:#14532D;
+  --yellow:#F59E0B;--yellow-bg:#191200;--yellow-border:#78350F;
+  --red:#EF4444;--red-bg:#180404;--red-border:#7F1D1D;
+  --blue:#3B82F6;--blue-bg:#0A1120;--blue-border:#1D3A8A;
   --purple:#A855F7;
-  --font-head:'Syne',sans-serif;
-  --font-body:'DM Sans',sans-serif;
-  --radius:10px;--radius-sm:6px;--radius-lg:14px;
-  --shadow:0 4px 24px rgba(0,0,0,.5);
-  --transition:.18s ease;
+  --font-head:'IBM Plex Sans',sans-serif;
+  --font-body:'IBM Plex Sans',sans-serif;
+  --radius:6px;--radius-sm:4px;--radius-lg:8px;
+  --shadow:0 4px 20px rgba(0,0,0,.6);
+  --transition:.15s ease;
 }
 body{font-family:var(--font-body);background:var(--bg);color:var(--white);min-height:100vh;}
 
@@ -43,7 +43,7 @@ nav{
   backdrop-filter:blur(12px);
 }
 .nav-left{display:flex;align-items:center;gap:12px}
-.nav-logo{font-family:var(--font-head);font-size:17px;color:var(--white)}
+.nav-logo{font-family:'IBM Plex Sans',sans-serif;font-size:17px;color:var(--white)}
 .nav-logo em{color:var(--orange);font-style:normal}
 .nav-right{display:flex;align-items:center;gap:10px}
 .dark-toggle{background:var(--bg4);border:1px solid var(--border2);color:var(--muted2);
@@ -83,7 +83,7 @@ nav{
 }
 .stat-card:hover{border-color:var(--border2)}
 .stat-card.clickable:hover{border-color:var(--orange)}
-.stat-num{font-family:var(--font-head);font-size:28px;font-weight:800;line-height:1}
+.stat-num{font-size:28px;font-weight:800;line-height:1;letter-spacing:-0.5px}
 .stat-lbl{font-size:11px;color:var(--muted2);margin-top:5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
 .stat-card.s-new .stat-num{color:var(--blue)}
 .stat-card.s-conf .stat-num{color:var(--green)}
@@ -155,7 +155,7 @@ nav{
 .upload-zone:hover,.upload-zone.drag{border-color:var(--orange);background:#1A1008}
 .upload-zone.loading{border-color:var(--orange);background:#1A1008;pointer-events:none}
 .upload-icon{font-size:38px;margin-bottom:10px}
-.upload-title{font-family:var(--font-head);font-size:15px;color:var(--white);margin-bottom:5px}
+.upload-title{font-family:'IBM Plex Sans',sans-serif;font-size:15px;color:var(--white);margin-bottom:5px}
 .upload-sub{font-size:12px;color:var(--muted2)}
 .upload-sub span{color:var(--orange);font-weight:700}
 #file-input{position:absolute;inset:0;opacity:0;cursor:pointer;z-index:2}
@@ -267,7 +267,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
   text-align:right;padding:10px 10px 4px;
   font-size:13px;font-weight:700;color:var(--muted2);
 }
-.total-display span{font-size:20px;font-family:var(--font-head);color:var(--orange);margin-left:8px}
+.total-display span{font-size:20px;font-family:'IBM Plex Sans',sans-serif;color:var(--orange);margin-left:8px}
 
 /* ── NOTE CARD ────────────────────────────────── */
 .nota-card{border-color:var(--yellow-border)!important;background:#1C1500!important}
@@ -342,7 +342,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 .order-table tbody tr{border-bottom:1px solid var(--border);transition:background var(--transition);cursor:pointer}
 .order-table tbody tr:hover{background:var(--bg3)}
 .order-table tbody td{padding:11px 12px;font-size:13px;vertical-align:middle}
-.td-num{font-weight:800;color:var(--orange);font-family:var(--font-head)}
+.td-num{font-weight:800;color:var(--orange);font-family:'IBM Plex Sans',sans-serif}
 .td-name{font-weight:600}
 .td-prod{color:var(--muted2);font-size:12px;max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .td-monto{font-weight:700;color:var(--green)}
@@ -379,7 +379,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
   display:flex;align-items:center;justify-content:center;font-size:14px;
 }
 .modal-close:hover{color:var(--white);border-color:var(--border2)}
-.modal-title{font-family:var(--font-head);font-size:17px;margin-bottom:18px;padding-right:40px}
+.modal-title{font-family:'IBM Plex Sans',sans-serif;font-size:17px;margin-bottom:18px;padding-right:40px}
 
 /* Status changer in modal */
 .status-changer{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
@@ -416,7 +416,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 .prod-meta h4{font-size:13.5px;font-weight:700;line-height:1.25}
 .prod-meta .ref{font-size:10px;color:var(--muted2);font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-top:3px}
 .prod-price-row{display:flex;gap:10px;align-items:center}
-.prod-price{font-size:18px;font-family:var(--font-head);color:var(--orange)}
+.prod-price{font-size:18px;font-family:'IBM Plex Sans',sans-serif;color:var(--orange)}
 .prod-cost{font-size:11px;color:var(--muted);text-decoration:line-through}
 .prod-margin{font-size:11px;font-weight:700;color:var(--green)}
 .prod-stock{display:flex;gap:6px;flex-wrap:wrap}
@@ -463,7 +463,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 
 .kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}
 .kpi{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px}
-.kpi-val{font-family:var(--font-head);font-size:24px;font-weight:800;color:var(--orange)}
+.kpi-val{font-family:'IBM Plex Sans',sans-serif;font-size:24px;font-weight:800;color:var(--orange)}
 .kpi-lbl{font-size:11px;color:var(--muted2);margin-top:4px;font-weight:600}
 .kpi-sub{font-size:10px;color:var(--muted);margin-top:2px}
 .kpi-green .kpi-val{color:var(--green)}
@@ -570,7 +570,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
   grid-template-columns:80px 1fr 120px 100px 80px;
   gap:12px;align-items:center;margin-bottom:6px;font-size:12.5px;
 }
-.dispatch-row .d-num{font-weight:800;color:var(--orange);font-family:var(--font-head)}
+.dispatch-row .d-num{font-weight:800;color:var(--orange);font-family:'IBM Plex Sans',sans-serif}
 .dispatch-row .d-city{color:var(--muted2);font-size:11px}
 
 /* ── EMPTY STATE ──────────────────────────────── */
@@ -666,6 +666,9 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
   </div>
   <div class="tab" data-tab="catalogo" onclick="switchTab('catalogo')">
     📦 Catálogo
+  </div>
+  <div class="tab" data-tab="campanas" onclick="switchTab('campanas')">
+    📣 Campañas
   </div>
 </div>
 
@@ -898,7 +901,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 <!-- ══════════ DESPACHO ══════════ -->
 <div class="panel" id="panel-despacho">
   <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap">
-    <div style="font-family:var(--font-head);font-size:18px">Lista de despacho del día</div>
+    <div style="font-family:'IBM Plex Sans',sans-serif;font-size:18px">Lista de despacho del día</div>
     <button class="btn btn-dark btn-sm" onclick="imprimirDespacho()">🖨️ Imprimir lista</button>
     <button class="btn btn-dark btn-sm" onclick="exportarExcelDespacho()">⬇ Excel despacho</button>
   </div>
@@ -920,13 +923,62 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 <!-- ══════════ CATÁLOGO ══════════ -->
 <div class="panel" id="panel-catalogo">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
-    <div style="font-family:var(--font-head);font-size:18px">Catálogo de productos</div>
+    <div style="font-family:'IBM Plex Sans',sans-serif;font-size:18px">Catálogo de productos</div>
     <button class="btn btn-primary btn-sm" onclick="abrirModalProducto()">+ Nuevo producto</button>
   </div>
   <div class="prod-grid" id="prod-grid"></div>
 </div>
 
+<!-- ══════════ CAMPAÑAS ══════════ -->
+<div class="panel" id="panel-campanas">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+    <div style="font-size:17px;font-weight:800;letter-spacing:-0.3px">Campañas Facebook & Rentabilidad</div>
+    <button class="btn btn-primary btn-sm" onclick="abrirModalCampana()">+ Nueva campaña</button>
+  </div>
+  <div class="kpi-row" id="campanas-kpi"></div>
+  <div id="campanas-list"></div>
+</div>
+
 </div><!-- /wrap -->
+
+<!-- ══════════ MODAL CAMPAÑA ══════════ -->
+<div class="modal-bg" id="modal-campana">
+  <div class="modal" style="max-width:520px">
+    <button class="modal-close" onclick="cerrarModal('modal-campana')">✕</button>
+    <div class="modal-title" id="modal-campana-title">Nueva campaña</div>
+    <div class="g2" style="margin-bottom:13px">
+      <label>Nombre de campaña<input id="camp-nombre" placeholder="Guante Robot — Junio 2026"></label>
+      <label>Fecha de inicio<input id="camp-fecha" type="date"></label>
+    </div>
+    <div class="g2" style="margin-bottom:13px">
+      <label>Inversión en publicidad ($)<input id="camp-inversion" type="number" placeholder="50.00" step="0.01" oninput="calcCampana()"></label>
+      <label>Producto vinculado<select id="camp-producto" onchange="calcCampana()"></select></label>
+    </div>
+    <div class="g3" style="margin-bottom:13px">
+      <label>Órdenes generadas<input id="camp-ordenes" type="number" placeholder="12" oninput="calcCampana()"></label>
+      <label>Órdenes entregadas<input id="camp-entregadas" type="number" placeholder="9" oninput="calcCampana()"></label>
+      <label>Devoluciones<input id="camp-devoluciones" type="number" placeholder="1" oninput="calcCampana()"></label>
+    </div>
+    <div class="g2" style="margin-bottom:13px">
+      <label>Precio de venta ($)<input id="camp-precio-venta" type="number" placeholder="59.99" step="0.01" oninput="calcCampana()"></label>
+      <label>Costo del producto ($)<input id="camp-costo-prod" type="number" placeholder="22.00" step="0.01" oninput="calcCampana()"></label>
+    </div>
+    <div class="g2" style="margin-bottom:13px">
+      <label>Costo de envío por orden ($)<input id="camp-costo-envio" type="number" placeholder="4.50" step="0.01" oninput="calcCampana()"></label>
+      <label>Estado<select id="camp-estado"><option>Activa</option><option>Pausada</option><option>Finalizada</option></select></label>
+    </div>
+    <label style="margin-bottom:13px">Notas<textarea id="camp-notas" placeholder="Observaciones de la campaña..."></textarea></label>
+    <div id="camp-preview" style="background:var(--bg4);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:14px;margin-bottom:16px">
+      <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted2);margin-bottom:10px">Vista previa de rentabilidad</div>
+      <div class="g3" id="camp-preview-kpis"></div>
+    </div>
+    <input type="hidden" id="camp-id">
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="guardarCampana()">Guardar campaña</button>
+      <button class="btn btn-ghost" onclick="cerrarModal('modal-campana')">Cancelar</button>
+    </div>
+  </div>
+</div>
 
 <!-- ══════════ MODAL ORDEN ══════════ -->
 <div class="modal-bg" id="modal-orden">
@@ -1059,6 +1111,7 @@ function switchTab(name){
   if(name==='despacho')  renderDespacho();
   if(name==='reportes')  renderReportes();
   if(name==='catalogo')  renderCatalogo();
+  if(name==='campanas')  renderCampanas();
 }
 
 // ════════════════════════════════════════════════════════
@@ -1512,73 +1565,84 @@ function showConfidence(d){
 // ════════════════════════════════════════════════════════
 //  GENERATE ORDER PDF
 // ════════════════════════════════════════════════════════
-var CROWN=`<svg width="70" height="56" viewBox="0 0 140 112" fill="none">
-  <rect x="64" y="1" width="12" height="20" rx="3" fill="#F97316"/>
-  <path d="M18 75 L8 32 L46 58 L70 10 L94 58 L132 32 L122 75 Z" fill="#F97316"/>
-  <rect x="14" y="75" width="112" height="20" rx="4" fill="#F97316"/>
-  <ellipse cx="52" cy="67" rx="12" ry="18" fill="#111"/>
-  <ellipse cx="88" cy="67" rx="12" ry="18" fill="#111"/>
-</svg>`;
-
 function buildOrderHtml(d){
-  var prods = d.products||[{nombre:d.producto,cantidad:d.cantidad||1,precio:d.monto?.replace(/[^0-9.]/g,'')||'0',talla:d.talla||'',lado:d.lado||''}];
+  var prods = d.products||[{nombre:d.producto,cantidad:d.cantidad||1,precio:(d.monto||'').replace(/[^0-9.]/g,'')||'0',talla:d.talla||'',lado:d.lado||''}];
   var totalNum = prods.reduce((s,p)=>s+(parseFloat(p.precio)||0)*(parseInt(p.cantidad)||1),0);
-  var prodRows = prods.map(p=>`<tr>
-    <td>${p.nombre||'-'}</td>
-    <td class="td-c">${p.cantidad}</td>
-    <td class="td-c">${p.talla||'-'}</td>
-    <td class="td-c">${p.lado||'-'}</td>
-    <td class="td-r">$${parseFloat(p.precio||0).toFixed(2)}</td>
+  var now = new Date().toLocaleString('es-EC',{hour:'2-digit',minute:'2-digit'});
+  var statusColors = {
+    'NUEVO':'#1A5FA8','CONFIRMADO':'#166534','EMPACADO':'#5B21B6',
+    'DESPACHADO':'#92400E','EN TRANSITO':'#78350F','ENTREGADO':'#374151','CANCELADO':'#991B1B'
+  };
+  var statusBg = statusColors[d.status||'NUEVO']||'#374151';
+  var prodRows = prods.map((p,i)=>`<tr style="background:${i%2?'#F9F9F9':'#fff'}">
+    <td style="border:1px solid #E0E0E0;padding:7px 9px;font-size:12px;font-weight:600">${p.nombre||'-'}</td>
+    <td style="border:1px solid #E0E0E0;padding:7px 9px;text-align:center;font-weight:700">${p.cantidad}</td>
+    <td style="border:1px solid #E0E0E0;padding:7px 9px;text-align:center;font-weight:700">${p.talla||'-'}</td>
+    <td style="border:1px solid #E0E0E0;padding:7px 9px;text-align:center;font-weight:700">${p.lado||'-'}</td>
+    <td style="border:1px solid #E0E0E0;padding:7px 9px;text-align:right;font-weight:800">$${parseFloat(p.precio||0).toFixed(2)}</td>
   </tr>`).join('');
-  var guiaHtml = d.guia?`<div class="od-guide">
-    <div class="lbl">🚚 N° de Guía</div>
-    <div class="val">${d.guia}</div>
-  </div>`:'';
-  var badgeKey = (d.status||'NUEVO').toLowerCase().replace(' ','');
-  return `<div class="od">
-  <div class="od-head">
-    <div class="od-head-left">
-      <h1>ORDEN DE ENTREGA</h1>
-      <div class="sub">Promarket Ecuador — Despacho de pedidos</div>
-      <span class="od-badge badge-${badgeKey}">${d.status||'NUEVO'}</span>
+  return `<div style="font-family:'IBM Plex Sans',Arial,sans-serif;width:148mm;min-height:210mm;border:1px solid #000;font-size:10px;color:#000;background:#fff;margin:0 auto">
+  <div style="background:#0A0A0A;padding:11px 15px;display:flex;justify-content:space-between;align-items:center">
+    <div>
+      <div style="color:#fff;font-size:22px;font-weight:800;letter-spacing:-0.5px;font-family:'IBM Plex Sans',Arial,sans-serif">PROMARKET</div>
+      <div style="color:#E8650A;font-size:8px;font-weight:700;letter-spacing:2.5px;margin-top:1px">ECUADOR</div>
     </div>
-    <div class="od-head-right">${CROWN}
-      <div class="od-num">N° ${d.numero}</div>
-      <div class="od-date">${d.fecha}</div>
+    <div style="text-align:right">
+      <div style="color:#E8650A;font-size:24px;font-weight:800;letter-spacing:-1px;font-family:'IBM Plex Sans',Arial,sans-serif">#${d.numero}</div>
+      <div style="color:#666;font-size:8px;margin-top:2px">${d.fecha} · ${now}</div>
     </div>
   </div>
-  <div class="od-bar"></div>
-  <div class="od-body">
-    <div class="od-sec">Destinatario</div>
-    <div class="od-g2">
-      <div class="od-f"><div class="lbl">Nombre</div><div class="val">${d.cliente}</div></div>
-      <div class="od-f"><div class="lbl">Teléfono</div><div class="val">${d.telefono}</div></div>
+  <div style="height:3px;background:#E8650A"></div>
+  <div style="background:#F5F5F5;border-bottom:1px solid #DDD;padding:5px 15px;display:flex;align-items:center;justify-content:space-between">
+    <div style="font-size:8px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:1px">Estado del pedido</div>
+    <div style="background:${statusBg};color:#fff;font-size:8px;font-weight:800;padding:3px 10px;text-transform:uppercase;letter-spacing:1px">${d.status||'NUEVO'}</div>
+  </div>
+  <div style="padding:12px 15px">
+    <div style="font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;border-bottom:2px solid #000;padding-bottom:3px;margin-bottom:8px">Destinatario</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:6px">
+      <div style="border:1px solid #DDD;padding:5px 8px"><div style="font-size:7px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Nombre</div><div style="font-size:12px;font-weight:700">${d.cliente||'-'}</div></div>
+      <div style="border:1px solid #DDD;padding:5px 8px"><div style="font-size:7px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Teléfono</div><div style="font-size:12px;font-weight:700">${d.telefono||'-'}</div></div>
     </div>
-    <div class="od-g1"><div class="od-f"><div class="lbl">Dirección</div><div class="val">${d.direccion}</div></div></div>
-    <div class="od-g3">
-      <div class="od-f"><div class="lbl">Ciudad</div><div class="val">${d.ciudad}</div></div>
-      <div class="od-f"><div class="lbl">Provincia</div><div class="val">${d.provincia}</div></div>
-      <div class="od-f"><div class="lbl">País</div><div class="val">${d.pais||'Ecuador'}</div></div>
+    <div style="border:1px solid #DDD;padding:5px 8px;margin-bottom:5px"><div style="font-size:7px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Dirección</div><div style="font-size:11px;font-weight:600">${d.direccion||'-'}</div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:10px">
+      <div style="border:1px solid #DDD;padding:5px 8px"><div style="font-size:7px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Ciudad</div><div style="font-size:11px;font-weight:600">${d.ciudad||'-'}</div></div>
+      <div style="border:1px solid #DDD;padding:5px 8px"><div style="font-size:7px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Provincia</div><div style="font-size:11px;font-weight:600">${d.provincia||'-'}</div></div>
+      <div style="border:1px solid #DDD;padding:5px 8px"><div style="font-size:7px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">País</div><div style="font-size:11px;font-weight:600">${d.pais||'Ecuador'}</div></div>
     </div>
-    <div class="od-sec">Envío y Pago</div>
-    <div class="od-g3">
-      <div class="od-f"><div class="lbl">Transporte</div><div class="val">${d.transporte}</div></div>
-      <div class="od-f"><div class="lbl">Pago</div><div class="val">${d.pago}</div></div>
-      <div class="od-f"><div class="lbl">Entrega</div><div class="val">${d.entrega}</div></div>
+    <div style="font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;border-bottom:2px solid #000;padding-bottom:3px;margin-bottom:8px">Envío</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:5px">
+      <div style="border:1px solid #DDD;padding:5px 8px"><div style="font-size:7px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Transportista</div><div style="font-size:11px;font-weight:700">${d.transporte||'SERVIENTREGA'}</div></div>
+      <div style="border:1px solid #DDD;padding:5px 8px"><div style="font-size:7px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Modalidad</div><div style="font-size:11px;font-weight:600">${d.entrega||'Retiro en agencia'}</div></div>
     </div>
-    <div class="od-g1"><div class="od-f"><div class="lbl">Agencia</div><div class="val">${(d.agencia||'').replace(/\n/g,'<br>')}</div></div></div>
-    ${guiaHtml}
-    <div class="od-sec">Detalle del Pedido</div>
-    <table class="od-tbl">
-      <thead><tr><td style="width:40%">Producto</td><td style="width:8%;text-align:center">Cant.</td><td style="width:10%;text-align:center">Talla</td><td style="width:12%;text-align:center">Lado</td><td style="width:16%;text-align:right">Precio</td></tr></thead>
+    ${d.guia?`<div style="background:#0A0A0A;padding:7px 10px;margin-bottom:5px;display:flex;align-items:center;justify-content:space-between"><div style="font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#888">N° de Guía Servientrega</div><div style="font-size:16px;font-weight:800;color:#E8650A;letter-spacing:1px;font-family:'IBM Plex Sans',Arial,sans-serif">${d.guia}</div></div>`:''}
+    <div style="border:1px solid #DDD;padding:5px 8px;margin-bottom:10px"><div style="font-size:7px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Agencia de retiro</div><div style="font-size:11px">${(d.agencia||'-').replace(/\n/g,'<br>')}</div></div>
+    <div style="font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;border-bottom:2px solid #000;padding-bottom:3px;margin-bottom:8px">Detalle del pedido</div>
+    <table style="width:100%;border-collapse:collapse;margin-bottom:8px">
+      <thead><tr style="background:#0A0A0A">
+        <td style="color:#fff;padding:6px 9px;font-size:8px;font-weight:700;text-transform:uppercase;width:44%">Producto</td>
+        <td style="color:#fff;padding:6px 9px;font-size:8px;font-weight:700;text-align:center;width:10%">Cant.</td>
+        <td style="color:#fff;padding:6px 9px;font-size:8px;font-weight:700;text-align:center;width:14%">Talla</td>
+        <td style="color:#fff;padding:6px 9px;font-size:8px;font-weight:700;text-align:center;width:14%">Lado</td>
+        <td style="color:#fff;padding:6px 9px;font-size:8px;font-weight:700;text-align:right;width:18%">Precio</td>
+      </tr></thead>
       <tbody>${prodRows}</tbody>
     </table>
-    ${d.nota?`<div class="od-nota"><div class="lbl">📌 Solicitud especial</div><div class="val">${d.nota}</div></div>`:''}
-    <div class="od-total-wrap"><div class="od-total-box">
-      <div class="od-tot-main"><span class="label">TOTAL A COBRAR</span><span class="amt">$${totalNum.toFixed(2)}</span></div>
-    </div></div>
+    ${d.nota?`<div style="border-left:3px solid #E8650A;background:#FFF8F0;padding:7px 11px;margin-bottom:8px"><div style="font-size:8px;font-weight:800;text-transform:uppercase;color:#E8650A;margin-bottom:2px">Solicitud especial</div><div style="font-size:11px">${d.nota}</div></div>`:''}
+    <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
+      <div style="width:195px">
+        <div style="background:#0A0A0A;padding:9px 13px;display:flex;justify-content:space-between;align-items:center">
+          <div style="color:#999;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px">Total a cobrar</div>
+          <div style="color:#E8650A;font-size:20px;font-weight:800;font-family:'IBM Plex Sans',Arial,sans-serif">$${totalNum.toFixed(2)}</div>
+        </div>
+        <div style="background:#F5F5F5;border:1px solid #DDD;padding:5px 13px;font-size:9px;color:#666;text-align:center;font-weight:700">PAGO CONTRAENTREGA EN AGENCIA</div>
+      </div>
+    </div>
   </div>
-  <div class="od-foot">PROMARKET ECUADOR &nbsp;·&nbsp; <em>ORDEN #${d.numero}</em> &nbsp;·&nbsp; ${d.fecha} &nbsp;·&nbsp; ${d.transporte}</div>
+  <div style="background:#0A0A0A;padding:7px 15px;display:flex;justify-content:space-between;align-items:center">
+    <div style="color:#555;font-size:8px;font-weight:700;letter-spacing:.5px">PROMARKET ECUADOR</div>
+    <div style="color:#E8650A;font-size:8px;font-weight:700">ORDEN #${d.numero} · ${d.fecha}</div>
+    <div style="color:#555;font-size:8px;font-weight:700">SERVIENTREGA · COD</div>
+  </div>
 </div>`;
 }
 
@@ -1767,6 +1831,7 @@ function renderAll(){
   if(document.getElementById('panel-ordenes').classList.contains('active')) renderOrderList();
   if(document.getElementById('panel-kanban').classList.contains('active')) renderKanban();
   if(document.getElementById('panel-despacho').classList.contains('active')) renderDespacho();
+  if(document.getElementById('panel-campanas').classList.contains('active')) renderCampanas();
 }
 
 function updateBadges(){
@@ -1830,7 +1895,7 @@ function renderDashboard(){
   if(!recent.length){ rl.innerHTML='<div class="empty"><div class="empty-icon">📋</div><p>Sin órdenes aún</p></div>'; return; }
   rl.innerHTML = recent.map(o=>`
     <div onclick="abrirModalOrden('${o.id}')" style="display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background=''">
-      <div style="flex:0 0 70px;font-family:var(--font-head);font-size:13px;color:var(--orange)">#${o.numero}</div>
+      <div style="flex:0 0 70px;font-family:'IBM Plex Sans',sans-serif;font-size:13px;color:var(--orange)">#${o.numero}</div>
       <div style="flex:1;min-width:0">
         <div style="font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${o.cliente||'-'}</div>
         <div style="font-size:11px;color:var(--muted2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${o.producto||''}</div>
@@ -1888,6 +1953,7 @@ function renderOrderList(){
           <button class="btn btn-ghost btn-sm" style="padding:4px 8px" onclick="editarOrden('${o.id}')">✏️</button>
           <button class="btn btn-ghost btn-sm" style="padding:4px 8px" onclick="verOrdenPdf('${o.id}')">📄</button>
           <button class="btn btn-ghost btn-sm" style="padding:4px 8px;color:${o.guia?'var(--green)':'var(--orange)'}" title="${o.guia?'Guía: '+o.guia:'Registrar guía'}" onclick="abrirModalGuia('${o.id}')">🚚</button>
+          <button class="btn btn-ghost btn-sm" style="padding:4px 8px;color:#25D366" title="Enviar WhatsApp" onclick="event.stopPropagation();enviarWhatsapp('${o.id}')">💬</button>
         </div>
       </td>
     </tr>`).join('');
@@ -2276,6 +2342,165 @@ function guardarApiKey(){
   var b=document.getElementById('btn-apikey');
   b.style.borderColor='var(--green)';b.style.color='var(--green)';b.textContent='✅ API Key';
 }})();
+
+// ════════════════════════════════════════════════════════
+//  WHATSAPP
+// ════════════════════════════════════════════════════════
+function enviarWhatsapp(id){
+  var o = orders.find(x=>x.id===id);
+  if(!o||!o.telefono) return;
+  var tel = o.telefono.replace(/[^0-9]/g,'');
+  if(tel.startsWith('0')) tel = '593'+tel.substring(1);
+  var nombre = (o.cliente||'').split(' ')[0];
+  var msg = o.guia
+    ? 'Hola '+nombre+', tu pedido de *Promarket Ecuador* (#'+o.numero+') fue despachado por Servientrega.\n\nN° de guía: *'+o.guia+'*\n\nPuedes retirarlo y pagar en tu agencia Servientrega más cercana.\n\n¡Gracias por tu compra!'
+    : 'Hola '+nombre+', tu pedido de *Promarket Ecuador* (#'+o.numero+') está confirmado y pronto será despachado.\n\nTe avisaremos cuando tengamos el número de guía de Servientrega.';
+  window.open('https://wa.me/'+tel+'?text='+encodeURIComponent(msg),'_blank');
+}
+
+// ════════════════════════════════════════════════════════
+//  CAMPAÑAS FACEBOOK
+// ════════════════════════════════════════════════════════
+var CAMP_KEY = 'pm_campanas_v1';
+var campanas = JSON.parse(localStorage.getItem(CAMP_KEY) || '[]');
+function saveCampanas(){ localStorage.setItem(CAMP_KEY, JSON.stringify(campanas)); }
+
+function calcRentabilidadCampana(c){
+  var inversion    = parseFloat(c.inversion)||0;
+  var entregadas   = parseInt(c.entregadas)||0;
+  var devoluciones = parseInt(c.devoluciones)||0;
+  var precioVenta  = parseFloat(c.precioVenta)||0;
+  var costoProd    = parseFloat(c.costoProd)||0;
+  var costoEnvio   = parseFloat(c.costoEnvio)||0;
+  var cobradas     = entregadas - devoluciones;
+  var ingresos     = cobradas * precioVenta;
+  var costoMerc    = cobradas * costoProd;
+  var costoEnvioT  = entregadas * costoEnvio;
+  var ganancia     = ingresos - costoMerc - costoEnvioT - inversion;
+  var roi          = inversion > 0 ? (ganancia / inversion * 100) : 0;
+  var cpa          = parseInt(c.ordenes||0) > 0 ? (inversion / parseInt(c.ordenes)) : 0;
+  var margenNeto   = ingresos > 0 ? (ganancia / ingresos * 100) : 0;
+  return { ingresos, costoMerc, costoEnvioT, ganancia, roi, cpa, margenNeto, cobradas };
+}
+
+function calcCampana(){
+  var c = {
+    inversion: document.getElementById('camp-inversion').value,
+    ordenes: document.getElementById('camp-ordenes').value,
+    entregadas: document.getElementById('camp-entregadas').value,
+    devoluciones: document.getElementById('camp-devoluciones').value,
+    precioVenta: document.getElementById('camp-precio-venta').value,
+    costoProd: document.getElementById('camp-costo-prod').value,
+    costoEnvio: document.getElementById('camp-costo-envio').value,
+  };
+  var r = calcRentabilidadCampana(c);
+  var color = r.ganancia >= 0 ? 'var(--green)' : 'var(--red)';
+  document.getElementById('camp-preview-kpis').innerHTML =
+    '<div class="kpi"><div class="kpi-val" style="color:'+color+'">$'+r.ganancia.toFixed(2)+'</div><div class="kpi-lbl">Ganancia neta</div></div>'+
+    '<div class="kpi"><div class="kpi-val" style="color:'+(r.roi>=0?'var(--green)':'var(--red)')+'">'+r.roi.toFixed(1)+'%</div><div class="kpi-lbl">ROI</div></div>'+
+    '<div class="kpi"><div class="kpi-val">$'+r.cpa.toFixed(2)+'</div><div class="kpi-lbl">Costo por venta</div></div>';
+}
+
+function abrirModalCampana(id){
+  var c = id ? campanas.find(x=>x.id===id) : null;
+  document.getElementById('modal-campana-title').textContent = c ? 'Editar campaña' : 'Nueva campaña';
+  document.getElementById('camp-id').value = c?c.id:'';
+  document.getElementById('camp-nombre').value = c?c.nombre:'';
+  document.getElementById('camp-fecha').value = c?c.fecha:new Date().toISOString().substring(0,10);
+  document.getElementById('camp-inversion').value = c?c.inversion:'';
+  document.getElementById('camp-ordenes').value = c?c.ordenes:'';
+  document.getElementById('camp-entregadas').value = c?c.entregadas:'';
+  document.getElementById('camp-devoluciones').value = c?c.devoluciones:'';
+  document.getElementById('camp-precio-venta').value = c?c.precioVenta:'';
+  document.getElementById('camp-costo-prod').value = c?c.costoProd:'';
+  document.getElementById('camp-costo-envio').value = c?c.costoEnvio:'';
+  document.getElementById('camp-notas').value = c?c.notas:'';
+  document.getElementById('camp-estado').value = c?c.estado:'Activa';
+  var sel = document.getElementById('camp-producto');
+  sel.innerHTML = '<option value="">— Producto —</option>'+
+    catalog.map(p=>'<option value="'+p.nombre+'"'+(c&&c.producto===p.nombre?' selected':'')+'>'+p.nombre+'</option>').join('');
+  document.getElementById('camp-preview-kpis').innerHTML = '';
+  if(c) calcCampana();
+  document.getElementById('modal-campana').classList.add('open');
+}
+
+function guardarCampana(){
+  var id = document.getElementById('camp-id').value || ('camp_'+Date.now());
+  var camp = {
+    id,
+    nombre: document.getElementById('camp-nombre').value.trim(),
+    fecha: document.getElementById('camp-fecha').value,
+    inversion: parseFloat(document.getElementById('camp-inversion').value)||0,
+    producto: document.getElementById('camp-producto').value,
+    ordenes: parseInt(document.getElementById('camp-ordenes').value)||0,
+    entregadas: parseInt(document.getElementById('camp-entregadas').value)||0,
+    devoluciones: parseInt(document.getElementById('camp-devoluciones').value)||0,
+    precioVenta: parseFloat(document.getElementById('camp-precio-venta').value)||0,
+    costoProd: parseFloat(document.getElementById('camp-costo-prod').value)||0,
+    costoEnvio: parseFloat(document.getElementById('camp-costo-envio').value)||0,
+    notas: document.getElementById('camp-notas').value.trim(),
+    estado: document.getElementById('camp-estado').value,
+  };
+  var idx = campanas.findIndex(x=>x.id===id);
+  if(idx>=0) campanas[idx]=camp; else campanas.unshift(camp);
+  saveCampanas();
+  cerrarModal('modal-campana');
+  renderCampanas();
+  showSuccess('Campaña guardada');
+}
+
+function renderCampanas(){
+  var totalInv = campanas.reduce((s,c)=>s+c.inversion,0);
+  var totalGan = campanas.reduce((s,c)=>s+calcRentabilidadCampana(c).ganancia,0);
+  var totalOrd = campanas.reduce((s,c)=>s+c.ordenes,0);
+  var roiGlobal = totalInv>0 ? (totalGan/totalInv*100) : 0;
+  var colorGan = totalGan>=0?'var(--green)':'var(--red)';
+  var colorRoi = roiGlobal>=0?'var(--green)':'var(--red)';
+  document.getElementById('campanas-kpi').innerHTML =
+    '<div class="kpi"><div class="kpi-val" style="color:'+colorGan+'">$'+totalGan.toFixed(2)+'</div><div class="kpi-lbl">Ganancia neta total</div><div class="kpi-sub">Todas las campañas</div></div>'+
+    '<div class="kpi"><div class="kpi-val" style="color:'+colorRoi+'">'+roiGlobal.toFixed(1)+'%</div><div class="kpi-lbl">ROI global</div><div class="kpi-sub">Retorno sobre inversión</div></div>'+
+    '<div class="kpi"><div class="kpi-val">$'+totalInv.toFixed(2)+'</div><div class="kpi-lbl">Total invertido</div><div class="kpi-sub">En publicidad Facebook</div></div>'+
+    '<div class="kpi kpi-green"><div class="kpi-val">'+totalOrd+'</div><div class="kpi-lbl">Órdenes generadas</div><div class="kpi-sub">Por campañas</div></div>';
+  var list = document.getElementById('campanas-list');
+  if(!campanas.length){
+    list.innerHTML='<div class="empty"><div class="empty-icon">📣</div><p>Sin campañas registradas aún</p></div>';
+    return;
+  }
+  list.innerHTML = campanas.map(function(c){
+    var r = calcRentabilidadCampana(c);
+    var ganColor = r.ganancia>=0?'var(--green)':'var(--red)';
+    var roiColor = r.roi>=0?'var(--green)':'var(--red)';
+    var tasa = c.ordenes>0 ? Math.round(c.entregadas/c.ordenes*100) : 0;
+    var estadoColor = c.estado==='Activa'?'var(--green)':c.estado==='Pausada'?'var(--yellow)':'var(--muted2)';
+    return '<div class="card" style="margin-bottom:12px">'+
+      '<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">'+
+        '<div><div style="font-weight:800;font-size:15px">'+c.nombre+'</div>'+
+        '<div style="font-size:11px;color:var(--muted2);margin-top:3px">'+c.fecha+' · '+(c.producto||'Sin producto')+'</div></div>'+
+        '<div style="display:flex;align-items:center;gap:8px">'+
+          '<span style="color:'+estadoColor+';font-size:10px;font-weight:800;text-transform:uppercase;border:1px solid '+estadoColor+';padding:2px 9px;border-radius:2px">'+c.estado+'</span>'+
+          '<button class="btn btn-ghost btn-sm" onclick="abrirModalCampana(\''+c.id+'\')">✏️ Editar</button>'+
+          '<button class="btn btn-danger btn-sm" onclick="eliminarCampana(\''+c.id+'\')">✕</button>'+
+        '</div>'+
+      '</div>'+
+      '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px">'+
+        '<div style="background:var(--bg4);border-radius:var(--radius-sm);padding:10px 12px"><div style="font-size:10px;color:var(--muted2);margin-bottom:3px">Inversión</div><div style="font-size:18px;font-weight:800">$'+c.inversion.toFixed(2)+'</div></div>'+
+        '<div style="background:var(--bg4);border-radius:var(--radius-sm);padding:10px 12px"><div style="font-size:10px;color:var(--muted2);margin-bottom:3px">Ganancia neta</div><div style="font-size:18px;font-weight:800;color:'+ganColor+'">$'+r.ganancia.toFixed(2)+'</div></div>'+
+        '<div style="background:var(--bg4);border-radius:var(--radius-sm);padding:10px 12px"><div style="font-size:10px;color:var(--muted2);margin-bottom:3px">ROI</div><div style="font-size:18px;font-weight:800;color:'+roiColor+'">'+r.roi.toFixed(1)+'%</div></div>'+
+        '<div style="background:var(--bg4);border-radius:var(--radius-sm);padding:10px 12px"><div style="font-size:10px;color:var(--muted2);margin-bottom:3px">Costo por venta</div><div style="font-size:18px;font-weight:800">$'+r.cpa.toFixed(2)+'</div></div>'+
+        '<div style="background:var(--bg4);border-radius:var(--radius-sm);padding:10px 12px"><div style="font-size:10px;color:var(--muted2);margin-bottom:3px">Órdenes / Entregadas</div><div style="font-size:18px;font-weight:800">'+c.ordenes+' / '+c.entregadas+'</div><div style="font-size:10px;color:var(--muted2)">'+tasa+'% tasa entrega</div></div>'+
+        '<div style="background:var(--bg4);border-radius:var(--radius-sm);padding:10px 12px"><div style="font-size:10px;color:var(--muted2);margin-bottom:3px">Margen neto</div><div style="font-size:18px;font-weight:800;color:'+ganColor+'">'+r.margenNeto.toFixed(1)+'%</div></div>'+
+      '</div>'+
+      (c.notas?'<div style="margin-top:10px;font-size:11.5px;color:var(--muted2);border-top:1px solid var(--border);padding-top:10px">'+c.notas+'</div>':'')+
+    '</div>';
+  }).join('');
+}
+
+function eliminarCampana(id){
+  if(!confirm('¿Eliminar esta campaña?')) return;
+  campanas = campanas.filter(x=>x.id!==id);
+  saveCampanas();
+  renderCampanas();
+}
 
 if('serviceWorker' in navigator){
   navigator.serviceWorker.getRegistrations().then(regs=>{
