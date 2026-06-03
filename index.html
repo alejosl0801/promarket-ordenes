@@ -974,9 +974,14 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 //  CONFIGURACIÓN
 // ════════════════════════════════════════════════════════
 var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyiKm16NcNR1GhoWmT2j9E7my9dSazCwtAWeh-XpPu1tmQ-_p4Q7PkEUloFYL8Qhmdl/exec";
-var STORAGE_KEY = 'pm_ordenes_v2';
-var CATALOG_KEY = 'pm_catalogo_v1';
-var DRAFT_KEY   = 'pm_draft_v1';
+var STORAGE_KEY  = 'pm_ordenes_v2';
+var CATALOG_KEY  = 'pm_catalogo_v1';
+var DRAFT_KEY    = 'pm_draft_v1';
+var STATUS_LIST  = ['NUEVO','CONFIRMADO','EMPACADO','DESPACHADO','EN TRANSITO','ENTREGADO','CANCELADO'];
+var STATUS_ICONS = {
+  'NUEVO':'🆕','CONFIRMADO':'✅','EMPACADO':'📦',
+  'DESPACHADO':'🚚','EN TRANSITO':'✈️','ENTREGADO':'🏠','CANCELADO':'✕','BORRADOR':'📝'
+};
 
 // ════════════════════════════════════════════════════════
 //  STATE
@@ -1590,11 +1595,6 @@ function imprimirEtiquetaModal(){
 // ════════════════════════════════════════════════════════
 //  STATUS HELPERS
 // ════════════════════════════════════════════════════════
-var STATUS_LIST = ['NUEVO','CONFIRMADO','EMPACADO','DESPACHADO','EN TRANSITO','ENTREGADO','CANCELADO'];
-var STATUS_ICONS = {
-  'NUEVO':'🆕','CONFIRMADO':'✅','EMPACADO':'📦',
-  'DESPACHADO':'🚚','EN TRANSITO':'✈️','ENTREGADO':'🏠','CANCELADO':'✕','BORRADOR':'📝'
-};
 function pillHtml(s){
   var key = (s||'nuevo').toLowerCase().replace(' ','');
   return `<span class="pill pill-${key}">${STATUS_ICONS[s]||''} ${s||'NUEVO'}</span>`;
