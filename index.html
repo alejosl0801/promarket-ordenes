@@ -1397,7 +1397,7 @@ async function geminiRequest(key, contents){
   var res = await fetch(GEMINI_URL + key, {
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({contents, generationConfig:{temperature:0.1, maxOutputTokens:1024}})
+    body:JSON.stringify({contents, generationConfig:{temperature:0.1, maxOutputTokens:4096}})
   });
   if(!res.ok){ var t=await res.text(); throw new Error('Gemini HTTP '+res.status+': '+t.slice(0,200)); }
   var json = await res.json();
