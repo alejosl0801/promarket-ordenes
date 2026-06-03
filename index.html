@@ -3808,7 +3808,8 @@ function guardarNubeUrl(){
 function loadFromCloud(forzar){
   if(!cloudUrl) return;
   setCloudStatus('sync');
-  fetch(cloudUrl, {method:'GET'})
+  // Apps Script responde a GET sin restricciones CORS
+  fetch(cloudUrl+'?v='+Date.now())
     .then(function(r){ return r.json(); })
     .then(function(data){
       if(!data || typeof data!=='object') throw new Error('vacío');
@@ -3825,15 +3826,14 @@ function loadFromCloud(forzar){
     })
     .catch(function(e){ setCloudStatus('error'); if(forzar) showError('No se pudo leer la nube: '+e.message); });
 }
-// Guarda en la nube (con un pequeño retraso para no saturar).
+// Guarda en la nube — usa no-cors+text/plain para evitar preflight CORS.
 function saveToCloud(){
   if(!cloudUrl || _cloudLoading) return;
   clearTimeout(_cloudTimer);
   setCloudStatus('sync');
   _cloudTimer = setTimeout(function(){
     var payload = JSON.stringify({ ordenes:orders, catalogo:catalog, campanas:campanas, marcados:marcados, exportado:new Date().toISOString() });
-    fetch(cloudUrl, {method:'POST', body:payload})
-      .then(function(r){ return r.json(); })
+    fetch(cloudUrl, {method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain'}, body:payload})
       .then(function(){ setCloudStatus('ok'); })
       .catch(function(){ setCloudStatus('error'); });
   }, 1200);

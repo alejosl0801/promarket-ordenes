@@ -21,10 +21,11 @@
 
 var FILE_NAME = 'promarket_data.json';
 
-function doGet() {
-  return ContentService
+function doGet(e) {
+  var output = ContentService
     .createTextOutput(leerDatos())
     .setMimeType(ContentService.MimeType.JSON);
+  return output;
 }
 
 function doPost(e) {
