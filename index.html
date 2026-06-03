@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Promarket — Órdenes</title>
 <link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="icon-192.png">
 <meta name="theme-color" content="#111111">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap');
@@ -1364,7 +1365,6 @@ async function extractFromText(){
     var payload = { accion:'extraer_texto', texto };
     var res = await fetch(SCRIPT_URL,{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
       body:JSON.stringify(payload)
     });
     var json = await res.json();
@@ -1376,10 +1376,9 @@ async function extractFromText(){
 async function callGemini(base64, mediaType){
   var res = await fetch(SCRIPT_URL,{
     method:'POST',
-    headers:{'Content-Type':'application/json'},
     body:JSON.stringify({accion:'extraer_pedido',imagen:base64,mediaType}),
   });
-  if(!res.ok) throw new Error('HTTP '+res.status+' — '+await res.text());
+  if(!res.ok) throw new Error('HTTP '+res.status);
   return await res.json();
 }
 
