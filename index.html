@@ -1199,6 +1199,32 @@ function saveOrders(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(orders))
 function saveCatalog(){ localStorage.setItem(CATALOG_KEY, JSON.stringify(catalog)); }
 
 // ════════════════════════════════════════════════════════
+//  AUTO-CORRECCIÓN DE CATÁLOGO (datos confirmados por el dueño)
+//  Corrige solo, una vez, los productos con costos/precios errados.
+//  Sube el número de versión (vN) para forzar una nueva corrección.
+// ════════════════════════════════════════════════════════
+(function fixCatalogo(){
+  var FIX_KEY = 'pm_fix_catalogo_v2';
+  if(localStorage.getItem(FIX_KEY)) return;
+  // Regla por palabra clave del nombre → valores correctos
+  var correcciones = [
+    { match:'olla', precio:49.99, costo:16.50, fulfillment:0.85, envio:8.07 }
+  ];
+  var cambiado = false;
+  catalog.forEach(function(p){
+    var n = (p.nombre||'').toLowerCase();
+    correcciones.forEach(function(c){
+      if(n.indexOf(c.match)>=0){
+        p.precio=c.precio; p.costo=c.costo; p.fulfillment=c.fulfillment; p.envio=c.envio;
+        cambiado=true;
+      }
+    });
+  });
+  if(cambiado) saveCatalog();
+  localStorage.setItem(FIX_KEY,'1');
+})();
+
+// ════════════════════════════════════════════════════════
 //  INIT
 // ════════════════════════════════════════════════════════
 document.getElementById('fecha').valueAsDate = new Date();
