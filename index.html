@@ -1161,14 +1161,15 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
       <label>Referencia<input id="p-ref" placeholder="GR-001"></label>
     </div>
     <div class="g3" style="margin-bottom:13px">
-      <label>Precio de venta ($)<input id="p-precio" type="number" placeholder="59.99" step="0.01"></label>
-      <label>Costo del producto ($)<input id="p-costo" type="number" placeholder="23.15" step="0.01"></label>
-      <label>Fulfillment Rocket-e ($)<input id="p-fulfillment" type="number" placeholder="0.85" step="0.01"></label>
+      <label>Precio de venta ($)<input id="p-precio" type="number" placeholder="59.99" step="0.01" oninput="simularMargen()"></label>
+      <label>Costo del producto ($)<input id="p-costo" type="number" placeholder="23.15" step="0.01" oninput="simularMargen()"></label>
+      <label>Fulfillment Rocket-e ($)<input id="p-fulfillment" type="number" placeholder="0.85" step="0.01" oninput="simularMargen()"></label>
     </div>
     <div class="g2" style="margin-bottom:13px">
-      <label>Costo de envío ($)<input id="p-envio" type="number" placeholder="7.52" step="0.01"></label>
+      <label>Costo de envío ($)<input id="p-envio" type="number" placeholder="7.52" step="0.01" oninput="simularMargen()"></label>
       <label>Peso aprox. (kg)<input id="p-peso" type="number" placeholder="0.5" step="0.01"></label>
     </div>
+    <div id="p-simulador" style="margin-bottom:13px"></div>
     <div style="margin-bottom:13px">
       <label style="margin-bottom:8px">Stock por talla (0 = sin talla)</label>
       <div class="g4">
@@ -2875,6 +2876,42 @@ function abrirModalProducto(id){
   document.getElementById('p-l').value = p?.stock?.L||0;
   document.getElementById('p-xl').value = p?.stock?.XL||0;
   document.getElementById('modal-producto').classList.add('open');
+  simularMargen();
+}
+// Simulador de margen en vivo dentro del modal de producto
+function simularMargen(){
+  var box = document.getElementById('p-simulador');
+  if(!box) return;
+  var precio = parseFloat(document.getElementById('p-precio').value)||0;
+  var costo  = parseFloat(document.getElementById('p-costo').value)||0;
+  var ful    = parseFloat(document.getElementById('p-fulfillment').value)||0;
+  var envio  = parseFloat(document.getElementById('p-envio').value)||0;
+  var costoTotal = costo + ful + envio;
+  if(precio<=0 && costoTotal<=0){ box.innerHTML=''; return; }
+  var ganancia = precio - costoTotal;
+  var margen = precio>0 ? Math.round(ganancia/precio*100) : 0;
+  var color = ganancia>0 ? 'var(--green)' : 'var(--red)';
+  // Precio sugerido para llegar a 40% y 50% de margen sobre venta
+  function precioPara(m){ return costoTotal>0 ? (costoTotal/(1-m)).toFixed(2) : '0.00'; }
+  // Qué pasa si subo $5 al precio
+  var ganMas5 = ganancia + 5;
+  var margenMas5 = (precio+5)>0 ? Math.round(ganMas5/(precio+5)*100) : 0;
+  box.innerHTML = `
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px;font-size:12px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+        <span style="color:var(--muted2)">Costo total (producto + fulfillment + flete)</span>
+        <span class="pb-neg">−$${costoTotal.toFixed(2)}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-weight:700;padding-top:6px;border-top:1px dashed var(--border)">
+        <span>Ganancia por venta</span>
+        <span style="color:${color}">$${ganancia.toFixed(2)} · ${margen}%</span>
+      </div>
+      ${ganancia<=0?`<div style="color:var(--red);margin-top:6px">⚠️ A este precio pierdes dinero en cada venta.</div>`:''}
+      <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);color:var(--muted2);line-height:1.7">
+        💡 Si subes a <b style="color:var(--white)">$${(precio+5).toFixed(2)}</b> (+$5): ganancia <b style="color:var(--green)">$${ganMas5.toFixed(2)}</b> · margen ${margenMas5}%<br>
+        🎯 Para 40% de margen vende a <b style="color:var(--white)">$${precioPara(0.40)}</b> · para 50% a <b style="color:var(--white)">$${precioPara(0.50)}</b>
+      </div>
+    </div>`;
 }
 function guardarProducto(){
   var id = document.getElementById('p-id').value || ('p_'+Date.now());
