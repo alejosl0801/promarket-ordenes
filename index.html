@@ -1316,7 +1316,9 @@ var currentPage   = 1;
 var PAGE_SIZE     = 25;
 
 
-function saveOrders(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(orders)); }
+function saveOrders(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(orders)); _cliCache=null; }
+// Caché del CRM: agruparClientes() se recalculaba 7× por render. Se invalida al guardar o re-render.
+var _cliCache = null;
 function saveCatalog(){ localStorage.setItem(CATALOG_KEY, JSON.stringify(catalog)); }
 
 // ════════════════════════════════════════════════════════
@@ -1622,7 +1624,6 @@ function nextId(){
   var max = orders.reduce((m,o)=>Math.max(m,parseInt(o.numero)||0),100000);
   return String(max+1);
 }
-function statusKey(s){ return (s||'nuevo').toLowerCase().replace(' ',''); }
 
 // ════════════════════════════════════════════════════════
 //  HELPERS DE CONTABILIDAD (cruzan órdenes ↔ catálogo)
@@ -1670,12 +1671,6 @@ function ordenGanancia(o){
   // En proceso (NUEVO/CONFIRMADO/EN TRANSITO/EN AGENCIA): ganancia potencial, aún no realizada
   return 0;
 }
-// Ganancia potencial (si se entregara) — para proyecciones
-function ordenGananciaPotencial(o){
-  var c = ordenCostos(o);
-  return montoNum(o) - c.costo - c.fulfillment - c.envio;
-}
-function esCobrada(o){ return o.status==='ENTREGADO'; }
 function enLaCalle(o){ return ['EN TRANSITO','EN AGENCIA'].includes(o.status); }
 function esDevuelta(o){ return o.status==='DEVUELTO' || (o.status==='CANCELADO' && o.guia); }
 
@@ -2264,6 +2259,7 @@ function setValSelect(id, val){
 //  RENDER ALL
 // ════════════════════════════════════════════════════════
 function renderAll(){
+  _cliCache = null;
   updateBadges();
   renderDashboard();
   if(document.getElementById('panel-ordenes').classList.contains('active')) renderOrderList();
@@ -3708,6 +3704,7 @@ function mensajearCliente(tel, tipoForzado){
 //  CRM — CLIENTES (agrupa órdenes por teléfono)
 // ════════════════════════════════════════════════════════
 function agruparClientes(){
+  if(_cliCache) return _cliCache;
   var map = {};
   orders.forEach(function(o){
     var tel = telWA(o.telefono);
@@ -3729,6 +3726,7 @@ function agruparClientes(){
   });
   // Ordenar las órdenes de cada cliente (recientes primero)
   Object.values(map).forEach(c=>c.ordenes.sort((a,b)=>new Date(b.createdAt||b.fecha)-new Date(a.createdAt||a.fecha)));
+  _cliCache = map;
   return map;
 }
 function scoreCliente(c){
