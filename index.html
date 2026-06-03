@@ -1004,9 +1004,10 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
       <label>Nombre<input id="p-nombre" placeholder="Guante Robot..."></label>
       <label>Referencia<input id="p-ref" placeholder="GR-001"></label>
     </div>
-    <div class="g2" style="margin-bottom:13px">
+    <div class="g3" style="margin-bottom:13px">
       <label>Precio de venta ($)<input id="p-precio" type="number" placeholder="59.99" step="0.01"></label>
-      <label>Precio de costo ($)<input id="p-costo" type="number" placeholder="25.00" step="0.01"></label>
+      <label>Costo del producto ($)<input id="p-costo" type="number" placeholder="23.15" step="0.01"></label>
+      <label>Costo de envío ($)<input id="p-envio" type="number" placeholder="7.52" step="0.01"></label>
     </div>
     <div style="margin-bottom:13px">
       <label style="margin-bottom:8px">Stock por talla (0 = sin talla)</label>
@@ -2124,7 +2125,8 @@ function renderCatalogo(){
   var grid = document.getElementById('prod-grid');
   if(!catalog.length){ grid.innerHTML='<div class="empty"><div class="empty-icon">📦</div><p>Sin productos aún</p></div>'; return; }
   grid.innerHTML = catalog.map(p=>{
-    var margin = p.precio&&p.costo ? Math.round((1-p.costo/p.precio)*100) : null;
+    var ganancia = p.precio ? (p.precio - (p.costo||0) - (p.envio||0)) : null;
+    var margin = (ganancia !== null && p.precio) ? Math.round(ganancia/p.precio*100) : null;
     var stockTotal = Object.values(p.stock||{}).reduce((s,v)=>s+v,0);
     var stockHtml = stockTotal
       ? Object.entries(p.stock||{}).filter(([,v])=>v>0).map(([t,v])=>`<span class="stock-pill ${v<3?'low':'ok'}">${t}: ${v}</span>`).join('')
@@ -2140,7 +2142,7 @@ function renderCatalogo(){
       <div class="prod-price-row">
         <div class="prod-price">$${parseFloat(p.precio||0).toFixed(2)}</div>
         ${p.costo?`<div class="prod-cost">$${parseFloat(p.costo).toFixed(2)}</div>`:''}
-        ${margin!==null?`<div class="prod-margin">+${margin}%</div>`:''}
+        ${ganancia!==null?`<div class="prod-margin">+$${ganancia.toFixed(2)} (${margin}%)</div>`:''}
       </div>
       <div class="prod-stock">${stockHtml}</div>
       <div style="font-size:11.5px;color:var(--muted2)">${p.desc||''}</div>
@@ -2176,6 +2178,7 @@ function abrirModalProducto(id){
   document.getElementById('p-ref').value = p?.ref||'';
   document.getElementById('p-precio').value = p?.precio||'';
   document.getElementById('p-costo').value = p?.costo||'';
+  document.getElementById('p-envio').value = p?.envio||'';
   document.getElementById('p-ico').value = p?.ico||'📦';
   document.getElementById('p-desc').value = p?.desc||'';
   document.getElementById('p-activo').value = p?.activo!==undefined?p.activo:1;
@@ -2192,6 +2195,7 @@ function guardarProducto(){
     ref:document.getElementById('p-ref').value.trim(),
     precio:parseFloat(document.getElementById('p-precio').value)||0,
     costo:parseFloat(document.getElementById('p-costo').value)||0,
+    envio:parseFloat(document.getElementById('p-envio').value)||0,
     ico:document.getElementById('p-ico').value.trim()||'📦',
     desc:document.getElementById('p-desc').value.trim(),
     activo:parseInt(document.getElementById('p-activo').value),
