@@ -1,4 +1,4 @@
-const CACHE = 'pm-v1';
+const CACHE = 'pm-v2';
 const ASSETS = ['./', './index.html', './manifest.json'];
 self.addEventListener('install', e => e.waitUntil(
   caches.open(CACHE).then(cache => cache.addAll(ASSETS))
