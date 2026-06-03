@@ -2138,10 +2138,9 @@ function renderCatalogo(){
   grid.innerHTML = catalog.map(p=>{
     var margin = p.precio&&p.costo ? Math.round((1-p.costo/p.precio)*100) : null;
     var stockTotal = Object.values(p.stock||{}).reduce((s,v)=>s+v,0);
-    var stockHtml = stockTotal ?
-      Object.entries(p.stock||{}).filter(([,v])=>v>0).map(([t,v])=>`
-        <span class="stock-pill ${v<3?'low':'ok'}">${t}: ${v}</span>`).join('')
-      : '<span class="stock-pill" style="color:var(--muted)">Sin stock</span>';
+    var stockHtml = stockTotal
+      ? Object.entries(p.stock||{}).filter(([,v])=>v>0).map(([t,v])=>`<span class="stock-pill ${v<3?'low':'ok'}">${t}: ${v}</span>`).join('')
+      : '';
     return `<div class="prod-item ${p.activo?'':'prod-inactive'}">
       <div class="prod-header">
         <div class="prod-ico">${p.ico||'📦'}</div>
