@@ -1801,6 +1801,11 @@ function collectFormData(){
 function guardarOrden(){
   var data = collectFormData();
   if(!data.cliente && !data.numero){ showError('Completa al menos el nombre del cliente.'); return; }
+  // Freno: si el teléfono está marcado, pide confirmación antes de registrar
+  var mk = buscarMarcado(data.telefono);
+  if(mk && !orders.some(o=>o.id===data.id)){
+    if(!confirm('🚩 ESTE NÚMERO ESTÁ MARCADO\n\n'+MARCADO_LBL[mk.tipo]+(mk.nota?'\nNota: '+mk.nota:'')+'\n\n¿Seguro que quieres registrar esta orden de todas formas?')) return;
+  }
   var existing = orders.findIndex(o=>o.id===data.id);
   if(existing>=0){ data.createdAt=orders[existing].createdAt; orders[existing]=data; }
   else orders.unshift(data);
@@ -2245,6 +2250,7 @@ function abrirModalOrden(id){
     <div style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
       <button class="btn btn-sm" style="background:var(--orange);color:#000;font-weight:700;border:none" onclick="cerrarModal('modal-orden');abrirModalGuia('${o.id}')">🚚 ${o.guia?'Cambiar guía':'Registrar guía'}</button>
       ${o.guia?`<a href="https://www.servientrega.com.ec/wps/portal/inicio/Guias/ConsultaGuia?guia=${encodeURIComponent(o.guia)}" target="_blank" style="color:var(--blue);font-size:12.5px;font-weight:700;text-decoration:none">🔍 Rastrear en Servientrega →</a>`:''}
+      ${mkOrden?'':`<button class="btn btn-ghost btn-sm" style="color:var(--red)" onclick="marcarDesdeOrden('${o.id}')">🚩 Marcar cliente</button>`}
     </div>
     ${o.motivoCancelacion?`<div class="alert-strip" style="margin-top:10px">Cancelado: ${o.motivoCancelacion}</div>`:''}
     ${sugerenciaOrden(o)}
@@ -2733,7 +2739,7 @@ function renderOrderList(){
       <td onclick="event.stopPropagation()"><input type="checkbox" class="row-select" ${selectedOrders.has(o.id)?'checked':''} onclick="toggleSelectOrder('${o.id}',this)"></td>
       <td class="td-num ${isOld(o)?'td-alert':''}">#${o.numero} <button class="btn btn-ghost btn-sm" style="padding:2px 5px;font-size:10px" onclick="event.stopPropagation();copiarNum('${o.numero}')" title="Copiar">📋</button></td>
       <td>${fdate(o.fecha)}</td>
-      <td class="td-name">${o.cliente||'-'}<div style="font-size:11px;color:var(--muted2)">${o.telefono||''}</div></td>
+      <td class="td-name">${buscarMarcado(o.telefono)?'<span title="Número marcado">🚩 </span>':''}${o.cliente||'-'}<div style="font-size:11px;color:var(--muted2)">${o.telefono||''}</div></td>
       <td class="td-prod">${o.producto||''}</td>
       <td>${o.ciudad||'-'}</td>
       <td style="font-size:12px">${o.transporte||'-'}</td>
@@ -2898,7 +2904,7 @@ function renderKanban(){
         ${list.length?list.map(o=>`
           <div class="k-card ${isOld(o)?'k-alert':''}" onclick="abrirModalOrden('${o.id}')">
             <div class="k-num">#${o.numero}</div>
-            <div class="k-name">${o.cliente||'-'}</div>
+            <div class="k-name">${buscarMarcado(o.telefono)?'🚩 ':''}${o.cliente||'-'}</div>
             <div class="k-prod">${o.producto||''}</div>
             <div class="k-meta">
               <div class="k-monto">${o.monto||'-'}</div>
@@ -3978,6 +3984,28 @@ function guardarMarcado(){
   updateBadges();
   showSuccess('Número marcado 🚩');
 }
+// Marcar en 1 toque desde el detalle de una orden (precarga datos)
+function marcarDesdeOrden(id){
+  var o = orders.find(function(x){ return x.id===id; });
+  if(!o) return;
+  cerrarModal('modal-orden');
+  switchTab('marcados');
+  document.getElementById('mk-tel').value = o.telefono||'';
+  document.getElementById('mk-nombre').value = o.cliente||'';
+  document.getElementById('mk-tipo').value = esDevuelta(o) ? 'falso' : 'reclamo';
+  document.getElementById('mk-nota').value = 'Desde orden #'+o.numero;
+  setTimeout(function(){ document.getElementById('mk-tel').scrollIntoView({behavior:'smooth',block:'center'}); },150);
+  showToast('Revisa el motivo y toca "🚩 Marcar número"');
+}
+// Marcar un número sugerido (2+ devoluciones) con un toque
+function marcarSugerido(tel, nombre){
+  var t = telWA(tel);
+  if(!buscarMarcado(t)){
+    marcados.push({ id:'mk_'+Date.now(), tel:t, nombre:nombre||'', tipo:'falso', nota:'Sugerido automáticamente: 2+ devoluciones', fecha:ts() });
+    saveMarcados(); updateBadges(); showSuccess('Marcado como pedido falso 🚩');
+  }
+  renderMarcados();
+}
 function eliminarMarcado(id){
   if(!confirm('¿Quitar este número de la lista de marcados?')) return;
   marcados = marcados.filter(function(m){ return m.id!==id; });
@@ -3998,15 +4026,37 @@ function renderMarcados(){
   var lista = marcados.slice().sort(function(a,b){ return new Date(b.fecha)-new Date(a.fecha); });
   if(marcadoFiltro!=='todos') lista = lista.filter(function(m){ return m.tipo===marcadoFiltro; });
   if(q) lista = lista.filter(function(m){ return (m.tel+' '+(m.nombre||'')).toLowerCase().includes(q); });
-  // Resumen
+  // Resumen + dinero perdido (devoluciones reales de números marcados)
   var porTipo = {reclamo:0,falso:0,no_concreto:0,sospechoso:0};
   marcados.forEach(function(m){ if(porTipo[m.tipo]!=null) porTipo[m.tipo]++; });
+  var costoDev = getCostoDevolucion();
+  var perdida = 0;
+  marcados.forEach(function(m){ orders.forEach(function(o){ if(telWA(o.telefono)===m.tel && esDevuelta(o)) perdida+=costoDev; }); });
   var resumen = '<div class="kpi-row" style="margin-bottom:14px">'+
     '<div class="kpi"><div class="kpi-val">'+marcados.length+'</div><div class="kpi-lbl">Total marcados</div></div>'+
+    '<div class="kpi kpi-red"><div class="kpi-val">'+money(perdida)+'</div><div class="kpi-lbl">Perdido en devoluciones</div><div class="kpi-sub">De números marcados</div></div>'+
     '<div class="kpi"><div class="kpi-val" style="color:var(--red)">'+porTipo.falso+'</div><div class="kpi-lbl">📦 Pedidos falsos</div></div>'+
     '<div class="kpi"><div class="kpi-val" style="color:var(--yellow)">'+porTipo.reclamo+'</div><div class="kpi-lbl">🗣️ Reclamos</div></div>'+
     '<div class="kpi"><div class="kpi-val">'+porTipo.no_concreto+'</div><div class="kpi-lbl">💬 No concretó</div></div>'+
     '</div>';
+  // Sugerencias: clientes con 2+ devoluciones aún no marcados
+  var mapa = agruparClientes();
+  var suger = Object.values(mapa).filter(function(c){ return c.devueltas>=2 && !buscarMarcado(c.telefono); })
+    .sort(function(a,b){ return b.devueltas-a.devueltas; });
+  var sugerHtml = '';
+  if(suger.length){
+    sugerHtml = '<div class="card" style="margin-bottom:14px;border-color:var(--yellow-border)">'+
+      '<div class="card-title" style="color:var(--yellow)">💡 Candidatos a marcar (2+ devoluciones)</div>'+
+      '<div style="font-size:12px;color:var(--muted2);margin-bottom:10px">Estos números te hicieron devolver 2 o más veces — posibles pedidos falsos. Márcalos con un toque.</div>'+
+      suger.slice(0,10).map(function(c){
+        return '<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px">'+
+          '<span style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(c.nombre||'(sin nombre)')+' <span style="color:var(--muted2);font-size:11px">· 📞 '+c.telefono+' · <b style="color:var(--red)">'+c.devueltas+' devol.</b></span></span>'+
+          '<button class="btn btn-sm" style="flex-shrink:0;background:var(--red);color:#fff;border:none" onclick="marcarSugerido(\''+c.telefono+'\',\''+(c.nombre||'').replace(/\x27/g,"")+'\')">🚩 Marcar</button>'+
+        '</div>';
+      }).join('')+
+      '</div>';
+  }
+  resumen += sugerHtml;
   if(!lista.length){
     cont.innerHTML = resumen + '<div class="empty"><div class="empty-icon">🚩</div><p>'+(marcados.length?'Ningún marcado con ese filtro/búsqueda':'Aún no has marcado ningún número')+'</p></div>';
     return;
