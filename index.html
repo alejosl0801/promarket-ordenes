@@ -768,6 +768,10 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 <!-- ══════════ DASHBOARD ══════════ -->
 <div class="panel active" id="panel-dashboard">
   <div id="alert-container"></div>
+  <div class="card" id="action-center" style="margin-bottom:16px;display:none">
+    <div class="card-title">✅ ¿Qué hago hoy?</div>
+    <div id="action-list"></div>
+  </div>
   <div class="stats-row" id="stats-row"></div>
   <div class="card" id="ceo-card" style="margin-bottom:16px">
     <div class="card-title" style="display:flex;justify-content:space-between;align-items:center">
@@ -1084,7 +1088,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 </div><!-- /wrap -->
 
 <div style="background:var(--bg2);border-top:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--muted)" id="app-footer">
-  <span>Promarket Órdenes <strong style="color:var(--muted2)">v2.4</strong></span>
+  <span>Promarket Órdenes <strong style="color:var(--muted2)">v2.5</strong></span>
   <span id="storage-info">Storage: calculando...</span>
 </div>
 
@@ -2250,16 +2254,11 @@ function renderDashboard(){
     ${alertas?`<div class="stat-card s-alert clickable" onclick="switchTab('ordenes')"><div class="stat-num">${alertas}</div><div class="stat-lbl">🔴 Atrasadas +24h</div></div>`:''}
   `;
 
-  var ac = document.getElementById('alert-container');
-  ac.innerHTML = '';
   // Alerta riesgo de devolución (EN AGENCIA con +5 días sin retirar)
   var riesgoDev = orders.filter(o=>o.status==='EN AGENCIA' && daysSince(o.updatedAt)>=5);
-  if(riesgoDev.length){
-    ac.innerHTML += `<div class="alert-strip" style="background:var(--red-bg);border-color:var(--red-border);color:var(--red)">🚨 ${riesgoDev.length} pedido${riesgoDev.length>1?'s llevan':' lleva'} +5 días en agencia sin retirar — riesgo de devolución (Servientrega te cobrará). Contacta al cliente ya.</div>`;
-  }
-  if(alertas){
-    ac.innerHTML += `<div class="alert-strip">⚠️ ${alertas} orden${alertas>1?'es están':'está'} sin actualizar hace más de 24h — revisa el panel de Órdenes.</div>`;
-  }
+  var riesgoHtml = riesgoDev.length
+    ? `<div class="alert-strip" style="background:var(--red-bg);border-color:var(--red-border);color:var(--red)">🚨 ${riesgoDev.length} pedido${riesgoDev.length>1?'s llevan':' lleva'} +5 días en agencia sin retirar — riesgo de devolución (Servientrega te cobrará). Contacta al cliente ya.</div>`
+    : '';
 
   // KPIs extra
   var montos = orders.map(o=>parseFloat((o.monto||'').replace(/[^0-9.]/g,''))||0);
@@ -2324,7 +2323,9 @@ function renderDashboard(){
   </div>` : '';
 
   var ac = document.getElementById('alert-container');
-  ac.innerHTML = weeklyHtml + (alertas?`<div class="alert-strip">⚠️ ${alertas} orden${alertas>1?'es están':'está'} sin actualizar hace más de 24h — revisa el panel de Órdenes.</div>`:'')+chartHtml;
+  ac.innerHTML = riesgoHtml + weeklyHtml + (alertas?`<div class="alert-strip">⚠️ ${alertas} orden${alertas>1?'es están':'está'} sin actualizar hace más de 24h — revisa el panel de Órdenes.</div>`:'')+chartHtml;
+
+  renderActionCenter();
 
   var recent = [...orders].sort((a,b)=>new Date(b.updatedAt||b.createdAt)-new Date(a.updatedAt||a.createdAt)).slice(0,8);
   var rl = document.getElementById('recent-list');
@@ -2344,6 +2345,57 @@ function renderDashboard(){
     </div>`).join('');
 
   renderReporteCEO();
+}
+
+// ════════════════════════════════════════════════════════
+//  CENTRO DE ACCIÓN — "¿Qué hago hoy?"
+//  Lista priorizada de lo único que el dueño debe hacer hoy.
+// ════════════════════════════════════════════════════════
+function renderActionCenter(){
+  var card = document.getElementById('action-center');
+  var list = document.getElementById('action-list');
+  if(!card||!list) return;
+  var tareas = [];
+
+  var nuevos = orders.filter(o=>(o.status||'NUEVO')==='NUEVO');
+  if(nuevos.length) tareas.push({p:1,icon:'🆕',color:'var(--orange)',
+    txt:`<strong>${nuevos.length}</strong> pedido${nuevos.length>1?'s nuevos':' nuevo'} por confirmar con el cliente`,
+    btn:'Ver nuevos', act:"switchTab('ordenes');setFilter('NUEVO',null)"});
+
+  var sinGuia = orders.filter(o=>o.status==='CONFIRMADO' && !o.guia);
+  if(sinGuia.length) tareas.push({p:2,icon:'🚚',color:'var(--blue)',
+    txt:`<strong>${sinGuia.length}</strong> confirmado${sinGuia.length>1?'s':''} sin guía — pásalo${sinGuia.length>1?'s':''} a Rocket-e y registra la guía`,
+    btn:'Por enviar', act:"switchTab('despacho')"});
+
+  var riesgo = orders.filter(o=>o.status==='EN AGENCIA' && daysSince(o.updatedAt)>=5);
+  if(riesgo.length) tareas.push({p:0,icon:'🚨',color:'var(--red)',
+    txt:`<strong>${riesgo.length}</strong> en agencia +5 días sin retirar — <b>riesgo de devolución</b>. Recuérdale al cliente que lo retire YA`,
+    btn:'Ver en riesgo', act:"switchTab('ordenes');setFilter('EN AGENCIA',null)"});
+
+  var enAgencia = orders.filter(o=>o.status==='EN AGENCIA' && daysSince(o.updatedAt)<5);
+  if(enAgencia.length) tareas.push({p:3,icon:'📍',color:'var(--yellow)',
+    txt:`<strong>${enAgencia.length}</strong> en agencia esperando que el cliente lo retire — envía recordatorio`,
+    btn:'Ver en agencia', act:"switchTab('ordenes');setFilter('EN AGENCIA',null)"});
+
+  var estancados = orders.filter(o=>o.status==='EN TRANSITO' && daysSince(o.updatedAt)>=4);
+  if(estancados.length) tareas.push({p:2,icon:'⏳',color:'var(--red)',
+    txt:`<strong>${estancados.length}</strong> en tránsito hace +4 días sin moverse — revisa el estado en Rocket-e`,
+    btn:'Ver atrasados', act:"switchTab('ordenes');setFilter('EN TRANSITO',null)"});
+
+  tareas.sort((a,b)=>a.p-b.p);
+
+  if(!tareas.length){
+    card.style.display='';
+    list.innerHTML = `<div style="padding:16px;text-align:center;color:var(--green);font-size:14px">🎉 ¡Todo al día! No hay nada urgente pendiente.</div>`;
+    return;
+  }
+  card.style.display='';
+  list.innerHTML = tareas.map(t=>`
+    <div style="display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:20px;flex-shrink:0">${t.icon}</div>
+      <div style="flex:1;min-width:0;font-size:13px;line-height:1.4">${t.txt}</div>
+      <button class="btn btn-sm" style="flex-shrink:0;background:${t.color};color:#fff;border:none" onclick="${t.act}">${t.btn} →</button>
+    </div>`).join('');
 }
 
 // ════════════════════════════════════════════════════════
