@@ -2735,10 +2735,23 @@ function renderReportes(){
     </div>`;
   }
 
+  // Análisis por día de la semana (¿qué día vendo/entrego más?)
+  var DIAS=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  var dowFact=[0,0,0,0,0,0,0], dowEntreg=[0,0,0,0,0,0,0];
+  list.forEach(o=>{
+    var d=new Date(o.fecha||o.createdAt); if(isNaN(d)) return;
+    var wd=d.getDay(), m=parseFloat((o.monto||'').replace(/[^0-9.]/g,''))||0;
+    dowFact[wd]+=m;
+    if(o.status==='ENTREGADO') dowEntreg[wd]++;
+  });
+  var mejorDia = dowFact.indexOf(Math.max(...dowFact));
+  var dowObj={}; DIAS.forEach((d,i)=>{ if(dowFact[i]>0) dowObj[d.substring(0,3)+(i===mejorDia?' ⭐':'')]=dowFact[i]; });
+
   document.getElementById('report-grid').innerHTML =
     barChart(byProd,'Ingresos por producto') +
     barChart(byCity,'Ingresos por ciudad') +
     barChart(byTransport,'Órdenes por transportista') +
+    (Object.keys(dowObj).length?barChart(dowObj,'Facturación por día de la semana ⭐ mejor: '+DIAS[mejorDia]):'') +
     `<div class="report-card"><div class="report-title">Órdenes por estado</div>
       <div class="bar-chart">
         ${STATUS_LIST.map(s=>{
