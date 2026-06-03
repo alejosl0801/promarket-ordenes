@@ -359,6 +359,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 }
 .pill-nuevo{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border)}
 .pill-confirmado{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.pill-preparado{background:#160E27;color:var(--purple);border:1px solid #5B21B6}
 .pill-empacado{background:#160E27;color:var(--purple);border:1px solid #5B21B6}
 .pill-despachado{background:#1A1008;color:var(--orange);border:1px solid var(--orange3)}
 .pill-transito{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-border)}
@@ -835,6 +836,10 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
       <div class="pip-icon">✅</div><div class="pip-label">Confirmado</div>
     </div>
     <div class="pip-arrow">›</div>
+    <div class="pip-step" data-status="PREPARADO" onclick="setFormStatus('PREPARADO')">
+      <div class="pip-icon">📦</div><div class="pip-label">Preparado</div>
+    </div>
+    <div class="pip-arrow">›</div>
     <div class="pip-step" data-status="EN TRANSITO" onclick="setFormStatus('EN TRANSITO')">
       <div class="pip-icon">🚚</div><div class="pip-label">En tránsito</div>
     </div>
@@ -970,6 +975,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
     <button class="filter-btn active" data-filter="TODOS" onclick="setFilter('TODOS',this)">Todos</button>
     <button class="filter-btn" data-filter="NUEVO" onclick="setFilter('NUEVO',this)">🆕 Nuevo</button>
     <button class="filter-btn" data-filter="CONFIRMADO" onclick="setFilter('CONFIRMADO',this)">✅ Confirmado</button>
+    <button class="filter-btn" data-filter="PREPARADO" onclick="setFilter('PREPARADO',this)">📦 Preparado</button>
     <button class="filter-btn" data-filter="EN TRANSITO" onclick="setFilter('EN TRANSITO',this)">🚚 En tránsito</button>
     <button class="filter-btn" data-filter="EN AGENCIA" onclick="setFilter('EN AGENCIA',this)">📍 En agencia</button>
     <button class="filter-btn" data-filter="ENTREGADO" onclick="setFilter('ENTREGADO',this)">🏠 Entregado</button>
@@ -1049,7 +1055,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
     <button class="btn btn-dark btn-sm" onclick="imprimirDespacho()">🖨️ Imprimir lista</button>
     <button class="btn btn-dark btn-sm" onclick="exportarExcelDespacho()">⬇ Excel</button>
   </div>
-  <div style="font-size:12px;color:var(--muted2);margin-bottom:16px">Pedidos confirmados que aún no tienen guía. Pásalos a Rocket-e; cuando registres la guía pasan solos a "En tránsito".</div>
+  <div style="font-size:12px;color:var(--muted2);margin-bottom:16px">Pedidos confirmados/preparados que aún no tienen guía. Entrégalos a Rocket-e; cuando registres la guía pasan solos a "En tránsito".</div>
   <div id="despacho-container"></div>
 </div>
 
@@ -1109,7 +1115,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 </div><!-- /wrap -->
 
 <div style="background:var(--bg2);border-top:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--muted)" id="app-footer">
-  <span>Promarket Órdenes <strong style="color:var(--muted2)">v2.7</strong></span>
+  <span>Promarket Órdenes <strong style="color:var(--muted2)">v2.8</strong></span>
   <span id="storage-info">Storage: calculando...</span>
 </div>
 
@@ -1271,23 +1277,26 @@ var GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini
 var STORAGE_KEY  = 'pm_ordenes_v2';
 var CATALOG_KEY  = 'pm_catalogo_v1';
 var DRAFT_KEY    = 'pm_draft_v1';
-var STATUS_LIST  = ['NUEVO','CONFIRMADO','EN TRANSITO','EN AGENCIA','ENTREGADO','DEVUELTO','CANCELADO'];
-var STATUS_FLUJO = ['NUEVO','CONFIRMADO','EN TRANSITO','EN AGENCIA','ENTREGADO'];
+var STATUS_LIST  = ['NUEVO','CONFIRMADO','PREPARADO','EN TRANSITO','EN AGENCIA','ENTREGADO','DEVUELTO','CANCELADO'];
+var STATUS_FLUJO = ['NUEVO','CONFIRMADO','PREPARADO','EN TRANSITO','EN AGENCIA','ENTREGADO'];
 var STATUS_ICONS = {
-  'NUEVO':'🆕','CONFIRMADO':'✅','EN TRANSITO':'🚚','EN AGENCIA':'📍',
+  'NUEVO':'🆕','CONFIRMADO':'✅','PREPARADO':'📦','EN TRANSITO':'🚚','EN AGENCIA':'📍',
   'ENTREGADO':'🏠','DEVUELTO':'↩️','CANCELADO':'✕','BORRADOR':'📝',
   'EMPACADO':'📦','DESPACHADO':'🚚'
 };
 // Costo de devolución Servientrega (configurable) — usado en P&L de órdenes devueltas
 var COSTO_DEV_KEY = 'pm_costo_devolucion';
+var META_KEY = 'pm_meta_mensual';
 function getCostoDevolucion(){ return parseFloat(localStorage.getItem(COSTO_DEV_KEY))||0; }
 function setCostoDevolucion(v){ localStorage.setItem(COSTO_DEV_KEY, v); }
 
 // ════════════════════════════════════════════════════════
 //  STATE
 // ════════════════════════════════════════════════════════
+var CAMP_KEY = 'pm_campanas_v1';
 var orders   = JSON.parse(localStorage.getItem(STORAGE_KEY)  || '[]');
 var catalog  = JSON.parse(localStorage.getItem(CATALOG_KEY)  || '[]');
+var campanas = JSON.parse(localStorage.getItem(CAMP_KEY)     || '[]');
 var currentFilter = 'TODOS';
 var currentSort   = {key:'fecha',dir:-1};
 var currentPeriod = 'hoy';
@@ -1953,7 +1962,7 @@ function buildOrderHtml(d){
   var totalNum = prods.reduce((s,p)=>s+(parseFloat(p.precio)||0)*(parseInt(p.cantidad)||1),0);
   var now = new Date().toLocaleString('es-EC',{hour:'2-digit',minute:'2-digit'});
   var statusColors = {
-    'NUEVO':'#1A5FA8','CONFIRMADO':'#166534','EN TRANSITO':'#92400E',
+    'NUEVO':'#1A5FA8','CONFIRMADO':'#166534','PREPARADO':'#6D28D9','EN TRANSITO':'#92400E',
     'EN AGENCIA':'#78350F','ENTREGADO':'#374151','DEVUELTO':'#991B1B','CANCELADO':'#991B1B'
   };
   var statusBg = statusColors[d.status||'NUEVO']||'#374151';
@@ -2105,7 +2114,8 @@ function sugerenciaOrden(o){
   var d = daysSince(o.updatedAt||o.createdAt);
   var s='', col='var(--blue)';
   if(o.status==='NUEVO'){ s='💡 Confirma con el cliente y pásala a <b>Confirmado</b>.'; }
-  else if(o.status==='CONFIRMADO' && !o.guia){ s='💡 Pásala a Rocket-e y registra la guía (pasará sola a <b>En tránsito</b>).'; }
+  else if(o.status==='CONFIRMADO'){ s='📦 Prepárala (empácala) y pásala a <b>Preparado</b>.'; }
+  else if(o.status==='PREPARADO' && !o.guia){ s='💡 Entrégala a Rocket-e y registra la guía (pasará sola a <b>En tránsito</b>).'; }
   else if(o.status==='EN TRANSITO' && d>=4){ s='⏳ Lleva '+d+' días en tránsito — revisa el estado en Rocket-e/Servientrega.'; col='var(--yellow)'; }
   else if(o.status==='EN AGENCIA' && d>=5){ s='🚨 Lleva '+d+' días en agencia — recuérdale al cliente que lo retire o márcala como <b>devuelta</b> antes de que Servientrega la regrese.'; col='var(--red)'; }
   else if(o.status==='EN AGENCIA'){ s='📍 Ya está en agencia — envía recordatorio de retiro al cliente.'; col='var(--green)'; }
@@ -2260,7 +2270,7 @@ function renderAll(){
 function updateBadges(){
   document.getElementById('badge-total').textContent = orders.length;
   // "Por enviar" = confirmadas que aún no tienen guía (faltan procesar con Rocket-e)
-  var desp = orders.filter(o=>o.status==='CONFIRMADO' && !o.guia).length;
+  var desp = orders.filter(o=>['CONFIRMADO','PREPARADO'].includes(o.status) && !o.guia).length;
   document.getElementById('badge-despacho').textContent = desp;
   var bc = document.getElementById('badge-clientes');
   if(bc) bc.textContent = Object.keys(agruparClientes()).length;
@@ -2288,6 +2298,9 @@ function renderDashboard(){
     </div>
     <div class="stat-card s-conf clickable" onclick="switchTab('ordenes');setFilter('CONFIRMADO',null)">
       <div class="stat-num">${counts['CONFIRMADO']||0}</div><div class="stat-lbl">✅ Confirmados</div>
+    </div>
+    <div class="stat-card s-conf clickable" onclick="switchTab('ordenes');setFilter('PREPARADO',null)">
+      <div class="stat-num" style="color:var(--purple)">${counts['PREPARADO']||0}</div><div class="stat-lbl">📦 Preparados</div>
     </div>
     <div class="stat-card s-ship clickable" onclick="switchTab('ordenes');setFilter('EN TRANSITO',null)">
       <div class="stat-num">${counts['EN TRANSITO']||0}</div><div class="stat-lbl">🚚 En tránsito</div>
@@ -2418,9 +2431,14 @@ function renderActionCenter(){
     txt:`<strong>${nuevos.length}</strong> pedido${nuevos.length>1?'s nuevos':' nuevo'} por confirmar con el cliente`,
     btn:'Ver nuevos', act:"switchTab('ordenes');setFilter('NUEVO',null)"});
 
-  var sinGuia = orders.filter(o=>o.status==='CONFIRMADO' && !o.guia);
-  if(sinGuia.length) tareas.push({p:2,icon:'🚚',color:'var(--blue)',
-    txt:`<strong>${sinGuia.length}</strong> confirmado${sinGuia.length>1?'s':''} sin guía — pásalo${sinGuia.length>1?'s':''} a Rocket-e y registra la guía`,
+  var porPreparar = orders.filter(o=>o.status==='CONFIRMADO' && !o.guia);
+  if(porPreparar.length) tareas.push({p:1,icon:'✅',color:'var(--green)',
+    txt:`<strong>${porPreparar.length}</strong> confirmado${porPreparar.length>1?'s':''} por <b>preparar</b> (empacar) antes de enviar a Rocket-e`,
+    btn:'Ver confirmados', act:"switchTab('ordenes');setFilter('CONFIRMADO',null)"});
+
+  var sinGuia = orders.filter(o=>o.status==='PREPARADO' && !o.guia);
+  if(sinGuia.length) tareas.push({p:2,icon:'📦',color:'var(--blue)',
+    txt:`<strong>${sinGuia.length}</strong> preparado${sinGuia.length>1?'s':''} sin guía — entrégalo${sinGuia.length>1?'s':''} a Rocket-e y registra la guía`,
     btn:'Por enviar', act:"switchTab('despacho')"});
 
   var riesgo = orders.filter(o=>o.status==='EN AGENCIA' && daysSince(o.updatedAt)>=5);
@@ -2457,7 +2475,6 @@ function renderActionCenter(){
 // ════════════════════════════════════════════════════════
 //  REPORTE CEO + META MENSUAL
 // ════════════════════════════════════════════════════════
-var META_KEY = 'pm_meta_mensual';
 function getMeta(){ return parseFloat(localStorage.getItem(META_KEY))||0; }
 function configurarMeta(){
   var actual = getMeta();
@@ -2784,7 +2801,7 @@ function renderKanban(){
 // ════════════════════════════════════════════════════════
 function renderDespacho(){
   // "Por enviar" = confirmadas sin guía (faltan procesar con Rocket-e)
-  var toSend = orders.filter(o=>o.status==='CONFIRMADO' && !o.guia);
+  var toSend = orders.filter(o=>['CONFIRMADO','PREPARADO'].includes(o.status) && !o.guia);
   var container  = document.getElementById('despacho-container');
   var totalCobrar = toSend.reduce((s,o)=>s+montoNum(o),0);
   var resumen = toSend.length ? `
@@ -2835,7 +2852,7 @@ function renderDespacho(){
 }
 
 function imprimirDespacho(){
-  var toDispatch = orders.filter(o=>o.status==='CONFIRMADO' && !o.guia);
+  var toDispatch = orders.filter(o=>['CONFIRMADO','PREPARADO'].includes(o.status) && !o.guia);
   var pt = document.getElementById('print-target');
   pt.style.display='block';
   pt.innerHTML = `<style>*{box-sizing:border-box;font-family:Arial,sans-serif}body{padding:10mm}
@@ -3257,7 +3274,7 @@ function exportarExcel(){
   downloadCsv(csv,'promarket_ordenes.csv');
 }
 function exportarExcelDespacho(){
-  var list = orders.filter(o=>o.status==='CONFIRMADO' && !o.guia);
+  var list = orders.filter(o=>['CONFIRMADO','PREPARADO'].includes(o.status) && !o.guia);
   var cols = ['numero','cliente','telefono','direccion','ciudad','producto','monto','transporte','agencia'];
   var csv = cols.join(',')+'\n';
   csv += list.map(o=>cols.map(c=>`"${(o[c]||'').toString().replace(/"/g,'""')}"`).join(',')).join('\n');
@@ -3339,7 +3356,7 @@ function guardarGuiaRapida(){
   o.guia = g;
   o.updatedAt = ts();
   // Con guía = Rocket-e ya lo envió → pasa a EN TRÁNSITO
-  if(g && ['NUEVO','CONFIRMADO'].includes(o.status)){ o.status='EN TRANSITO'; logOrden(o,'Guía '+g+' → En tránsito'); }
+  if(g && ['NUEVO','CONFIRMADO','PREPARADO'].includes(o.status)){ o.status='EN TRANSITO'; logOrden(o,'Guía '+g+' → En tránsito'); }
   else if(g){ logOrden(o,'Guía registrada: '+g); }
   saveOrders();
   cerrarModal('modal-guia');
@@ -3421,7 +3438,8 @@ function resumenProd(o){
 }
 // Plantilla sugerida según el estado de la orden
 function plantillaPorEstado(o){
-  if(o.status==='CONFIRMADO') return o.guia?'despacho':'confirmacion';
+  if(o.status==='CONFIRMADO') return 'confirmacion';
+  if(o.status==='PREPARADO') return o.guia?'despacho':'confirmacion';
   if(o.status==='EN TRANSITO') return 'despacho';
   if(o.status==='EN AGENCIA') return 'recordatorio';
   if(o.status==='ENTREGADO') return 'postventa';
@@ -3610,8 +3628,6 @@ function checkClienteHistorial(){
 // ════════════════════════════════════════════════════════
 //  CAMPAÑAS FACEBOOK
 // ════════════════════════════════════════════════════════
-var CAMP_KEY = 'pm_campanas_v1';
-var campanas = JSON.parse(localStorage.getItem(CAMP_KEY) || '[]');
 function saveCampanas(){ localStorage.setItem(CAMP_KEY, JSON.stringify(campanas)); }
 
 function calcRentabilidadCampana(c){
