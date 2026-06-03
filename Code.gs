@@ -47,6 +47,7 @@ function doPost(e) {
 
   try {
     if (accion === "extraer_pedido") return responder(extraerPedido(body));
+    if (accion === "extraer_texto")  return responder(extraerTexto(body));
     if (accion === "testConexion")   return responder({ ok: true, msg: "OK" });
     return responder({ ok: false, msg: "Acción no reconocida: " + accion });
   } catch (err) {
@@ -110,4 +111,32 @@ function extraerPedido(body) {
 
   var data = JSON.parse(match[0]);
   return { ok: true, data: data };
+}
+
+// ── EXTRAER PEDIDO DESDE TEXTO (WhatsApp) ────────────────────
+function extraerTexto(body) {
+  var texto = body.texto;
+  if (!texto) return { ok: false, msg: "No se recibió texto." };
+
+  var prompt = "Analiza este texto de pedido de WhatsApp y extrae todos los datos. " +
+    "Devuelve ÚNICAMENTE JSON válido sin texto adicional ni markdown:\n\n" +
+    "{\"numero\":\"\",\"cliente\":\"\",\"telefono\":\"\",\"direccion\":\"\",\"ciudad\":\"\",\"provincia\":\"\",\"pais\":\"Ecuador\"," +
+    "\"producto\":\"\",\"cantidad\":\"1\",\"precio\":\"\",\"monto\":\"\",\"talla\":\"\",\"lado\":\"\",\"pago\":\"\",\"transporte\":\"\",\"agencia\":\"\",\"nota\":\"\"}\n\n" +
+    "Texto del pedido:\n" + texto;
+
+  var payload = {
+    contents: [{ parts: [{ text: prompt }] }],
+    generationConfig: { temperature: 0.1, maxOutputTokens: 1024 }
+  };
+
+  var response = UrlFetchApp.fetch(getGeminiUrl(), {
+    method: "post", contentType: "application/json",
+    payload: JSON.stringify(payload), muteHttpExceptions: true
+  });
+
+  var result = JSON.parse(response.getContentText());
+  var content = result.candidates[0].content.parts[0].text.trim();
+  var match = content.match(/\{[\s\S]*\}/);
+  if (!match) return { ok: false, msg: "No se pudo parsear: " + content };
+  return { ok: true, data: JSON.parse(match[0]) };
 }
