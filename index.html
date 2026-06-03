@@ -1088,7 +1088,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 </div><!-- /wrap -->
 
 <div style="background:var(--bg2);border-top:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--muted)" id="app-footer">
-  <span>Promarket Órdenes <strong style="color:var(--muted2)">v2.5</strong></span>
+  <span>Promarket Órdenes <strong style="color:var(--muted2)">v2.6</strong></span>
   <span id="storage-info">Storage: calculando...</span>
 </div>
 
@@ -1341,11 +1341,19 @@ setInterval(function(){
 
 // Atajos de teclado
 document.addEventListener('keydown', function(e){
+  var enCampo = /^(INPUT|TEXTAREA|SELECT)$/.test((e.target.tagName||''));
   if(e.key==='Escape') document.querySelectorAll('.modal-bg.open').forEach(m=>m.classList.remove('open'));
   if((e.ctrlKey||e.metaKey) && e.key==='s'){
     e.preventDefault();
     if(document.getElementById('panel-nueva').classList.contains('active')) guardarOrden();
   }
+  // Ctrl/Cmd+Z fuera de un campo de texto → deshacer última acción de orden
+  if((e.ctrlKey||e.metaKey) && e.key==='z' && !enCampo && _undoSnapshot){
+    e.preventDefault(); deshacerOrders();
+  }
+  if(enCampo) return; // el resto de atajos no aplican mientras escribes
+  if(e.key==='/'){ e.preventDefault(); switchTab('ordenes'); setTimeout(()=>document.getElementById('search-input')?.focus(),100); }
+  if(e.key==='n'||e.key==='N'){ switchTab('nueva'); }
 });
 
 // Indicador de almacenamiento
@@ -1694,24 +1702,26 @@ function confirmarCancelacion(){
   var id = v('editing-id');
   if(id){
     var o = orders.find(x=>x.id===id);
-    if(o){ o.status='CANCELADO'; o.motivoCancelacion=motivo; o.updatedAt=ts(); saveOrders(); }
+    if(o){ snapshotOrders(); o.status='CANCELADO'; o.motivoCancelacion=motivo; o.updatedAt=ts(); logOrden(o,'Cancelado'+(motivo?' — '+motivo:'')); saveOrders(); }
   }
   cerrarModal('modal-cancelar');
   limpiar();
   renderAll();
   switchTab('ordenes');
+  showToast('Orden cancelada', 'Deshacer', deshacerOrders);
 }
 function confirmarDevolucion(){
   var motivo = document.getElementById('motivo-cancelacion').value.trim();
   var id = v('editing-id');
   if(id){
     var o = orders.find(x=>x.id===id);
-    if(o){ o.status='DEVUELTO'; o.motivoCancelacion=motivo; o.updatedAt=ts(); saveOrders(); }
+    if(o){ snapshotOrders(); o.status='DEVUELTO'; o.motivoCancelacion=motivo; o.updatedAt=ts(); logOrden(o,'Devuelto'+(motivo?' — '+motivo:'')); saveOrders(); }
   }
   cerrarModal('modal-cancelar');
   limpiar();
   renderAll();
   switchTab('ordenes');
+  showToast('Orden marcada como devuelta', 'Deshacer', deshacerOrders);
 }
 
 // ════════════════════════════════════════════════════════
@@ -2098,6 +2108,11 @@ function abrirModalOrden(id){
       ${o.guia?`<a href="https://www.servientrega.com.ec/wps/portal/inicio/Guias/ConsultaGuia?guia=${encodeURIComponent(o.guia)}" target="_blank" style="color:var(--blue);font-size:12.5px;font-weight:700;text-decoration:none">🔍 Rastrear en Servientrega →</a>`:''}
     </div>
     ${o.motivoCancelacion?`<div class="alert-strip" style="margin-top:10px">Cancelado: ${o.motivoCancelacion}</div>`:''}
+    ${(Array.isArray(o.historial)&&o.historial.length)?`
+      <div style="margin-top:12px;border-top:1px solid var(--border);padding-top:10px">
+        <div style="font-size:11px;color:var(--muted2);font-weight:700;margin-bottom:6px">🕘 Historial</div>
+        ${o.historial.slice().reverse().map(h=>`<div style="font-size:11px;color:var(--muted2);padding:2px 0">· ${h.accion} <span style="color:var(--muted)">— ${new Date(h.fecha).toLocaleString('es-EC',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}</span></div>`).join('')}
+      </div>`:''}
   `;
   document.getElementById('modal-orden').classList.add('open');
 }
@@ -2105,8 +2120,12 @@ function abrirModalOrden(id){
 function cambiarEstado(id, newStatus, btn){
   var o = orders.find(x=>x.id===id);
   if(!o) return;
+  if(o.status===newStatus) return;
+  snapshotOrders();
+  var anterior = o.status;
   o.status = newStatus;
   o.updatedAt = ts();
+  logOrden(o, 'Estado: '+anterior+' → '+newStatus);
   saveOrders();
   // update button styles
   btn.closest('.status-changer').querySelectorAll('.status-btn').forEach(b=>{
@@ -2114,6 +2133,7 @@ function cambiarEstado(id, newStatus, btn){
   });
   btn.classList.add('active-'+newStatus.toLowerCase().replace(' ',''));
   renderAll();
+  showToast('Estado → '+newStatus, 'Deshacer', deshacerOrders);
 }
 
 function editarDesdeModal(){
@@ -3043,14 +3063,16 @@ function guardarGuiaRapida(){
   var o = orders.find(x=>x.id===modalGuiaId);
   if(!o) return;
   var g = document.getElementById('input-guia-rapida').value.trim();
+  snapshotOrders();
   o.guia = g;
   o.updatedAt = ts();
   // Con guía = Rocket-e ya lo envió → pasa a EN TRÁNSITO
-  if(g && ['NUEVO','CONFIRMADO'].includes(o.status)) o.status='EN TRANSITO';
+  if(g && ['NUEVO','CONFIRMADO'].includes(o.status)){ o.status='EN TRANSITO'; logOrden(o,'Guía '+g+' → En tránsito'); }
+  else if(g){ logOrden(o,'Guía registrada: '+g); }
   saveOrders();
   cerrarModal('modal-guia');
   renderAll();
-  if(g) showSuccess('Guía registrada: '+g+' → En tránsito');
+  if(g) showToast('Guía registrada: '+g+' → En tránsito', 'Deshacer', deshacerOrders);
 }
 
 // ── API KEY MODAL ─────────────────────────────────────────────
@@ -3902,12 +3924,38 @@ function exportarLibroContable(){
 // ════════════════════════════════════════════════════════
 //  TOAST
 // ════════════════════════════════════════════════════════
-function showToast(msg){
+function showToast(msg, actionLabel, actionFn){
   var t = document.getElementById('toast');
-  t.textContent = msg;
+  if(actionLabel && actionFn){
+    var cbName = '_toastCb_'+Date.now();
+    window[cbName] = function(){ try{ actionFn(); }finally{ delete window[cbName]; t.classList.remove('show'); } };
+    t.innerHTML = msg+' <button onclick="'+cbName+'()" style="margin-left:10px;background:var(--orange);color:#fff;border:none;border-radius:12px;padding:3px 12px;font-weight:700;cursor:pointer;font-size:12px">'+actionLabel+'</button>';
+  } else {
+    t.textContent = msg;
+  }
   t.classList.add('show');
   clearTimeout(t._tid);
-  t._tid = setTimeout(()=>t.classList.remove('show'), 2800);
+  t._tid = setTimeout(()=>t.classList.remove('show'), actionLabel?6000:2800);
+}
+
+// ════════════════════════════════════════════════════════
+//  DESHACER (undo de 1 nivel) + HISTORIAL de orden
+// ════════════════════════════════════════════════════════
+var _undoSnapshot = null;
+function snapshotOrders(){ _undoSnapshot = JSON.stringify(orders); }
+function deshacerOrders(){
+  if(!_undoSnapshot) return;
+  orders = JSON.parse(_undoSnapshot);
+  _undoSnapshot = null;
+  saveOrders();
+  renderAll();
+  showToast('↩️ Acción deshecha');
+}
+// Registra un evento en el historial de la orden (auditoría)
+function logOrden(o, accion){
+  if(!o) return;
+  if(!Array.isArray(o.historial)) o.historial = [];
+  o.historial.push({ fecha: ts(), accion: accion });
 }
 
 // ════════════════════════════════════════════════════════
