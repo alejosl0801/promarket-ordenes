@@ -157,7 +157,7 @@ nav{
 .upload-title{font-family:var(--font-head);font-size:15px;color:var(--white);margin-bottom:5px}
 .upload-sub{font-size:12px;color:var(--muted2)}
 .upload-sub span{color:var(--orange);font-weight:700}
-#file-input{position:absolute;inset:0;opacity:0;cursor:pointer}
+#file-input{position:absolute;inset:0;opacity:0;cursor:pointer;z-index:2}
 
 /* Paste zone */
 .paste-zone{
@@ -1296,6 +1296,11 @@ dropZone.addEventListener('drop',e=>{
   var files = [...e.dataTransfer.files].filter(f=>f.type.startsWith('image/'));
   if(files.length) processImages(files);
 });
+dropZone.addEventListener('click',e=>{
+  if(e.target===fileInput) return;
+  fileInput.value='';
+  fileInput.click();
+});
 fileInput.addEventListener('change',()=>{
   if(fileInput.files.length) processImages([...fileInput.files]);
 });
@@ -1308,11 +1313,15 @@ async function processImages(files){
 
   try {
     var allData = null;
+    var lastError = '';
     for(var file of files){
+      if(file.size > 8*1024*1024){ showError('Imagen demasiado grande. Usa una captura menor a 8 MB.'); setStatus('idle'); return; }
       var base64 = await fileToBase64(file);
       var res = await callGemini(base64, file.type);
       if(res.ok){
         allData = allData ? mergeExtracted(allData, res.data) : res.data;
+      } else {
+        lastError = res.msg || 'Error desconocido';
       }
     }
     if(allData){
@@ -1321,9 +1330,9 @@ async function processImages(files){
       checkDuplicate(allData);
       setStatus('done');
     } else {
-      showError('No se pudo extraer datos de las imágenes.');
+      showError('Gemini no pudo extraer datos. ' + (lastError ? 'Detalle: '+lastError : 'Intenta con otra imagen.'));
     }
-  } catch(err){ showError('Error: '+err.message); }
+  } catch(err){ showError('Error al procesar imagen: '+err.message); }
 }
 
 function fileToBase64(file){
@@ -1348,18 +1357,24 @@ async function extractFromText(){
   document.getElementById('ai-text-msg').textContent = 'Extrayendo datos del texto…';
   try {
     var payload = { accion:'extraer_texto', texto };
-    var res = await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(payload)});
+    var res = await fetch(SCRIPT_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    });
     var json = await res.json();
     if(json.ok){ fillForm(json.data); showConfidence(json.data); setStatus('done'); }
-    else showError(json.msg||'Error extrayendo texto');
-  } catch(e){ showError(e.message); }
+    else showError('Error del servidor: '+(json.msg||'respuesta inválida'));
+  } catch(e){ showError('Error de conexión: '+e.message); }
 }
 
 async function callGemini(base64, mediaType){
   var res = await fetch(SCRIPT_URL,{
     method:'POST',
+    headers:{'Content-Type':'application/json'},
     body:JSON.stringify({accion:'extraer_pedido',imagen:base64,mediaType}),
   });
+  if(!res.ok) throw new Error('HTTP '+res.status+' — '+await res.text());
   return await res.json();
 }
 
