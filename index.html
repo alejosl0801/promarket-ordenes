@@ -738,6 +738,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
     <button class="dark-toggle" onclick="exportarJSON()" title="Backup JSON">⬇ JSON</button>
     <label class="dark-toggle" style="cursor:pointer" title="Restaurar backup">⬆ JSON<input type="file" accept=".json" style="display:none" onchange="importarJSON(this)"></label>
     <button class="dark-toggle" onclick="toggleTheme()">☀️ Claro</button>
+    <button class="dark-toggle" id="btn-nube" onclick="abrirModalNube()" style="border-color:var(--border2);color:var(--muted2)" title="Configurar respaldo en la nube">☁️ Nube</button>
     <button class="dark-toggle" id="btn-apikey" onclick="abrirModalApiKey()" style="border-color:#F97316;color:#F97316">🔑 API Key</button>
   </div>
 </nav>
@@ -748,6 +749,20 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
     <input type="text" id="busqueda-global" placeholder="Busca órdenes, clientes o productos..." style="width:100%;margin-bottom:12px;font-size:15px" oninput="renderBusquedaGlobal()">
     <div id="busqueda-resultados" style="max-height:50vh;overflow-y:auto"></div>
     <div class="btn-row" style="margin-top:12px"><button class="btn btn-ghost" onclick="cerrarModal('modal-buscar')">Cerrar</button></div>
+  </div>
+</div>
+
+<div class="modal-bg" id="modal-nube">
+  <div class="modal-box" style="max-width:480px">
+    <div class="modal-title">☁️ Respaldo en la nube (Google)</div>
+    <p style="color:var(--muted2);font-size:13px;margin-bottom:10px">Guarda todo automáticamente en <strong>tu Google Drive</strong>, privado. Tus datos sobreviven aunque se borre el navegador y se sincronizan entre celular y compu.</p>
+    <p style="color:var(--muted2);font-size:12px;margin-bottom:8px">Pega aquí la <strong>URL del Web App</strong> de tu Apps Script (termina en <code>/exec</code>):</p>
+    <input type="text" id="input-nube" placeholder="https://script.google.com/macros/s/.../exec" style="width:100%;margin-bottom:12px;font-family:monospace;font-size:12px">
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="guardarNubeUrl()">💾 Conectar nube</button>
+      <button class="btn btn-secondary" onclick="cerrarModal('modal-nube')">Cancelar</button>
+    </div>
+    <p style="color:var(--muted);font-size:11px;margin-top:12px">¿No tienes la URL todavía? Pídele a tu asistente el código de Apps Script y los pasos para crearla (es gratis, una sola vez).</p>
   </div>
 </div>
 
@@ -1419,11 +1434,16 @@ var catSort       = 'nombre';
 var currentPage   = 1;
 var PAGE_SIZE     = 25;
 
+// ── NUBE (Google Apps Script) — respaldo automático en tu Google ──
+var CLOUD_URL_KEY = 'pm_cloud_url';
+var cloudUrl      = localStorage.getItem(CLOUD_URL_KEY) || '';
+var _cloudTimer   = null;
+var _cloudLoading = false; // evita que cargar desde la nube dispare un guardado
 
-function saveOrders(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(orders)); _cliCache=null; }
+function saveOrders(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(orders)); _cliCache=null; saveToCloud(); }
 // Caché del CRM: agruparClientes() se recalculaba 7× por render. Se invalida al guardar o re-render.
 var _cliCache = null;
-function saveCatalog(){ localStorage.setItem(CATALOG_KEY, JSON.stringify(catalog)); }
+function saveCatalog(){ localStorage.setItem(CATALOG_KEY, JSON.stringify(catalog)); saveToCloud(); }
 
 // ════════════════════════════════════════════════════════
 //  AUTO-CORRECCIÓN DE CATÁLOGO (datos confirmados por el dueño)
@@ -1475,6 +1495,12 @@ function saveCatalog(){ localStorage.setItem(CATALOG_KEY, JSON.stringify(catalog
 document.getElementById('fecha').valueAsDate = new Date();
 initProdRows();
 renderAll();
+
+// Nube: si ya está conectada, carga los datos más recientes desde tu Google.
+(function initNube(){
+  if(cloudUrl){ setCloudStatus('sync'); loadFromCloud(false); }
+  else { setCloudStatus('off'); }
+})();
 
 // Persistir tema
 (function(){
@@ -3751,6 +3777,67 @@ function guardarApiKey(){
   document.getElementById('btn-apikey').textContent='✅ API Key';
   showSuccess('API Key guardada. ¡Listo para usar Gemini!');
 }
+
+// ════════════════════════════════════════════════════════
+//  NUBE — Respaldo automático en tu Google (Apps Script + Drive)
+// ════════════════════════════════════════════════════════
+function setCloudStatus(estado){
+  var b = document.getElementById('btn-nube');
+  if(!b) return;
+  if(estado==='off'){ b.textContent='☁️ Nube'; b.style.color='var(--muted2)'; b.style.borderColor='var(--border2)'; b.title='Configurar respaldo en la nube'; }
+  else if(estado==='sync'){ b.textContent='🔄 Nube'; b.style.color='var(--yellow)'; b.style.borderColor='var(--yellow)'; b.title='Sincronizando…'; }
+  else if(estado==='ok'){ b.textContent='☁️ Nube ✓'; b.style.color='var(--green)'; b.style.borderColor='var(--green)'; b.title='Respaldo en la nube activo y al día'; }
+  else if(estado==='error'){ b.textContent='⚠️ Nube'; b.style.color='var(--red)'; b.style.borderColor='var(--red)'; b.title='Error al sincronizar — revisa la URL'; }
+}
+function abrirModalNube(){
+  document.getElementById('input-nube').value = cloudUrl;
+  document.getElementById('modal-nube').classList.add('open');
+}
+function guardarNubeUrl(){
+  var u = document.getElementById('input-nube').value.trim();
+  if(u && !/^https:\/\/script\.google\.com\/.+\/exec/.test(u)){
+    if(!confirm('Esa URL no parece la de un Apps Script (.../exec). ¿Guardar de todas formas?')) return;
+  }
+  cloudUrl = u;
+  localStorage.setItem(CLOUD_URL_KEY, u);
+  cerrarModal('modal-nube');
+  if(u){ showSuccess('Nube conectada. Cargando tus datos…'); loadFromCloud(true); }
+  else { setCloudStatus('off'); showToast('Respaldo en la nube desactivado.'); }
+}
+// Carga los datos desde la nube (la nube es la fuente de verdad).
+function loadFromCloud(forzar){
+  if(!cloudUrl) return;
+  setCloudStatus('sync');
+  fetch(cloudUrl, {method:'GET'})
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if(!data || typeof data!=='object') throw new Error('vacío');
+      _cloudLoading = true;
+      if(Array.isArray(data.ordenes)){  orders=data.ordenes;     localStorage.setItem(STORAGE_KEY, JSON.stringify(orders)); }
+      if(Array.isArray(data.catalogo)){ catalog=data.catalogo;   localStorage.setItem(CATALOG_KEY, JSON.stringify(catalog)); }
+      if(Array.isArray(data.campanas)){ campanas=data.campanas;  localStorage.setItem(CAMP_KEY, JSON.stringify(campanas)); }
+      if(Array.isArray(data.marcados)){ marcados=data.marcados;  localStorage.setItem(MARCADOS_KEY, JSON.stringify(marcados)); }
+      _cliCache=null; _cloudLoading=false;
+      renderAll();
+      if(document.getElementById('panel-dashboard') && document.getElementById('panel-dashboard').classList.contains('active')) renderDashboard();
+      setCloudStatus('ok');
+      if(forzar) showSuccess('Datos cargados desde la nube ✅');
+    })
+    .catch(function(e){ setCloudStatus('error'); if(forzar) showError('No se pudo leer la nube: '+e.message); });
+}
+// Guarda en la nube (con un pequeño retraso para no saturar).
+function saveToCloud(){
+  if(!cloudUrl || _cloudLoading) return;
+  clearTimeout(_cloudTimer);
+  setCloudStatus('sync');
+  _cloudTimer = setTimeout(function(){
+    var payload = JSON.stringify({ ordenes:orders, catalogo:catalog, campanas:campanas, marcados:marcados, exportado:new Date().toISOString() });
+    fetch(cloudUrl, {method:'POST', body:payload})
+      .then(function(r){ return r.json(); })
+      .then(function(){ setCloudStatus('ok'); })
+      .catch(function(){ setCloudStatus('error'); });
+  }, 1200);
+}
 // Indicar visualmente si la key ya está guardada
 (function(){ if(localStorage.getItem(GEMINI_KEY_STORAGE)){
   var b=document.getElementById('btn-apikey');
@@ -4032,7 +4119,7 @@ var MARCADO_LBL = {
   no_concreto:'💬 Escribió y nunca concretó',
   sospechoso:'⚠️ Sospechoso / represalia'
 };
-function saveMarcados(){ localStorage.setItem(MARCADOS_KEY, JSON.stringify(marcados)); }
+function saveMarcados(){ localStorage.setItem(MARCADOS_KEY, JSON.stringify(marcados)); saveToCloud(); }
 // Busca un número en la lista (normalizado). Devuelve la entrada o null.
 function buscarMarcado(telOEntrada){
   var t = telWA(telOEntrada||'');
@@ -4385,7 +4472,7 @@ function renderMarcados(){
 // ════════════════════════════════════════════════════════
 //  CAMPAÑAS FACEBOOK
 // ════════════════════════════════════════════════════════
-function saveCampanas(){ localStorage.setItem(CAMP_KEY, JSON.stringify(campanas)); }
+function saveCampanas(){ localStorage.setItem(CAMP_KEY, JSON.stringify(campanas)); saveToCloud(); }
 
 function calcRentabilidadCampana(c){
   var inversion    = parseFloat(c.inversion)||0;
