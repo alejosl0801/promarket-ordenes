@@ -1204,11 +1204,12 @@ function saveCatalog(){ localStorage.setItem(CATALOG_KEY, JSON.stringify(catalog
 //  Sube el número de versión (vN) para forzar una nueva corrección.
 // ════════════════════════════════════════════════════════
 (function fixCatalogo(){
-  var FIX_KEY = 'pm_fix_catalogo_v2';
+  var FIX_KEY = 'pm_fix_catalogo_v3';
   if(localStorage.getItem(FIX_KEY)) return;
-  // Regla por palabra clave del nombre → valores correctos
+  // Regla por palabra clave del nombre → valores correctos (datos reales de Rocket-e)
   var correcciones = [
-    { match:'olla', precio:49.99, costo:16.50, fulfillment:0.85, envio:8.07 }
+    { match:'olla',   precio:49.99, costo:16.50, fulfillment:0.85, envio:8.07 }, // beneficio $24.57
+    { match:'guante', precio:59.99, costo:23.15, fulfillment:0,    envio:7.52 }  // beneficio $29.32
   ];
   var cambiado = false;
   catalog.forEach(function(p){
@@ -1383,7 +1384,7 @@ function addProdRow(data){
   var tbody = document.getElementById('prod-rows');
   var row = document.createElement('tr');
   var prodOpts = catalog.filter(p=>p.activo).map(p=>
-    `<option value="${p.nombre}" data-precio="${p.precio}">${p.nombre}</option>`).join('');
+    `<option value="${p.nombre}" data-precio="${p.precio||0}">${p.nombre}</option>`).join('');
   row.innerHTML = `
     <td><select onchange="onProdSelect(this)" style="width:100%">
       <option value="">— Seleccionar —</option>
@@ -1408,6 +1409,14 @@ function addProdRow(data){
     if(found){ sel.value=data.producto; }
     else{ sel.value='__custom__'; onProdSelect(sel,data.producto); }
   }
+  // Restaurar talla y lado al editar una orden existente
+  var selsRow = row.querySelectorAll('select');
+  if(data?.talla && selsRow[1]){
+    [...selsRow[1].options].forEach(o=>{ if(o.value.toLowerCase()===(''+data.talla).toLowerCase()) selsRow[1].value=o.value; });
+  }
+  if(data?.lado && selsRow[2]){
+    [...selsRow[2].options].forEach(o=>{ if(o.value.toLowerCase()===(''+data.lado).toLowerCase()) selsRow[2].value=o.value; });
+  }
   calcTotal();
 }
 function onProdSelect(sel, forceVal){
@@ -1420,10 +1429,9 @@ function onProdSelect(sel, forceVal){
   } else {
     customInput.style.display='none';
     var opt = sel.options[sel.selectedIndex];
-    var precioCell = sel.closest('tr').querySelector('input[type=number]:nth-of-type(1)');
     var allInputs = sel.closest('tr').querySelectorAll('input[type=number]');
     // price is the 2nd number input (after cantidad)
-    if(allInputs[1] && opt.dataset.precio) allInputs[1].value = opt.dataset.precio;
+    if(opt && allInputs[1] && opt.dataset.precio) allInputs[1].value = opt.dataset.precio;
     calcTotal();
   }
 }
