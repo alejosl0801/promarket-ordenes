@@ -1076,18 +1076,6 @@ var currentPeriod = 'hoy';
 var modalOrderId  = null;
 var lightMode     = false;
 
-// Seed default catalog if empty
-if(!catalog.length){
-  catalog = [
-    {id:'p1',nombre:'Guante Robot de Rehabilitación',ref:'GR-001',precio:59.99,costo:22.00,
-     ico:'🧤',desc:'Dispositivo neumático de rehabilitación, 9 niveles.',
-     stock:{S:5,M:8,L:6,XL:2},activo:1},
-    {id:'p2',nombre:'Juego de Ollas Inoxidable 12 Pzas',ref:'OLL-001',precio:89.99,costo:35.00,
-     ico:'🍳',desc:'Batería 12 piezas, base doble fondo, apta para inducción.',
-     stock:{S:0,M:0,L:0,XL:0},activo:1},
-  ];
-  saveCatalog();
-}
 
 function saveOrders(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(orders)); }
 function saveCatalog(){ localStorage.setItem(CATALOG_KEY, JSON.stringify(catalog)); }
