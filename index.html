@@ -487,6 +487,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 .kpi-sub{font-size:10px;color:var(--muted);margin-top:2px}
 .kpi-green .kpi-val{color:var(--green)}
 .kpi-yellow .kpi-val{color:var(--yellow)}
+.kpi-red .kpi-val{color:var(--red)}
 
 /* ── PREVIEW ──────────────────────────────────── */
 #preview-section{display:none;margin-top:20px}
@@ -1489,9 +1490,9 @@ function updateTransporteSuggestion(){
   if(!ciudad){ sugg.style.display='none'; return; }
   var rec = '';
   if(ciudad.includes('quito')||ciudad.includes('guayaquil')||ciudad.includes('cuenca'))
-    rec = 'Para '+ciudad+', Servientrega tiene cobertura amplia y es el más usado.';
+    rec = 'Para '+ciudad+', Servientrega tiene cobertura amplia y entrega rápida.';
   else
-    rec = 'Para ciudades intermedias, Tramaco Express suele ser más económico.';
+    rec = 'Servientrega tiene cobertura nacional — confirma que cubra '+ciudad+' antes de despachar.';
   sugg.textContent = '💡 '+rec;
   sugg.style.display = 'flex';
 }
@@ -2830,16 +2831,19 @@ function renderDespacho(){
     var txt=d>=3?'🔴 '+d+'d esperando':d>=1?'🟡 '+d+'d':'🟢 hoy';
     return '<span style="font-size:10px;font-weight:700;color:'+col+'">'+txt+'</span>';
   }
+  // Alto valor: pedidos cuyo monto supera 1.5× el promedio de la cola — priorízalos
+  var promCola = toSend.length ? totalCobrar/toSend.length : 0;
+  function altoValor(o){ return promCola>0 && montoNum(o) >= promCola*1.5; }
   container.innerHTML = resumen +
     '<div style="font-size:11px;color:var(--muted2);margin-bottom:10px">Ordenado por antigüedad — los 🔴 llevan más tiempo esperando, pásalos primero a Rocket-e.</div>' +
     ciudadesOrden.map(([c,list])=>`
     <div class="dispatch-group">
       <div class="dispatch-header">📍 ${c}<span class="dispatch-count">${list.length}</span></div>
-      ${list.map(o=>`
-        <div class="dispatch-row">
+      ${list.slice().sort((a,b)=>montoNum(b)-montoNum(a)).map(o=>`
+        <div class="dispatch-row"${altoValor(o)?' style="background:rgba(255,176,32,.06)"':''}>
           <div class="d-num">#${o.numero}<div>${urgBadge(o)}</div></div>
           <div>
-            <div style="font-weight:600">${o.cliente}</div>
+            <div style="font-weight:600">${altoValor(o)?'💎 ':''}${o.cliente}</div>
             <div class="d-city">${o.ciudad||''}, ${o.provincia||''}</div>
           </div>
           <div style="font-size:12px">${o.producto||''}</div>
@@ -3072,7 +3076,140 @@ function renderTendencias(){
       '</div>';
   }
 
-  cont.innerHTML = trend + mvm + recs + heat;
+  cont.innerHTML = trend + mvm + recs + analisisOperativo() + heat;
+}
+
+// ════════════════════════════════════════════════════════
+//  ANÁLISIS OPERATIVO — eficiencia, cuellos de botella,
+//  patrones de día/hora, concentración y dinero rescatable.
+//  Usa solo datos existentes (fechas, estados, historial, monto, ciudad).
+// ════════════════════════════════════════════════════════
+function analisisOperativo(){
+  if(!orders.length) return '';
+  var hoy = new Date(); hoy.setHours(0,0,0,0);
+  var DIAS = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  var DIAS_C = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+
+  // ── 1) Cuello de botella: órdenes activas por estado + antigüedad media ──
+  var activos = ['NUEVO','CONFIRMADO','PREPARADO','EN TRANSITO','EN AGENCIA'];
+  var porEstado = {};
+  activos.forEach(s=>porEstado[s]={n:0,dias:0});
+  var activasTotal=0, sumaEdad=0, viejas7=0, dineroJuego=0;
+  orders.forEach(o=>{
+    if(activos.includes(o.status)){
+      var d=daysSince(o.updatedAt||o.createdAt);
+      porEstado[o.status].n++; porEstado[o.status].dias+=d;
+      activasTotal++; sumaEdad+=daysSince(o.createdAt||o.fecha);
+      if(daysSince(o.createdAt||o.fecha)>=7) viejas7++;
+      dineroJuego+=montoNum(o);
+    }
+  });
+  var cuello=null;
+  activos.forEach(s=>{ if(porEstado[s].n && (!cuello || porEstado[s].n>porEstado[cuello].n)) cuello=s; });
+  var edadProm = activasTotal? (sumaEdad/activasTotal).toFixed(1):'0';
+  var cuelloHtml='<div class="card" style="margin-bottom:16px"><div class="card-title">🚦 Cuello de botella y antigüedad</div>'+
+    '<div class="kpi-row" style="margin-bottom:12px">'+
+      '<div class="kpi"><div class="kpi-val">'+activasTotal+'</div><div class="kpi-lbl">Órdenes activas</div></div>'+
+      '<div class="kpi'+(parseFloat(edadProm)>=5?' kpi-yellow':'')+'"><div class="kpi-val">'+edadProm+' d</div><div class="kpi-lbl">Antigüedad promedio</div></div>'+
+      '<div class="kpi'+(viejas7?' kpi-red':'')+'"><div class="kpi-val" style="color:'+(viejas7?'var(--red)':'var(--white)')+'">'+viejas7+'</div><div class="kpi-lbl">Abiertas +7 días</div></div>'+
+      '<div class="kpi kpi-yellow"><div class="kpi-val">'+money(dineroJuego)+'</div><div class="kpi-lbl">Dinero en juego</div><div class="kpi-sub">En órdenes activas</div></div>'+
+    '</div>'+
+    activos.filter(s=>porEstado[s].n).map(function(s){
+      var e=porEstado[s], prom=e.n?(e.dias/e.n).toFixed(1):0;
+      var esCuello=(s===cuello);
+      return '<div style="display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px">'+
+        '<span style="width:110px">'+(STATUS_ICONS[s]||'')+' '+s+'</span>'+
+        '<span style="flex:1;color:var(--muted2)">'+e.n+' orden(es) · '+prom+' d promedio</span>'+
+        (esCuello?'<span style="color:var(--orange);font-weight:700">⬅ se acumula aquí</span>':'')+
+      '</div>';
+    }).join('')+
+    '<div style="font-size:11px;color:var(--muted);margin-top:8px">El estado donde más se acumulan es tu cuello de botella — destrábalo primero para cobrar más rápido.</div>'+
+    '</div>';
+
+  // ── 2) Mejor día de la semana y mejor hora (patrón de demanda) ──
+  var factDia=[0,0,0,0,0,0,0], cntDia=[0,0,0,0,0,0,0], fechasDia=[{},{},{},{},{},{},{}];
+  var cntHora={};
+  orders.forEach(o=>{
+    var f=new Date(o.fecha||o.createdAt); if(isNaN(f)) return;
+    var wd=f.getDay();
+    factDia[wd]+=montoNum(o); cntDia[wd]++;
+    fechasDia[wd][f.toISOString().substring(0,10)]=1;
+    if(o.createdAt){ var h=new Date(o.createdAt).getHours(); if(!isNaN(h)) cntHora[h]=(cntHora[h]||0)+1; }
+  });
+  // promedio por ocurrencia de ese día de semana
+  var promDia=factDia.map((f,i)=>{ var nd=Object.keys(fechasDia[i]).length; return nd? f/nd:0; });
+  var maxPromDia=Math.max(...promDia,1);
+  var mejorWd=promDia.indexOf(Math.max(...promDia));
+  var horaTop=Object.entries(cntHora).sort((a,b)=>b[1]-a[1])[0];
+  var patronHtml='<div class="card" style="margin-bottom:16px"><div class="card-title">📆 Mejor día y hora para vender</div>'+
+    '<div style="display:flex;align-items:flex-end;gap:6px;height:80px;margin-bottom:6px">'+
+    promDia.map((p,i)=>{
+      var h=Math.round(p/maxPromDia*64);
+      var es=(i===mejorWd && p>0);
+      return '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">'+
+        '<div style="font-size:9px;color:var(--muted)">$'+p.toFixed(0)+'</div>'+
+        '<div style="width:100%;background:'+(es?'var(--green)':'var(--blue)')+';height:'+Math.max(h,2)+'px;border-radius:3px 3px 0 0;opacity:'+(p?1:.3)+'"></div>'+
+        '<div style="font-size:10px;color:'+(es?'var(--green)':'var(--muted2)')+';font-weight:'+(es?700:400)+'">'+DIAS_C[i]+'</div>'+
+      '</div>';
+    }).join('')+'</div>'+
+    '<div style="font-size:12px;color:var(--muted2)">📊 Tu mejor día es <b style="color:var(--green)">'+DIAS[mejorWd]+'</b> (promedio '+money(promDia[mejorWd])+' por '+DIAS[mejorWd].toLowerCase()+')'+
+    (horaTop?' · pico de pedidos a las <b style="color:var(--white)">'+horaTop[0]+':00</b> ('+horaTop[1]+' pedidos)':'')+
+    '. Concentra publicidad y atención esos momentos.</div>'+
+    '</div>';
+
+  // ── 3) Racha de días con ventas + concentración geográfica ──
+  var diasConVenta={};
+  orders.forEach(o=>{ var f=new Date(o.fecha||o.createdAt); if(!isNaN(f)) diasConVenta[f.toISOString().substring(0,10)]=1; });
+  var racha=0; for(var i=0;i<400;i++){ var d=new Date(hoy); d.setDate(d.getDate()-i); if(diasConVenta[d.toISOString().substring(0,10)]) racha++; else if(i>0) break; }
+  // concentración: top 3 ciudades sobre facturación total
+  var factCiudad={}, factTotal=0;
+  orders.forEach(o=>{ var c=o.ciudad||'Sin ciudad'; factCiudad[c]=(factCiudad[c]||0)+montoNum(o); factTotal+=montoNum(o); });
+  var top3=Object.entries(factCiudad).sort((a,b)=>b[1]-a[1]).slice(0,3);
+  var sumTop3=top3.reduce((s,e)=>s+e[1],0);
+  var concPct=factTotal>0?Math.round(sumTop3/factTotal*100):0;
+  var rachaHtml='<div class="card" style="margin-bottom:16px"><div class="card-title">🔥 Racha y concentración</div>'+
+    '<div class="kpi-row">'+
+      '<div class="kpi'+(racha>=3?' kpi-green':'')+'"><div class="kpi-val" style="color:'+(racha>=3?'var(--green)':'var(--white)')+'">'+racha+' d</div><div class="kpi-lbl">Racha con ventas</div><div class="kpi-sub">Días seguidos vendiendo</div></div>'+
+      '<div class="kpi'+(concPct>=70?' kpi-yellow':'')+'"><div class="kpi-val">'+concPct+'%</div><div class="kpi-lbl">Concentración top 3</div><div class="kpi-sub">'+top3.map(e=>e[0]).join(', ')+'</div></div>'+
+    '</div>'+
+    (concPct>=70?'<div class="alert-strip" style="background:var(--yellow-bg);border-color:var(--yellow-border);color:var(--yellow);margin-top:10px;font-size:12px">⚠️ El '+concPct+'% de tus ventas viene de solo 3 ciudades. Diversifica zonas para no depender tanto de ellas.</div>':'')+
+    '</div>';
+
+  // ── 4) Devoluciones por día de la semana + dinero rescatable ──
+  var devDia=[0,0,0,0,0,0,0];
+  var devueltas=orders.filter(esDevuelta);
+  devueltas.forEach(o=>{ var f=new Date(o.updatedAt||o.fecha||o.createdAt); if(!isNaN(f)) devDia[f.getDay()]++; });
+  var maxDevDia=Math.max(...devDia,1);
+  var peorDevWd=devDia.indexOf(Math.max(...devDia));
+  var rescatable=devueltas.reduce((s,o)=>s+montoNum(o),0);
+  var devHtml='<div class="card" style="margin-bottom:16px"><div class="card-title">↩️ Patrón de devoluciones y dinero rescatable</div>'+
+    '<div class="kpi-row" style="margin-bottom:'+(devueltas.length?'12px':'0')+'">'+
+      '<div class="kpi"><div class="kpi-val" style="color:var(--red)">'+devueltas.length+'</div><div class="kpi-lbl">Devueltas (histórico)</div></div>'+
+      '<div class="kpi"><div class="kpi-val" style="color:var(--yellow)">'+money(rescatable)+'</div><div class="kpi-lbl">Venta no concretada</div><div class="kpi-sub">Reintenta con estos clientes</div></div>'+
+    '</div>'+
+    (devueltas.length?'<div style="display:flex;align-items:flex-end;gap:6px;height:60px;margin-bottom:4px">'+
+      devDia.map((n,i)=>{ var h=Math.round(n/maxDevDia*48); var es=(i===peorDevWd&&n>0);
+        return '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px"><div style="font-size:9px;color:var(--muted)">'+(n||'')+'</div>'+
+          '<div style="width:100%;background:'+(es?'var(--red)':'#5B2330')+';height:'+Math.max(h,2)+'px;border-radius:3px 3px 0 0;opacity:'+(n?1:.3)+'"></div>'+
+          '<div style="font-size:10px;color:var(--muted2)">'+DIAS_C[i]+'</div></div>'; }).join('')+
+      '</div><div style="font-size:11px;color:var(--muted)">Las entregas que caen en '+DIAS[peorDevWd].toLowerCase()+' tienden a devolverse más — coordina mejor esas entregas.</div>'
+      :'<div style="font-size:12px;color:var(--green)">Sin devoluciones registradas 🎉</div>')+
+    '</div>';
+
+  // ── 5) Eficiencia de hoy (abiertas vs cerradas) ──
+  var abiertasHoy=0, cerradasHoy=0;
+  orders.forEach(o=>{
+    var c=new Date(o.createdAt||o.fecha);
+    if(!isNaN(c) && c>=hoy) abiertasHoy++;
+    var u=new Date(o.updatedAt);
+    if(!isNaN(u) && u>=hoy && ['ENTREGADO','DEVUELTO','CANCELADO'].includes(o.status)) cerradasHoy++;
+  });
+  var efHtml='<div class="card" style="margin-bottom:16px"><div class="card-title">⚡ Eficiencia de hoy</div><div class="kpi-row">'+
+    '<div class="kpi"><div class="kpi-val">'+abiertasHoy+'</div><div class="kpi-lbl">Pedidos nuevos hoy</div></div>'+
+    '<div class="kpi kpi-green"><div class="kpi-val">'+cerradasHoy+'</div><div class="kpi-lbl">Cerrados hoy</div><div class="kpi-sub">Entregados/devueltos/cancelados</div></div>'+
+    '</div></div>';
+
+  return cuelloHtml + patronHtml + rachaHtml + devHtml + efHtml;
 }
 
 // ════════════════════════════════════════════════════════
