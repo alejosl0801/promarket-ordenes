@@ -640,6 +640,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
   .modal-bg{padding:20px 10px}
   /* Tablas anchas: scroll horizontal cómodo */
   .order-table{min-width:680px}
+  .prod-table{min-width:540px}
 }
 @media print{
   @page{margin:8mm;size:A4}
@@ -906,6 +907,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 
   <div class="card">
     <div class="card-title">Productos del Pedido</div>
+    <div style="overflow-x:auto">
     <table class="prod-table">
       <thead>
         <tr>
@@ -920,6 +922,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
       </thead>
       <tbody id="prod-rows"></tbody>
     </table>
+    </div>
     <button class="btn-add-row" onclick="addProdRow()">+ Agregar producto</button>
     <div class="total-display">Total: <span id="total-display">$0.00</span></div>
   </div>
