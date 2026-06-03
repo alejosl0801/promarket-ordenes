@@ -649,6 +649,34 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 .days-warn{background:var(--yellow-bg);color:var(--yellow)}
 .days-late{background:var(--red-bg);color:var(--red)}
 .campana-hist{font-size:10px;color:var(--muted);margin-top:4px}
+
+/* ── MENSAJERÍA / CLIENTES ──────────────────── */
+.msg-safe{background:var(--green-bg);border:1px solid var(--green-border);color:var(--green);
+  font-size:12px;padding:9px 12px;border-radius:var(--radius-sm);line-height:1.45}
+.cli-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);
+  padding:14px 16px;margin-bottom:10px}
+.cli-card:hover{border-color:var(--border2)}
+.cli-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.cli-name{font-weight:800;font-size:15px}
+.cli-sub{font-size:11.5px;color:var(--muted2);margin-top:2px}
+.cli-stats{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px}
+.cli-stat{font-size:11px;color:var(--muted2)}
+.cli-stat b{display:block;font-size:15px;color:var(--white);font-weight:800}
+.score-badge{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;padding:2px 9px;border-radius:20px}
+.score-vip{background:#2A1A00;color:#FFB020;border:1px solid #6B4500}
+.score-bueno{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.score-regular{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-border)}
+.score-riesgo{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)}
+.cli-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.cli-recurrente{display:inline-block;background:#0A1F10;color:var(--green);font-size:10px;font-weight:700;padding:1px 7px;border-radius:3px;border:1px solid var(--green-border);margin-left:6px}
+.blacklist-warn{background:var(--red-bg);border:1px solid var(--red-border);color:var(--red);
+  font-size:13px;font-weight:600;padding:10px 12px;border-radius:var(--radius-sm);margin-bottom:12px;display:none}
+.goal-bar{height:10px;background:var(--bg4);border-radius:6px;overflow:hidden;margin-top:6px}
+.goal-fill{height:100%;border-radius:6px;transition:width .4s}
+.ceo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.ceo-cell{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px}
+.ceo-cell .v{font-size:22px;font-weight:800;line-height:1}
+.ceo-cell .l{font-size:10px;color:var(--muted2);margin-top:4px;text-transform:uppercase;letter-spacing:.4px;font-weight:700}
 </style>
 </head>
 <body>
@@ -712,6 +740,9 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
   <div class="tab" data-tab="ordenes" onclick="switchTab('ordenes')">
     📋 Órdenes <span class="tab-badge" id="badge-total">0</span>
   </div>
+  <div class="tab" data-tab="clientes" onclick="switchTab('clientes')">
+    👥 Clientes <span class="tab-badge" id="badge-clientes">0</span>
+  </div>
   <div class="tab" data-tab="kanban" onclick="switchTab('kanban')">
     🗂️ Kanban
   </div>
@@ -738,6 +769,14 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 <div class="panel active" id="panel-dashboard">
   <div id="alert-container"></div>
   <div class="stats-row" id="stats-row"></div>
+  <div class="card" id="ceo-card" style="margin-bottom:16px">
+    <div class="card-title" style="display:flex;justify-content:space-between;align-items:center">
+      <span>📊 Reporte CEO — este mes</span>
+      <button class="btn btn-ghost btn-sm" onclick="configurarMeta()">🎯 Meta</button>
+    </div>
+    <div id="ceo-meta"></div>
+    <div class="ceo-grid" id="ceo-grid" style="margin-top:12px"></div>
+  </div>
   <div class="card">
     <div class="card-title">Actividad reciente</div>
     <div id="recent-list"></div>
@@ -838,9 +877,10 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 
   <div class="card">
     <div class="card-title">Datos del Cliente</div>
+    <div class="blacklist-warn" id="cliente-historial"></div>
     <div class="g2" style="margin-bottom:13px">
       <label>Nombre completo<input id="cliente" placeholder="Nombre Apellido"></label>
-      <label>Teléfono<input id="telefono" placeholder="+593 99 000 0000"></label>
+      <label>Teléfono<input id="telefono" placeholder="+593 99 000 0000" oninput="checkClienteHistorial()"></label>
     </div>
     <div class="g1" style="margin-bottom:13px">
       <label>Dirección<input id="direccion" placeholder="Av. ..."></label>
@@ -960,6 +1000,19 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
   <div class="paginator" id="orders-paginator"></div>
 </div>
 
+<!-- ══════════ CLIENTES (CRM) ══════════ -->
+<div class="panel" id="panel-clientes">
+  <div class="kpi-row" id="clientes-kpi"></div>
+  <div class="quick-filters" style="margin:14px 0">
+    <input class="filter-input-sm" id="cli-search" placeholder="🔍 Buscar cliente, teléfono o ciudad..." oninput="renderClientes()" style="width:240px">
+    <button class="qf-btn active" id="cli-sort-ltv" onclick="setCliSort('ltv',this)">💰 Mejor cliente</button>
+    <button class="qf-btn" id="cli-sort-ordenes" onclick="setCliSort('ordenes',this)">📦 Más pedidos</button>
+    <button class="qf-btn" id="cli-sort-reciente" onclick="setCliSort('reciente',this)">🕐 Reciente</button>
+    <button class="qf-btn red" id="cli-sort-riesgo" onclick="setCliSort('riesgo',this)">⚠️ Riesgosos</button>
+  </div>
+  <div id="clientes-list"></div>
+</div>
+
 <!-- ══════════ KANBAN ══════════ -->
 <div class="panel" id="panel-kanban">
   <div class="kanban" id="kanban-board"></div>
@@ -1031,7 +1084,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 </div><!-- /wrap -->
 
 <div style="background:var(--bg2);border-top:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--muted)" id="app-footer">
-  <span>Promarket Órdenes <strong style="color:var(--muted2)">v2.3</strong></span>
+  <span>Promarket Órdenes <strong style="color:var(--muted2)">v2.4</strong></span>
   <span id="storage-info">Storage: calculando...</span>
 </div>
 
@@ -1086,8 +1139,10 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
     <div id="modal-orden-body"></div>
     <div class="btn-row" style="margin-top:16px">
       <button class="btn btn-primary btn-sm" onclick="editarDesdeModal()">✏️ Editar</button>
+      <button class="btn btn-sm" style="background:#25D366;color:#fff;border:none" onclick="enviarWhatsapp(modalOrderId)">💬 WhatsApp</button>
       <button class="btn btn-dark btn-sm" onclick="generarOrdenDesdeModal()">📄 PDF</button>
       <button class="btn btn-dark btn-sm" onclick="imprimirEtiquetaModal()">🏷️ Etiqueta</button>
+      <button class="btn btn-ghost btn-sm" onclick="duplicarOrden(modalOrderId)">⧉ Duplicar</button>
     </div>
   </div>
 </div>
@@ -1153,6 +1208,30 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
       <button class="btn btn-danger" onclick="confirmarDevolucion()">↩️ Marcar devuelto</button>
       <button class="btn btn-dark" onclick="confirmarCancelacion()">✕ Cancelado</button>
       <button class="btn btn-ghost" onclick="cerrarModal('modal-cancelar')">Volver</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ MODAL MENSAJE WHATSAPP (BORRADOR — NO ENVÍA SOLO) ══════════ -->
+<div class="modal-bg" id="modal-mensaje">
+  <div class="modal" style="max-width:480px">
+    <button class="modal-close" onclick="cerrarModal('modal-mensaje')">✕</button>
+    <div class="modal-title">💬 Revisar mensaje antes de enviar</div>
+    <div class="msg-safe">🛡️ <strong>Esto NO envía nada.</strong> Solo abre WhatsApp con el texto listo. Tú lo revisas y le das enviar manualmente.</div>
+    <div style="background:var(--bg4);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:10px 12px;margin:12px 0">
+      <div style="font-size:11px;color:var(--muted2)">Para</div>
+      <div style="font-weight:800;font-size:14px" id="msg-dest">—</div>
+      <div style="font-size:12px;color:var(--blue)" id="msg-tel">—</div>
+    </div>
+    <label style="margin-bottom:6px;font-size:12px;color:var(--muted2)">Plantilla</label>
+    <select id="msg-tipo" onchange="regenerarMensaje()" style="width:100%;margin-bottom:12px"></select>
+    <label style="margin-bottom:6px;font-size:12px;color:var(--muted2)">Mensaje (puedes editarlo)</label>
+    <textarea id="msg-texto" style="width:100%;min-height:150px;font-size:13px;line-height:1.5"></textarea>
+    <div style="font-size:11px;color:var(--muted);margin:6px 0 14px">Vista previa de cómo le llegará. Edita lo que quieras antes de abrir WhatsApp.</div>
+    <div class="btn-row">
+      <button class="btn btn-primary" style="background:#25D366;border-color:#25D366" onclick="abrirWhatsappDesdeModal()">💬 Abrir WhatsApp (revisar y enviar tú)</button>
+      <button class="btn btn-dark" onclick="copiarMensaje()">📋 Copiar texto</button>
+      <button class="btn btn-ghost" onclick="cerrarModal('modal-mensaje')">Cancelar</button>
     </div>
   </div>
 </div>
@@ -1294,6 +1373,7 @@ function switchTab(name){
   if(name==='catalogo')  renderCatalogo();
   if(name==='campanas')  renderCampanas();
   if(name==='contabilidad') renderContabilidad();
+  if(name==='clientes')  renderClientes();
 }
 
 // ════════════════════════════════════════════════════════
@@ -2038,6 +2118,21 @@ function editarDesdeModal(){
   cargarOrdenEnForm(o);
   switchTab('nueva');
 }
+// Duplica una orden (para clientes que recompran) — abre el form con los datos, nueva id/número
+function duplicarOrden(id){
+  var o = orders.find(x=>x.id===id);
+  if(!o) return;
+  cerrarModal('modal-orden');
+  var copia = JSON.parse(JSON.stringify(o));
+  copia.id=''; copia.numero=''; copia.guia=''; copia.status='NUEVO';
+  copia.fecha=new Date().toISOString().substring(0,10);
+  copia.motivoCancelacion='';
+  cargarOrdenEnForm(copia);
+  document.getElementById('numero').value=nextId();
+  document.getElementById('editing-id').value='';
+  switchTab('nueva');
+  showToast('Orden duplicada — revisa y guarda');
+}
 
 function cargarOrdenEnForm(o){
   document.getElementById('editing-id').value = o.id;
@@ -2099,6 +2194,7 @@ function renderAll(){
   if(document.getElementById('panel-despacho').classList.contains('active')) renderDespacho();
   if(document.getElementById('panel-campanas').classList.contains('active')) renderCampanas();
   if(document.getElementById('panel-contabilidad').classList.contains('active')) renderContabilidad();
+  if(document.getElementById('panel-clientes').classList.contains('active')) renderClientes();
 }
 
 function updateBadges(){
@@ -2106,6 +2202,8 @@ function updateBadges(){
   // "Por enviar" = confirmadas que aún no tienen guía (faltan procesar con Rocket-e)
   var desp = orders.filter(o=>o.status==='CONFIRMADO' && !o.guia).length;
   document.getElementById('badge-despacho').textContent = desp;
+  var bc = document.getElementById('badge-clientes');
+  if(bc) bc.textContent = Object.keys(agruparClientes()).length;
 }
 
 // ════════════════════════════════════════════════════════
@@ -2244,6 +2342,78 @@ function renderDashboard(){
       ${pillHtml(o.status)}
       <div style="font-size:11px;color:var(--muted);flex-shrink:0">${elapsed(o.updatedAt||o.createdAt)}</div>
     </div>`).join('');
+
+  renderReporteCEO();
+}
+
+// ════════════════════════════════════════════════════════
+//  REPORTE CEO + META MENSUAL
+// ════════════════════════════════════════════════════════
+var META_KEY = 'pm_meta_mensual';
+function getMeta(){ return parseFloat(localStorage.getItem(META_KEY))||0; }
+function configurarMeta(){
+  var actual = getMeta();
+  var v = prompt('Meta de VENTAS para este mes ($):\n\nDéjalo vacío para que la calcule sola (mes anterior +20%).', actual||'');
+  if(v===null) return;
+  if(v.trim()==='') localStorage.removeItem(META_KEY); else localStorage.setItem(META_KEY, parseFloat(v)||0);
+  renderReporteCEO();
+  showToast('Meta actualizada');
+}
+function renderReporteCEO(){
+  var now=new Date(); var ini=new Date(now.getFullYear(),now.getMonth(),1);
+  var iniPrev=new Date(now.getFullYear(),now.getMonth()-1,1); var finPrev=new Date(now.getFullYear(),now.getMonth(),0,23,59,59);
+  var mes = orders.filter(o=>new Date(o.fecha||o.createdAt)>=ini);
+  var prev= orders.filter(o=>{var d=new Date(o.fecha||o.createdAt);return d>=iniPrev&&d<=finPrev;});
+  // Métricas del mes
+  var facturado=0,cobrado=0,enCalle=0,beneficio=0,entreg=0,dev=0;
+  mes.forEach(o=>{ facturado+=montoNum(o);
+    if(o.status==='ENTREGADO'){cobrado+=montoNum(o);entreg++;}
+    if(enLaCalle(o)) enCalle+=montoNum(o);
+    if(esDevuelta(o)) dev++;
+    beneficio+=ordenGanancia(o);
+  });
+  var invMes = campanas.filter(c=>{var d=new Date(c.fecha||Date.now());return d>=ini;}).reduce((s,c)=>s+(parseFloat(c.inversion)||0),0);
+  beneficio -= invMes;
+  var margen = cobrado>0?(beneficio/cobrado*100):0;
+  var roas = invMes>0?(cobrado/invMes):0;
+  var tasaEnt = (entreg+dev)>0?(entreg/(entreg+dev)*100):0;
+  // Clientes nuevos del mes (primer pedido en este mes)
+  var mapaCli=agruparClientes();
+  var nuevosMes=Object.values(mapaCli).filter(c=>{var f=c.ordenes[c.ordenes.length-1];return new Date(f.createdAt||f.fecha)>=ini;}).length;
+  // Facturado mes anterior (para crecimiento)
+  var factPrev=prev.reduce((s,o)=>s+montoNum(o),0);
+  var crecim = factPrev>0?((facturado-factPrev)/factPrev*100):0;
+  // Meta
+  var meta = getMeta() || (factPrev>0?factPrev*1.2:0);
+  var pctMeta = meta>0?Math.min(100,facturado/meta*100):0;
+  // Proyección fin de mes
+  var diaMes=now.getDate(); var diasMes=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
+  var proy = diaMes>0?(facturado/diaMes*diasMes):0;
+  var llega = meta>0 && proy>=meta;
+
+  var metaEl=document.getElementById('ceo-meta');
+  if(meta>0){
+    var col = pctMeta>=100?'var(--green)':pctMeta>=60?'var(--yellow)':'var(--orange)';
+    metaEl.innerHTML='<div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px">'+
+      '<span style="color:var(--muted2)">Meta del mes: <b style="color:var(--white)">'+money(meta)+'</b></span>'+
+      '<span style="color:'+col+';font-weight:800">'+pctMeta.toFixed(0)+'%</span></div>'+
+      '<div class="goal-bar"><div class="goal-fill" style="width:'+pctMeta+'%;background:'+col+'"></div></div>'+
+      '<div style="font-size:11px;color:var(--muted2);margin-top:5px">Proyección fin de mes: <b style="color:'+(llega?'var(--green)':'var(--yellow)')+'">'+money(proy)+'</b> · '+
+      (llega?'✅ Vas a alcanzar la meta':'⚠️ A este ritmo faltan '+money(Math.max(0,meta-proy)))+'</div>';
+  } else { metaEl.innerHTML='<div style="font-size:11px;color:var(--muted)">Sin meta configurada — clic en 🎯 Meta para fijarla (o se calcula sola con datos del mes pasado).</div>'; }
+
+  function cell(v,l,c){ return '<div class="ceo-cell"><div class="v" style="color:'+(c||'var(--white)')+'">'+v+'</div><div class="l">'+l+'</div></div>'; }
+  document.getElementById('ceo-grid').innerHTML =
+    cell(money(facturado),'Facturado mes')+
+    cell(money(cobrado),'Cobrado',  'var(--green)')+
+    cell(money(enCalle),'En la calle','var(--yellow)')+
+    cell(money(beneficio),'Beneficio neto', beneficio>=0?'var(--green)':'var(--red)')+
+    cell(margen.toFixed(0)+'%','Margen', margen>=15?'var(--green)':margen>=5?'var(--yellow)':'var(--red)')+
+    cell(roas.toFixed(2)+'x','ROAS', roas>=2?'var(--green)':roas>=1?'var(--yellow)':'var(--red)')+
+    cell(tasaEnt.toFixed(0)+'%','Tasa entrega', tasaEnt>=80?'var(--green)':tasaEnt>=60?'var(--yellow)':'var(--red)')+
+    cell((crecim>=0?'+':'')+crecim.toFixed(0)+'%','vs mes pasado', crecim>=0?'var(--green)':'var(--red)')+
+    cell(nuevosMes,'Clientes nuevos','var(--blue)')+
+    cell(mes.length,'Pedidos mes');
 }
 
 // ════════════════════════════════════════════════════════
@@ -2804,18 +2974,231 @@ function guardarApiKey(){
 }})();
 
 // ════════════════════════════════════════════════════════
-//  WHATSAPP
+//  MENSAJERÍA WHATSAPP — con borrador y previsualización
+//  NUNCA envía solo: solo abre WhatsApp con el texto listo.
 // ════════════════════════════════════════════════════════
-function enviarWhatsapp(id){
-  var o = orders.find(x=>x.id===id);
-  if(!o||!o.telefono) return;
-  var tel = o.telefono.replace(/[^0-9]/g,'');
+var TIENDA = 'Promarket Ecuador';
+function telWA(t){
+  var tel = (t||'').replace(/[^0-9]/g,'');
   if(tel.startsWith('0')) tel = '593'+tel.substring(1);
-  var nombre = (o.cliente||'').split(' ')[0];
-  var msg = o.guia
-    ? 'Hola '+nombre+', tu pedido de *Promarket Ecuador* (#'+o.numero+') fue despachado por Servientrega.\n\nN° de guía: *'+o.guia+'*\n\nPuedes retirarlo y pagar en tu agencia Servientrega más cercana.\n\n¡Gracias por tu compra!'
-    : 'Hola '+nombre+', tu pedido de *Promarket Ecuador* (#'+o.numero+') está confirmado y pronto será despachado.\n\nTe avisaremos cuando tengamos el número de guía de Servientrega.';
-  window.open('https://wa.me/'+tel+'?text='+encodeURIComponent(msg),'_blank');
+  if(tel.length===9) tel = '593'+tel; // celular sin 0 inicial
+  return tel;
+}
+function nom1(n){ return (n||'cliente').trim().split(' ')[0]; }
+
+// Plantillas: cada una recibe {o (orden), c (cliente agrupado)} y devuelve texto
+var PLANTILLAS = {
+  confirmacion:{ label:'✅ Confirmación de pedido', fn:function(o){
+    return 'Hola '+nom1(o.cliente)+' 👋, tu pedido en *'+TIENDA+'* (#'+o.numero+') quedó *confirmado*.\n\n'+
+      resumenProd(o)+'\nTotal a pagar al recibir: *'+(o.monto||'')+'*\n\nLo preparamos y te enviamos la guía pronto. ¡Gracias por tu compra! 🧡'; } },
+  despacho:{ label:'🚚 Pedido despachado (con guía)', fn:function(o){
+    return 'Hola '+nom1(o.cliente)+' 🚚, tu pedido #'+o.numero+' de *'+TIENDA+'* ya va en camino por Servientrega.\n\n'+
+      (o.guia?'N° de guía: *'+o.guia+'*\n':'')+
+      'Puedes retirarlo y pagar *'+(o.monto||'')+'* en tu agencia Servientrega.\n\nTe avisamos cuando esté disponible. 📦'; } },
+  recordatorio:{ label:'⏰ Recordatorio de retiro (antes que se devuelva)', fn:function(o){
+    return 'Hola '+nom1(o.cliente)+' 😊, tu pedido #'+o.numero+' *ya está en tu agencia Servientrega* esperándote.\n\n'+
+      'Por favor retíralo en los próximos días para que no sea devuelto. Pago al retirar: *'+(o.monto||'')+'*.\n\n'+
+      (o.guia?'Guía: *'+o.guia+'*\n':'')+'¡Te esperamos! 🙏'; } },
+  cobro:{ label:'💵 Cobro / sigue en agencia', fn:function(o){
+    return 'Hola '+nom1(o.cliente)+', te recordamos que tu pedido #'+o.numero+' sigue en la agencia Servientrega.\n\n'+
+      'Solo falta que pases a retirarlo y cancelar *'+(o.monto||'')+'*. Si necesitas más tiempo o ayuda, escríbenos. 🤝'; } },
+  postventa:{ label:'🌟 Post-entrega + reseña/recompra', fn:function(o){
+    return '¡Hola '+nom1(o.cliente)+'! 🎉 Esperamos que estés disfrutando tu compra en *'+TIENDA+'* (pedido #'+o.numero+').\n\n'+
+      '¿Nos ayudarías con una reseña? 🌟 Y si quieres repetir o ver novedades, escríbenos por aquí. ¡Gracias por confiar en nosotros! 🧡'; } },
+  reactivacion:{ label:'🔄 Reactivación (no compra hace tiempo)', fn:function(o,c){
+    return '¡Hola '+nom1(o.cliente)+'! 👋 Te extrañamos en *'+TIENDA+'*. '+
+      'Tenemos novedades que te pueden encantar. ¿Te muestro lo nuevo? 😉'; } },
+  crossell:{ label:'🛍️ Cross-sell (recomendar otro producto)', fn:function(o){
+    return 'Hola '+nom1(o.cliente)+' 😊, vimos que compraste *'+(o.producto||'tu pedido')+'*. '+
+      'Creemos que también te puede interesar otro de nuestros productos. ¿Te paso la info? 🛍️'; } },
+  vip:{ label:'👑 Cliente VIP (agradecimiento)', fn:function(o){
+    return '¡Hola '+nom1(o.cliente)+'! 👑 Eres uno de nuestros mejores clientes en *'+TIENDA+'* y queremos agradecerte. '+
+      'Escríbenos para un beneficio especial en tu próxima compra. 🧡'; } },
+  detalle:{ label:'📋 Confirmación rápida (detalle completo)', fn:function(o){
+    return '*'+TIENDA+'* — Pedido #'+o.numero+'\n\n'+
+      '👤 '+(o.cliente||'')+'\n📞 '+(o.telefono||'')+'\n📍 '+(o.direccion||'')+', '+(o.ciudad||'')+'\n\n'+
+      resumenProd(o)+'\n💰 Total: *'+(o.monto||'')+'* ('+(o.pago||'contraentrega')+')\n🚚 '+(o.transporte||'Servientrega')+(o.guia?' · Guía: '+o.guia:'')+'\n\n¿Confirmas estos datos? ✅'; } },
+};
+function resumenProd(o){
+  var prods=(o.products&&o.products.length)?o.products:[{nombre:o.producto,cantidad:1}];
+  return prods.map(p=>'• '+(p.nombre||'')+' x'+(p.cantidad||1)+(p.talla&&p.talla!=='Sin talla'?' ('+p.talla+')':'')).join('\n');
+}
+// Plantilla sugerida según el estado de la orden
+function plantillaPorEstado(o){
+  if(o.status==='CONFIRMADO') return o.guia?'despacho':'confirmacion';
+  if(o.status==='EN TRANSITO') return 'despacho';
+  if(o.status==='EN AGENCIA') return 'recordatorio';
+  if(o.status==='ENTREGADO') return 'postventa';
+  if(o.status==='NUEVO') return 'detalle';
+  return 'detalle';
+}
+
+var msgCtx = null; // {orden, tipo}
+function enviarWhatsapp(id, tipoForzado){
+  var o = orders.find(x=>x.id===id);
+  if(!o){ showError('Orden no encontrada'); return; }
+  if(!o.telefono){ showError('Esta orden no tiene teléfono'); return; }
+  msgCtx = { o:o };
+  // Llenar el select de plantillas
+  var sel = document.getElementById('msg-tipo');
+  sel.innerHTML = Object.keys(PLANTILLAS).map(k=>'<option value="'+k+'">'+PLANTILLAS[k].label+'</option>').join('');
+  sel.value = tipoForzado || plantillaPorEstado(o);
+  document.getElementById('msg-dest').textContent = o.cliente||'(sin nombre)';
+  document.getElementById('msg-tel').textContent = '+'+telWA(o.telefono);
+  regenerarMensaje();
+  document.getElementById('modal-mensaje').classList.add('open');
+}
+function regenerarMensaje(){
+  if(!msgCtx) return;
+  var tipo = document.getElementById('msg-tipo').value;
+  var fn = (PLANTILLAS[tipo]||PLANTILLAS.detalle).fn;
+  document.getElementById('msg-texto').value = fn(msgCtx.o, msgCtx.c);
+}
+function abrirWhatsappDesdeModal(){
+  if(!msgCtx) return;
+  var texto = document.getElementById('msg-texto').value;
+  var tel = telWA(msgCtx.o.telefono);
+  window.open('https://wa.me/'+tel+'?text='+encodeURIComponent(texto),'_blank');
+  cerrarModal('modal-mensaje');
+  showToast('WhatsApp abierto — revisa y dale enviar tú');
+}
+function copiarMensaje(){
+  var t = document.getElementById('msg-texto').value;
+  navigator.clipboard.writeText(t).then(()=>showToast('Texto copiado'));
+}
+// Mensaje a un cliente (desde CRM) por teléfono — usa su última orden como contexto
+function mensajearCliente(tel, tipoForzado){
+  var c = agruparClientes()[tel];
+  if(!c){ showError('Cliente no encontrado'); return; }
+  var ultima = c.ordenes[0];
+  msgCtx = { o:ultima, c:c };
+  var sel = document.getElementById('msg-tipo');
+  sel.innerHTML = Object.keys(PLANTILLAS).map(k=>'<option value="'+k+'">'+PLANTILLAS[k].label+'</option>').join('');
+  sel.value = tipoForzado || 'reactivacion';
+  document.getElementById('msg-dest').textContent = c.nombre||'(sin nombre)';
+  document.getElementById('msg-tel').textContent = '+'+telWA(c.telefono);
+  regenerarMensaje();
+  document.getElementById('modal-mensaje').classList.add('open');
+}
+
+// ════════════════════════════════════════════════════════
+//  CRM — CLIENTES (agrupa órdenes por teléfono)
+// ════════════════════════════════════════════════════════
+function agruparClientes(){
+  var map = {};
+  orders.forEach(function(o){
+    var tel = telWA(o.telefono);
+    if(!tel || tel.length<8) return;
+    if(!map[tel]){
+      map[tel] = { telefono:tel, nombre:o.cliente||'', ciudad:o.ciudad||'', ordenes:[],
+        entregadas:0, devueltas:0, enCalle:0, ganancia:0, gastado:0, ultima:null };
+    }
+    var c = map[tel];
+    c.ordenes.push(o);
+    if(o.cliente && !c.nombre) c.nombre=o.cliente;
+    if(o.ciudad && !c.ciudad) c.ciudad=o.ciudad;
+    if(o.status==='ENTREGADO'){ c.entregadas++; c.gastado+=montoNum(o); }
+    if(esDevuelta(o)) c.devueltas++;
+    if(enLaCalle(o)) c.enCalle++;
+    c.ganancia += ordenGanancia(o);
+    var f = new Date(o.createdAt||o.fecha);
+    if(!c.ultima || f>new Date(c.ultima)) c.ultima = o.createdAt||o.fecha;
+  });
+  // Ordenar las órdenes de cada cliente (recientes primero)
+  Object.values(map).forEach(c=>c.ordenes.sort((a,b)=>new Date(b.createdAt||b.fecha)-new Date(a.createdAt||a.fecha)));
+  return map;
+}
+function scoreCliente(c){
+  // VIP: 2+ entregadas y sin devoluciones. Riesgoso: 2+ devoluciones o más devueltas que entregadas
+  if(c.devueltas>=2 || (c.devueltas>c.entregadas && c.devueltas>0)) return {k:'riesgo',txt:'Riesgoso'};
+  if(c.entregadas>=2 && c.devueltas===0) return {k:'vip',txt:'VIP'};
+  if(c.entregadas>=1 && c.devueltas===0) return {k:'bueno',txt:'Bueno'};
+  if(c.devueltas>=1) return {k:'regular',txt:'Regular'};
+  return {k:'regular',txt:'Nuevo'};
+}
+function esRecurrente(c){ return c.ordenes.length>=2; }
+
+var cliSort='ltv';
+function setCliSort(s,btn){
+  cliSort=s;
+  document.querySelectorAll('[id^=cli-sort]').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  renderClientes();
+}
+function renderClientes(){
+  var map = agruparClientes();
+  var arr = Object.values(map);
+  var q = (document.getElementById('cli-search')?.value||'').toLowerCase();
+  if(q) arr = arr.filter(c=>(c.nombre+c.telefono+c.ciudad).toLowerCase().includes(q));
+  // KPIs
+  var total = Object.keys(map).length;
+  var recurrentes = arr.filter(esRecurrente).length;
+  var vips = arr.filter(c=>scoreCliente(c).k==='vip').length;
+  var riesgosos = arr.filter(c=>scoreCliente(c).k==='riesgo').length;
+  document.getElementById('clientes-kpi').innerHTML =
+    '<div class="kpi"><div class="kpi-val">'+total+'</div><div class="kpi-lbl">Clientes únicos</div></div>'+
+    '<div class="kpi kpi-green"><div class="kpi-val">'+recurrentes+'</div><div class="kpi-lbl">Recurrentes (2+)</div><div class="kpi-sub">'+(total?Math.round(recurrentes/total*100):0)+'% recompra</div></div>'+
+    '<div class="kpi"><div class="kpi-val" style="color:#FFB020">'+vips+'</div><div class="kpi-lbl">Clientes VIP</div></div>'+
+    '<div class="kpi"><div class="kpi-val" style="color:var(--red)">'+riesgosos+'</div><div class="kpi-lbl">Riesgosos</div><div class="kpi-sub">2+ devoluciones</div></div>';
+  // Ordenar
+  arr.sort(function(a,b){
+    if(cliSort==='ordenes') return b.ordenes.length-a.ordenes.length;
+    if(cliSort==='reciente') return new Date(b.ultima||0)-new Date(a.ultima||0);
+    if(cliSort==='riesgo') return b.devueltas-a.devueltas || b.ordenes.length-a.ordenes.length;
+    return b.ganancia-a.ganancia; // ltv
+  });
+  var cont = document.getElementById('clientes-list');
+  if(!arr.length){ cont.innerHTML='<div class="empty"><div class="empty-icon">👥</div><p>Sin clientes aún</p></div>'; return; }
+  cont.innerHTML = arr.slice(0,200).map(function(c){
+    var sc = scoreCliente(c);
+    var dias = c.ultima ? daysSince(c.ultima) : null;
+    var inactivo = dias!=null && dias>=45;
+    return '<div class="cli-card">'+
+      '<div class="cli-head">'+
+        '<div><div class="cli-name">'+(c.nombre||'(sin nombre)')+(esRecurrente(c)?'<span class="cli-recurrente">★ Recurrente</span>':'')+'</div>'+
+          '<div class="cli-sub">📞 '+c.telefono+' · 📍 '+(c.ciudad||'—')+(dias!=null?' · última compra hace '+dias+'d':'')+'</div></div>'+
+        '<span class="score-badge score-'+sc.k+'">'+sc.txt+'</span>'+
+      '</div>'+
+      '<div class="cli-stats">'+
+        '<div class="cli-stat"><b>'+c.ordenes.length+'</b>pedidos</div>'+
+        '<div class="cli-stat"><b style="color:var(--green)">'+c.entregadas+'</b>entregados</div>'+
+        '<div class="cli-stat"><b style="color:var(--red)">'+c.devueltas+'</b>devueltos</div>'+
+        '<div class="cli-stat"><b>'+money(c.gastado)+'</b>comprado</div>'+
+        '<div class="cli-stat"><b style="color:'+(c.ganancia>=0?'var(--green)':'var(--red)')+'">'+money(c.ganancia)+'</b>tu ganancia (LTV)</div>'+
+      '</div>'+
+      '<div class="cli-actions">'+
+        '<button class="btn btn-sm" style="background:#25D366;color:#fff;border:none" onclick="mensajearCliente(\''+c.telefono+'\')">💬 Mensaje</button>'+
+        (inactivo?'<button class="btn btn-ghost btn-sm" onclick="mensajearCliente(\''+c.telefono+'\',\'reactivacion\')">🔄 Reactivar</button>':'')+
+        (sc.k==='vip'?'<button class="btn btn-ghost btn-sm" onclick="mensajearCliente(\''+c.telefono+'\',\'vip\')">👑 VIP</button>':'')+
+        '<button class="btn btn-ghost btn-sm" onclick="verOrdenesCliente(\''+c.telefono+'\')">📋 Ver '+c.ordenes.length+' pedido'+(c.ordenes.length>1?'s':'')+'</button>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+function verOrdenesCliente(tel){
+  switchTab('ordenes');
+  var si=document.getElementById('search-input'); if(si){ si.value=tel.replace('593',''); renderOrderList(); }
+}
+// Avisa en el formulario si el teléfono ya tiene historial (VIP / riesgoso)
+function checkClienteHistorial(){
+  var box = document.getElementById('cliente-historial');
+  if(!box) return;
+  var tel = telWA(document.getElementById('telefono').value);
+  if(tel.length<8){ box.style.display='none'; return; }
+  var c = agruparClientes()[tel];
+  if(!c){ box.style.display='none'; return; }
+  var sc = scoreCliente(c);
+  box.style.display='block';
+  if(sc.k==='riesgo'){
+    box.style.background='var(--red-bg)'; box.style.borderColor='var(--red-border)'; box.style.color='var(--red)';
+    box.innerHTML='⚠️ <strong>Cliente RIESGOSO</strong> — '+c.devueltas+' devolución(es) previa(s) de '+c.ordenes.length+' pedidos. Considera pedir anticipo o confirmar muy bien antes de enviar.';
+  } else if(sc.k==='vip'){
+    box.style.background='#2A1A00'; box.style.borderColor='#6B4500'; box.style.color='#FFB020';
+    box.innerHTML='👑 <strong>Cliente VIP</strong> — '+c.entregadas+' compras entregadas, 0 devoluciones. ¡Trátalo excelente!';
+  } else {
+    box.style.background='var(--green-bg)'; box.style.borderColor='var(--green-border)'; box.style.color='var(--green)';
+    box.innerHTML='✅ Cliente conocido — '+c.ordenes.length+' pedido(s) previo(s), '+c.entregadas+' entregados, '+c.devueltas+' devueltos.';
+  }
 }
 
 // ════════════════════════════════════════════════════════
