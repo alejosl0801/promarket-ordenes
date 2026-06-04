@@ -999,6 +999,9 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
     <div class="g1">
       <label>Agencia / Punto de retiro<textarea id="agencia" placeholder="Nombre agencia y dirección..."></textarea></label>
     </div>
+    <div class="g1">
+      <label>Horario de la agencia<input type="text" id="horario" placeholder="09H00 A 13H00 | 14H00 A 18H00"></label>
+    </div>
     <div id="transport-suggestion" style="display:none;margin-top:10px" class="alert-strip yellow"></div>
   </div>
 
@@ -1849,6 +1852,7 @@ function collectFormData(){
     monto: prods.length ? '$'+totalCalc.toFixed(2) : v('monto'),
     entrega: v('entrega'),
     agencia: document.getElementById('agencia').value.trim(),
+    horario: v('horario'),
     createdAt: ts(),
     updatedAt: ts(),
     borrador: false,
@@ -2040,7 +2044,8 @@ async function callGemini(base64, mediaType){
   var prompt = "Analiza esta captura de pantalla de un panel de pedidos y extrae TODOS los datos visibles. " +
     "Devuelve ÚNICAMENTE un JSON válido con esta estructura exacta (sin texto adicional, sin markdown):\n\n" +
     "{\"numero\":\"\",\"cliente\":\"\",\"telefono\":\"\",\"direccion\":\"\",\"ciudad\":\"\",\"provincia\":\"\",\"pais\":\"Ecuador\"," +
-    "\"producto\":\"\",\"cantidad\":\"1\",\"monto\":\"\",\"pago\":\"\",\"transporte\":\"\",\"agencia\":\"\",\"nota\":\"\"}";
+    "\"producto\":\"\",\"cantidad\":\"1\",\"monto\":\"\",\"pago\":\"\",\"transporte\":\"\",\"agencia\":\"\",\"horario\":\"\",\"nota\":\"\"}. " +
+    "Para el campo horario extrae el texto completo de horario de atención de la agencia si aparece (ej: '09H00 A 13H00 | 14H00 A 18H00 | Fines: 09H00 A 13H00').";
   var contents = [{parts:[{inline_data:{mime_type:mediaType,data:base64}},{text:prompt}]}];
   var data = await geminiRequest(key, contents);
   return {ok:true, data};
@@ -2067,7 +2072,7 @@ function verDuplicado(){
 }
 
 function fillForm(d){
-  var fields = ['numero','cliente','telefono','direccion','ciudad','provincia','pais','nota','agencia','guia'];
+  var fields = ['numero','cliente','telefono','direccion','ciudad','provincia','pais','nota','agencia','horario','guia'];
   fields.forEach(id=>{
     var el = document.getElementById(id);
     if(el&&d[id]){ el.value=d[id]; el.classList.add('filled'); }
@@ -2186,7 +2191,8 @@ function buildOrderHtml(d){
       <div style="border:1px solid #DDD;padding:5px 8px"><div style="font-size:7px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Método de pago</div><div style="font-size:11px;font-weight:700">${d.pago||'Contraentrega'}</div></div>
     </div>
     ${d.guia?`<div style="background:#0A0A0A;padding:7px 10px;margin-bottom:5px;display:flex;align-items:center;justify-content:space-between"><div style="font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#888">N° de Guía Servientrega</div><div style="font-size:16px;font-weight:800;color:#E8650A;letter-spacing:1px;font-family:'IBM Plex Sans',Arial,sans-serif">${d.guia}</div></div>`:''}
-    <div style="border:1px solid #DDD;padding:5px 8px;margin-bottom:10px"><div style="font-size:7px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Agencia de retiro</div><div style="font-size:11px">${(d.agencia||'-').replace(/\n/g,'<br>')}</div></div>
+    <div style="border:1px solid #DDD;padding:5px 8px;${d.horario?'':'margin-bottom:10px'}"><div style="font-size:7px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Agencia de retiro</div><div style="font-size:11px">${(d.agencia||'-').replace(/\n/g,'<br>')}</div></div>
+    ${d.horario?`<div style="border:1px solid #DDD;border-top:none;padding:5px 8px;margin-bottom:10px;background:#FFFDF5"><div style="font-size:7px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Horario de atención</div><div style="font-size:11px;font-weight:600">${d.horario}</div></div>`:''}
     <div style="font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;border-bottom:2px solid #000;padding-bottom:3px;margin-bottom:8px">Detalle del pedido</div>
     <table style="width:100%;border-collapse:collapse;margin-bottom:8px">
       <thead><tr style="background:#0A0A0A">
@@ -2405,6 +2411,7 @@ function cargarOrdenEnForm(o){
   document.getElementById('provincia').value = o.provincia||'';
   document.getElementById('pais').value = o.pais||'Ecuador';
   document.getElementById('agencia').value = o.agencia||'';
+  document.getElementById('horario').value = o.horario||'';
   setValSelect('transporte',o.transporte);
   setValSelect('pago',o.pago);
   setValSelect('entrega',o.entrega);
