@@ -2221,14 +2221,14 @@ function buildOrderHtml(d){
     ${hasLado?`<td style="border:1px solid #E0E0E0;padding:4px 7px;text-align:center;font-weight:700">${p.lado||'-'}</td>`:''}
     <td style="border:1px solid #E0E0E0;padding:4px 7px;text-align:right;font-weight:800">$${parseFloat(p.precio||0).toFixed(2)}</td>
   </tr>`).join('');
-  return `<div style="font-family:'IBM Plex Sans',Arial,sans-serif;width:148mm;border:1px solid #000;font-size:10px;color:#000;background:#fff;margin:0 auto">
+  return `<div style="font-family:Arial,Helvetica,sans-serif;width:148mm;border:1px solid #000;font-size:10px;color:#000;background:#fff;margin:0 auto">
   <div style="background:#0A0A0A;padding:8px 12px;display:flex;justify-content:space-between;align-items:center">
     <div>
-      <div style="color:#fff;font-size:20px;font-weight:800;letter-spacing:-0.5px;font-family:'IBM Plex Sans',Arial,sans-serif">PROMARKET</div>
+      <div style="color:#fff;font-size:20px;font-weight:800;letter-spacing:-0.5px;font-family:Arial,Helvetica,sans-serif">PROMARKET</div>
       <div style="color:#E8650A;font-size:7px;font-weight:700;letter-spacing:2.5px;margin-top:1px">ECUADOR</div>
     </div>
     <div style="text-align:right">
-      <div style="color:#E8650A;font-size:22px;font-weight:800;letter-spacing:-1px;font-family:'IBM Plex Sans',Arial,sans-serif">#${d.numero}</div>
+      <div style="color:#E8650A;font-size:22px;font-weight:800;letter-spacing:-1px;font-family:Arial,Helvetica,sans-serif">#${d.numero}</div>
       <div style="color:#666;font-size:7px;margin-top:1px">${d.fecha} · ${now}</div>
     </div>
   </div>
@@ -2255,7 +2255,7 @@ function buildOrderHtml(d){
       <div style="border:1px solid #DDD;padding:3px 6px"><div style="font-size:6px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Modalidad</div><div style="font-size:10px;font-weight:600">${d.entrega||'Retiro en agencia'}</div></div>
       <div style="border:1px solid #DDD;padding:3px 6px"><div style="font-size:6px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Método de pago</div><div style="font-size:10px;font-weight:700">${d.pago||'Contraentrega'}</div></div>
     </div>
-    ${d.guia?`<div style="background:#0A0A0A;padding:5px 8px;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between"><div style="font-size:7px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#888">N° de Guía Servientrega</div><div style="font-size:14px;font-weight:800;color:#E8650A;letter-spacing:1px;font-family:'IBM Plex Sans',Arial,sans-serif">${d.guia}</div></div>`:''}
+    ${d.guia?`<div style="background:#0A0A0A;padding:5px 8px;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between"><div style="font-size:7px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#888">N° de Guía Servientrega</div><div style="font-size:14px;font-weight:800;color:#E8650A;letter-spacing:1px;font-family:Arial,Helvetica,sans-serif">${d.guia}</div></div>`:''}
     <div style="border:1px solid #DDD;padding:3px 6px;${d.horario?'':'margin-bottom:7px'}"><div style="font-size:6px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Agencia de retiro</div><div style="font-size:10px">${(d.agencia||'-').replace(/\n/g,'<br>')}</div></div>
     ${d.horario?`<div style="border:1px solid #DDD;border-top:none;padding:3px 6px;margin-bottom:7px;background:#FFFDF5"><div style="font-size:6px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Horario de atención</div><div style="font-size:10px;font-weight:600">${d.horario}</div></div>`:''}
     <div style="font-size:7px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;border-bottom:2px solid #000;padding-bottom:2px;margin-bottom:5px">Detalle del pedido</div>
@@ -2274,7 +2274,7 @@ function buildOrderHtml(d){
       <div style="width:185px">
         <div style="background:#0A0A0A;padding:7px 11px;display:flex;justify-content:space-between;align-items:center">
           <div style="color:#999;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:1px">Total a cobrar</div>
-          <div style="color:#E8650A;font-size:18px;font-weight:800;font-family:'IBM Plex Sans',Arial,sans-serif">$${totalNum.toFixed(2)}</div>
+          <div style="color:#E8650A;font-size:18px;font-weight:800;font-family:Arial,Helvetica,sans-serif">$${totalNum.toFixed(2)}</div>
         </div>
         <div style="background:#F5F5F5;border:1px solid #DDD;padding:4px 11px;font-size:8px;color:#666;text-align:center;font-weight:700">PAGO CONTRAENTREGA EN AGENCIA</div>
       </div>
@@ -2491,25 +2491,49 @@ function generarOrdenDesdeModal(){
 
 function abrirOrdenEnPestana(o){ descargarPdf(o); }
 
-function descargarPdf(o){
+async function descargarPdf(o){
   var nombre = 'Promarket_Orden_'+(o.numero||'')+'_'+(o.cliente||'').replace(/\s+/g,'_');
-  var tmp = document.createElement('div');
-  tmp.style.cssText = 'position:fixed;left:-9999px;top:0;width:560px;background:#fff';
-  tmp.innerHTML = buildOrderHtml(o);
-  document.body.appendChild(tmp);
+  var overlay = document.getElementById('pdf-overlay');
+  var bar     = document.getElementById('pdf-overlay-bar');
+  var content = document.getElementById('pdf-overlay-content');
+
+  // Renderizar visible en pantalla (iOS requiere elemento en viewport para html2canvas)
+  content.innerHTML = buildOrderHtml(o);
+  bar.style.display = 'none';
+  overlay.style.display = 'block';
+  document.body.style.overflow = 'hidden';
   showToast('Generando PDF…');
-  html2pdf().set({
-    margin: 4,
-    filename: nombre+'.pdf',
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2, useCORS: true, logging: false, backgroundColor: '#fff' },
-    jsPDF: { unit: 'mm', format: 'a5', orientation: 'portrait' }
-  }).from(tmp).save().then(function(){
-    document.body.removeChild(tmp);
-  }).catch(function(e){
-    document.body.removeChild(tmp);
-    showError('Error generando PDF: '+e.message);
-  });
+
+  // Esperar render completo
+  await new Promise(function(r){ setTimeout(r, 400); });
+
+  var el = content.firstElementChild;
+  try {
+    await html2pdf().set({
+      margin: 3,
+      filename: nombre+'.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        logging: false,
+        backgroundColor: '#fff',
+        onclone: function(doc){
+          // Reemplazar fuentes externas por fuentes del sistema en el clon
+          doc.querySelectorAll('[style]').forEach(function(el){
+            el.style.fontFamily = 'Arial,Helvetica,sans-serif';
+          });
+        }
+      },
+      jsPDF: { unit: 'mm', format: 'a5', orientation: 'portrait' }
+    }).from(el).save();
+  } catch(e){
+    showError('Error PDF: '+e.message);
+  } finally {
+    bar.style.display = 'flex';
+    cerrarPdfOverlay();
+  }
 }
 
 function cerrarModal(id){ document.getElementById(id).classList.remove('open'); }
