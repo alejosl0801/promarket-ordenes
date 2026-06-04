@@ -1462,6 +1462,7 @@ var quickFilters  = {};
 var catSort       = 'nombre';
 var currentPage   = 1;
 var PAGE_SIZE     = 25;
+var selectedOrders = new Set();
 
 // ── NUBE (Google Apps Script) — respaldo automático en tu Google ──
 var CLOUD_URL_KEY = 'pm_cloud_url';
@@ -3101,7 +3102,6 @@ function renderVistas(){
     ' <span onclick="eliminarVista('+i+',event)" style="color:var(--red);margin-left:4px">✕</span></span>').join('');
 }
 // ── Selección múltiple / cambio de estado en lote ──
-var selectedOrders = new Set();
 function toggleSelectOrder(id, el){
   if(el.checked) selectedOrders.add(id); else selectedOrders.delete(id);
   refreshBulkBar();
