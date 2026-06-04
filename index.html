@@ -2267,16 +2267,7 @@ function generarOrden(){
 function cerrarPreview(){ document.getElementById('preview-section').style.display='none'; }
 
 function imprimirOrden(){
-  var data = collectFormData();
-  var pt = document.getElementById('print-target');
-  pt.style.display='block';
-  pt.innerHTML = `<style>@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap');
-    *{box-sizing:border-box}body{background:#fff;font-family:'Segoe UI',Arial,sans-serif}</style>
-    ${buildOrderHtml(data)}`;
-  var prevTitle = document.title;
-  document.title = 'Promarket_Orden_' + (data.numero||'') + '_' + (data.cliente||'').replace(/\s+/g,'_');
-  window.print();
-  setTimeout(()=>{ document.title=prevTitle; pt.style.display='none'; pt.innerHTML=''; },500);
+  abrirOrdenEnPestana(collectFormData());
 }
 function imprimirEtiqueta(){
   var data = collectFormData();
@@ -2444,14 +2435,30 @@ function cargarOrdenEnForm(o){
 function generarOrdenDesdeModal(){
   var o = orders.find(x=>x.id===modalOrderId);
   if(!o) return;
-  var pt = document.getElementById('print-target');
-  pt.style.display='block';
-  pt.innerHTML = `<style>@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap');
-    *{box-sizing:border-box}body{background:#fff}</style>${buildOrderHtml(o)}`;
-  var prevTitle = document.title;
-  document.title = 'Promarket_Orden_' + (o.numero||'') + '_' + (o.cliente||'').replace(/\s+/g,'_');
-  window.print();
-  setTimeout(()=>{ document.title=prevTitle; pt.style.display='none'; pt.innerHTML=''; cerrarModal('modal-orden'); },500);
+  abrirOrdenEnPestana(o);
+  cerrarModal('modal-orden');
+}
+
+function abrirOrdenEnPestana(o){
+  var nombre = 'Promarket_Orden_'+(o.numero||'')+'_'+(o.cliente||'').replace(/\s+/g,'_');
+  var html = '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+nombre+'</title>'+
+    '<style>@import url(\'https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap\');'+
+    '*{box-sizing:border-box}body{background:#f0f0f0;display:flex;justify-content:center;padding:20px;font-family:Arial,sans-serif}'+
+    '@media print{body{background:#fff;padding:0}}'+
+    '.save-btn{position:fixed;top:12px;right:12px;background:#E8650A;color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:14px;font-weight:700;cursor:pointer;z-index:999;box-shadow:0 2px 8px rgba(0,0,0,.3)}'+
+    '.save-btn:active{opacity:.8}@media print{.save-btn{display:none}}'+
+    '</style></head><body>'+
+    '<button class="save-btn" onclick="window.print()">🖨 Imprimir / Guardar PDF</button>'+
+    buildOrderHtml(o)+
+    '</body></html>';
+  var blob = new Blob([html], {type:'text/html'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.target = '_blank';
+  a.rel = 'noopener';
+  a.click();
+  setTimeout(()=>URL.revokeObjectURL(url), 10000);
 }
 
 function cerrarModal(id){ document.getElementById(id).classList.remove('open'); }
@@ -2996,13 +3003,7 @@ function editarOrden(id){
 function verOrdenPdf(id){
   var o = orders.find(x=>x.id===id);
   if(!o) return;
-  var pt = document.getElementById('print-target');
-  pt.style.display='block';
-  pt.innerHTML=`<style>*{box-sizing:border-box}body{background:#fff}</style>${buildOrderHtml(o)}`;
-  var prevTitle = document.title;
-  document.title = 'Promarket_Orden_' + (o.numero||'') + '_' + (o.cliente||'').replace(/\s+/g,'_');
-  window.print();
-  setTimeout(()=>{ document.title=prevTitle; pt.style.display='none'; pt.innerHTML=''; },500);
+  abrirOrdenEnPestana(o);
 }
 
 // ════════════════════════════════════════════════════════
