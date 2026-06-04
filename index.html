@@ -643,14 +643,13 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
   .prod-table{min-width:540px}
 }
 @media print{
-  @page{margin:5mm;size:A5 portrait}
+  @page{margin:3mm}
   html,body{background:#fff!important;color:#111!important}
   body > *:not(#pdf-overlay){display:none!important}
   #pdf-overlay{display:block!important;position:static!important;background:#fff!important;padding:0!important}
-  #pdf-overlay > div{padding:0!important}
+  #pdf-overlay > div{padding:0!important;display:block!important}
   #pdf-overlay-bar{display:none!important}
-  .od-head,.od-bar,.od-tbl thead,.od-tot-main,.od-badge,.od-nota,.od-foot,.od-guide
-    {-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #pdf-overlay-content{zoom:0.72;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .label-doc{width:100%;border:none}
   .label-top,.label-prod,.label-guide
     {-webkit-print-color-adjust:exact;print-color-adjust:exact}
