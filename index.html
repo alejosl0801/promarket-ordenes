@@ -2570,7 +2570,7 @@ function descargarPdf(o){
 
   // PRODUCTOS
   sec('DETALLE DEL PEDIDO');
-  var prods=(o.products&&o.products.length)?o.products:[{nombre:o.producto,cantidad:o.cantidad||1,precio:(o.monto||'').replace(/[^0-9.]/g,'')||'0'}];
+  var prods=(o.products&&o.products.length)?o.products.map(function(p){return Object.assign({},p,{nombre:p.nombre&&p.nombre.trim()&&p.nombre!=='-'?p.nombre:(o.producto||'-')});}): [{nombre:o.producto||'-',cantidad:o.cantidad||1,precio:(o.monto||'').replace(/[^0-9.]/g,'')||'0'}];
   var hasTalla=prods.some(function(p){return p.talla&&p.talla.trim()&&p.talla!=='-';});
   var hasLado=prods.some(function(p){return p.lado&&p.lado.trim()&&p.lado!=='-';});
   var cols=[{l:'PRODUCTO',p:hasTalla||hasLado?0.44:0.60,a:'left'}];
