@@ -2142,11 +2142,13 @@ function buildOrderHtml(d){
     'EN AGENCIA':'#78350F','ENTREGADO':'#374151','DEVUELTO':'#991B1B','CANCELADO':'#991B1B'
   };
   var statusBg = statusColors[d.status||'NUEVO']||'#374151';
+  var hasTalla = prods.some(p=>p.talla&&p.talla.trim()&&p.talla!=='-');
+  var hasLado  = prods.some(p=>p.lado&&p.lado.trim()&&p.lado!=='-');
   var prodRows = prods.map((p,i)=>`<tr style="background:${i%2?'#F9F9F9':'#fff'}">
     <td style="border:1px solid #E0E0E0;padding:7px 9px;font-size:12px;font-weight:600">${p.nombre||'-'}</td>
     <td style="border:1px solid #E0E0E0;padding:7px 9px;text-align:center;font-weight:700">${p.cantidad}</td>
-    <td style="border:1px solid #E0E0E0;padding:7px 9px;text-align:center;font-weight:700">${p.talla||'-'}</td>
-    <td style="border:1px solid #E0E0E0;padding:7px 9px;text-align:center;font-weight:700">${p.lado||'-'}</td>
+    ${hasTalla?`<td style="border:1px solid #E0E0E0;padding:7px 9px;text-align:center;font-weight:700">${p.talla||'-'}</td>`:''}
+    ${hasLado?`<td style="border:1px solid #E0E0E0;padding:7px 9px;text-align:center;font-weight:700">${p.lado||'-'}</td>`:''}
     <td style="border:1px solid #E0E0E0;padding:7px 9px;text-align:right;font-weight:800">$${parseFloat(p.precio||0).toFixed(2)}</td>
   </tr>`).join('');
   return `<div style="font-family:'IBM Plex Sans',Arial,sans-serif;width:148mm;min-height:210mm;border:1px solid #000;font-size:10px;color:#000;background:#fff;margin:0 auto">
@@ -2178,19 +2180,20 @@ function buildOrderHtml(d){
       <div style="border:1px solid #DDD;padding:5px 8px"><div style="font-size:7px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">País</div><div style="font-size:11px;font-weight:600">${d.pais||'Ecuador'}</div></div>
     </div>
     <div style="font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;border-bottom:2px solid #000;padding-bottom:3px;margin-bottom:8px">Envío</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:5px">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:5px">
       <div style="border:1px solid #DDD;padding:5px 8px"><div style="font-size:7px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Transportista</div><div style="font-size:11px;font-weight:700">${d.transporte||'SERVIENTREGA'}</div></div>
       <div style="border:1px solid #DDD;padding:5px 8px"><div style="font-size:7px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Modalidad</div><div style="font-size:11px;font-weight:600">${d.entrega||'Retiro en agencia'}</div></div>
+      <div style="border:1px solid #DDD;padding:5px 8px"><div style="font-size:7px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Método de pago</div><div style="font-size:11px;font-weight:700">${d.pago||'Contraentrega'}</div></div>
     </div>
     ${d.guia?`<div style="background:#0A0A0A;padding:7px 10px;margin-bottom:5px;display:flex;align-items:center;justify-content:space-between"><div style="font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#888">N° de Guía Servientrega</div><div style="font-size:16px;font-weight:800;color:#E8650A;letter-spacing:1px;font-family:'IBM Plex Sans',Arial,sans-serif">${d.guia}</div></div>`:''}
     <div style="border:1px solid #DDD;padding:5px 8px;margin-bottom:10px"><div style="font-size:7px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Agencia de retiro</div><div style="font-size:11px">${(d.agencia||'-').replace(/\n/g,'<br>')}</div></div>
     <div style="font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;border-bottom:2px solid #000;padding-bottom:3px;margin-bottom:8px">Detalle del pedido</div>
     <table style="width:100%;border-collapse:collapse;margin-bottom:8px">
       <thead><tr style="background:#0A0A0A">
-        <td style="color:#fff;padding:6px 9px;font-size:8px;font-weight:700;text-transform:uppercase;width:44%">Producto</td>
+        <td style="color:#fff;padding:6px 9px;font-size:8px;font-weight:700;text-transform:uppercase">Producto</td>
         <td style="color:#fff;padding:6px 9px;font-size:8px;font-weight:700;text-align:center;width:10%">Cant.</td>
-        <td style="color:#fff;padding:6px 9px;font-size:8px;font-weight:700;text-align:center;width:14%">Talla</td>
-        <td style="color:#fff;padding:6px 9px;font-size:8px;font-weight:700;text-align:center;width:14%">Lado</td>
+        ${hasTalla?'<td style="color:#fff;padding:6px 9px;font-size:8px;font-weight:700;text-align:center;width:14%">Talla</td>':''}
+        ${hasLado?'<td style="color:#fff;padding:6px 9px;font-size:8px;font-weight:700;text-align:center;width:14%">Lado</td>':''}
         <td style="color:#fff;padding:6px 9px;font-size:8px;font-weight:700;text-align:right;width:18%">Precio</td>
       </tr></thead>
       <tbody>${prodRows}</tbody>
@@ -2249,8 +2252,10 @@ function imprimirOrden(){
   pt.innerHTML = `<style>@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap');
     *{box-sizing:border-box}body{background:#fff;font-family:'Segoe UI',Arial,sans-serif}</style>
     ${buildOrderHtml(data)}`;
+  var prevTitle = document.title;
+  document.title = 'Promarket_Orden_' + (data.numero||'') + '_' + (data.cliente||'').replace(/\s+/g,'_');
   window.print();
-  setTimeout(()=>{ pt.style.display='none'; pt.innerHTML=''; },500);
+  setTimeout(()=>{ document.title=prevTitle; pt.style.display='none'; pt.innerHTML=''; },500);
 }
 function imprimirEtiqueta(){
   var data = collectFormData();
@@ -2421,8 +2426,10 @@ function generarOrdenDesdeModal(){
   pt.style.display='block';
   pt.innerHTML = `<style>@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap');
     *{box-sizing:border-box}body{background:#fff}</style>${buildOrderHtml(o)}`;
+  var prevTitle = document.title;
+  document.title = 'Promarket_Orden_' + (o.numero||'') + '_' + (o.cliente||'').replace(/\s+/g,'_');
   window.print();
-  setTimeout(()=>{ pt.style.display='none'; pt.innerHTML=''; cerrarModal('modal-orden'); },500);
+  setTimeout(()=>{ document.title=prevTitle; pt.style.display='none'; pt.innerHTML=''; cerrarModal('modal-orden'); },500);
 }
 
 function cerrarModal(id){ document.getElementById(id).classList.remove('open'); }
@@ -2969,8 +2976,10 @@ function verOrdenPdf(id){
   var pt = document.getElementById('print-target');
   pt.style.display='block';
   pt.innerHTML=`<style>*{box-sizing:border-box}body{background:#fff}</style>${buildOrderHtml(o)}`;
+  var prevTitle = document.title;
+  document.title = 'Promarket_Orden_' + (o.numero||'') + '_' + (o.cliente||'').replace(/\s+/g,'_');
   window.print();
-  setTimeout(()=>{ pt.style.display='none'; pt.innerHTML=''; },500);
+  setTimeout(()=>{ document.title=prevTitle; pt.style.display='none'; pt.innerHTML=''; },500);
 }
 
 // ════════════════════════════════════════════════════════
