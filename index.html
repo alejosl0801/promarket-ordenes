@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Promarket — Órdenes</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" href="icon-192.png">
 <meta name="theme-color" content="#0E0E0E">
@@ -2491,49 +2491,150 @@ function generarOrdenDesdeModal(){
 
 function abrirOrdenEnPestana(o){ descargarPdf(o); }
 
-async function descargarPdf(o){
-  var nombre = 'Promarket_Orden_'+(o.numero||'')+'_'+(o.cliente||'').replace(/\s+/g,'_');
-  var overlay = document.getElementById('pdf-overlay');
-  var bar     = document.getElementById('pdf-overlay-bar');
-  var content = document.getElementById('pdf-overlay-content');
+function descargarPdf(o){
+  if(!window.jspdf){ showError('jsPDF no cargó aún, intenta de nuevo.'); return; }
+  var doc = new window.jspdf.jsPDF('p','mm','a5');
+  var W=148, M=6, w=136;
+  function rgb(h){ return [parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)]; }
+  function fill(h){ var c=rgb(h); doc.setFillColor(c[0],c[1],c[2]); }
+  function stroke(h){ var c=rgb(h); doc.setDrawColor(c[0],c[1],c[2]); }
+  function color(h){ var c=rgb(h); doc.setTextColor(c[0],c[1],c[2]); }
+  function bold(s){ doc.setFont('helvetica','bold'); doc.setFontSize(s); }
+  function normal(s){ doc.setFont('helvetica','normal'); doc.setFontSize(s); }
 
-  // Renderizar visible en pantalla (iOS requiere elemento en viewport para html2canvas)
-  content.innerHTML = buildOrderHtml(o);
-  bar.style.display = 'none';
-  overlay.style.display = 'block';
-  document.body.style.overflow = 'hidden';
-  showToast('Generando PDF…');
+  var sColors={'NUEVO':'#1A5FA8','CONFIRMADO':'#166534','PREPARADO':'#6D28D9','EN TRANSITO':'#92400E','EN AGENCIA':'#78350F','ENTREGADO':'#374151','DEVUELTO':'#991B1B','CANCELADO':'#991B1B'};
+  var y=0;
 
-  // Esperar render completo
-  await new Promise(function(r){ setTimeout(r, 400); });
+  // HEADER
+  fill('#0A0A0A'); doc.rect(0,0,W,18,'F');
+  color('#ffffff'); bold(17); doc.text('PROMARKET',M,11);
+  color('#E8650A'); normal(6.5); doc.text('ECUADOR',M,15.5);
+  color('#E8650A'); bold(19); doc.text('#'+(o.numero||''),W-M,11,{align:'right'});
+  color('#888888'); normal(6); doc.text((o.fecha||'')+' · '+new Date().toLocaleTimeString('es-EC',{hour:'2-digit',minute:'2-digit'}),W-M,15.5,{align:'right'});
+  y=18;
 
-  var el = content.firstElementChild;
-  try {
-    await html2pdf().set({
-      margin: 3,
-      filename: nombre+'.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: {
-        scale: 2,
-        useCORS: true,
-        allowTaint: true,
-        logging: false,
-        backgroundColor: '#fff',
-        onclone: function(doc){
-          // Reemplazar fuentes externas por fuentes del sistema en el clon
-          doc.querySelectorAll('[style]').forEach(function(el){
-            el.style.fontFamily = 'Arial,Helvetica,sans-serif';
-          });
-        }
-      },
-      jsPDF: { unit: 'mm', format: 'a5', orientation: 'portrait' }
-    }).from(el).save();
-  } catch(e){
-    showError('Error PDF: '+e.message);
-  } finally {
-    bar.style.display = 'flex';
-    cerrarPdfOverlay();
+  // Barra naranja
+  fill('#E8650A'); doc.rect(0,y,W,1.5,'F'); y+=1.5;
+
+  // ESTADO
+  fill('#F5F5F5'); doc.rect(0,y,W,7,'F');
+  color('#666666'); bold(5.5); doc.text('ESTADO DEL PEDIDO',M,y+4.5);
+  var sc=sColors[o.status||'NUEVO']||'#374151'; fill(sc);
+  var st=(o.status||'NUEVO'); bold(5.5); color('#ffffff');
+  var sw=doc.getTextWidth(st)+6; doc.rect(W-M-sw,y+1.5,sw,4,'F');
+  doc.text(st,W-M-sw/2,y+4.5,{align:'center'}); y+=8;
+
+  // Helper título de sección
+  function sec(t){ stroke('#000000'); doc.setLineWidth(0.4); doc.line(M,y+4,M+w,y+4); color('#000000'); bold(6); doc.text(t,M,y+3.5); y+=6; }
+
+  // Helper caja de campo
+  function box(bx,by,bw,bh,lbl,val,fs){
+    stroke('#DDDDDD'); fill('#ffffff'); doc.setLineWidth(0.2); doc.rect(bx,by,bw,bh,'FD');
+    color('#999999'); bold(4.8); doc.text(lbl.toUpperCase(),bx+2,by+3.2);
+    color('#111111'); bold(fs||8);
+    var lines=doc.splitTextToSize(val||'-',bw-4);
+    doc.text(lines[0]||'-',bx+2,by+7.5);
   }
+
+  // DESTINATARIO
+  y+=1; sec('DESTINATARIO');
+  box(M,y,w/2-1,11,'Nombre',o.cliente||'-',8);
+  box(M+w/2+1,y,w/2-1,11,'Teléfono',o.telefono||'-',8);
+  y+=12;
+  box(M,y,w,9,'Dirección',o.direccion||'-',7); y+=10;
+  var cw=(w-2)/3;
+  box(M,y,cw,9,'Ciudad',o.ciudad||'-',7);
+  box(M+cw+1,y,cw,9,'Provincia',o.provincia||'-',7);
+  box(M+(cw+1)*2,y,cw,9,'País',o.pais||'Ecuador',7);
+  y+=11;
+
+  // ENVÍO
+  sec('ENVÍO');
+  box(M,y,cw,9,'Transportista',o.transporte||'Servientrega',6.5);
+  box(M+cw+1,y,cw,9,'Modalidad',o.entrega||'Retiro en agencia',6.5);
+  box(M+(cw+1)*2,y,cw,9,'Método de pago',o.pago||'Contraentrega',6.5);
+  y+=10;
+  if(o.guia){
+    fill('#0A0A0A'); doc.rect(M,y,w,8,'F');
+    color('#888888'); bold(5); doc.text('N° DE GUÍA',M+2,y+4);
+    color('#E8650A'); bold(12); doc.text(o.guia,W-M,y+6,{align:'right'}); y+=9;
+  }
+  box(M,y,w,9,'Agencia de retiro',(o.agencia||'-').replace(/\n/g,' '),6.5); y+=10;
+  if(o.horario){
+    fill('#FFFDF5'); stroke('#DDDDDD'); doc.rect(M,y,w,8,'FD');
+    color('#999999'); bold(4.8); doc.text('HORARIO DE ATENCIÓN',M+2,y+3.2);
+    color('#111111'); bold(6.5); doc.text(o.horario,M+2,y+7); y+=9;
+  }
+  y+=1;
+
+  // PRODUCTOS
+  sec('DETALLE DEL PEDIDO');
+  var prods=(o.products&&o.products.length)?o.products:[{nombre:o.producto,cantidad:o.cantidad||1,precio:(o.monto||'').replace(/[^0-9.]/g,'')||'0'}];
+  var hasTalla=prods.some(function(p){return p.talla&&p.talla.trim()&&p.talla!=='-';});
+  var hasLado=prods.some(function(p){return p.lado&&p.lado.trim()&&p.lado!=='-';});
+  var cols=[{l:'PRODUCTO',p:hasTalla||hasLado?0.44:0.60,a:'left'}];
+  cols.push({l:'CANT.',p:0.10,a:'center'});
+  if(hasTalla) cols.push({l:'TALLA',p:0.12,a:'center'});
+  if(hasLado)  cols.push({l:'LADO',p:0.12,a:'center'});
+  cols.push({l:'PRECIO',p:hasTalla||hasLado?0.22:0.30,a:'right'});
+  var cx=M;
+  cols.forEach(function(c){c.x=cx;c.w=w*c.p;cx+=c.w;});
+
+  // Header tabla
+  fill('#0A0A0A'); doc.rect(M,y,w,6,'F');
+  color('#ffffff'); bold(5.5);
+  cols.forEach(function(c){
+    if(c.a==='right') doc.text(c.l,c.x+c.w-2,y+4,{align:'right'});
+    else if(c.a==='center') doc.text(c.l,c.x+c.w/2,y+4,{align:'center'});
+    else doc.text(c.l,c.x+2,y+4);
+  }); y+=6;
+
+  var totalNum=0;
+  prods.forEach(function(p,i){
+    var rh=9; fill(i%2?'#F9F9F9':'#ffffff'); stroke('#DDDDDD'); doc.rect(M,y,w,rh,'FD');
+    var pr=parseFloat(p.precio||0), ca=parseInt(p.cantidad||1); totalNum+=pr*ca;
+    color('#111111'); bold(6.5);
+    cols.forEach(function(c){
+      var v='-';
+      if(c.l==='PRODUCTO'){v=(p.nombre||'-');bold(6.5);}
+      else if(c.l==='CANT.') v=String(ca);
+      else if(c.l==='TALLA') v=p.talla||'-';
+      else if(c.l==='LADO')  v=p.lado||'-';
+      else if(c.l==='PRECIO'){v='$'+pr.toFixed(2);color('#E8650A');}
+      var lines=doc.splitTextToSize(v,c.w-4);
+      if(c.a==='right') doc.text(lines[0],c.x+c.w-2,y+5.5,{align:'right'});
+      else if(c.a==='center') doc.text(lines[0],c.x+c.w/2,y+5.5,{align:'center'});
+      else doc.text(lines[0],c.x+2,y+5.5);
+      color('#111111');
+    }); y+=rh;
+  });
+  if(totalNum===0&&o.monto) totalNum=parseFloat((o.monto+'').replace(/[^0-9.]/g,''))||0;
+
+  // Nota
+  if(o.nota){
+    y+=2; fill('#FFF8F0'); stroke('#E8650A'); doc.setLineWidth(0.6);
+    doc.rect(M,y,w,9,'FD'); doc.setLineWidth(0.2);
+    color('#E8650A'); bold(5.5); doc.text('SOLICITUD ESPECIAL',M+2,y+3.5);
+    color('#111111'); normal(6.5); doc.text(doc.splitTextToSize(o.nota,w-4)[0],M+2,y+7.5); y+=10;
+  }
+
+  // TOTAL
+  y+=3; var tw=65;
+  fill('#0A0A0A'); doc.rect(W-M-tw,y,tw,11,'F');
+  color('#999999'); bold(6); doc.text('TOTAL A COBRAR',W-M-tw+3,y+5);
+  color('#E8650A'); bold(16); doc.text('$'+totalNum.toFixed(2),W-M,y+9.5,{align:'right'});
+  y+=12;
+  fill('#F5F5F5'); stroke('#DDDDDD'); doc.rect(W-M-tw,y,tw,6,'FD');
+  color('#666666'); bold(5.5); doc.text('PAGO CONTRAENTREGA EN AGENCIA',W-M-tw/2,y+4,{align:'center'});
+  y+=8;
+
+  // FOOTER
+  fill('#0A0A0A'); doc.rect(0,y,W,8,'F');
+  color('#555555'); bold(5.5); doc.text('PROMARKET ECUADOR',M,y+5);
+  color('#E8650A'); doc.text('ORDEN #'+(o.numero||'')+' · '+(o.fecha||''),W/2,y+5,{align:'center'});
+  color('#555555'); doc.text('SERVIENTREGA · COD',W-M,y+5,{align:'right'});
+
+  doc.save('Promarket_Orden_'+(o.numero||'')+'_'+(o.cliente||'').replace(/\s+/g,'_')+'.pdf');
 }
 
 function cerrarModal(id){ document.getElementById(id).classList.remove('open'); }
