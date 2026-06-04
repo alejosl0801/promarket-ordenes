@@ -643,16 +643,15 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
   .prod-table{min-width:540px}
 }
 @media print{
-  @page{margin:3mm}
+  @page{margin:5mm}
   html,body{background:#fff!important;color:#111!important}
   body > *:not(#pdf-overlay){display:none!important}
-  #pdf-overlay{display:block!important;position:static!important;background:#fff!important;padding:0!important}
-  #pdf-overlay > div{padding:0!important;display:block!important}
-  #pdf-overlay-bar{display:none!important}
-  #pdf-overlay-content{zoom:0.72;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #pdf-overlay{display:block!important;position:static!important;background:#fff!important;padding:0!important;overflow:visible!important}
+  #pdf-overlay-bar{display:none!important;height:0!important;overflow:hidden!important;visibility:hidden!important}
+  #pdf-overlay > div:last-child{padding:0!important;display:block!important}
+  #pdf-overlay-content{-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .label-doc{width:100%;border:none}
-  .label-top,.label-prod,.label-guide
-    {-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .label-top,.label-prod,.label-guide{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
 
 /* ── MEJORAS ─────────────────────────────────── */
@@ -728,7 +727,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 <div id="pdf-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#e8e8e8;z-index:99999;overflow-y:auto;-webkit-overflow-scrolling:touch">
   <div id="pdf-overlay-bar" style="display:flex;gap:8px;padding:10px 12px;background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:1">
     <button onclick="cerrarPdfOverlay()" style="background:var(--bg4);color:var(--white);border:1px solid var(--border2);padding:9px 14px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer">✕ Cerrar</button>
-    <button onclick="window.print()" style="background:#E8650A;color:#fff;border:none;padding:9px 0;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;flex:1">🖨 Guardar como PDF / Imprimir</button>
+    <button onclick="imprimirDesdeOverlay()" style="background:#E8650A;color:#fff;border:none;padding:9px 0;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;flex:1">🖨 Guardar como PDF / Imprimir</button>
   </div>
   <div style="display:flex;justify-content:center;padding:16px">
     <div id="pdf-overlay-content"></div>
@@ -2498,6 +2497,20 @@ function cerrarPdfOverlay(){
   document.getElementById('pdf-overlay').style.display = 'none';
   document.getElementById('pdf-overlay-content').innerHTML = '';
   document.body.style.overflow = '';
+}
+function imprimirDesdeOverlay(){
+  var bar = document.getElementById('pdf-overlay-bar');
+  // Ocultar barra via JS antes de imprimir (iOS ignora display:none en @media print)
+  bar.style.cssText = 'display:none!important;height:0;overflow:hidden;padding:0;margin:0;visibility:hidden';
+  var wrap = bar.nextElementSibling;
+  if(wrap) wrap.style.padding = '0';
+  setTimeout(function(){
+    window.print();
+    setTimeout(function(){
+      bar.style.cssText = 'display:flex;gap:8px;padding:10px 12px;background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:1';
+      if(wrap) wrap.style.padding = '16px';
+    }, 1000);
+  }, 80);
 }
 
 function cerrarModal(id){ document.getElementById(id).classList.remove('open'); }
