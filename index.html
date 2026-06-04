@@ -1912,6 +1912,8 @@ function collectFormData(){
 function guardarOrden(){
   var data = collectFormData();
   if(!data.cliente && !data.numero){ showError('Completa al menos el nombre del cliente.'); return; }
+  var totalProd = data.products.reduce(function(s,p){ return s+(parseFloat(p.precio)||0)*(parseInt(p.cantidad)||1); },0);
+  if(totalProd === 0 && !confirm('⚠️ El monto del pedido es $0.00. ¿Guardar igual?\n(Puedes editar el precio después)')) return;
   // Freno: si el teléfono está marcado, lógica según nivel (#7,8,9,10)
   var mk = buscarMarcado(data.telefono);
   if(mk && !orders.some(function(o){ return o.id===data.id; })){
@@ -2091,11 +2093,22 @@ async function geminiRequest(key, contents){
 
 async function callGemini(base64, mediaType){
   var key = getGeminiKey();
-  var prompt = "Analiza esta captura de pantalla de un panel de pedidos y extrae TODOS los datos visibles. " +
-    "Devuelve ÚNICAMENTE un JSON válido con esta estructura exacta (sin texto adicional, sin markdown):\n\n" +
+  var prompt = "Analiza esta captura de pantalla de un panel de pedidos (puede ser Rocket-e u otro sistema) y extrae TODOS los datos visibles.\n" +
+    "Devuelve ÚNICAMENTE un JSON válido con esta estructura exacta (sin texto adicional, sin markdown, sin bloque de código):\n\n" +
     "{\"numero\":\"\",\"cliente\":\"\",\"telefono\":\"\",\"direccion\":\"\",\"ciudad\":\"\",\"provincia\":\"\",\"pais\":\"Ecuador\"," +
-    "\"producto\":\"\",\"cantidad\":\"1\",\"monto\":\"\",\"pago\":\"\",\"transporte\":\"\",\"agencia\":\"\",\"horario\":\"\",\"nota\":\"\"}. " +
-    "Para el campo horario extrae el texto completo de horario de atención de la agencia si aparece (ej: '09H00 A 13H00 | 14H00 A 18H00 | Fines: 09H00 A 13H00').";
+    "\"producto\":\"\",\"cantidad\":\"1\",\"precio\":\"\",\"monto\":\"\",\"pago\":\"\",\"transporte\":\"\",\"agencia\":\"\",\"horario\":\"\",\"nota\":\"\"}\n\n" +
+    "Reglas importantes:\n" +
+    "- 'numero': número de pedido/orden (ej: 146271)\n" +
+    "- 'producto': nombre completo del producto\n" +
+    "- 'cantidad': número de unidades (ej: 2)\n" +
+    "- 'precio': precio UNITARIO del producto (si hay varios, divide el total entre cantidad)\n" +
+    "- 'monto': total que PAGA el cliente = 'Importe reembolso' o 'Total a cobrar' (incluye envío)\n" +
+    "- 'pago': método de pago (ej: Contraentrega)\n" +
+    "- 'transporte': empresa de envío (ej: Servientrega)\n" +
+    "- 'agencia': nombre y dirección de la agencia de retiro\n" +
+    "- 'horario': horario de atención de la agencia si aparece\n" +
+    "- 'nota': notas especiales del pedido\n" +
+    "Si un campo no está visible, déjalo como cadena vacía.";
   var contents = [{parts:[{inline_data:{mime_type:mediaType,data:base64}},{text:prompt}]}];
   var data = await geminiRequest(key, contents);
   return {ok:true, data};
@@ -2189,7 +2202,7 @@ function showConfidence(d){
 //  GENERATE ORDER PDF
 // ════════════════════════════════════════════════════════
 function buildOrderHtml(d){
-  var prods = d.products||[{nombre:d.producto,cantidad:d.cantidad||1,precio:(d.monto||'').replace(/[^0-9.]/g,'')||'0',talla:d.talla||'',lado:d.lado||''}];
+  var prods = (d.products && d.products.length) ? d.products : [{nombre:d.producto,cantidad:d.cantidad||1,precio:(d.monto||'').replace(/[^0-9.]/g,'')||'0',talla:d.talla||'',lado:d.lado||''}];
   var totalNum = prods.reduce((s,p)=>s+(parseFloat(p.precio)||0)*(parseInt(p.cantidad)||1),0);
   var now = new Date().toLocaleString('es-EC',{hour:'2-digit',minute:'2-digit'});
   var statusColors = {
