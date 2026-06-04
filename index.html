@@ -738,6 +738,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
     <button class="dark-toggle" onclick="exportarJSON()" title="Backup JSON">⬇ JSON</button>
     <label class="dark-toggle" style="cursor:pointer" title="Restaurar backup">⬆ JSON<input type="file" accept=".json" style="display:none" onchange="importarJSON(this)"></label>
     <button class="dark-toggle" onclick="toggleTheme()">☀️ Claro</button>
+    <button class="dark-toggle" id="btn-papelera" onclick="abrirModalPapelera()" style="border-color:var(--border2);color:var(--muted2)" title="Papelera de reciclaje">🗑</button>
     <button class="dark-toggle" id="btn-nube" onclick="abrirModalNube()" style="border-color:var(--border2);color:var(--muted2)" title="Configurar respaldo en la nube">☁️ Nube</button>
     <button class="dark-toggle" id="btn-apikey" onclick="abrirModalApiKey()" style="border-color:#F97316;color:#F97316">🔑 API Key</button>
   </div>
@@ -1283,6 +1284,16 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
   </div>
 </div>
 
+<!-- ══════════ MODAL PAPELERA ══════════ -->
+<div class="modal-bg" id="modal-papelera">
+  <div class="modal" style="max-width:520px">
+    <button class="modal-close" onclick="cerrarModal('modal-papelera')">✕</button>
+    <div class="modal-title">🗑 Papelera de reciclaje</div>
+    <p style="font-size:12px;color:var(--muted2);margin-bottom:12px">Las órdenes eliminadas se guardan aquí 24 horas. Después se borran automáticamente.</p>
+    <div id="papelera-body"></div>
+  </div>
+</div>
+
 <!-- ══════════ MODAL ORDEN ══════════ -->
 <div class="modal-bg" id="modal-orden">
   <div class="modal">
@@ -1296,6 +1307,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
       <button class="btn btn-dark btn-sm" onclick="generarOrdenDesdeModal()">📄 PDF</button>
       <button class="btn btn-dark btn-sm" onclick="imprimirEtiquetaModal()">🏷️ Etiqueta</button>
       <button class="btn btn-ghost btn-sm" onclick="duplicarOrden(modalOrderId)">⧉ Duplicar</button>
+      <button class="btn btn-ghost btn-sm" style="color:var(--red)" onclick="cerrarModal('modal-orden');eliminarOrden(modalOrderId)">🗑 Eliminar</button>
     </div>
   </div>
 </div>
@@ -1422,6 +1434,8 @@ var orders   = JSON.parse(localStorage.getItem(STORAGE_KEY)  || '[]');
 var catalog  = JSON.parse(localStorage.getItem(CATALOG_KEY)  || '[]');
 var campanas = JSON.parse(localStorage.getItem(CAMP_KEY)     || '[]');
 var marcados = JSON.parse(localStorage.getItem(MARCADOS_KEY) || '[]');
+var PAPELERA_KEY = 'pm_papelera_v1';
+var papelera = JSON.parse(localStorage.getItem(PAPELERA_KEY) || '[]');
 var marcadoFiltro = 'todos';
 // Marcados v2 — labels de nivel
 var MARCADO_NIVEL_LBL = { vigilado:'🟡 Vigilado', bloqueado:'🔴 Bloqueado', anticipo:'🟠 Anticipo' };
@@ -1499,6 +1513,7 @@ document.getElementById('fecha').valueAsDate = new Date();
 initProdRows();
 renderAll();
 
+purgePapelera();
 // Nube: si ya está conectada, carga los datos más recientes desde tu Google.
 (function initNube(){
   if(cloudUrl){ setCloudStatus('sync'); loadFromCloud(false); }
@@ -2854,6 +2869,7 @@ function renderOrderList(){
           <button class="btn btn-ghost btn-sm" style="padding:4px 8px" onclick="verOrdenPdf('${o.id}')">📄</button>
           <button class="btn btn-ghost btn-sm" style="padding:4px 8px;color:${o.guia?'var(--green)':'var(--orange)'}" title="${o.guia?'Guía: '+o.guia:'Registrar guía'}" onclick="abrirModalGuia('${o.id}')">🚚</button>
           <button class="btn btn-ghost btn-sm" style="padding:4px 8px;color:#25D366" title="Enviar WhatsApp" onclick="event.stopPropagation();enviarWhatsapp('${o.id}')">💬</button>
+          <button class="btn btn-ghost btn-sm" style="padding:4px 8px;color:var(--red)" title="Eliminar orden" onclick="event.stopPropagation();eliminarOrden('${o.id}')">🗑</button>
         </div>
       </td>
     </tr>`;
@@ -3834,6 +3850,7 @@ function loadFromCloud(forzar){
       if(Array.isArray(data.catalogo)){ catalog=data.catalogo;   localStorage.setItem(CATALOG_KEY, JSON.stringify(catalog)); }
       if(Array.isArray(data.campanas)){ campanas=data.campanas;  localStorage.setItem(CAMP_KEY, JSON.stringify(campanas)); }
       if(Array.isArray(data.marcados)){ marcados=data.marcados;  localStorage.setItem(MARCADOS_KEY, JSON.stringify(marcados)); }
+      if(Array.isArray(data.papelera)){ papelera=data.papelera; localStorage.setItem(PAPELERA_KEY, JSON.stringify(papelera)); }
       _cliCache=null; _cloudLoading=false;
       renderAll();
       if(document.getElementById('panel-dashboard') && document.getElementById('panel-dashboard').classList.contains('active')) renderDashboard();
@@ -3848,7 +3865,7 @@ function saveToCloud(){
   clearTimeout(_cloudTimer);
   setCloudStatus('sync');
   _cloudTimer = setTimeout(function(){
-    var payload = JSON.stringify({ ordenes:orders, catalogo:catalog, campanas:campanas, marcados:marcados, exportado:new Date().toISOString() });
+    var payload = JSON.stringify({ ordenes:orders, catalogo:catalog, campanas:campanas, marcados:marcados, papelera:papelera, exportado:new Date().toISOString() });
     fetch(cloudUrl, {method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain'}, body:payload})
       .then(function(){ setCloudStatus('ok'); })
       .catch(function(){ setCloudStatus('error'); });
@@ -4136,6 +4153,71 @@ var MARCADO_LBL = {
   sospechoso:'⚠️ Sospechoso / represalia'
 };
 function saveMarcados(){ localStorage.setItem(MARCADOS_KEY, JSON.stringify(marcados)); saveToCloud(); }
+function savePapelera(){ localStorage.setItem(PAPELERA_KEY, JSON.stringify(papelera)); }
+function eliminarOrden(id){
+  event && event.stopPropagation && event.stopPropagation();
+  var idx = orders.findIndex(function(o){ return o.id===id; });
+  if(idx<0) return;
+  if(!confirm('¿Mover esta orden a la papelera?\nPodrás restaurarla en las próximas 24 horas.')) return;
+  var o = orders.splice(idx,1)[0];
+  o._deletedAt = new Date().toISOString();
+  papelera.unshift(o);
+  savePapelera();
+  saveOrders();
+  renderAll();
+  showToast('Orden #'+o.numero+' eliminada', 'Restaurar', function(){ restaurarOrden(o.id); });
+}
+function restaurarOrden(id){
+  var idx = papelera.findIndex(function(o){ return o.id===id; });
+  if(idx<0){ showError('No se encontró la orden en la papelera.'); return; }
+  var o = papelera.splice(idx,1)[0];
+  delete o._deletedAt;
+  orders.unshift(o);
+  savePapelera();
+  saveOrders();
+  renderAll();
+  cerrarModal('modal-papelera');
+  showSuccess('Orden #'+o.numero+' restaurada ✅');
+}
+function eliminarDefinitivo(id){
+  if(!confirm('¿Eliminar definitivamente? Esta acción NO se puede deshacer.')) return;
+  papelera = papelera.filter(function(o){ return o.id!==id; });
+  savePapelera();
+  renderPapelera();
+}
+function purgePapelera(){
+  var now = Date.now();
+  papelera = papelera.filter(function(o){
+    return !o._deletedAt || (now - new Date(o._deletedAt).getTime()) < 24*3600*1000;
+  });
+  savePapelera();
+}
+function abrirModalPapelera(){
+  purgePapelera();
+  renderPapelera();
+  document.getElementById('modal-papelera').classList.add('open');
+}
+function renderPapelera(){
+  var cont = document.getElementById('papelera-body');
+  if(!papelera.length){
+    cont.innerHTML='<div style="text-align:center;padding:30px;color:var(--muted2)">La papelera está vacía</div>';
+    return;
+  }
+  cont.innerHTML = papelera.map(function(o){
+    var horasRestantes = o._deletedAt ? Math.max(0, Math.round((24*3600*1000-(Date.now()-new Date(o._deletedAt).getTime()))/3600000)) : 24;
+    return '<div style="border:1px solid var(--border2);border-radius:8px;padding:10px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center">'+
+      '<div>'+
+        '<div style="font-weight:700;font-size:14px">#'+o.numero+' — '+(o.cliente||'-')+'</div>'+
+        '<div style="font-size:12px;color:var(--muted2)">'+(o.producto||'-')+' · '+(o.ciudad||'-')+'</div>'+
+        '<div style="font-size:11px;color:var(--red);margin-top:3px">⏳ Se elimina en '+horasRestantes+'h</div>'+
+      '</div>'+
+      '<div style="display:flex;gap:6px">'+
+        '<button class="btn btn-sm" style="background:var(--green);color:#fff;border:none" onclick="restaurarOrden(\''+o.id+'\')">↩ Restaurar</button>'+
+        '<button class="btn btn-ghost btn-sm" style="color:var(--red)" onclick="eliminarDefinitivo(\''+o.id+'\')">🗑 Borrar</button>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
 // Busca un número en la lista (normalizado). Devuelve la entrada o null.
 function buscarMarcado(telOEntrada){
   var t = telWA(telOEntrada||'');
