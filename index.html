@@ -1738,11 +1738,12 @@ function addProdRow(data){
     <td style="font-weight:700;color:var(--green)" class="subtotal">$0.00</td>
     <td><button class="prod-remove" onclick="this.closest('tr').remove();calcTotal()">✕</button></td>`;
   tbody.appendChild(row);
-  if(data?.producto){
+  var _pname = data?.nombre || data?.producto;
+  if(_pname){
     var sel = row.querySelector('select');
-    var found = [...sel.options].find(o=>o.value===data.producto);
-    if(found){ sel.value=data.producto; }
-    else{ sel.value='__custom__'; onProdSelect(sel,data.producto); }
+    var found = [...sel.options].find(o=>o.value===_pname);
+    if(found){ sel.value=_pname; }
+    else{ sel.value='__custom__'; onProdSelect(sel,_pname); }
   }
   // Restaurar talla y lado al editar una orden existente
   var selsRow = row.querySelectorAll('select');
@@ -2477,7 +2478,7 @@ function cargarOrdenEnForm(o){
   // products
   var tbody = document.getElementById('prod-rows');
   tbody.innerHTML='';
-  var prods = o.products||[{nombre:o.producto,cantidad:1,precio:(o.monto||'').replace(/[^0-9.]/g,''),talla:'',lado:''}];
+  var prods = (o.products&&o.products.length)?o.products:[{nombre:o.producto,cantidad:1,precio:(o.monto||'').replace(/[^0-9.]/g,''),talla:'',lado:''}];
   prods.forEach(p=>addProdRow(p));
   calcTotal();
   updateGuiaLink();
