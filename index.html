@@ -1645,7 +1645,7 @@ function updateGuiaLink(){
     var transport = document.getElementById('transporte').value;
     var url = '#';
     if(transport.toLowerCase().includes('servientrega'))
-      url = 'https://www.servientrega.com.ec/wps/portal/inicio/Guias/ConsultaGuia?guia='+encodeURIComponent(g);
+      url = 'https://servientrega.com.ec/Tracking/Index/?guia='+encodeURIComponent(g);
     else if(transport.toLowerCase().includes('laar'))
       url = 'https://www.laarcourier.com/consulta-guias?guia='+encodeURIComponent(g);
     else if(transport.toLowerCase().includes('tramaco'))
@@ -2348,7 +2348,7 @@ function abrirModalOrden(id){
     <div class="od-f" style="background:var(--bg4);border-color:var(--border2);margin-bottom:10px"><div class="lbl" style="color:var(--muted2)">Dirección</div><div class="val" style="color:var(--white)">${o.direccion}</div></div>
     <div class="od-g2" style="margin-bottom:10px">
       <div class="od-f" style="background:var(--bg4);border-color:var(--border2)"><div class="lbl" style="color:var(--muted2)">Transporte</div><div class="val" style="color:var(--white)">${o.transporte}</div></div>
-      <div class="od-f" style="background:var(--bg4);border-color:var(--border2)"><div class="lbl" style="color:var(--muted2)">Guía</div><div class="val" style="color:var(--blue);font-weight:800">${o.guia||'-'}</div></div>
+      <div class="od-f" style="background:var(--bg4);border-color:var(--border2)"><div class="lbl" style="color:var(--muted2)">Guía</div><div class="val" style="color:var(--blue);font-weight:800">${o.guia?`<a href="https://servientrega.com.ec/Tracking/Index/?guia=${encodeURIComponent(o.guia)}" target="_blank" style="color:var(--blue);text-decoration:none">${o.guia} 🔍</a>`:'-'}</div></div>
     </div>
     <div style="font-size:12px;color:var(--muted2)">
       ${prods.map(p=>{var cat=prodMatch(p.nombre);return `<div style="padding:6px 0;border-bottom:1px solid var(--border)">
@@ -2859,7 +2859,7 @@ function renderOrderList(){
       <td class="td-prod">${o.producto||''}</td>
       <td>${o.ciudad||'-'}</td>
       <td style="font-size:12px">${o.transporte||'-'}</td>
-      <td style="font-size:12px;color:var(--blue);font-weight:700">${guiaDot}${o.guia||'-'}</td>
+      <td style="font-size:12px;color:var(--blue);font-weight:700" onclick="event.stopPropagation()">${guiaDot}${o.guia?`<a href="https://servientrega.com.ec/Tracking/Index/?guia=${encodeURIComponent(o.guia)}" target="_blank" style="color:var(--blue);text-decoration:none">${o.guia}</a>`:'-'}</td>
       <td>${pillHtml(o.status)}</td>
       <td><span class="days-badge ${daysCls}">${daysInState}d</span></td>
       <td class="td-monto">${o.monto||'-'}</td>
