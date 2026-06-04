@@ -645,8 +645,9 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 @media print{
   @page{margin:8mm;size:A4}
   html,body{background:#fff!important;color:#111!important}
-  nav,.tabs,.wrap > *:not(#print-target){display:none!important}
-  #print-target{display:block!important}
+  body > *:not(#pdf-overlay){display:none!important}
+  #pdf-overlay{display:block!important;position:static!important;background:#fff!important;padding:0!important}
+  #pdf-overlay-bar{display:none!important}
   .od-head,.od-bar,.od-tbl thead,.od-tot-main,.od-badge,.od-nota,.od-foot,.od-guide
     {-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .label-doc{width:100%;border:none}
@@ -722,6 +723,17 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 <button class="back-top" id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <div id="print-target" style="display:none"></div>
+
+<!-- PDF overlay — funciona en iOS PWA sin popup bloqueado -->
+<div id="pdf-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#e8e8e8;z-index:99999;overflow-y:auto;-webkit-overflow-scrolling:touch">
+  <div id="pdf-overlay-bar" style="display:flex;gap:8px;padding:10px 12px;background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:1">
+    <button onclick="cerrarPdfOverlay()" style="background:var(--bg4);color:var(--white);border:1px solid var(--border2);padding:9px 14px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer">✕ Cerrar</button>
+    <button onclick="window.print()" style="background:#E8650A;color:#fff;border:none;padding:9px 0;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;flex:1">🖨 Guardar como PDF / Imprimir</button>
+  </div>
+  <div style="display:flex;justify-content:center;padding:16px">
+    <div id="pdf-overlay-content"></div>
+  </div>
+</div>
 
 <nav>
   <div class="nav-left">
@@ -1514,6 +1526,28 @@ initProdRows();
 renderAll();
 
 purgePapelera();
+
+// Restaurar la pestaña activa al recargar
+(function(){
+  var last = sessionStorage.getItem('pm_tab');
+  if(last && last !== 'nueva') switchTab(last);
+})();
+
+// Pull-to-refresh: deslizar hacia abajo desde el tope sincroniza la nube
+(function(){
+  var startY = 0;
+  document.addEventListener('touchstart', function(e){
+    if(window.scrollY === 0) startY = e.touches[0].clientY;
+  }, {passive:true});
+  document.addEventListener('touchend', function(e){
+    if(startY && e.changedTouches[0].clientY - startY > 90){
+      if(cloudUrl){ showToast('Sincronizando con la nube…'); loadFromCloud(true); }
+      else showToast('Conecta la nube (☁️) para sincronizar');
+    }
+    startY = 0;
+  }, {passive:true});
+})();
+
 // Nube: si ya está conectada, carga los datos más recientes desde tu Google.
 (function initNube(){
   if(cloudUrl){ setCloudStatus('sync'); loadFromCloud(false); }
@@ -1583,6 +1617,7 @@ function switchTab(name){
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===name));
   document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id==='panel-'+name));
   window.scrollTo({top:0,behavior:'smooth'});
+  sessionStorage.setItem('pm_tab', name);
   if(name==='dashboard') renderDashboard();
   if(name==='ordenes')   renderOrderList();
   if(name==='kanban')    renderKanban();
@@ -2440,25 +2475,14 @@ function generarOrdenDesdeModal(){
 }
 
 function abrirOrdenEnPestana(o){
-  var nombre = 'Promarket_Orden_'+(o.numero||'')+'_'+(o.cliente||'').replace(/\s+/g,'_');
-  var html = '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+nombre+'</title>'+
-    '<style>@import url(\'https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap\');'+
-    '*{box-sizing:border-box}body{background:#f0f0f0;display:flex;justify-content:center;padding:20px;font-family:Arial,sans-serif}'+
-    '@media print{body{background:#fff;padding:0}}'+
-    '.save-btn{position:fixed;top:12px;right:12px;background:#E8650A;color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:14px;font-weight:700;cursor:pointer;z-index:999;box-shadow:0 2px 8px rgba(0,0,0,.3)}'+
-    '.save-btn:active{opacity:.8}@media print{.save-btn{display:none}}'+
-    '</style></head><body>'+
-    '<button class="save-btn" onclick="window.print()">🖨 Imprimir / Guardar PDF</button>'+
-    buildOrderHtml(o)+
-    '</body></html>';
-  var blob = new Blob([html], {type:'text/html'});
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement('a');
-  a.href = url;
-  a.target = '_blank';
-  a.rel = 'noopener';
-  a.click();
-  setTimeout(()=>URL.revokeObjectURL(url), 10000);
+  document.getElementById('pdf-overlay-content').innerHTML = buildOrderHtml(o);
+  document.getElementById('pdf-overlay').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+function cerrarPdfOverlay(){
+  document.getElementById('pdf-overlay').style.display = 'none';
+  document.getElementById('pdf-overlay-content').innerHTML = '';
+  document.body.style.overflow = '';
 }
 
 function cerrarModal(id){ document.getElementById(id).classList.remove('open'); }
