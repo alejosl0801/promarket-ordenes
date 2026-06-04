@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Promarket — Órdenes</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" href="icon-192.png">
 <meta name="theme-color" content="#0E0E0E">
@@ -1029,7 +1030,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
     <div class="prev-toolbar">
       <p>Vista previa lista — usa <strong style="color:var(--white)">"Guardar como PDF"</strong> en el diálogo de impresión</p>
       <div class="btn-row" style="margin:0">
-        <button class="btn btn-primary btn-sm" onclick="imprimirOrden()">🖨️ Imprimir / PDF</button>
+        <button class="btn btn-primary btn-sm" onclick="imprimirOrden()">⬇️ Descargar PDF</button>
         <button class="btn btn-dark btn-sm" onclick="imprimirEtiqueta()">🏷️ Etiqueta A6</button>
         <button class="btn btn-ghost btn-sm" onclick="cerrarPreview()">✕ Cerrar</button>
       </div>
@@ -1315,7 +1316,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
     <div class="btn-row" style="margin-top:16px">
       <button class="btn btn-primary btn-sm" onclick="editarDesdeModal()">✏️ Editar</button>
       <button class="btn btn-sm" style="background:#25D366;color:#fff;border:none" onclick="enviarWhatsapp(modalOrderId)">💬 WhatsApp</button>
-      <button class="btn btn-dark btn-sm" onclick="generarOrdenDesdeModal()">📄 PDF</button>
+      <button class="btn btn-dark btn-sm" onclick="generarOrdenDesdeModal()">⬇️ PDF</button>
       <button class="btn btn-dark btn-sm" onclick="imprimirEtiquetaModal()">🏷️ Etiqueta</button>
       <button class="btn btn-ghost btn-sm" onclick="duplicarOrden(modalOrderId)">⧉ Duplicar</button>
       <button class="btn btn-ghost btn-sm" style="color:var(--red)" onclick="cerrarModal('modal-orden');eliminarOrden(modalOrderId)">🗑 Eliminar</button>
@@ -2488,29 +2489,27 @@ function generarOrdenDesdeModal(){
   cerrarModal('modal-orden');
 }
 
-function abrirOrdenEnPestana(o){
-  document.getElementById('pdf-overlay-content').innerHTML = buildOrderHtml(o);
-  document.getElementById('pdf-overlay').style.display = 'block';
-  document.body.style.overflow = 'hidden';
-}
-function cerrarPdfOverlay(){
-  document.getElementById('pdf-overlay').style.display = 'none';
-  document.getElementById('pdf-overlay-content').innerHTML = '';
-  document.body.style.overflow = '';
-}
-function imprimirDesdeOverlay(){
-  var bar = document.getElementById('pdf-overlay-bar');
-  // Ocultar barra via JS antes de imprimir (iOS ignora display:none en @media print)
-  bar.style.cssText = 'display:none!important;height:0;overflow:hidden;padding:0;margin:0;visibility:hidden';
-  var wrap = bar.nextElementSibling;
-  if(wrap) wrap.style.padding = '0';
-  setTimeout(function(){
-    window.print();
-    setTimeout(function(){
-      bar.style.cssText = 'display:flex;gap:8px;padding:10px 12px;background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:1';
-      if(wrap) wrap.style.padding = '16px';
-    }, 1000);
-  }, 80);
+function abrirOrdenEnPestana(o){ descargarPdf(o); }
+
+function descargarPdf(o){
+  var nombre = 'Promarket_Orden_'+(o.numero||'')+'_'+(o.cliente||'').replace(/\s+/g,'_');
+  var tmp = document.createElement('div');
+  tmp.style.cssText = 'position:fixed;left:-9999px;top:0;width:560px;background:#fff';
+  tmp.innerHTML = buildOrderHtml(o);
+  document.body.appendChild(tmp);
+  showToast('Generando PDF…');
+  html2pdf().set({
+    margin: 4,
+    filename: nombre+'.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true, logging: false, backgroundColor: '#fff' },
+    jsPDF: { unit: 'mm', format: 'a5', orientation: 'portrait' }
+  }).from(tmp).save().then(function(){
+    document.body.removeChild(tmp);
+  }).catch(function(e){
+    document.body.removeChild(tmp);
+    showError('Error generando PDF: '+e.message);
+  });
 }
 
 function cerrarModal(id){ document.getElementById(id).classList.remove('open'); }
