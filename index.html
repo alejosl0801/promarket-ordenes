@@ -643,10 +643,11 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
   .prod-table{min-width:540px}
 }
 @media print{
-  @page{margin:8mm;size:A4}
+  @page{margin:5mm;size:A5 portrait}
   html,body{background:#fff!important;color:#111!important}
   body > *:not(#pdf-overlay){display:none!important}
   #pdf-overlay{display:block!important;position:static!important;background:#fff!important;padding:0!important}
+  #pdf-overlay > div{padding:0!important}
   #pdf-overlay-bar{display:none!important}
   .od-head,.od-bar,.od-tbl thead,.od-tot-main,.od-badge,.od-nota,.od-foot,.od-guide
     {-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -2204,6 +2205,8 @@ function showConfidence(d){
 function buildOrderHtml(d){
   var prods = (d.products && d.products.length) ? d.products : [{nombre:d.producto,cantidad:d.cantidad||1,precio:(d.monto||'').replace(/[^0-9.]/g,'')||'0',talla:d.talla||'',lado:d.lado||''}];
   var totalNum = prods.reduce((s,p)=>s+(parseFloat(p.precio)||0)*(parseInt(p.cantidad)||1),0);
+  // Si los productos no tienen precio pero el pedido sí tiene monto registrado, usarlo como total
+  if(totalNum===0 && d.monto) totalNum = parseFloat((d.monto+'').replace(/[^0-9.]/g,''))||0;
   var now = new Date().toLocaleString('es-EC',{hour:'2-digit',minute:'2-digit'});
   var statusColors = {
     'NUEVO':'#1A5FA8','CONFIRMADO':'#166534','PREPARADO':'#6D28D9','EN TRANSITO':'#92400E',
@@ -2213,68 +2216,68 @@ function buildOrderHtml(d){
   var hasTalla = prods.some(p=>p.talla&&p.talla.trim()&&p.talla!=='-');
   var hasLado  = prods.some(p=>p.lado&&p.lado.trim()&&p.lado!=='-');
   var prodRows = prods.map((p,i)=>`<tr style="background:${i%2?'#F9F9F9':'#fff'}">
-    <td style="border:1px solid #E0E0E0;padding:7px 9px;font-size:12px;font-weight:600">${p.nombre||'-'}</td>
-    <td style="border:1px solid #E0E0E0;padding:7px 9px;text-align:center;font-weight:700">${p.cantidad}</td>
-    ${hasTalla?`<td style="border:1px solid #E0E0E0;padding:7px 9px;text-align:center;font-weight:700">${p.talla||'-'}</td>`:''}
-    ${hasLado?`<td style="border:1px solid #E0E0E0;padding:7px 9px;text-align:center;font-weight:700">${p.lado||'-'}</td>`:''}
-    <td style="border:1px solid #E0E0E0;padding:7px 9px;text-align:right;font-weight:800">$${parseFloat(p.precio||0).toFixed(2)}</td>
+    <td style="border:1px solid #E0E0E0;padding:4px 7px;font-size:11px;font-weight:600">${p.nombre||'-'}</td>
+    <td style="border:1px solid #E0E0E0;padding:4px 7px;text-align:center;font-weight:700">${p.cantidad}</td>
+    ${hasTalla?`<td style="border:1px solid #E0E0E0;padding:4px 7px;text-align:center;font-weight:700">${p.talla||'-'}</td>`:''}
+    ${hasLado?`<td style="border:1px solid #E0E0E0;padding:4px 7px;text-align:center;font-weight:700">${p.lado||'-'}</td>`:''}
+    <td style="border:1px solid #E0E0E0;padding:4px 7px;text-align:right;font-weight:800">$${parseFloat(p.precio||0).toFixed(2)}</td>
   </tr>`).join('');
-  return `<div style="font-family:'IBM Plex Sans',Arial,sans-serif;width:148mm;min-height:210mm;border:1px solid #000;font-size:10px;color:#000;background:#fff;margin:0 auto">
-  <div style="background:#0A0A0A;padding:11px 15px;display:flex;justify-content:space-between;align-items:center">
+  return `<div style="font-family:'IBM Plex Sans',Arial,sans-serif;width:148mm;border:1px solid #000;font-size:10px;color:#000;background:#fff;margin:0 auto">
+  <div style="background:#0A0A0A;padding:8px 12px;display:flex;justify-content:space-between;align-items:center">
     <div>
-      <div style="color:#fff;font-size:22px;font-weight:800;letter-spacing:-0.5px;font-family:'IBM Plex Sans',Arial,sans-serif">PROMARKET</div>
-      <div style="color:#E8650A;font-size:8px;font-weight:700;letter-spacing:2.5px;margin-top:1px">ECUADOR</div>
+      <div style="color:#fff;font-size:20px;font-weight:800;letter-spacing:-0.5px;font-family:'IBM Plex Sans',Arial,sans-serif">PROMARKET</div>
+      <div style="color:#E8650A;font-size:7px;font-weight:700;letter-spacing:2.5px;margin-top:1px">ECUADOR</div>
     </div>
     <div style="text-align:right">
-      <div style="color:#E8650A;font-size:24px;font-weight:800;letter-spacing:-1px;font-family:'IBM Plex Sans',Arial,sans-serif">#${d.numero}</div>
-      <div style="color:#666;font-size:8px;margin-top:2px">${d.fecha} · ${now}</div>
+      <div style="color:#E8650A;font-size:22px;font-weight:800;letter-spacing:-1px;font-family:'IBM Plex Sans',Arial,sans-serif">#${d.numero}</div>
+      <div style="color:#666;font-size:7px;margin-top:1px">${d.fecha} · ${now}</div>
     </div>
   </div>
   <div style="height:3px;background:#E8650A"></div>
-  <div style="background:#F5F5F5;border-bottom:1px solid #DDD;padding:5px 15px;display:flex;align-items:center;justify-content:space-between">
-    <div style="font-size:8px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:1px">Estado del pedido</div>
-    <div style="background:${statusBg};color:#fff;font-size:8px;font-weight:800;padding:3px 10px;text-transform:uppercase;letter-spacing:1px">${d.status||'NUEVO'}</div>
+  <div style="background:#F5F5F5;border-bottom:1px solid #DDD;padding:3px 12px;display:flex;align-items:center;justify-content:space-between">
+    <div style="font-size:7px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:1px">Estado del pedido</div>
+    <div style="background:${statusBg};color:#fff;font-size:7px;font-weight:800;padding:2px 8px;text-transform:uppercase;letter-spacing:1px">${d.status||'NUEVO'}</div>
   </div>
-  <div style="padding:12px 15px">
-    <div style="font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;border-bottom:2px solid #000;padding-bottom:3px;margin-bottom:8px">Destinatario</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:6px">
-      <div style="border:1px solid #DDD;padding:5px 8px"><div style="font-size:7px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Nombre</div><div style="font-size:12px;font-weight:700">${d.cliente||'-'}</div></div>
-      <div style="border:1px solid #DDD;padding:5px 8px"><div style="font-size:7px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Teléfono</div><div style="font-size:12px;font-weight:700">${d.telefono||'-'}</div></div>
+  <div style="padding:8px 12px">
+    <div style="font-size:7px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;border-bottom:2px solid #000;padding-bottom:2px;margin-bottom:5px">Destinatario</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:4px">
+      <div style="border:1px solid #DDD;padding:3px 6px"><div style="font-size:6px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Nombre</div><div style="font-size:11px;font-weight:700">${d.cliente||'-'}</div></div>
+      <div style="border:1px solid #DDD;padding:3px 6px"><div style="font-size:6px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Teléfono</div><div style="font-size:11px;font-weight:700">${d.telefono||'-'}</div></div>
     </div>
-    <div style="border:1px solid #DDD;padding:5px 8px;margin-bottom:5px"><div style="font-size:7px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Dirección</div><div style="font-size:11px;font-weight:600">${d.direccion||'-'}</div></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:10px">
-      <div style="border:1px solid #DDD;padding:5px 8px"><div style="font-size:7px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Ciudad</div><div style="font-size:11px;font-weight:600">${d.ciudad||'-'}</div></div>
-      <div style="border:1px solid #DDD;padding:5px 8px"><div style="font-size:7px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Provincia</div><div style="font-size:11px;font-weight:600">${d.provincia||'-'}</div></div>
-      <div style="border:1px solid #DDD;padding:5px 8px"><div style="font-size:7px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">País</div><div style="font-size:11px;font-weight:600">${d.pais||'Ecuador'}</div></div>
+    <div style="border:1px solid #DDD;padding:3px 6px;margin-bottom:4px"><div style="font-size:6px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Dirección</div><div style="font-size:10px;font-weight:600">${d.direccion||'-'}</div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-bottom:7px">
+      <div style="border:1px solid #DDD;padding:3px 6px"><div style="font-size:6px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Ciudad</div><div style="font-size:10px;font-weight:600">${d.ciudad||'-'}</div></div>
+      <div style="border:1px solid #DDD;padding:3px 6px"><div style="font-size:6px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Provincia</div><div style="font-size:10px;font-weight:600">${d.provincia||'-'}</div></div>
+      <div style="border:1px solid #DDD;padding:3px 6px"><div style="font-size:6px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">País</div><div style="font-size:10px;font-weight:600">${d.pais||'Ecuador'}</div></div>
     </div>
-    <div style="font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;border-bottom:2px solid #000;padding-bottom:3px;margin-bottom:8px">Envío</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:5px">
-      <div style="border:1px solid #DDD;padding:5px 8px"><div style="font-size:7px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Transportista</div><div style="font-size:11px;font-weight:700">${d.transporte||'SERVIENTREGA'}</div></div>
-      <div style="border:1px solid #DDD;padding:5px 8px"><div style="font-size:7px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Modalidad</div><div style="font-size:11px;font-weight:600">${d.entrega||'Retiro en agencia'}</div></div>
-      <div style="border:1px solid #DDD;padding:5px 8px"><div style="font-size:7px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Método de pago</div><div style="font-size:11px;font-weight:700">${d.pago||'Contraentrega'}</div></div>
+    <div style="font-size:7px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;border-bottom:2px solid #000;padding-bottom:2px;margin-bottom:5px">Envío</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-bottom:4px">
+      <div style="border:1px solid #DDD;padding:3px 6px"><div style="font-size:6px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Transportista</div><div style="font-size:10px;font-weight:700">${d.transporte||'SERVIENTREGA'}</div></div>
+      <div style="border:1px solid #DDD;padding:3px 6px"><div style="font-size:6px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Modalidad</div><div style="font-size:10px;font-weight:600">${d.entrega||'Retiro en agencia'}</div></div>
+      <div style="border:1px solid #DDD;padding:3px 6px"><div style="font-size:6px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Método de pago</div><div style="font-size:10px;font-weight:700">${d.pago||'Contraentrega'}</div></div>
     </div>
-    ${d.guia?`<div style="background:#0A0A0A;padding:7px 10px;margin-bottom:5px;display:flex;align-items:center;justify-content:space-between"><div style="font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#888">N° de Guía Servientrega</div><div style="font-size:16px;font-weight:800;color:#E8650A;letter-spacing:1px;font-family:'IBM Plex Sans',Arial,sans-serif">${d.guia}</div></div>`:''}
-    <div style="border:1px solid #DDD;padding:5px 8px;${d.horario?'':'margin-bottom:10px'}"><div style="font-size:7px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Agencia de retiro</div><div style="font-size:11px">${(d.agencia||'-').replace(/\n/g,'<br>')}</div></div>
-    ${d.horario?`<div style="border:1px solid #DDD;border-top:none;padding:5px 8px;margin-bottom:10px;background:#FFFDF5"><div style="font-size:7px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Horario de atención</div><div style="font-size:11px;font-weight:600">${d.horario}</div></div>`:''}
-    <div style="font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;border-bottom:2px solid #000;padding-bottom:3px;margin-bottom:8px">Detalle del pedido</div>
-    <table style="width:100%;border-collapse:collapse;margin-bottom:8px">
+    ${d.guia?`<div style="background:#0A0A0A;padding:5px 8px;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between"><div style="font-size:7px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#888">N° de Guía Servientrega</div><div style="font-size:14px;font-weight:800;color:#E8650A;letter-spacing:1px;font-family:'IBM Plex Sans',Arial,sans-serif">${d.guia}</div></div>`:''}
+    <div style="border:1px solid #DDD;padding:3px 6px;${d.horario?'':'margin-bottom:7px'}"><div style="font-size:6px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Agencia de retiro</div><div style="font-size:10px">${(d.agencia||'-').replace(/\n/g,'<br>')}</div></div>
+    ${d.horario?`<div style="border:1px solid #DDD;border-top:none;padding:3px 6px;margin-bottom:7px;background:#FFFDF5"><div style="font-size:6px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:1px">Horario de atención</div><div style="font-size:10px;font-weight:600">${d.horario}</div></div>`:''}
+    <div style="font-size:7px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;border-bottom:2px solid #000;padding-bottom:2px;margin-bottom:5px">Detalle del pedido</div>
+    <table style="width:100%;border-collapse:collapse;margin-bottom:6px">
       <thead><tr style="background:#0A0A0A">
-        <td style="color:#fff;padding:6px 9px;font-size:8px;font-weight:700;text-transform:uppercase">Producto</td>
-        <td style="color:#fff;padding:6px 9px;font-size:8px;font-weight:700;text-align:center;width:10%">Cant.</td>
-        ${hasTalla?'<td style="color:#fff;padding:6px 9px;font-size:8px;font-weight:700;text-align:center;width:14%">Talla</td>':''}
-        ${hasLado?'<td style="color:#fff;padding:6px 9px;font-size:8px;font-weight:700;text-align:center;width:14%">Lado</td>':''}
-        <td style="color:#fff;padding:6px 9px;font-size:8px;font-weight:700;text-align:right;width:18%">Precio</td>
+        <td style="color:#fff;padding:4px 7px;font-size:7px;font-weight:700;text-transform:uppercase">Producto</td>
+        <td style="color:#fff;padding:4px 7px;font-size:7px;font-weight:700;text-align:center;width:10%">Cant.</td>
+        ${hasTalla?'<td style="color:#fff;padding:4px 7px;font-size:7px;font-weight:700;text-align:center;width:14%">Talla</td>':''}
+        ${hasLado?'<td style="color:#fff;padding:4px 7px;font-size:7px;font-weight:700;text-align:center;width:14%">Lado</td>':''}
+        <td style="color:#fff;padding:4px 7px;font-size:7px;font-weight:700;text-align:right;width:18%">Precio</td>
       </tr></thead>
       <tbody>${prodRows}</tbody>
     </table>
-    ${d.nota?`<div style="border-left:3px solid #E8650A;background:#FFF8F0;padding:7px 11px;margin-bottom:8px"><div style="font-size:8px;font-weight:800;text-transform:uppercase;color:#E8650A;margin-bottom:2px">Solicitud especial</div><div style="font-size:11px">${d.nota}</div></div>`:''}
-    <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
-      <div style="width:195px">
-        <div style="background:#0A0A0A;padding:9px 13px;display:flex;justify-content:space-between;align-items:center">
-          <div style="color:#999;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px">Total a cobrar</div>
-          <div style="color:#E8650A;font-size:20px;font-weight:800;font-family:'IBM Plex Sans',Arial,sans-serif">$${totalNum.toFixed(2)}</div>
+    ${d.nota?`<div style="border-left:3px solid #E8650A;background:#FFF8F0;padding:5px 9px;margin-bottom:6px"><div style="font-size:7px;font-weight:800;text-transform:uppercase;color:#E8650A;margin-bottom:1px">Solicitud especial</div><div style="font-size:10px">${d.nota}</div></div>`:''}
+    <div style="display:flex;justify-content:flex-end;margin-bottom:6px">
+      <div style="width:185px">
+        <div style="background:#0A0A0A;padding:7px 11px;display:flex;justify-content:space-between;align-items:center">
+          <div style="color:#999;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:1px">Total a cobrar</div>
+          <div style="color:#E8650A;font-size:18px;font-weight:800;font-family:'IBM Plex Sans',Arial,sans-serif">$${totalNum.toFixed(2)}</div>
         </div>
-        <div style="background:#F5F5F5;border:1px solid #DDD;padding:5px 13px;font-size:9px;color:#666;text-align:center;font-weight:700">PAGO CONTRAENTREGA EN AGENCIA</div>
+        <div style="background:#F5F5F5;border:1px solid #DDD;padding:4px 11px;font-size:8px;color:#666;text-align:center;font-weight:700">PAGO CONTRAENTREGA EN AGENCIA</div>
       </div>
     </div>
   </div>
