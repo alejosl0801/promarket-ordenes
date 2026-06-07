@@ -2,9 +2,9 @@
 
 ## Datos básicos
 - **Nombre:** ProMarket Ecuador
-- **Ubicación del dueño:** Loja, Ecuador
-- **Bodega:** Guayaquil, Ecuador (Rocket.ec — fulfillment, no es bodega propia)
-- **Importante:** Al responder "¿de qué parte son?" → decir "empresa ecuatoriana con bodega en Guayaquil" — NO decir "somos de Guayaquil" porque el dueño es de Loja
+- **Ubicación:** Loja, Ecuador
+- **Bodega/Fulfillment:** Rocket.ec (Guayaquil) — manejo logístico externo
+- **Importante:** Al responder "¿de qué parte son?" → decir "somos de Loja 🇪🇨" — NO mencionar Guayaquil como sede propia
 - **Canal de venta:** WhatsApp únicamente
 - **Plataforma ecommerce:** Rocket.ec
 - **Envío:** Servientrega (toda la red nacional)

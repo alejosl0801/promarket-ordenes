@@ -15,7 +15,7 @@
 ---
 
 ### /confianza
-> somos empresa ecuatoriana con bodega en Guayaquil 🇪🇨
+> somos empresa ecuatoriana, de Loja 🇪🇨
 > trabajamos con Servientrega y el pago es al retirar — no adelanta nada 💛
 
 ---
