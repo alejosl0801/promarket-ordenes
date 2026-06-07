@@ -126,3 +126,53 @@
 - El usuario prueba en `alejosl0801.github.io/promarket-ordenes/`
 - Ctrl+Shift+R para forzar recarga y ver cambios
 - El usuario comparte CSVs de Facebook, JSONs de la app y capturas para análisis
+- **MEMORIA:** Todo lo hablado en cada sesión debe quedar registrado en este CLAUDE.md
+- **Repo de chats:** `alejosl0801/PROMARKET_CHATS` — análisis de chats de WhatsApp (no estaba habilitado en sesión Jun 7 2026, pendiente agregar)
+
+## Sesión 07/06/2026 — Análisis de ventas y script WhatsApp
+
+### Contexto
+- 0 ventas en los últimos 2 días (6 y 7 jun 2026)
+- Usuario responde rápido en WhatsApp
+- Guante ahora disponible en AMBAS manos (antes solo derecha) — esto elimina una fricción importante
+- No se pudo acceder a `PROMARKET_CHATS` en esta sesión (repo no habilitado)
+
+### Diagnóstico: por qué no cierran ventas
+1. **Lead llega tibio, no decidido** — viene de Facebook curioso, no listo para comprar. El chat debe llevarlo de "me interesa" a "quiero comprarlo" en máx 3-4 mensajes
+2. **No hay urgencia real** — sin razón para comprar HOY, el cliente dice "voy a pensarlo" y no vuelve
+3. **No se pide el cierre explícitamente** — hay que guiar al cliente al siguiente paso, no esperar que él lo pida
+4. **Precio sin contexto** — $59.99 suena caro sin comparación. Anclar a fisioterapia cambia la percepción
+
+### Script WhatsApp aprobado (pendiente implementar)
+
+**Mensaje de bienvenida automático:**
+```
+¡Hola [nombre]! 👋 Vi que te interesó el Guante Robótico de Rehabilitación.
+Es un dispositivo que ayuda a recuperar movilidad en la mano desde casa — sin necesidad de ir a clínica.
+¿Para qué mano lo necesitas y es para ti o para un familiar?
+```
+
+**Cuando preguntan el precio:**
+```
+El guante cuesta $59.99 con envío incluido a todo Ecuador 🇪🇨
+Para que tengas contexto: una sesión de fisioterapia cuesta entre $30-$40, y para una rehabilitación completa necesitas mínimo 20 sesiones = $600-$800.
+Con el guante puedes hacer tus ejercicios en casa, todos los días, por una fracción de ese costo.
+¿Lo necesitas para mano derecha o izquierda?
+```
+
+**Cuando dice "voy a pensarlo" / "es caro":**
+```
+Entiendo perfectamente. Te cuento que tenemos stock limitado esta semana — cuando se acaba hay que esperar el siguiente envío desde el proveedor.
+Si quieres puedo apartar uno con solo el 50% de anticipo ($30) y pagas el resto cuando llega. ¿Cómo ves?
+```
+
+**El cierre (asumir la venta):**
+```
+¿A qué dirección te lo enviamos? Con tu nombre completo y ciudad lo coordino hoy mismo con Servientrega 📦
+```
+*(No preguntar "¿quieres comprarlo?" — asumir la venta y pedir el dato)*
+
+### Pendiente de esta sesión
+- [ ] Acceder a `PROMARKET_CHATS` para analizar chats reales y encontrar el punto exacto donde se caen las ventas
+- [ ] Implementar script de WhatsApp
+- [ ] Confirmar si el mensaje de bienvenida actual ya está optimizado o sigue siendo genérico
