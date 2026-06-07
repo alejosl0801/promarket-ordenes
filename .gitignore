@@ -3,3 +3,8 @@
 *.opus
 *.jpg
 *.pdf
+node_modules/
+.env
+.env.local
+.netlify/
+.claude/
