@@ -124,7 +124,7 @@ Con tasa de cierre 12.5% (8 conversaciones por venta):
 
 - ROAS total: 7.3x ($325.94 revenue / $44.47 ads)
 - Ganancia neta estimada del período: **$115.57**
-- Decisión de pausar ollas y doblar guante fue emocional, no basada en números — ollas era más eficiente
+- ~~Decisión de pausar ollas fue emocional~~ — **CORRECCIÓN 7/Jun:** FB atribuyó 3 compras ollas pero solo se cerró 1 real. CAC real ollas: $18.99 → margen neto $3.41. Pausar ollas fue la decisión CORRECTA. Guante: 3 ventas reales / $25.48 ads = CAC $8.49 → margen neto $20.83
 
 ### TASA DE CIERRE REAL
 - Conversaciones totales: 32

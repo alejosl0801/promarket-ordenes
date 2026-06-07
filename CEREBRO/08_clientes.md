@@ -8,7 +8,7 @@
 | Orden | Cliente | Contacto | Producto | Precio | Ciudad | Estado |
 |---|---|---|---|---|---|---|
 | #146271 | Alex Fernando Lara Alvarez | +593 97 926 9065 | Guante x2 | $107.98 | Ambato | ✅ Entregado en agencia |
-| #144356 | Blanca Rodríguez | +593 98 175 4740 | Guante izq. talla M | $59.99 | Quito | ⚠️ ERROR: enviaron derecho — reclamo pendiente |
+| #144356 | Blanca Rodríguez | +593 98 175 4740 | Guante izq. talla M | $59.99 | Quito | ✅ Reclamo resuelto — 7/Jun/2026 |
 | #146110 | Willman Zúñiga Zambrano | +593 99 823 5058 | Ollas x1 | $49.99 | Puyo | ✅ En tránsito |
 | #146504 | Carmen Clemencia Sosa Cagua | +593 99 965 2705 | Guante x2 | $107.98 | Ambato | ✅ Entregado en agencia |
 
