@@ -15,7 +15,9 @@
    - Envío: $7.52
    - Margen neto unitario: $29.32 (48.9%)
    - Margen neto par: $54.16 (50.2%)
-   - ⚠️ Solo viene mano DERECHA. Si piden izquierdo o par, llegan dos derechos. El cliente ya pagó en agencia = no hay devolución posible.
+   - ✅ Disponible en mano DERECHA e IZQUIERDA (actualizado Jun 2026 — antes solo había derecha)
+   - También disponible en par (x2)
+   - Estrategia de precio: anclar a fisioterapia ("sesión fisio $40 x 20 sesiones = $800 vs $60 guante en casa")
 
 2. **Juego de Ollas 12 PCS**
    - Precio venta: $49.99
