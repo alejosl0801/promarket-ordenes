@@ -57,6 +57,12 @@
 - 7 días: cierre de conversación
 - 3+ contactos ignorados: cierre de conversación inmediato
 
+### Estrategia de precio por etapa del lead
+- **Lead nuevo / conversación activa:** precio normal $59.99
+- **Lead que no respondió (24h+):** re-enganchar con precio liquidación $49.99 — presentarlo como bajada de precio
+- **Lead frío (+7 días):** $49.99 + urgencia real ("solo por hoy", "últimas unidades")
+- ❌ NUNCA dar $49.99 en la primera respuesta a un lead nuevo — destruye el margen sin necesidad
+
 ### Cuándo NO escribir
 - Si mandaste 3+ mensajes seguidos sin respuesta — esperar
 - Si es de noche y el cliente no ha respondido en horas — esperar hasta mañana 8am
