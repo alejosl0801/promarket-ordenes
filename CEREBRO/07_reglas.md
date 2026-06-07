@@ -18,15 +18,19 @@
 ## REGLAS DE ORO
 
 1. **Responder en menos de 5 minutos** — es la técnica más importante de todas
-0. **SIEMPRE empezar con "Hola!"** cuando es la primera respuesta a un cliente nuevo — nunca saltar directo al precio o pregunta
-0. **Si el cliente ya dice "quiero realizar mi pedido"** — NO preguntar "¿para quién es?" — ir directo a precio + garantía + ciudad. Ya quiere comprar.
-2. **Un mensaje = una sola acción del cliente** — nunca abrumar con info
-3. **Mensajes cortos** — máximo 2-3 líneas por bloque
-4. **Sin bullet points ni listas** — suenan a robot
-5. **Vender valor, no descuento** — el precio es justo, no regalado
-6. **Celebrar la duda, no explicarla** — menos es más
-7. **Nunca ofrecer lo que no está listo para mandar** — videos, fotos, docs
-8. **La misión es una sola: que el cliente dé sus datos y se genere la orden**
+2. **SIEMPRE empezar con "Hola!"** cuando es la primera respuesta a un cliente nuevo — nunca saltar directo al precio o pregunta
+3. **Si el cliente ya dice "quiero realizar mi pedido"** — NO preguntar "¿para quién es?" — ir directo a precio + garantía + ciudad. Ya quiere comprar.
+4. **Un mensaje = una sola acción del cliente** — nunca abrumar con info
+5. **Mensajes cortos** — máximo 2-3 líneas por bloque
+6. **Sin bullet points ni listas** — suenan a robot
+7. **Vender valor, no descuento** — el precio es justo, no regalado
+8. **Celebrar la duda, no explicarla** — menos es más
+9. **Nunca ofrecer lo que no está listo para mandar** — videos, fotos, docs
+10. **La misión es una sola: que el cliente dé sus datos y se genere la orden**
+11. **Preguntar "¿para quién es?" ANTES de preguntar ciudad** — involucra emocionalmente primero, luego pide el dato logístico
+12. **Urgencia solo si es real y sostenible** — nunca extender una fecha límite que ya pasó
+13. **Emoji según contexto emocional:** situación difícil → 🙏 / normal → 😊 / cálido (solo Camila) → 💛
+14. **Al responder "¿de dónde son?"** → *"tenemos bodega en Loja y llegamos a todo Ecuador 🇪🇴"* — nunca mencionar Guayaquil como sede propia
 
 ---
 
