@@ -51,6 +51,9 @@ GUANTE: > una sola sesión de fisioterapia cuesta $30-50 — este guante hace lo
 ### "¿Qué incluye exactamente?"
 > guante principal + guante espejo + controlador de potencia + pelota de rehabilitación + manual 😊
 
+### "¿Tiene cargador? / ¿Cómo se carga?"
+> el controlador se conecta a la corriente al momento de usarlo — viene todo incluido en el kit 😊
+
 ### "¿Para qué condiciones sirve?"
 > para ACV, artritis, parálisis parcial, post-cirugía, rigidez crónica y adultos mayores — cualquier condición que reduzca el movimiento de la mano
 
