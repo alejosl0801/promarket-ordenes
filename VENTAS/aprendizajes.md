@@ -168,6 +168,30 @@ Con tasa de cierre 12.5% (8 conversaciones por venta):
 
 ### CHAT ACTIVO — +593 98 741 8588 (6 Jun)
 - Papá con artrosis severa — manos sin movimiento, no puede comer solo
-- Cliente desde Guayaquil
-- Lead muy caliente — situación de urgencia real
-- Estado: en proceso, esperando respuesta sector Guayaquil
+- Cliente desde Guayaquil → VENTA CERRADA ✅ Jimmy Vera Peñafiel, guante derecho $49.99
+
+---
+
+## SESIÓN 7 DE JUNIO — MAÑANA (chats en vivo)
+
+### Aprendizajes nuevos
+
+1. **Bot automático — errores críticos detectados:**
+   - Manda mensajes DUPLICADOS → cliente lo ve como spam → ghostea
+   - Cotiza $59.99 cuando liquidación activa es $49.99 → inconsistencia genera desconfianza
+   - **Acción:** corregir precio en bot o desactivarlo durante liquidaciones
+
+2. **"¿es para usted o para un familiar?"** es la mejor pregunta de enganche — adoptada como estándar en el flujo
+
+3. **Leads recientes (<24h):** solo una pregunta, NO mensaje completo con precio de nuevo. Ej: "¿se anima al guante por $49.99? solo por hoy 😊"
+
+4. **Urgencia real "solo por hoy domingo":** aplicada el 7/Jun con precio $49.99 guante y $39.99 ollas. Si el precio sube mañana = urgencia válida. Si no sube = urgencia destruida para siempre.
+
+5. **Patrón nuevo — cliente que quiere ir a Servientrega a comprar:** explicar el modelo UNA VEZ. Si no entiende, no insistir. Lead muerto.
+
+6. **Todos los mensajes empiezan con mayúscula** — regla de Alejandro
+
+### Chats nuevos 7/Jun
+- +593 98 656 8029: Guayaquil, activo
+- +593 96 998 3880: Machala, muerto — no entendió el modelo
+- +593 98 954 8974: sin respuesta tras mensaje duplicado del bot
