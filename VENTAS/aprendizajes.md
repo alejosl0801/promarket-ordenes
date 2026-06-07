@@ -84,3 +84,20 @@
 - Conseguir testimonios reales — máxima prioridad
 - Resolver reclamo Blanca Rodríguez orden #144356
 - Mañana 8am escribir a kushita2016
+
+---
+
+## SESIÓN 7 DE JUNIO — NUEVOS APRENDIZAJES
+
+### Regla de emojis por contexto emocional
+- Cuando el cliente comparte una situación dolorosa o difícil (enfermedad, limitación, sufrimiento familiar) → usar 🙏 — nunca 😊 ni 💛
+- 😊 después de "qué difícil verlo así" suena insensible
+- 💛 después de una situación dura suena falso y condescendiente
+- 🙏 es el emoji correcto para mostrar empatía real sin exagerar
+
+### Análisis de rentabilidad real (datos del 1–6 Jun)
+- Margen neto real guante $59.99 incluyendo ads: **$13.64/unidad**
+- Margen neto real guante $49.99 (liquidación): **$3.64/unidad** — casi no rentable
+- Margen neto real ollas $49.99 incluyendo ads: **$14.40/unidad** — era más rentable que guante
+- Decisión de pausar ollas fue emocional, no de números — revisar
+- Subir tasa de cierre de 12.5% a 20% tiene más impacto que cualquier otra acción
