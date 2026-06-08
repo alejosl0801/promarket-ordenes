@@ -6287,6 +6287,7 @@ function renderStats(){
   +'<th style="padding:9px 6px;text-align:center;color:#aaa;border-bottom:1px solid #1a1a1a;">TOTAL</th>'
   +'<th style="padding:9px 6px;text-align:center;color:#27AE60;border-bottom:1px solid #1a1a1a;">PEDIDOS</th>'
   +'<th style="padding:9px 6px;text-align:center;color:#E8650A;border-bottom:1px solid #1a1a1a;">INV $</th>'
+  +'<th style="padding:9px 6px;text-align:center;color:#aaa;border-bottom:1px solid #1a1a1a;">MENS $</th>'
   +'<th style="padding:9px 6px;text-align:center;color:#F59E0B;border-bottom:1px solid #1a1a1a;">CPA $</th>'
   +'<th style="padding:9px 6px;text-align:center;color:#888;border-bottom:1px solid #1a1a1a;">%</th>'
   +'</tr></thead><tbody>';
@@ -6295,6 +6296,10 @@ function renderStats(){
     var isT=r.isToday;
     var cpa=r.ped>0&&r.invT>0?'$'+(r.invT/r.ped).toFixed(2):'—';
     var cierre=r.ct>0?((r.ped/r.ct)*100).toFixed(0)+'%':'—';
+    var mens=r.ct>0?(r.invT/r.ct):-1;
+    var mensLabel=mens<0?'—':'$'+mens.toFixed(2);
+    var mensColor=mens<0?'#2a2a2a':mens>3?'#EF4444':mens>1.5?'#F59E0B':'#27AE60';
+    var mensAlert=mens>3?' ⚠️':'';
     h+='<tr style="border-bottom:1px solid #0d0d0d;'+(isT?'background:#150c00;':'')+'"">'
       +'<td style="padding:8px 10px;color:'+(isT?'#E8650A':'#666')+';font-weight:'+(isT?'700':'400')+';white-space:nowrap;">'+r.d.slice(5).replace('-','/')+(isT?' ◀':'')+'</td>'
       +'<td style="padding:8px 6px;text-align:center;color:'+(r.cg?'#3B82F6':'#2a2a2a')+';">'+(r.cg||'—')+'</td>'
@@ -6302,12 +6307,15 @@ function renderStats(){
       +'<td style="padding:8px 6px;text-align:center;color:'+(r.ct?'#aaa':'#2a2a2a')+';font-weight:'+(r.ct?'600':'400')+';">'+(r.ct||'—')+'</td>'
       +'<td style="padding:8px 6px;text-align:center;color:'+(r.ped?'#27AE60':'#2a2a2a')+';font-weight:'+(r.ped?'700':'400')+';">'+(r.ped||'—')+'</td>'
       +'<td style="padding:8px 6px;text-align:center;color:'+(r.invT?'#E8650A':'#2a2a2a')+';">'+(r.invT?'$'+r.invT.toFixed(2):'—')+'</td>'
+      +'<td style="padding:8px 6px;text-align:center;color:'+mensColor+';font-weight:600;">'+mensLabel+mensAlert+'</td>'
       +'<td style="padding:8px 6px;text-align:center;color:'+(r.ped?'#F59E0B':'#2a2a2a')+';">'+cpa+'</td>'
       +'<td style="padding:8px 6px;text-align:center;color:'+(r.ct?'#888':'#2a2a2a')+';">'+cierre+'</td>'
     +'</tr>';
   });
 
   // Totals row
+  var overallMens=sumCT>0?'$'+(sumInvT/sumCT).toFixed(2):'-';
+  var overallMensColor=sumCT>0&&(sumInvT/sumCT)>3?'#EF4444':sumCT>0&&(sumInvT/sumCT)>1.5?'#F59E0B':'#27AE60';
   h+='<tr style="background:#0d0d0d;border-top:2px solid #2a2a2a;">'
     +'<td style="padding:9px 10px;color:#aaa;font-weight:700;">TOTAL</td>'
     +'<td style="padding:9px 6px;text-align:center;color:#3B82F6;font-weight:700;">'+sumCG+'</td>'
@@ -6315,6 +6323,7 @@ function renderStats(){
     +'<td style="padding:9px 6px;text-align:center;color:#aaa;font-weight:700;">'+sumCT+'</td>'
     +'<td style="padding:9px 6px;text-align:center;color:#27AE60;font-weight:700;">'+sumPed+'</td>'
     +'<td style="padding:9px 6px;text-align:center;color:#E8650A;font-weight:700;">$'+sumInvT.toFixed(2)+'</td>'
+    +'<td style="padding:9px 6px;text-align:center;color:'+overallMensColor+';font-weight:700;">'+overallMens+'</td>'
     +'<td style="padding:9px 6px;text-align:center;color:#F59E0B;font-weight:700;">'+overallCPA+'</td>'
     +'<td style="padding:9px 6px;text-align:center;color:#888;font-weight:700;">'+overallCierre+'</td>'
   +'</tr>';
@@ -6326,22 +6335,29 @@ function renderStats(){
     {n:'GUANTE',inv:sumInvG,  convs:sumCG, ped:sumPed, c:'#3B82F6', estado:'WINNER ✅'},
     {n:'OLLAS',  inv:sumInvO, convs:sumCO, ped:1,       c:'#E8650A', estado:'PAUSADO ⏸'}
   ];
+  // Alerta MENS global
+  var globalMens=sumCT>0?(sumInvT/sumCT):-1;
+  if(globalMens>3) h+='<div style="background:#1a0000;border:1.5px solid #EF4444;border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:12px;color:#EF4444;font-weight:700;">⚠️ ALERTA: Costo por mensaje $'+globalMens.toFixed(2)+' supera el límite de $3.00 — revisar o pausar ads</div>';
+  h+='<div style="font-size:10px;color:#444;margin-bottom:8px;">MENS: 🟢 &lt;$1.50 · 🟠 $1.50-$3 · 🔴 &gt;$3 → Apagar ads</div>';
   h+='<div style="display:grid;gap:8px;margin-bottom:16px;">';
   prods.forEach(function(p){
     var cpaP=p.ped>0&&p.inv>0?'$'+(p.inv/p.ped).toFixed(2):'-';
     var cierreP=p.convs>0?((p.ped/p.convs)*100).toFixed(1)+'%':'-';
-    var cxc=p.convs>0?'$'+(p.inv/p.convs).toFixed(2):'-';
+    var mensP=p.convs>0?(p.inv/p.convs):-1;
+    var mensPLabel=mensP<0?'-':'$'+mensP.toFixed(2);
+    var mensPColor=mensP<0?'#555':mensP>3?'#EF4444':mensP>1.5?'#F59E0B':'#27AE60';
     h+='<div style="background:#111;border:1px solid #1a1a1a;border-radius:10px;padding:12px;">'
       +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">'
         +'<span style="font-size:14px;font-weight:700;color:'+p.c+';">'+p.n+'</span>'
         +'<span style="font-size:10px;font-weight:700;color:#555;">'+p.estado+'</span>'
       +'</div>'
-      +'<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;text-align:center;">'
-        +'<div><div style="font-size:14px;font-weight:700;color:#f0f0f0;">$'+p.inv.toFixed(2)+'</div><div style="font-size:9px;color:#444;margin-top:2px;">INV</div></div>'
-        +'<div><div style="font-size:14px;font-weight:700;color:#aaa;">'+p.convs+'</div><div style="font-size:9px;color:#444;margin-top:2px;">CONVS</div></div>'
-        +'<div><div style="font-size:14px;font-weight:700;color:#27AE60;">'+p.ped+'</div><div style="font-size:9px;color:#444;margin-top:2px;">PEDIDOS</div></div>'
-        +'<div><div style="font-size:14px;font-weight:700;color:#F59E0B;">'+cpaP+'</div><div style="font-size:9px;color:#444;margin-top:2px;">CPA</div></div>'
-        +'<div><div style="font-size:14px;font-weight:700;color:#888;">'+cierreP+'</div><div style="font-size:9px;color:#444;margin-top:2px;">CIERRE</div></div>'
+      +'<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;text-align:center;">'
+        +'<div><div style="font-size:13px;font-weight:700;color:#f0f0f0;">$'+p.inv.toFixed(2)+'</div><div style="font-size:9px;color:#444;margin-top:2px;">INV</div></div>'
+        +'<div><div style="font-size:13px;font-weight:700;color:#aaa;">'+p.convs+'</div><div style="font-size:9px;color:#444;margin-top:2px;">CONVS</div></div>'
+        +'<div><div style="font-size:13px;font-weight:700;color:'+mensPColor+';">'+mensPLabel+'</div><div style="font-size:9px;color:#444;margin-top:2px;">MENS</div></div>'
+        +'<div><div style="font-size:13px;font-weight:700;color:#27AE60;">'+p.ped+'</div><div style="font-size:9px;color:#444;margin-top:2px;">PEDIDOS</div></div>'
+        +'<div><div style="font-size:13px;font-weight:700;color:#F59E0B;">'+cpaP+'</div><div style="font-size:9px;color:#444;margin-top:2px;">CPA</div></div>'
+        +'<div><div style="font-size:13px;font-weight:700;color:#888;">'+cierreP+'</div><div style="font-size:9px;color:#444;margin-top:2px;">CIERRE</div></div>'
       +'</div>'
     +'</div>';
   });
@@ -6392,7 +6408,7 @@ function statsExportExcel(){
   // ── Hoja 1: LANDING TRACKER ──
   lines.push('LANDING TRACKER PROMARKET — Generado: '+today);
   lines.push('');
-  lines.push('FECHA,GUANTE (convs),OLLAS (convs),TOTAL CONVS,PEDIDOS,INV GUANTE ($),INV OLLAS ($),INV TOTAL ($),CPA ($),% CIERRE');
+  lines.push('FECHA,GUANTE (convs),OLLAS (convs),TOTAL CONVS,PEDIDOS,INV GUANTE ($),INV OLLAS ($),INV TOTAL ($),MENS ($/conv),CPA ($),% CIERRE');
   var sumIG=0,sumIO=0,sumCG=0,sumCO=0,sumPed=0;
   dates.forEach(function(d){
     var invD=inv[d]||{guante:0,ollas:0};
@@ -6401,14 +6417,16 @@ function statsExportExcel(){
     var invT=(invD.guante||0)+(invD.ollas||0);
     var ct=(convD.guante||0)+(convD.ollas||0);
     if(!invT&&!ct&&!ped)return;
+    var mens=ct>0?(invT/ct).toFixed(2):'';
     var cpa=ped>0&&invT>0?(invT/ped).toFixed(2):'';
     var cierre=ct>0?((ped/ct)*100).toFixed(1)+'%':'';
     sumIG+=invD.guante||0; sumIO+=invD.ollas||0;
     sumCG+=convD.guante||0; sumCO+=convD.ollas||0; sumPed+=ped;
-    lines.push([d,(convD.guante||0),(convD.ollas||0),ct,ped,(invD.guante||0).toFixed(2),(invD.ollas||0).toFixed(2),invT.toFixed(2),cpa,cierre].join(','));
+    lines.push([d,(convD.guante||0),(convD.ollas||0),ct,ped,(invD.guante||0).toFixed(2),(invD.ollas||0).toFixed(2),invT.toFixed(2),mens,cpa,cierre].join(','));
   });
   var sumIT=sumIG+sumIO,sumCT=sumCG+sumCO;
-  lines.push(['TOTAL',sumCG,sumCO,sumCT,sumPed,sumIG.toFixed(2),sumIO.toFixed(2),sumIT.toFixed(2),sumPed>0?(sumIT/sumPed).toFixed(2):'',sumCT>0?((sumPed/sumCT)*100).toFixed(1)+'%':''].join(','));
+  var sumMens=sumCT>0?(sumIT/sumCT).toFixed(2):'';
+  lines.push(['TOTAL',sumCG,sumCO,sumCT,sumPed,sumIG.toFixed(2),sumIO.toFixed(2),sumIT.toFixed(2),sumMens,sumPed>0?(sumIT/sumPed).toFixed(2):'',sumCT>0?((sumPed/sumCT)*100).toFixed(1)+'%':''].join(','));
   lines.push('');
 
   // ── Hoja 2: RENDIMIENTO POR PRODUCTO ──
@@ -6440,16 +6458,27 @@ function statsExportExcel(){
 
   // ── Hoja 4: PEDIDOS ──
   lines.push('');
-  lines.push('PEDIDOS REGISTRADOS');
-  lines.push('#,NOMBRE,CELULAR,PRODUCTO,CANTIDAD,VALOR ($),PLATAFORMA,ESTADO,FECHA PEDIDO,FECHA AGENCIA,OBSERVACIÓN');
+  lines.push('PEDIDOS REGISTRADOS (generado desde la app — datos reales)');
+  lines.push('#,NOMBRE,CELULAR,PRODUCTO,CANTIDAD,PLATAFORMA,ESTADO,FECHA PEDIDO,FECHA EN AGENCIA,ID ORDEN,OBSERVACIÓN');
   var pedLeads=leads.filter(function(l){return l.fase==='transito'||l.fase==='agencia'||l.fase==='cerrado';});
   pedLeads.forEach(function(l,i){
     var est={transito:'EN TRÁNSITO',agencia:'EN AGENCIA',cerrado:'ENTREGADO'}[l.fase]||l.fase;
-    lines.push([(i+1),'"'+l.nombre+'"',l.tel||'','GUANTE',1,59.99,'SERVIENTREGA',est,l.fechaTr?l.fechaTr.slice(0,10):'',l.fechaAg?l.fechaAg.slice(0,10):'',''].join(','));
+    lines.push([(i+1),'"'+l.nombre+'"',l.tel||'','GUANTE',1,'SERVIENTREGA',est,l.fechaTr?l.fechaTr.slice(0,10):'',l.fechaAg?l.fechaAg.slice(0,10):'',l.orderId||'',''].join(','));
   });
   lines.push('');
 
-  // ── Hoja 5: LEADS ACTIVOS ──
+  // ── Hoja 5: CATÁLOGO DE PRODUCTOS ──
+  lines.push('');
+  lines.push('CATÁLOGO DE PRODUCTOS');
+  lines.push('PRODUCTO,PRECIO ($),ESTADO,COSTO TOTAL ($),MARGEN BRUTO ($)');
+  lines.push(['GUANTE BIONIC','59.99','WINNER','32.00','27.99'].join(','));
+  lines.push(['GUANTE BIONIC (OFERTA)','49.99','WINNER','32.00','17.99'].join(','));
+  lines.push(['ESTANTE DE METAL','39.99','TESTEO','',''].join(','));
+  lines.push(['PRODUCTO TESTEO 1','39.99','TESTEO','',''].join(','));
+  lines.push(['PRODUCTO TESTEO 2','29.99','TESTEO','',''].join(','));
+  lines.push('');
+
+  // ── Hoja 6: LEADS ACTIVOS ──
   lines.push('');
   lines.push('LEADS EN SEGUIMIENTO');
   lines.push('NOMBRE,CELULAR,FASE,FECHA INICIO,DÍAS EN SEGUIMIENTO,TRIGGERS ENVIADOS');
