@@ -5069,10 +5069,19 @@ function segSyncOrders(leads){
   return changed;
 }
 
+// ── Auto-sync al cargar (una sola vez por sesión) ────────
+function segAutoSync(){
+  if(sessionStorage.getItem('pm_seg_synced')) return;
+  sessionStorage.setItem('pm_seg_synced','1');
+  if(typeof SEG_HISTORICO === 'undefined') return;
+  segImportarHistorico();
+}
+
 // ── Main render ──────────────────────────────────────────
 function renderSeguimiento(){
   var el = document.getElementById('seg-container');
   if(!el) return;
+  segAutoSync();
   var leads = segGetLeads();
   if(segSyncOrders(leads)) segSaveLeads(leads);
   var activos = leads.filter(function(l){return l.fase!=='cerrado';});
@@ -5086,10 +5095,14 @@ function renderSeguimiento(){
       +'</div>'+segFormHTML();
     return;
   }
-  el.innerHTML = activos.map(segCardHTML).join('')
-    +(cerrados.length?'<div style="font-size:11px;font-weight:700;color:#444;padding:12px 0 6px;letter-spacing:.06em;">CERRADOS RECIENTES</div>'
-      +cerrados.slice(-5).reverse().map(segClosedHTML).join(''):'')
-    +segFormHTML();
+  try {
+    el.innerHTML = activos.map(segCardHTML).join('')
+      +(cerrados.length?'<div style="font-size:11px;font-weight:700;color:#444;padding:12px 0 6px;letter-spacing:.06em;">CERRADOS RECIENTES</div>'
+        +cerrados.slice(-5).reverse().map(segClosedHTML).join(''):'')
+      +segFormHTML();
+  } catch(err){
+    el.innerHTML = '<div style="color:#E8650A;padding:16px;font-size:13px;">⚠️ Error cargando leads: '+escH(err.message)+'</div>'+segFormHTML();
+  }
 }
 
 // ── Card HTML ────────────────────────────────────────────
@@ -5097,7 +5110,8 @@ function segCardHTML(lead){
   var chk = segGetChk(lead.id);
   var diasT = Math.floor((Date.now()-new Date(lead.fechaInicio).getTime())/86400000);
   var fase = lead.fase;
-  var faseLabel = {venta:'VENTA',transito:'TRÁNSITO',agencia:'AGENCIA'}[fase]||fase.toUpperCase();
+  var faseLabel = {venta:'VENTA',transito:'TRÁNSITO',agencia:'AGENCIA'}[fase]||(fase||'?').toUpperCase();
+  if(!fase){lead.fase='venta';fase='venta';}
   var faseBg = fase==='venta'?'background:#0A1120;color:#3B82F6;'
               :fase==='transito'?'background:#1a1200;color:#F59E0B;'
               :'background:#0d2010;color:#27AE60;';
