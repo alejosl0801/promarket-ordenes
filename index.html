@@ -5287,11 +5287,13 @@ var _v0=[false,false,false,false,false,false,false,false,false,false];
 
 var SEG_HISTORICO = [
   // ── EN AGENCIA — esperando retiro ──────────────────────────────
-  {nombre:'Alex Fernando Lara',   tel:'+593979269065', fase:'agencia',  fechaInicio:'2026-05-20T10:00:00.000Z', fechaTr:'2026-06-03T10:00:00.000Z', fechaAg:'2026-06-05T10:00:00.000Z', orderId:'146271', qty:2, valor:107.98, producto:'GUANTE'},
-  {nombre:'Carmen Sosa',          tel:'+593999652705', fase:'agencia',  fechaInicio:'2026-05-20T10:00:00.000Z', fechaTr:'2026-06-03T10:00:00.000Z', fechaAg:'2026-06-05T10:00:00.000Z', orderId:'146504', qty:2, valor:107.98, producto:'GUANTE'},
-  {nombre:'Blanca Rodríguez',     tel:'+593981754740', fase:'agencia',  fechaInicio:'2026-05-25T10:00:00.000Z', fechaTr:'2026-06-02T10:00:00.000Z', fechaAg:'2026-06-04T10:00:00.000Z', orderId:'144356', qty:1, valor:59.99,  producto:'GUANTE', reclamo:true},
-  // ── EN TRÁNSITO — producto OLLAS ────────────────────────────────
-  {nombre:'Willman Zúñiga',       tel:'+593998235058', fase:'transito', fechaInicio:'2026-06-01T10:00:00.000Z', fechaTr:'2026-06-03T10:00:00.000Z', fechaAg:'2026-06-08T10:00:00.000Z', orderId:'146110', qty:1, valor:49.99,  producto:'OLLAS'},
+  {nombre:'Alex Fernando Lara',   tel:'+593979269065', fase:'agencia',  fechaInicio:'2026-05-20T10:00:00.000Z', fechaTr:'2026-06-03T10:00:00.000Z', fechaAg:'2026-06-05T10:00:00.000Z', orderId:'146271', qty:2, valor:107.98, producto:'GUANTE', guia:'185956218'},
+  {nombre:'Carmen Sosa',          tel:'+593999652705', fase:'agencia',  fechaInicio:'2026-05-20T10:00:00.000Z', fechaTr:'2026-06-03T10:00:00.000Z', fechaAg:'2026-06-05T10:00:00.000Z', orderId:'146504', qty:2, valor:107.98, producto:'GUANTE', guia:'185956219'},
+  {nombre:'Blanca Rodríguez',     tel:'+593981754740', fase:'cerrado',  fechaInicio:'2026-05-25T10:00:00.000Z', fechaTr:'2026-06-02T10:00:00.000Z', fechaAg:'2026-06-04T10:00:00.000Z', orderId:'144356', qty:1, valor:59.99,  producto:'GUANTE', guia:'185954927', reclamo:true},
+  {nombre:'Willman Zúñiga',       tel:'+593998235058', fase:'agencia',  fechaInicio:'2026-06-01T10:00:00.000Z', fechaTr:'2026-06-03T10:00:00.000Z', fechaAg:'2026-06-08T10:00:00.000Z', orderId:'146110', qty:1, valor:49.99,  producto:'OLLAS',  guia:'185955963'},
+  // ── NUEVO — orden generada, en camino ────────────────────────────
+  {nombre:'César Augusto López',  tel:'+593968339428', fase:'transito', fechaInicio:'2026-06-07T16:02:18.103Z', fechaTr:'2026-06-07T16:02:18.103Z', orderId:'151381', qty:1, valor:59.99, producto:'GUANTE'},
+  {nombre:'Jimmy vera peñafiel',  tel:'+593939184423', fase:'transito', fechaInicio:'2026-06-07T03:20:43.853Z', fechaTr:'2026-06-07T03:20:43.853Z', orderId:'151380', qty:1, valor:49.99, producto:'GUANTE'},
   // ── NO COMPRARON (cerrado) ───────────────────────────────────────
   {nombre:'Rosa Carranza',        tel:'+593968055707', fase:'cerrado',  fechaInicio:'2026-05-28T10:00:00.000Z'},
   {nombre:'Rose',                 tel:'+593997437282', fase:'cerrado',  fechaInicio:'2026-05-28T10:00:00.000Z'},
@@ -5350,6 +5352,7 @@ function segImportarHistorico(){
       if(h.qty     !== undefined) ex.qty     = h.qty;
       if(h.valor   !== undefined) ex.valor   = h.valor;
       if(h.producto!== undefined) ex.producto= h.producto;
+      if(h.guia    !== undefined) ex.guia    = h.guia;
       if(h.reclamo !== undefined) ex.reclamo = h.reclamo;
       // Aplicar marcas (solo marcar true, nunca desmarcar)
       if(h.chk){
@@ -5368,7 +5371,7 @@ function segImportarHistorico(){
       leads.push({id:id, nombre:h.nombre, tel:h.tel, fechaInicio:h.fechaInicio,
         fase:h.fase, fechaTr:h.fechaTr||null, fechaAg:h.fechaAg||null,
         orderId:h.orderId||null, qty:h.qty||null, valor:h.valor||null,
-        producto:h.producto||null, reclamo:h.reclamo||false});
+        producto:h.producto||null, guia:h.guia||null, reclamo:h.reclamo||false});
       if(h.chk){
         var c2={v:Array(10).fill(false),a:[]};
         if(h.chk.v) h.chk.v.forEach(function(v,i){ if(v) c2.v[i]=true; });
@@ -6503,11 +6506,11 @@ function statsExportExcel(){
 
   // ═══ TABLA 4: PEDIDOS ════════════════════════════════════════════
   lines.push(['PEDIDOS REGISTRADOS'].join(S));
-  lines.push(['#','ID ORDEN','NOMBRE','CELULAR','PRODUCTO','CANTIDAD','VALOR ($)','PLATAFORMA','ESTADO','FECHA PEDIDO','FECHA AGENCIA','OBSERVACIÓN'].join(S));
+  lines.push(['#','ID ORDEN','GUÍA','NOMBRE','CELULAR','PRODUCTO','CANTIDAD','VALOR ($)','PLATAFORMA','ESTADO','FECHA PEDIDO','FECHA AGENCIA','OBSERVACIÓN'].join(S));
   pedLeads.forEach(function(l,i){
     var est={transito:'EN TRÁNSITO',agencia:'EN AGENCIA',cerrado:'ENTREGADO'}[l.fase]||l.fase;
     lines.push([
-      i+1, l.orderId||'', l.nombre, l.tel||'',
+      i+1, l.orderId||'', l.guia||'', l.nombre, l.tel||'',
       l.producto||'GUANTE', l.qty||1, (l.valor||59.99).toFixed(2),
       'SERVIENTREGA', est,
       l.fechaTr?l.fechaTr.slice(0,10):'',
