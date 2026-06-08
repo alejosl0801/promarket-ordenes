@@ -831,11 +831,8 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
   <div class="tab" data-tab="despacho" onclick="switchTab('despacho')">
     📦 Por enviar <span class="tab-badge yellow" id="badge-despacho">0</span>
   </div>
-  <div class="tab" data-tab="contabilidad" onclick="switchTab('contabilidad')">
-    💰 Contabilidad
-  </div>
   <div class="tab" data-tab="reportes" onclick="switchTab('reportes')">
-    📈 Reportes
+    📊 Stats
   </div>
   <div class="tab" data-tab="catalogo" onclick="switchTab('catalogo')">
     📦 Catálogo
@@ -1207,8 +1204,11 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 </div>
 
 <!-- ══════════ CONTABILIDAD ══════════ -->
-<div class="panel" id="panel-contabilidad">
-  <div class="period-btns">
+<!-- ══════════ STATS (Contabilidad + Reportes fusionados) ══════════ -->
+<div class="panel" id="panel-reportes">
+  <!-- ── Bloque Contabilidad ── -->
+  <div style="font-size:12px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--muted2);margin-bottom:10px">💰 Contabilidad & P&L</div>
+  <div class="period-btns" id="contab-period-btns" style="margin-bottom:14px">
     <button class="period-btn" onclick="setPeriodContab('hoy',this)">Hoy</button>
     <button class="period-btn" onclick="setPeriodContab('semana',this)">Semana</button>
     <button class="period-btn" onclick="setPeriodContab('mes',this)">Mes</button>
@@ -1217,18 +1217,14 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
     <button class="btn btn-primary btn-sm" onclick="exportarLibroContable()">⬇ Libro contable CSV</button>
   </div>
   <div id="contab-container"></div>
-</div>
-
-<!-- ══════════ REPORTES ══════════ -->
-<div class="panel" id="panel-reportes">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px">
-    <div class="period-btns" style="margin-bottom:0">
-      <button class="period-btn active" onclick="setPeriod('hoy',this)">Hoy</button>
-      <button class="period-btn" onclick="setPeriod('semana',this)">Esta semana</button>
-      <button class="period-btn" onclick="setPeriod('mes',this)">Este mes</button>
-      <button class="period-btn" onclick="setPeriod('todo',this)">Todo</button>
-    </div>
-    <button class="btn btn-dark btn-sm" onclick="statsExportExcel()">⬇ Excel CRM</button>
+  <div style="border-top:1px solid var(--border);margin:22px 0 18px"></div>
+  <!-- ── Bloque Reportes / Métricas ── -->
+  <div style="font-size:12px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--muted2);margin-bottom:10px">📈 Métricas de ventas</div>
+  <div class="period-btns" style="margin-bottom:0">
+    <button class="period-btn active" onclick="setPeriod('hoy',this)">Hoy</button>
+    <button class="period-btn" onclick="setPeriod('semana',this)">Esta semana</button>
+    <button class="period-btn" onclick="setPeriod('mes',this)">Este mes</button>
+    <button class="period-btn" onclick="setPeriod('todo',this)">Todo</button>
   </div>
   <div class="kpi-row" id="kpi-row"></div>
   <div id="trends-container"></div>
@@ -1255,7 +1251,10 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 <div class="panel" id="panel-campanas">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:10px">
     <div style="font-size:17px;font-weight:800;letter-spacing:-0.3px">Campañas Facebook & Rentabilidad</div>
-    <label class="btn btn-primary btn-sm" style="cursor:pointer">⬆ Subir CSV Facebook<input type="file" accept=".csv" style="display:none" onchange="importarCSVFacebook(this)"></label>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <button class="btn btn-dark btn-sm" onclick="statsExportExcel()">⬇ Reporte Excel</button>
+      <label class="btn btn-primary btn-sm" style="cursor:pointer">⬆ Subir CSV Facebook<input type="file" accept=".csv" style="display:none" onchange="importarCSVFacebook(this)"></label>
+    </div>
   </div>
   <div style="font-size:12px;color:var(--muted2);margin-bottom:16px">Exporta el CSV desde Facebook Ads Manager y súbelo — las campañas se crean o actualizan automáticamente. Luego haz clic en ⚙️ para configurar costos.</div>
   <div class="kpi-row" id="campanas-kpi"></div>
@@ -1660,10 +1659,9 @@ function switchTab(name){
   if(name==='ordenes')   renderOrderList();
   if(name==='kanban')    renderKanban();
   if(name==='despacho')  renderDespacho();
-  if(name==='reportes')  renderReportes();
+  if(name==='reportes')  { renderReportes(); renderContabilidad(); }
   if(name==='catalogo')  renderCatalogo();
   if(name==='campanas')  renderCampanas();
-  if(name==='contabilidad') renderContabilidad();
   if(name==='clientes')  renderClientes();
   if(name==='marcados')  renderMarcados();
   if(name==='seguimiento') renderSeguimiento();
@@ -2705,7 +2703,7 @@ function renderAll(){
   if(document.getElementById('panel-kanban').classList.contains('active')) renderKanban();
   if(document.getElementById('panel-despacho').classList.contains('active')) renderDespacho();
   if(document.getElementById('panel-campanas').classList.contains('active')) renderCampanas();
-  if(document.getElementById('panel-contabilidad').classList.contains('active')) renderContabilidad();
+  if(document.getElementById('panel-reportes').classList.contains('active')) renderContabilidad();
   if(document.getElementById('panel-clientes').classList.contains('active')) renderClientes();
   if(document.getElementById('panel-marcados').classList.contains('active')) renderMarcados();
 }
@@ -3500,54 +3498,57 @@ function statsExportExcel(){
   }).length);
 
   lines.push('sep=;');
+  lines.push('REPORTE GENERAL DE CAMPAÑAS — ProMarket Ecuador');
+  lines.push('Generado: '+today+';;Período: '+FECHA_INI+' → '+FECHA_FIN);
   lines.push('');
 
   // ════════════════════════════════════════════════
   //  HOJA 1: REPORTE GENERAL
   // ════════════════════════════════════════════════
-  lines.push('REPORTE GENERAL');
-  // Fila 1: encabezado de fechas
-  lines.push(['LANDING'].concat(dlbls).concat(['TOTAL']).join(S));
-  // Fila 2: OLLA — pedidos diarios
-  lines.push(['OLLA'].concat(dates.map(function(d){return v(pedDia(d,'OLLAS'));})).concat([v(pedTotO)]).join(S));
-  // Fila 3: GUANTE — pedidos diarios
-  lines.push(['GUANTE '].concat(dates.map(function(d){return v(pedDia(d,'GUANTE'));})).concat([v(pedTotG)]).join(S));
-  // Filas 4-13: 10 filas vacías (otros productos/campañas)
-  for(var i=0;i<10;i++) lines.push([''].concat(dates.map(function(){return '';})).concat(['']).join(S));
-  // Fila 15: Grand Total
-  lines.push(['Grand Total'].concat(dates.map(function(d){return v(pedDia(d));})).concat([v(pedTot)]).join(S));
-  // Fila 16: INV (inversión diaria — calculada desde csvHistory)
-  lines.push(['INV'].concat(dates.map(function(d){
-    var x=invByDay[d]; return x?(x.g+x.o).toFixed(2):'';
-  })).concat([invTot.toFixed(2)]).join(S));
-  // Fila 17: MENS (conversaciones — total FB; desglose diario no disponible)
-  lines.push(['MENS'].concat(dates.map(function(){return'';})).concat([v(convTot)]).join(S));
-  // Fila 18: COMPRAS (= mismos pedidos reales)
+  lines.push('INVERSIÓN DIARIA POR CAMPAÑA ($)');
+  // Fila encabezado de fechas
+  lines.push(['CAMPAÑA'].concat(dlbls).concat(['TOTAL']).join(S));
+  // OLLA — gasto diario en ads
+  lines.push(['OLLA'].concat(dates.map(function(d){
+    var x=invByDay[d]; return (x&&x.o)?x.o.toFixed(2):'';
+  })).concat([invTotO>0?invTotO.toFixed(2):'']).join(S));
+  // GUANTE — gasto diario en ads
+  lines.push(['GUANTE'].concat(dates.map(function(d){
+    var x=invByDay[d]; return (x&&x.g)?x.g.toFixed(2):'';
+  })).concat([invTotG>0?invTotG.toFixed(2):'']).join(S));
+  // 3 filas vacías (espacio para otros productos)
+  for(var i=0;i<3;i++) lines.push([''].concat(dates.map(function(){return '';})).concat(['']).join(S));
+  // Total inversión diaria
+  lines.push(['TOTAL INV'].concat(dates.map(function(d){
+    var x=invByDay[d]; var t=x?(x.g+x.o):0; return t?t.toFixed(2):'';
+  })).concat([invTot>0?invTot.toFixed(2):'']).join(S));
+  lines.push('');
+  // ── Métricas de resultados ──
+  lines.push('RESULTADOS');
+  lines.push(['MÉTRICA'].concat(dlbls).concat(['TOTAL']).join(S));
+  lines.push(['MENS (conv.)'].concat(dates.map(function(){return'';})).concat([v(convTot)]).join(S));
   lines.push(['COMPRAS'].concat(dates.map(function(d){return v(pedDia(d));})).concat([v(pedTot)]).join(S));
-  // Fila 19: CPA = INV / COMPRAS por día
-  lines.push(['CPA'].concat(dates.map(function(d){
+  lines.push(['CPA ($)'].concat(dates.map(function(d){
     var x=invByDay[d]; var inv=x?(x.g+x.o):0; var p=pedDia(d);
     return cpaN(inv,p);
   })).concat([cpaN(invTot,pedTot)]).join(S));
-  // Fila 20: % CIERRE = COMPRAS / MENS por día
   lines.push(['% CIERRE'].concat(dates.map(function(){return'';})).concat([pctN(pedTot,convTot)]).join(S));
   lines.push('');
 
-  // ── Tabla de rendimiento por producto (filas 21-28 del Excel) ──
-  lines.push(['PRODUCTO','GASTO EN ADS','CONVERSACIONES','COSTO POR CONVERSACION','PEDIDOS','CPA REAL','TASA DE CIERRE','INVERSIÓN DÍA','VENTAS OBJ'].join(S));
-  // OLLAS
+  // ── Tabla de rendimiento por producto ──
+  lines.push('RENDIMIENTO POR CAMPAÑA');
+  lines.push(['PRODUCTO','GASTO EN ADS ($)','CONVERSACIONES','COSTO/CONV ($)','PEDIDOS','CPA REAL ($)','TASA CIERRE','INV/DÍA ($)','VENTAS OBJ/DÍA'].join(S));
   var invDiaO=dInvDia(invTotO,diasActivos), cpaO=cpaN(invTotO,pedTotO);
-  lines.push(['OLLAS ',
-    invTotO.toFixed(2), v(convTotO), cpaN(invTotO,convTotO),
-    v(pedTotO), cpaO, pctN(pedTotO,convTotO),
-    invDiaO, (invDiaO&&cpaO)?(parseFloat(invDiaO)/parseFloat(cpaO)).toFixed(2):''
+  lines.push(['OLLAS',
+    invTotO>0?invTotO.toFixed(2):'—', v(convTotO)||'—', cpaN(invTotO,convTotO)||'—',
+    v(pedTotO)||0, cpaO||'—', pctN(pedTotO,convTotO)||'—',
+    invDiaO||'—', (invDiaO&&cpaO)?(parseFloat(invDiaO)/parseFloat(cpaO)).toFixed(2):'—'
   ].join(S));
-  // GUANTE
   var invDiaG=dInvDia(invTotG,diasActivos), cpaG=cpaN(invTotG,pedTotG);
-  lines.push(['GUANTE ',
-    invTotG.toFixed(2), v(convTotG), cpaN(invTotG,convTotG),
-    v(pedTotG), cpaG, pctN(pedTotG,convTotG),
-    invDiaG, (invDiaG&&cpaG)?(parseFloat(invDiaG)/parseFloat(cpaG)).toFixed(2):''
+  lines.push(['GUANTE',
+    invTotG>0?invTotG.toFixed(2):'—', v(convTotG)||'—', cpaN(invTotG,convTotG)||'—',
+    v(pedTotG)||0, cpaG||'—', pctN(pedTotG,convTotG)||'—',
+    invDiaG||'—', (invDiaG&&cpaG)?(parseFloat(invDiaG)/parseFloat(cpaG)).toFixed(2):'—'
   ].join(S));
   lines.push('');
 
@@ -3556,8 +3557,8 @@ function statsExportExcel(){
   //  Cols: # | ID | NOMBRE | CELULAR | PRODUCTO | CANTIDAD | VALOR |
   //        PLATAFORMA ENVÍO | ESTADO | FECHA | OBSERVACIÓN
   // ════════════════════════════════════════════════
-  lines.push('PEDIDOS');
-  lines.push(['NÚMERO','ID','NOMBRE','CELULAR','PRODUCTO','CANTIDAD','VALOR','PLATAFORMA ENVÍO','ESTADO','FECHA','OBSERVACIÓN'].join(S));
+  lines.push('PEDIDOS CONFIRMADOS');
+  lines.push(['#','ID ORDEN','NOMBRE CLIENTE','CELULAR','PRODUCTO','CANTIDAD','VALOR ($)','COURIER','ESTADO','FECHA ENVÍO','OBSERVACIONES'].join(S));
   var ESTADO_MAP={transito:'TRANSITO',agencia:'RETIRO',cerrado:'ENTREGADO'};
   pedLeads.forEach(function(l,idx){
     var obs=(l.reclamo?'RECLAMO — ':'')+(l.guia?'Guía: '+l.guia:'');
@@ -3581,8 +3582,8 @@ function statsExportExcel(){
   //  HOJA 3: INFO PRODUCT  (catálogo)
   //  Cols: NOMBRE | PRECIO VENTA | CARACTERISTICAS | MENSAJE DE CIERRE | ESTADO
   // ════════════════════════════════════════════════
-  lines.push('INFO PRODUCT');
-  lines.push(['NOMBRE DEL PRODUCTO','PRECIO DE VENTA','CARACTERISTICAS','MENSAJE DE CIERRE','ESTADO'].join(S));
+  lines.push('CATÁLOGO DE PRODUCTOS');
+  lines.push(['NOMBRE DEL PRODUCTO','PRECIO VENTA ($)','DESCRIPCIÓN / CARACTERÍSTICAS','MENSAJE DE CIERRE','ESTADO'].join(S));
   var CIERRE_GUANTE='¿Le genero el pedido ahora? Le llega en 3-4 días a su agencia Servientrega más cercana y paga al retirar 🙌';
   var CIERRE_OLLAS='Set de 12 ollas de acero inoxidable $49.99 con envío gratis — ¿Lo registramos a su nombre?';
   var cat=JSON.parse(localStorage.getItem('pm_catalogo_v1')||'[]');
@@ -5909,7 +5910,7 @@ function eliminarCampana(id){
 var periodContab = 'todo';
 function setPeriodContab(p, btn){
   periodContab = p;
-  document.querySelectorAll('#panel-contabilidad .period-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('#contab-period-btns .period-btn').forEach(b=>b.classList.remove('active'));
   if(btn) btn.classList.add('active');
   renderContabilidad();
 }
