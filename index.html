@@ -846,6 +846,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
   <div class="tab" data-tab="seguimiento" onclick="switchTab('seguimiento')">
     📋 Seguim.
   </div>
+  <div class="tab" data-tab="camila" onclick="switchTab('camila')">💬 Camila</div>
 </div>
 
 <div class="wrap">
@@ -1654,6 +1655,7 @@ function switchTab(name){
   if(name==='clientes')  renderClientes();
   if(name==='marcados')  renderMarcados();
   if(name==='seguimiento') renderSeguimiento();
+  if(name==='camila') renderCamila();
 }
 
 // ════════════════════════════════════════════════════════
@@ -4997,232 +4999,446 @@ function usarOrdenesReales(id){
 }
 
 // ════════════════════════════════════════════════════════
-//  SEGUIMIENTO
+//  SEGUIMIENTO v2 + CAMILA AI
 // ════════════════════════════════════════════════════════
 
-// Mensajes post-venta: presionar retiro en agencia (5 días × 2 = 10)
-var SEG_MSGS_RETIRO = [
-  {label:'D1 AM', texto:'Su pedido ya llegó a la agencia Servientrega 🎉 Puede retirarlo hoy presentando su cédula. ¡Le va a encantar! 💛'},
-  {label:'D1 PM', texto:'Hola! 😊 ¿Pudo pasar por la agencia a retirar su pedido? Si tiene alguna novedad me cuenta 💛'},
-  {label:'D2 AM', texto:'Buen día! 📦 Su pedido lleva un día en agencia — recuerde que tiene 5 días para retirarlo. ¿Va hoy?'},
-  {label:'D2 PM', texto:'Hola! 😊 Cuanto antes empiece con el guante mejores los resultados — el cerebro responde mejor en los primeros meses 💛 ¿Pasa hoy por la agencia?'},
-  {label:'D3 AM', texto:'Hola! ⏰ Su pedido lleva 3 días en agencia — quedan solo 2 días para retirarlo antes de que regrese. ¿Puede ir hoy o mañana?'},
-  {label:'D3 PM', texto:'Hola! 💛 ¿Todo bien? Solo quiero asegurarme de que pueda pasar a retirar su pedido a tiempo 😊 Si tuvo algún inconveniente me cuenta y coordinamos'},
-  {label:'D4 AM', texto:'⚠️ Hola! Mañana vence el plazo de retiro — si el pedido no es retirado hoy o mañana Servientrega lo devuelve. ¿Puede ir hoy?'},
-  {label:'D4 PM', texto:'Hola! 🚨 Es muy importante que pase mañana a más tardar — si el pedido regresa debemos hacer un nuevo envío y se demora más 😔 ¿Va mañana?'},
-  {label:'D5 AM', texto:'🚨 HOY ES EL ÚLTIMO DÍA para retirar su pedido en la agencia Servientrega. Si no lo retira hoy regresa a bodega. ¿Va a poder pasar?'},
-  {label:'D5 PM', texto:'Hola! 💛 ¿Pudo ir a la agencia hoy? Si tuvo algún inconveniente cuénteme para coordinamos un reenvío 😊'}
+// ── Función escapeHtml (única definición) ───────────────
+function escH(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function escA(s){ return String(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
+
+// ── Mensajes de VENTA (1 por día, cerrar en ~10 días) ───
+var SEG_VENTA_MSGS = [
+  'Hola! Solo quería saber — ¿le pareció bien el precio o tiene alguna duda que pueda resolver? 😊',
+  'Hola de nuevo! 💛 Por si le ayuda — el guante tiene un Modo Espejo: la mano sana de un familiar guía los movimientos de la mano afectada. Trabajan juntos desde casa, sin turnos 😊 ¿Se anima?',
+  'Hola! 😊 Esta semana cerramos pedidos el viernes — si lo separamos hoy le llega a tiempo 📦 ¿Se anima?',
+  'Hola! 💛 Solo para que tenga el dato — una sesión de fisioterapia cuesta $30-50. Este guante hace lo mismo todos los días por $59.99 en total, pago al retirar ✅ ¿Se decide?',
+  'Hola! 💛 Camila de ProMarket — hoy le incluimos GRATIS el Kit Hand Grip 5 accesorios 🎁 El guante a $49.99 con todo incluido ✅ ¿Se anima?',
+  'Hola! 😊 Más de 2.400 pacientes en Latinoamérica ya lo usan — recomendado por fisioterapeutas y neurólogos 😊 Y el pago es al retirar, sin adelantar nada ✅ ¿Le proceso?',
+  '📸 Enviar foto del guante + escribir: ¿Ve? 😊',
+  'Hola! 💛 Muchos de nuestros clientes están en ciudades sin clínica de rehabilitación especializada — el guante es su terapia diaria desde casa, a toda hora 😊 ¿Le genero la orden?',
+  'Hola! 😊 El cerebro tiene una ventana de recuperación después de una lesión — cuanto antes empieza la terapia, mejores los resultados 💛 ¿Se decide hoy?',
+  'Voy a dejar libre su consulta — cuando guste aquí estamos 😊'
 ];
 
-// Mensajes pre-venta: cerrar la venta en 10 días (5 días × 2/día)
-var SEG_MSGS_VENTA = [
-  {label:'D1 AM', texto:'Hola! Solo quería saber — ¿le pareció bien el precio o tiene alguna duda que pueda resolver? 😊'},
-  {label:'D1 PM', texto:'Hola de nuevo! 💛 Por si le ayuda — el guante tiene un Modo Espejo: la mano sana de un familiar guía los movimientos de la mano afectada. Trabajan juntos desde casa, sin turnos 😊 ¿Se anima?'},
-  {label:'D2 AM', texto:'Hola! 😊 Esta semana cerramos pedidos el viernes — si lo separamos hoy le llega a tiempo 📦 ¿Se anima?'},
-  {label:'D2 PM', texto:'Hola! 💛 Solo para que tenga el dato — una sesión de fisioterapia cuesta $30-50. Este guante hace lo mismo todos los días por $59.99 en total, pago al retirar ✅ ¿Se decide?'},
-  {label:'D3 AM', texto:'Hola! 💛 Camila de ProMarket — hoy le incluimos GRATIS el Kit Hand Grip 5 accesorios 🎁 El guante a $49.99 con todo incluido ✅ ¿Se anima?'},
-  {label:'D3 PM', texto:'Hola! 😊 Más de 2.400 pacientes en Latinoamérica ya lo usan — recomendado por fisioterapeutas y neurólogos 😊 Y el pago es al retirar, sin adelantar nada ✅ ¿Le proceso?'},
-  {label:'D4 AM', texto:'📸 Enviar foto del guante + escribir: ¿Ve? 😊'},
-  {label:'D4 PM', texto:'Hola! 💛 Muchos de nuestros clientes están en ciudades sin clínica de rehabilitación especializada — el guante es su terapia diaria desde casa, a toda hora 😊 ¿Le genero la orden?'},
-  {label:'D5 AM', texto:'Hola! 😊 El cerebro tiene una ventana de recuperación después de una lesión — cuanto antes empieza la terapia, mejores los resultados 💛 ¿Se decide hoy?'},
-  {label:'D5 PM', texto:'Voy a dejar libre su consulta — cuando guste aquí estamos 😊'}
+// ── Mensajes de AGENCIA (2/día desde que llega el pedido) ──
+var SEG_AG_AM = [
+  'Su pedido ya llegó a la agencia Servientrega 🎉 Puede retirarlo hoy presentando su cédula. ¡Le va a encantar! 💛',
+  'Buen día! 😊 ¿Pudo pasar ayer por la agencia? Su pedido sigue esperándole listo para retirar 📦',
+  'Hola! ⏰ Su pedido lleva 3 días en agencia — quedan 2 días para retirarlo antes de que regrese. ¿Puede ir hoy?',
+  '⚠️ Hola! Mañana vence el plazo de retiro en Servientrega — es importante que pase hoy o mañana. ¿Puede ir?',
+  '🚨 HOY ES EL ÚLTIMO DÍA para retirar su pedido. Si no lo retira hoy regresa a bodega. ¿Va a poder pasar?'
+];
+var SEG_AG_PM = [
+  'Hola! 😊 ¿Pudo pasar hoy por la agencia? El guante le espera listo 💛 Si tiene alguna novedad me cuenta',
+  'Hola! 💛 Cuanto antes empiece con la terapia mejores los resultados — el cerebro responde mejor en los primeros meses 😊 ¿Va mañana?',
+  'Hola! 😊 ¿Todo bien? Si tuvo algún inconveniente me cuenta y coordinamos — no quisiera que el pedido regrese 💛',
+  'Hola! 🚨 Es muy importante que pase mañana a más tardar — si el pedido regresa debemos hacer un nuevo envío 😔 ¿Va mañana?',
+  'Hola! 💛 ¿Pudo ir a la agencia hoy? Si tuvo algún inconveniente cuénteme para coordinamos un reenvío 😊'
 ];
 
-// ── HELPERS SEGUIMIENTO ──────────────────────────────────
+// ── Storage helpers ──────────────────────────────────────
+function segGetLeads(){ return JSON.parse(localStorage.getItem('pm_seg_v2')||'[]'); }
+function segSaveLeads(a){ localStorage.setItem('pm_seg_v2', JSON.stringify(a)); }
+function segGetChk(id){ return JSON.parse(localStorage.getItem('pm_segc_'+id)||'null')||{v:Array(10).fill(false),a:[]}; }
+function segSaveChk(id,d){ localStorage.setItem('pm_segc_'+id, JSON.stringify(d)); }
 
-function renderSegDots(seg, msgs, orderId, prefix){
-  return seg.map(function(done,i){
-    var lbl = msgs[i].label;
-    var nextIdx = seg.indexOf(false);
-    var isNext = i === nextIdx;
-    var color = done ? '#27AE60' : (isNext ? '#E8650A' : '#1a1a1a');
-    var border = done ? '#27AE60' : (isNext ? '#E8650A' : '#444');
-    var txt = done ? '✓' : (isNext ? '!' : '');
-    return '<span title="'+lbl+'" onclick="toggleSegMsg(''+prefix+orderId+'','+i+',event)" style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;border:2px solid '+border+';background:'+color+';color:#fff;font-size:11px;font-weight:700;margin:2px;cursor:pointer;flex-shrink:0;">'+txt+'</span>';
-  }).join('');
+// ── Auto-sync lead phases from Rocket orders ─────────────
+function segSyncOrders(leads){
+  var changed = false;
+  leads.forEach(function(lead){
+    if(lead.fase==='cerrado') return;
+    var ord = null;
+    if(lead.orderId){ ord = orders.find(function(o){return o.id===lead.orderId;}); }
+    if(!ord && lead.tel){
+      var t = lead.tel.replace(/\D/g,'');
+      ord = orders.find(function(o){
+        var ot=(o.telefono||o.celular||'').replace(/\D/g,'');
+        return ot.length>=7 && t.slice(-8)===ot.slice(-8);
+      });
+      if(ord){ lead.orderId=ord.id; changed=true; }
+    }
+    if(!ord) return;
+    var st=ord.status;
+    if(st==='ENTREGADO' && lead.fase!=='cerrado'){ lead.fase='cerrado'; changed=true; }
+    else if(st==='EN AGENCIA' && lead.fase!=='agencia' && lead.fase!=='cerrado'){
+      lead.fase='agencia'; lead.fechaAg=lead.fechaAg||new Date().toISOString(); changed=true;
+    } else if(['EN TRANSITO','PREPARADO','CONFIRMADO'].indexOf(st)!==-1 && lead.fase==='venta'){
+      lead.fase='transito'; lead.fechaTr=lead.fechaTr||new Date().toISOString(); changed=true;
+    }
+  });
+  return changed;
 }
 
-function renderNextMsgBlock(seg, msgs, orderId, prefix){
-  var nextIdx = seg.indexOf(false);
-  if(nextIdx === -1) return '<div style="padding:10px;background:#0d3320;border-radius:8px;color:#27AE60;font-size:13px;text-align:center;margin-top:10px;">✅ Secuencia completa</div>';
-  var msg = msgs[nextIdx];
-  return '<div style="margin-top:10px;background:#1a1000;border:1.5px solid #E8650A;border-radius:10px;padding:12px;">'
-    +'<div style="font-size:11px;font-weight:700;color:#E8650A;margin-bottom:6px;">📨 '+msg.label+' — Copiar y enviar:</div>'
-    +'<div style="font-size:14px;color:#eee;line-height:1.5;margin-bottom:10px;white-space:pre-wrap;">'+msg.texto+'</div>'
-    +'<div style="display:flex;gap:8px;">'
-      +'<button onclick="copiarSegMsg(''+prefix+'',''+orderId+'','+nextIdx+')" style="flex:1;padding:10px;border:none;border-radius:8px;background:#333;color:#fff;font-size:13px;font-weight:600;cursor:pointer;">📋 Copiar</button>'
-      +'<button onclick="marcarEnviadoSeg(''+prefix+orderId+'','+nextIdx+')" style="flex:1;padding:10px;border:none;border-radius:8px;background:#27AE60;color:#fff;font-size:13px;font-weight:600;cursor:pointer;">✅ Enviado</button>'
+// ── Main render ──────────────────────────────────────────
+function renderSeguimiento(){
+  var el = document.getElementById('seg-container');
+  if(!el) return;
+  var leads = segGetLeads();
+  if(segSyncOrders(leads)) segSaveLeads(leads);
+  var activos = leads.filter(function(l){return l.fase!=='cerrado';});
+  var cerrados = leads.filter(function(l){return l.fase==='cerrado';});
+
+  if(!activos.length && !cerrados.length){
+    el.innerHTML = '<div style="text-align:center;padding:48px 16px;">'
+      +'<div style="font-size:40px;margin-bottom:12px;">📋</div>'
+      +'<div style="font-size:15px;color:#888;margin-bottom:4px;">Sin leads en seguimiento</div>'
+      +'<div style="font-size:13px;color:#555;">Agrega un lead cuando un cliente escriba</div>'
+      +'</div>'+segFormHTML();
+    return;
+  }
+  el.innerHTML = activos.map(segCardHTML).join('')
+    +(cerrados.length?'<div style="font-size:11px;font-weight:700;color:#444;padding:12px 0 6px;letter-spacing:.06em;">CERRADOS RECIENTES</div>'
+      +cerrados.slice(-5).reverse().map(segClosedHTML).join(''):'')
+    +segFormHTML();
+}
+
+// ── Card HTML ────────────────────────────────────────────
+function segCardHTML(lead){
+  var chk = segGetChk(lead.id);
+  var diasT = Math.floor((Date.now()-new Date(lead.fechaInicio).getTime())/86400000);
+  var fase = lead.fase;
+  var faseLabel = {venta:'VENTA',transito:'TRÁNSITO',agencia:'AGENCIA'}[fase]||fase.toUpperCase();
+  var faseBg = fase==='venta'?'background:#0A1120;color:#3B82F6;'
+              :fase==='transito'?'background:#1a1200;color:#F59E0B;'
+              :'background:#0d2010;color:#27AE60;';
+  var diasAg = lead.fechaAg?Math.floor((Date.now()-new Date(lead.fechaAg).getTime())/86400000):0;
+  var bord = fase==='agencia'
+    ?(diasAg>=4?'border:2px solid #EF4444;box-shadow:0 0 12px rgba(239,68,68,.25);'
+      :diasAg>=2?'border:2px solid #E8650A;':'border:1px solid #27AE60;')
+    :(diasT>=8?'border:2px solid #E8650A;':'border:1px solid #222;');
+
+  return '<div id="sgc-'+lead.id+'" style="background:#111;border-radius:14px;padding:14px;margin-bottom:14px;'+bord+'">'
+    +'<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">'
+      +'<div style="flex:1;min-width:0;">'
+        +'<div style="font-size:16px;font-weight:700;color:#f0f0f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+escH(lead.nombre)+'</div>'
+        +(lead.tel?'<div style="font-size:12px;color:#aaa;margin-top:2px;">'+escH(lead.tel)+'</div>':'')
+      +'</div>'
+      +'<div style="display:flex;gap:6px;align-items:center;margin-left:10px;flex-shrink:0;">'
+        +'<span style="font-size:11px;padding:3px 8px;border-radius:10px;background:#1a1a1a;color:#666;font-weight:700;">Día&nbsp;'+diasT+'</span>'
+        +'<span style="font-size:11px;padding:3px 8px;border-radius:10px;font-weight:700;'+faseBg+'">'+faseLabel+'</span>'
+        +'<button onclick="segDel(\''+escA(lead.id)+'\')" style="background:none;border:none;color:#333;font-size:18px;cursor:pointer;line-height:1;padding:0 2px;" title="Eliminar">×</button>'
+      +'</div>'
+    +'</div>'
+    +(fase==='venta'?segVentaHTML(lead,chk,diasT)
+      :fase==='transito'?segTransitoHTML(lead)
+      :segAgenciaHTML(lead,chk,diasAg))
+  +'</div>';
+}
+
+// ── Fase VENTA ───────────────────────────────────────────
+function segVentaHTML(lead,chk,diasT){
+  var v=chk.v||Array(10).fill(false);
+  var nx=v.indexOf(false);
+  var dots=v.map(function(done,i){
+    var isN=i===nx;
+    var bg=done?'#27AE60':isN?'#E8650A':'#1a1a1a';
+    var bd=done?'#27AE60':isN?'#E8650A':'#2a2a2a';
+    var c=done?'#fff':isN?'#fff':'#444';
+    return '<span onclick="segMarkV(\''+escA(lead.id)+'\','+i+')" title="Mensaje '+(i+1)+'" style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;border:2px solid '+bd+';background:'+bg+';color:'+c+';font-size:11px;font-weight:700;cursor:pointer;margin:2px;">'+(done?'✓':String(i+1))+'</span>';
+  }).join('');
+  var msgBlock='';
+  if(nx===-1){
+    msgBlock='<div style="padding:10px;background:#0d3320;border-radius:8px;color:#27AE60;font-size:13px;text-align:center;margin-top:8px;">✅ Todos los mensajes enviados</div>';
+  } else {
+    var txt=SEG_VENTA_MSGS[nx];
+    msgBlock='<div style="margin-top:10px;background:#0a0a16;border:1.5px solid #E8650A;border-radius:10px;padding:12px;">'
+      +'<div style="font-size:11px;font-weight:700;color:#E8650A;margin-bottom:7px;">📨 MENSAJE '+(nx+1)+'/10 — Copiar y enviar</div>'
+      +'<div style="font-size:14px;color:#eee;line-height:1.6;margin-bottom:11px;white-space:pre-line;">'+escH(txt)+'</div>'
+      +'<div style="display:flex;gap:8px;">'
+        +'<button onclick="segCopy('+JSON.stringify(txt)+')" style="flex:1;padding:10px;border:1px solid #333;border-radius:8px;background:#1a1a2a;color:#fff;font-size:13px;font-weight:600;cursor:pointer;">📋 Copiar</button>'
+        +'<button onclick="segMarkV(\''+escA(lead.id)+'\','+nx+')" style="flex:1;padding:10px;border:none;border-radius:8px;background:#27AE60;color:#fff;font-size:13px;font-weight:600;cursor:pointer;">✅ Enviado</button>'
+      +'</div>'
+    +'</div>';
+  }
+  return '<div style="display:flex;flex-wrap:wrap;gap:1px;margin-bottom:8px;">'+dots+'</div>'
+    +'<div style="font-size:11px;color:#555;margin-bottom:6px;">'+v.filter(Boolean).length+'/10 mensajes de venta</div>'
+    +msgBlock
+    +'<button onclick="segGoTransito(\''+escA(lead.id)+'\')" style="margin-top:10px;width:100%;padding:9px;border:1px solid #F59E0B;border-radius:8px;background:#120e00;color:#F59E0B;font-size:13px;font-weight:600;cursor:pointer;">📦 Ya compró → Marcar en tránsito</button>';
+}
+
+// ── Fase TRÁNSITO ─────────────────────────────────────────
+function segTransitoHTML(lead){
+  var diasTr=lead.fechaTr?Math.floor((Date.now()-new Date(lead.fechaTr).getTime())/86400000):0;
+  return '<div style="background:#120e00;border:1px solid #F59E0B;border-radius:10px;padding:16px;text-align:center;">'
+    +'<div style="font-size:28px;margin-bottom:8px;">📦</div>'
+    +'<div style="font-size:14px;font-weight:700;color:#F59E0B;">Pedido en tránsito</div>'
+    +'<div style="font-size:12px;color:#888;margin-top:4px;">'+(diasTr===0?'Salió hoy':'Lleva '+diasTr+' día'+(diasTr!==1?'s':'')+' en camino')+'</div>'
+    +'<div style="font-size:12px;color:#555;margin-top:3px;">Servientrega: 1-3 días hábiles</div>'
+    +'<button onclick="segGoAgencia(\''+escA(lead.id)+'\')" style="margin-top:14px;width:100%;padding:10px;border:1px solid #27AE60;border-radius:8px;background:#0a1a0a;color:#27AE60;font-size:13px;font-weight:700;cursor:pointer;">📍 Llegó a la agencia — Iniciar seguimiento</button>'
+  +'</div>';
+}
+
+// ── Fase AGENCIA ──────────────────────────────────────────
+function segAgenciaHTML(lead,chk,diasAg){
+  var a=chk.a||[];
+  while(a.length<diasAg+1) a.push([false,false]);
+  var rows='';
+  var maxDay=Math.min(diasAg,4);
+  for(var d=0;d<=maxDay;d++){
+    var am=a[d]?a[d][0]:false, pm=a[d]?a[d][1]:false;
+    var isT=(d===diasAg);
+    var rowStyle='display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;margin-bottom:6px;'
+      +(isT?'background:#1a1000;border:1.5px solid #E8650A;':'background:#0d0d0d;border:1px solid #1a1a1a;');
+    var amS='display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid '+(am?'#27AE60':'#2a2a2a')+';background:'+(am?'#0d3320':'#111')+';color:'+(am?'#27AE60':'#555')+';';
+    var pmS='display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid '+(pm?'#27AE60':'#2a2a2a')+';background:'+(pm?'#0d3320':'#111')+';color:'+(pm?'#27AE60':'#555')+';';
+    rows+='<div style="'+rowStyle+'">'
+      +'<span style="font-size:12px;font-weight:700;color:'+(isT?'#E8650A':'#555')+';width:38px;flex-shrink:0;">Día '+(d+1)+(isT?'▶':'')+' </span>'
+      +'<span onclick="segMarkA(\''+escA(lead.id)+'\','+d+',0)" style="'+amS+'">'+(am?'✓':'AM')+'</span>'
+      +'<span onclick="segMarkA(\''+escA(lead.id)+'\','+d+',1)" style="'+pmS+'">'+(pm?'✓':'PM')+'</span>'
+      +'<div style="flex:1;font-size:11px;color:'+(am&&pm?'#27AE60':isT?'#E8650A':'#444')+';">'
+        +(am&&pm?'✓ Completo':!am&&isT?'⚡ AM pendiente':am&&!pm&&isT?'⚡ PM pendiente':' ')
+      +'</div>'
+    +'</div>';
+  }
+  // Next message
+  var msgBlock='';
+  if(diasAg<=4){
+    var todayChk=a[diasAg]||[false,false];
+    var esAM=!todayChk[0], esPM=todayChk[0]&&!todayChk[1];
+    if(esAM||esPM){
+      var mi=Math.min(diasAg,SEG_AG_AM.length-1);
+      var msgTxt=esAM?SEG_AG_AM[mi]:SEG_AG_PM[mi];
+      var turno=esAM?0:1;
+      msgBlock='<div style="margin-top:10px;background:#0a0a16;border:1.5px solid #E8650A;border-radius:10px;padding:12px;">'
+        +'<div style="font-size:11px;font-weight:700;color:#E8650A;margin-bottom:7px;">📨 HOY DÍA '+(diasAg+1)+' '+(esAM?'AM':'PM')+' — Enviar ahora:</div>'
+        +'<div style="font-size:14px;color:#eee;line-height:1.6;margin-bottom:11px;white-space:pre-line;">'+escH(msgTxt)+'</div>'
+        +'<div style="display:flex;gap:8px;">'
+          +'<button onclick="segCopy('+JSON.stringify(msgTxt)+')" style="flex:1;padding:10px;border:1px solid #333;border-radius:8px;background:#1a1a2a;color:#fff;font-size:13px;font-weight:600;cursor:pointer;">📋 Copiar</button>'
+          +'<button onclick="segMarkA(\''+escA(lead.id)+'\','+diasAg+','+turno+')" style="flex:1;padding:10px;border:none;border-radius:8px;background:#27AE60;color:#fff;font-size:13px;font-weight:600;cursor:pointer;">✅ Enviado</button>'
+        +'</div>'
+      +'</div>';
+    }
+  } else {
+    msgBlock='<div style="padding:12px;background:#1a0000;border:1px solid #7F1D1D;border-radius:8px;color:#EF4444;font-size:13px;text-align:center;margin-top:8px;">🚨 Plazo de 5 días vencido — coordinar reenvío</div>';
+  }
+  return '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">'
+    +'<span style="font-size:12px;font-weight:700;color:#888;">DÍAS EN AGENCIA</span>'
+    +'<span style="font-size:13px;font-weight:700;color:'+(diasAg>=4?'#EF4444':diasAg>=2?'#F59E0B':'#27AE60')+';">'+diasAg+' / 5 días</span>'
+  +'</div>'
+  +rows+msgBlock
+  +'<button onclick="segCerrar(\''+escA(lead.id)+'\')" style="margin-top:10px;width:100%;padding:10px;border:1px solid #27AE60;border-radius:8px;background:#0a1a0a;color:#27AE60;font-size:13px;font-weight:700;cursor:pointer;">✅ Cliente retiró — Cerrar</button>';
+}
+
+function segClosedHTML(l){
+  var d=Math.floor((Date.now()-new Date(l.fechaInicio).getTime())/86400000);
+  return '<div style="background:#0a0a0a;border-radius:10px;padding:10px 14px;margin-bottom:8px;border:1px solid #1a1a1a;">'
+    +'<div style="display:flex;justify-content:space-between;align-items:center;">'
+      +'<div><div style="font-size:14px;color:#666;">'+escH(l.nombre)+'</div>'+(l.tel?'<div style="font-size:11px;color:#444;">'+escH(l.tel)+'</div>':'')+'</div>'
+      +'<span style="font-size:11px;color:#27AE60;font-weight:700;">✅ CERRADO · '+d+'d</span>'
     +'</div>'
   +'</div>';
 }
 
-function getSegData(id){
-  // storage key: 'pm_seg_'+id
-  var raw = localStorage.getItem('pm_seg_'+id);
-  return raw ? JSON.parse(raw) : Array(10).fill(false);
-}
-function saveSegData(id, arr){
-  localStorage.setItem('pm_seg_'+id, JSON.stringify(arr));
-}
-
-// ── MAIN RENDER ──────────────────────────────────────────
-
-function renderSeguimiento(){
-  var container = document.getElementById('seg-container');
-  if(!container) return;
-
-  // ── SECCIÓN 1: CONFIRMADOS (órdenes activas) ──
-  var activos = orders.filter(function(o){
-    return ['NUEVO','CONFIRMADO','PREPARADO','EN TRANSITO','EN AGENCIA'].indexOf(o.status) !== -1;
-  });
-  activos.sort(function(a,b){
-    var order = {'EN AGENCIA':0,'EN TRANSITO':1,'PREPARADO':2,'CONFIRMADO':3,'NUEVO':4};
-    return (order[a.status]||9) - (order[b.status]||9);
-  });
-
-  var htmlConfirmados = '';
-  if(activos.length){
-    htmlConfirmados = activos.map(function(o){
-      var seg = getSegData('order_'+o.id);
-      var msgs = SEG_MSGS_RETIRO;
-      var nombre = o.nombreCliente||o.cliente||o.nombre||'Sin nombre';
-      var telefono = o.telefono||o.celular||'';
-      var producto = o.producto||'—';
-      var dias = daysSince(o.updatedAt||o.createdAt);
-      var esAgencia = o.status === 'EN AGENCIA';
-
-      var statusColor = {'NUEVO':'#3B82F6','CONFIRMADO':'#27AE60','PREPARADO':'#F59E0B','EN TRANSITO':'#8B5CF6','EN AGENCIA':'#E8650A'}[o.status]||'#888';
-      var urgBorder = esAgencia && dias>=5 ? 'border:2px solid #c0392b;box-shadow:0 0 8px rgba(192,57,43,.4);'
-                    : esAgencia && dias>=3 ? 'border:2px solid #E8650A;'
-                    : esAgencia && dias>=1 ? 'border:2px solid #F59E0B;'
-                    : 'border:1px solid #2a2a2a;';
-
-      var dotsBlock = esAgencia
-        ? '<div style="display:flex;flex-wrap:wrap;gap:2px;margin:8px 0 2px;">'+renderSegDots(seg, msgs, o.id, 'order_')+'</div>'
-          +'<div style="font-size:11px;color:#666;margin-bottom:4px;">'+seg.filter(Boolean).length+'/10 mensajes enviados</div>'
-          + renderNextMsgBlock(seg, msgs, o.id, 'order_')
-        : '<div style="padding:8px;background:#111;border-radius:6px;font-size:13px;color:#888;margin-top:6px;">📦 En camino — cuando llegue a agencia empieza el seguimiento</div>';
-
-      return '<div style="background:#111;border-radius:12px;padding:14px;margin-bottom:10px;'+urgBorder+'">'
-        +'<div style="display:flex;justify-content:space-between;align-items:flex-start;">'
-          +'<div style="flex:1;min-width:0;">'
-            +'<div style="font-size:15px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+nombre+'</div>'
-            +(telefono?'<div style="font-size:12px;color:#aaa;">'+telefono+'</div>':'')
-            +'<div style="font-size:12px;color:#888;margin-top:2px;">'+producto+'</div>'
-          +'</div>'
-          +'<div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;margin-left:10px;">'
-            +'<span style="font-size:11px;padding:3px 8px;border-radius:12px;background:'+statusColor+'22;color:'+statusColor+';border:1px solid '+statusColor+';font-weight:700;white-space:nowrap;">'+o.status+'</span>'
-            +(esAgencia?'<span style="font-size:11px;padding:2px 6px;border-radius:6px;background:'+(dias>=4?'#4a0000':'#1a1a1a')+';color:'+(dias>=4?'#ff6b6b':'#888')+';font-weight:700;">'+dias+'d en agencia</span>':'')
-          +'</div>'
-        +'</div>'
-        +dotsBlock
-      +'</div>';
-    }).join('');
-  } else {
-    htmlConfirmados = '<div style="text-align:center;padding:20px;color:#555;font-size:13px;">Sin órdenes activas</div>';
-  }
-
-  // ── SECCIÓN 2: SIN CONFIRMAR (leads manuales) ──
-  var leadsRaw = localStorage.getItem('pm_leads_seg_v1');
-  var leads = leadsRaw ? JSON.parse(leadsRaw) : [];
-
-  var htmlLeads = '';
-  if(leads.length){
-    htmlLeads = leads.map(function(lead){
-      var seg = getSegData('lead_'+lead.id);
-      var msgs = SEG_MSGS_VENTA;
-      var dias = Math.floor((Date.now() - new Date(lead.fecha).getTime())/(1000*3600*24));
-      var urgBorder = dias>=5 ? 'border:2px solid #c0392b;' : dias>=3 ? 'border:2px solid #E8650A;' : 'border:1px solid #2a2a2a;';
-
-      return '<div style="background:#111;border-radius:12px;padding:14px;margin-bottom:10px;'+urgBorder+'">'
-        +'<div style="display:flex;justify-content:space-between;align-items:center;">'
-          +'<div>'
-            +'<div style="font-size:15px;font-weight:700;color:#fff;">'+lead.nombre+'</div>'
-            +(lead.telefono?'<div style="font-size:12px;color:#aaa;">'+lead.telefono+'</div>':'')
-            +'<div style="font-size:12px;color:#888;">Contacto: '+new Date(lead.fecha).toLocaleDateString('es-EC',{day:'2-digit',month:'2-digit'})+'</div>'
-          +'</div>'
-          +'<div style="display:flex;gap:6px;align-items:center;">'
-            +'<span style="font-size:11px;padding:2px 6px;border-radius:6px;background:#1a1a1a;color:#aaa;font-weight:700;">'+dias+'d</span>'
-            +'<button onclick="eliminarLead(''+lead.id+'')" style="background:#2a0000;border:1px solid #7F1D1D;color:#EF4444;padding:4px 8px;border-radius:6px;font-size:12px;cursor:pointer;">✕</button>'
-          +'</div>'
-        +'</div>'
-        +'<div style="display:flex;flex-wrap:wrap;gap:2px;margin:8px 0 2px;">'+renderSegDots(seg, msgs, lead.id, 'lead_')+'</div>'
-        +'<div style="font-size:11px;color:#666;margin-bottom:4px;">'+seg.filter(Boolean).length+'/10 mensajes enviados</div>'
-        +renderNextMsgBlock(seg, msgs, lead.id, 'lead_')
-      +'</div>';
-    }).join('');
-  } else {
-    htmlLeads = '<div style="text-align:center;padding:16px;color:#555;font-size:13px;">Sin leads activos — agrega uno abajo</div>';
-  }
-
-  // ── FORM AGREGAR LEAD ──
-  var formLead = '<div style="background:#1a1a1a;border-radius:10px;padding:14px;margin-top:8px;">'
-    +'<div style="font-size:12px;font-weight:700;color:#888;margin-bottom:10px;">➕ AGREGAR LEAD</div>'
-    +'<input id="seg-lead-nombre" placeholder="Nombre o alias" style="width:100%;padding:8px 10px;background:#111;border:1px solid #333;border-radius:6px;color:#fff;font-size:14px;margin-bottom:6px;">'
-    +'<input id="seg-lead-tel" placeholder="Teléfono (opcional)" style="width:100%;padding:8px 10px;background:#111;border:1px solid #333;border-radius:6px;color:#fff;font-size:14px;margin-bottom:10px;">'
-    +'<button onclick="agregarLead()" style="width:100%;padding:10px;background:#E8650A;border:none;border-radius:8px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;">Agregar lead al seguimiento</button>'
+function segFormHTML(){
+  return '<div style="background:#181818;border-radius:12px;padding:16px;margin-top:16px;">'
+    +'<div style="font-size:12px;font-weight:700;color:#666;letter-spacing:.07em;margin-bottom:12px;">➕ AGREGAR NUEVO LEAD</div>'
+    +'<input id="sg-n" placeholder="Nombre o alias" style="width:100%;padding:10px 12px;background:#111;border:1px solid #222;border-radius:8px;color:#fff;font-size:14px;margin-bottom:8px;box-sizing:border-box;">'
+    +'<input id="sg-t" placeholder="Teléfono (ej: +593 99 270 7955)" style="width:100%;padding:10px 12px;background:#111;border:1px solid #222;border-radius:8px;color:#fff;font-size:14px;margin-bottom:12px;box-sizing:border-box;">'
+    +'<button onclick="segAdd()" style="width:100%;padding:12px;background:#E8650A;border:none;border-radius:9px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.02em;">Agregar al seguimiento</button>'
   +'</div>';
-
-  container.innerHTML =
-    '<div style="font-size:12px;font-weight:700;color:#888;letter-spacing:.08em;padding:4px 0 10px;">✅ CONFIRMADOS — '+activos.length+' ÓRDENES ACTIVAS</div>'
-    + htmlConfirmados
-    + '<div style="height:1px;background:#222;margin:16px 0;"></div>'
-    + '<div style="font-size:12px;font-weight:700;color:#888;letter-spacing:.08em;padding:4px 0 10px;">🔔 SIN CONFIRMAR — CERRAR EN 10 DÍAS</div>'
-    + htmlLeads
-    + formLead;
 }
 
-// ── ACCIONES ─────────────────────────────────────────────
-
-function agregarLead(){
-  var nombre = (document.getElementById('seg-lead-nombre')||{}).value||'';
-  var telefono = (document.getElementById('seg-lead-tel')||{}).value||'';
-  if(!nombre.trim()){ alert('Ingresa un nombre'); return; }
-  var raw = localStorage.getItem('pm_leads_seg_v1');
-  var leads = raw ? JSON.parse(raw) : [];
-  leads.push({id:'lead_'+(Date.now()), nombre:nombre.trim(), telefono:telefono.trim(), fecha:new Date().toISOString()});
-  localStorage.setItem('pm_leads_seg_v1', JSON.stringify(leads));
+// ── Actions ──────────────────────────────────────────────
+function segAdd(){
+  var n=(document.getElementById('sg-n')||{}).value||'';
+  var t=(document.getElementById('sg-t')||{}).value||'';
+  if(!n.trim()){showToast('Ingresa un nombre ⚠️');return;}
+  var leads=segGetLeads();
+  var id='sg'+Date.now();
+  leads.push({id,nombre:n.trim(),tel:t.trim(),fechaInicio:new Date().toISOString(),orderId:null,fase:'venta',fechaTr:null,fechaAg:null});
+  segSaveLeads(leads);
+  segSaveChk(id,{v:Array(10).fill(false),a:[]});
+  document.getElementById('sg-n').value='';
+  document.getElementById('sg-t').value='';
+  renderSeguimiento();
+  showToast('Lead agregado ✅');
+}
+function segDel(id){
+  if(!confirm('¿Eliminar este lead del seguimiento?'))return;
+  segSaveLeads(segGetLeads().filter(function(l){return l.id!==id;}));
+  localStorage.removeItem('pm_segc_'+id);
   renderSeguimiento();
 }
-
-function eliminarLead(leadId){
-  if(!confirm('¿Eliminar este lead del seguimiento?')) return;
-  var raw = localStorage.getItem('pm_leads_seg_v1');
-  var leads = raw ? JSON.parse(raw) : [];
-  leads = leads.filter(function(l){ return l.id !== leadId; });
-  localStorage.setItem('pm_leads_seg_v1', JSON.stringify(leads));
-  renderSeguimiento();
+function segMarkV(id,i){
+  var c=segGetChk(id);c.v=c.v||Array(10).fill(false);c.v[i]=true;segSaveChk(id,c);renderSeguimiento();
 }
-
-function copiarSegMsg(prefix, id, idx){
-  var msgs = prefix === 'order_' ? SEG_MSGS_RETIRO : SEG_MSGS_VENTA;
-  var texto = msgs[idx].texto;
-  if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(texto).then(function(){ showToast('Mensaje copiado ✅'); });
+function segMarkA(id,d,t){
+  var c=segGetChk(id);while(c.a.length<=d)c.a.push([false,false]);c.a[d][t]=true;segSaveChk(id,c);renderSeguimiento();
+}
+function segGoTransito(id){
+  var l=segGetLeads();var x=l.find(function(o){return o.id===id;});
+  if(!x)return;x.fase='transito';x.fechaTr=new Date().toISOString();segSaveLeads(l);renderSeguimiento();
+}
+function segGoAgencia(id){
+  var l=segGetLeads();var x=l.find(function(o){return o.id===id;});
+  if(!x)return;x.fase='agencia';x.fechaAg=new Date().toISOString();segSaveLeads(l);renderSeguimiento();
+}
+function segCerrar(id){
+  var l=segGetLeads();var x=l.find(function(o){return o.id===id;});
+  if(!x)return;x.fase='cerrado';segSaveLeads(l);renderSeguimiento();
+  showToast('¡Lead cerrado! 🎉');
+}
+function segCopy(txt){
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(function(){showToast('Copiado ✅');});
   } else {
-    var ta = document.createElement('textarea');
-    ta.value = texto; document.body.appendChild(ta); ta.select();
-    document.execCommand('copy'); document.body.removeChild(ta);
-    showToast('Mensaje copiado ✅');
+    var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();
+    document.execCommand('copy');document.body.removeChild(ta);showToast('Copiado ✅');
   }
 }
 
-function marcarEnviadoSeg(fullId, idx){
-  var seg = getSegData(fullId);
-  seg[idx] = true;
-  saveSegData(fullId, seg);
-  renderSeguimiento();
-}
-
-function toggleSegMsg(fullId, idx, e){
-  e&&e.stopPropagation();
-  marcarEnviadoSeg(fullId, idx);
-}
-
-// Legacy aliases (modal seguimiento uses these)
-function copiarMensajeSeg(orderId, idx){ copiarSegMsg('order_', orderId, idx); }
+// Legacy compatibility (modal seguimiento)
+function toggleSegMsg(i,j,e){if(e)e.stopPropagation();}
+function marcarEnviadoSeg(){}
+function copiarMensajeSeg(){}
+function toggleSeg(){}
 
 // ════════════════════════════════════════════════════════
+//  CAMILA AI
+// ════════════════════════════════════════════════════════
+
+var CAMILA_SP = 'Eres Camila, vendedora de ProMarket Ecuador por WhatsApp. Vendes el Guante Robot de Rehabilitación.\n\n'
++'REGLAS ESTRICTAS:\n'
++'- Primera letra de cada oración en MAYÚSCULA. Expresiones naturales (jaja, ya mismo) quedan en minúscula dentro del mensaje.\n'
++'- Mensajes cortos — máximo 3 líneas por bloque. Sin listas ni bullet points en conversación.\n'
++'- Tono cálido, directo. No parecer desesperada.\n'
++'- Responde ÚNICAMENTE con el mensaje exacto a enviar — sin explicaciones, sin prefijos, sin comillas.\n\n'
++'PRODUCTOS Y PRECIOS:\n'
++'• Guante Robot de Rehabilitación REF GR-001: $59.99 (lead nuevo primer contacto)\n'
++'• Par de guantes: $107.98 (10% off sobre 2x$59.99)\n'
++'• "Muy caro" opción 1: $54.99 + Kit Hand Grip GRATIS\n'
++'• "Muy caro" opción 2 (última): $49.19\n'
++'• Lead sin respuesta día 3+ o reactivación: $49.99 + Kit Hand Grip GRATIS\n'
++'• Kit Hand Grip SKU KHG-001: pinza ajustable, entrenador muñeca, banda elástica, anillo agarre, bola antiestrés\n'
++'• Ollas 12pzas inox REF OLL-001: $39.99 (SOLO leads viejos, campaña pausada)\n\n'
++'FLUJO GUANTE (seguir SIEMPRE en este orden):\n'
++'1. Bienvenida al mensaje estándar: "$59.99 envío gratis + pago al retirar + ¿para quién es?"\n'
++'2. Según para quién: para mí → respuesta funcional (niveles, progreso). Para familiar → respuesta emocional (cuidado, amor).\n'
++'3. ¿De qué ciudad? → verificar agencia Servientrega\n'
++'4. Confirmar agencia → pedir datos: nombre completo, cédula, celular, dirección referencia, guante izquierdo o derecho\n'
++'5. Datos recibidos → "Perfecto! En unos minutos le mando la orden 📄"\n\n'
++'OBJECIONES:\n'
++'- ¿Funciona? → Sí! 2.400+ pacientes en Latinoamérica. Pago al retirar, si no convence no lo retira 😊\n'
++'- ¿Viene cargador? → Sí viene completo: guante, cargador, guante espejo, controlador y pelota de terapia 😊\n'
++'- Muy caro → dos opciones: $54.99+KitHandGrip o $49.19\n'
++'- Lo pienso → Claro! El envío incluido solo esta temporada ¿Le reservo una unidad mientras decide?\n'
++'- Dudas técnicas múltiples → bloque completo: cargador ✅ + flexión y extensión completa ✅ + 3 niveles ✅ + pago al retirar ✅\n'
++'- Par de guantes → $107.98 (10% aplicado), ¿Le proceso el par?\n\n'
++'REGLAS ABSOLUTAS:\n'
++'- NUNCA preguntar por stock ni tallas (stock infinito)\n'
++'- NUNCA mencionar a Alejandro — siempre Camila de ProMarket\n'
++'- NUNCA decir "descuento" — decir "precio especial"\n'
++'- Si el cliente ya dio su ciudad → NO volver a preguntar\n'
++'- "¿Le genero la orden?" SOLO cuando el cliente ya dio todos sus datos\n'
++'- Si el cliente dice NO claramente → "Entendido! Cuando guste aquí estamos 😊"';
+
+function renderCamila(){
+  var el=document.getElementById('camila-container');
+  if(!el)return;
+  var leads=segGetLeads().filter(function(l){return l.fase!=='cerrado';});
+  var opts=leads.map(function(l){return '<option value="'+escH(l.id)+'">'+escH(l.nombre)+(l.tel?' · '+escH(l.tel):'')+'</option>';}).join('');
+  el.innerHTML=
+    '<div style="padding:14px;">'
+    +'<div style="margin-bottom:12px;">'
+      +'<div style="font-size:11px;font-weight:700;color:#888;margin-bottom:6px;letter-spacing:.06em;">LEAD (registra la conversación)</div>'
+      +'<select id="cam-lead" onchange="camilaShowHistory()" style="width:100%;padding:10px;background:#111;border:1px solid #222;border-radius:8px;color:#fff;font-size:14px;">'
+        +'<option value="">— Sin asignar —</option>'+opts
+      +'</select>'
+    +'</div>'
+    +'<div style="margin-bottom:12px;">'
+      +'<div style="font-size:11px;font-weight:700;color:#888;margin-bottom:6px;letter-spacing:.06em;">PEGA EL CHAT DEL CLIENTE</div>'
+      +'<textarea id="cam-in" placeholder="Pega aquí el mensaje o conversación completa del cliente..." rows="5" style="width:100%;padding:12px;background:#111;border:1px solid #222;border-radius:8px;color:#fff;font-size:14px;resize:vertical;box-sizing:border-box;font-family:inherit;line-height:1.5;"></textarea>'
+    +'</div>'
+    +'<button id="cam-btn" onclick="camilaEnviar()" style="width:100%;padding:13px;background:#E8650A;border:none;border-radius:9px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:14px;letter-spacing:.02em;">🤖 Obtener respuesta de Camila</button>'
+    +'<div id="cam-resp" style="display:none;background:#0a0a16;border:2px solid #E8650A;border-radius:12px;padding:14px;margin-bottom:14px;">'
+      +'<div style="font-size:11px;font-weight:700;color:#E8650A;margin-bottom:8px;letter-spacing:.06em;">💬 CAMILA RESPONDE:</div>'
+      +'<div id="cam-resp-txt" style="font-size:15px;color:#f0f0f0;line-height:1.7;white-space:pre-wrap;margin-bottom:12px;"></div>'
+      +'<div style="display:flex;gap:8px;">'
+        +'<button onclick="camilaCopy()" style="flex:1;padding:11px;border:1px solid #333;border-radius:8px;background:#1a1a2a;color:#fff;font-size:14px;font-weight:600;cursor:pointer;">📋 Copiar</button>'
+        +'<button onclick="camilaGuardar()" style="flex:1;padding:11px;border:none;border-radius:8px;background:#27AE60;color:#fff;font-size:14px;font-weight:600;cursor:pointer;">✅ Enviado y guardar</button>'
+      +'</div>'
+    +'</div>'
+    +'<div id="cam-hist"></div>'
+    +'</div>';
+  camilaShowHistory();
+}
+
+async function camilaEnviar(){
+  var key;
+  try{ key=getGeminiKey(); }catch(e){ showToast('Configura tu API Key (botón 🔑 arriba)'); return; }
+  var inp=(document.getElementById('cam-in')||{}).value||'';
+  if(!inp.trim()){showToast('Pega el mensaje del cliente primero');return;}
+  var btn=document.getElementById('cam-btn');
+  if(btn){btn.disabled=true;btn.textContent='⏳ Pensando...';}
+  var leadId=(document.getElementById('cam-lead')||{}).value||'';
+  var ctx='';
+  if(leadId){
+    var lx=segGetLeads().find(function(l){return l.id===leadId;});
+    if(lx) ctx='\n\nCONTEXTO DEL LEAD: Nombre='+lx.nombre+(lx.tel?', Tel='+lx.tel:'')+', Fase actual='+lx.fase;
+  }
+  try{
+    var url='https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+encodeURIComponent(key);
+    var body={
+      systemInstruction:{parts:[{text:CAMILA_SP+ctx}]},
+      contents:[{role:'user',parts:[{text:inp}]}],
+      generationConfig:{temperature:0.4,maxOutputTokens:300,topP:0.85}
+    };
+    var res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(!res.ok){var er=await res.json();throw new Error((er.error&&er.error.message)||'HTTP '+res.status);}
+    var data=await res.json();
+    var txt=data.candidates&&data.candidates[0]&&data.candidates[0].content&&data.candidates[0].content.parts&&data.candidates[0].content.parts[0]&&data.candidates[0].content.parts[0].text||'';
+    if(!txt)throw new Error('Respuesta vacía');
+    window._camResp=txt;window._camIn=inp;window._camLead=leadId;
+    var rd=document.getElementById('cam-resp');var rt=document.getElementById('cam-resp-txt');
+    if(rd)rd.style.display='block';if(rt)rt.textContent=txt;
+  }catch(e){showToast('Error Camila: '+e.message);}
+  finally{if(btn){btn.disabled=false;btn.textContent='🤖 Obtener respuesta de Camila';}}
+}
+
+function camilaCopy(){
+  var t=window._camResp||'';if(!t)return;
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(t).then(function(){showToast('Copiado ✅');});
+  }else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('Copiado ✅');}
+}
+
+function camilaGuardar(){
+  var txt=window._camResp||'',inp=window._camIn||'',lid=window._camLead||'';
+  if(!txt)return;
+  var conv=JSON.parse(localStorage.getItem('pm_conv_v1')||'{}');
+  var k=lid||'_sin_lead';
+  if(!conv[k])conv[k]=[];
+  var now=new Date().toISOString();
+  if(inp.trim())conv[k].push({f:now,d:'in',t:inp.trim()});
+  conv[k].push({f:now,d:'out',t:txt});
+  localStorage.setItem('pm_conv_v1',JSON.stringify(conv));
+  var el=document.getElementById('cam-in');if(el)el.value='';
+  var rd=document.getElementById('cam-resp');if(rd)rd.style.display='none';
+  window._camResp='';window._camIn='';
+  showToast('Guardado ✅');
+  camilaShowHistory();
+}
+
+function camilaShowHistory(){
+  var el=document.getElementById('cam-hist');if(!el)return;
+  var lid=(document.getElementById('cam-lead')||{}).value||'';
+  if(!lid){el.innerHTML='';return;}
+  var conv=JSON.parse(localStorage.getItem('pm_conv_v1')||'{}');
+  var msgs=(conv[lid]||[]).slice(-30).reverse();
+  if(!msgs.length){el.innerHTML='<div style="text-align:center;padding:16px;color:#444;font-size:13px;">Sin conversación registrada</div>';return;}
+  el.innerHTML='<div style="font-size:11px;font-weight:700;color:#555;margin:12px 0 8px;letter-spacing:.06em;">HISTORIAL</div>'
+    +msgs.map(function(m){
+      var out=m.d==='out';
+      var h=new Date(m.f).toLocaleTimeString('es-EC',{hour:'2-digit',minute:'2-digit'});
+      return '<div style="display:flex;justify-content:'+(out?'flex-end':'flex-start')+';margin-bottom:8px;">'
+        +'<div style="max-width:82%;padding:9px 12px;border-radius:'+(out?'12px 3px 12px 12px':'3px 12px 12px 12px')+';background:'+(out?'#1a1000':'#0d0d0d')+';border:1px solid '+(out?'#E8650A':'#1a1a1a')+';font-size:13px;color:#ddd;line-height:1.5;">'
+          +'<div style="white-space:pre-wrap;">'+escH(m.t)+'</div>'
+          +'<div style="font-size:10px;color:#444;margin-top:4px;text-align:right;">'+h+'</div>'
+        +'</div>'
+      +'</div>';
+    }).join('');
+}
+
 //  IMPORTAR CSV FACEBOOK
 // ════════════════════════════════════════════════════════
 function importarCSVFacebook(input){
@@ -5747,3 +5963,5 @@ if('serviceWorker' in navigator){
 </script>
 </body>
 </html>
+<div class="panel" id="panel-camila"><div id="camila-container" style="padding:0;overflow-y:auto;"></div></div>
+
