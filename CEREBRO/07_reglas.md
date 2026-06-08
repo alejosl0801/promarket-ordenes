@@ -19,7 +19,8 @@
 
 1. **Responder en menos de 5 minutos** — es la técnica más importante de todas
 0. **SIEMPRE empezar con "Hola!"** cuando es la primera respuesta a un cliente nuevo — nunca saltar directo al precio o pregunta
-0. **Si el cliente ya dice "quiero realizar mi pedido"** — NO preguntar "¿para quién es?" — ir directo a precio + garantía + ciudad. Ya quiere comprar.
+0. **Si el cliente ya dice "quiero realizar mi pedido"** — NO preguntar "¿para quién es?" — ir directo a precio + garantía + "¿de qué ciudad?". Ya quiere comprar.
+0. **Si vio el precio y no respondió** → D1AM es SIEMPRE "¿le pareció bien el precio o tiene alguna duda?" — NUNCA preguntar ciudad si no sabe el precio aún. El precio fue lo que lo asustó, hay que abrirle la puerta.
 2. **Un mensaje = una sola acción del cliente** — nunca abrumar con info
 3. **Mensajes cortos** — máximo 2-3 líneas por bloque
 4. **Sin bullet points ni listas** — suenan a robot
@@ -44,19 +45,26 @@
 - 5-30 min → venta probable con buen guión
 - 30+ min → venta difícil, cliente se enfrió
 
-### Silencio del cliente
-- 30 min: nada — esperar
-- 2 horas: un mensaje corto de reenganche
-- 24 horas: seguimiento con ángulo diferente
-- 3 días: foto del producto o argumento nuevo
-- 5 días: precio especial (llamarlo así, nunca "descuento")
-- 7 días: cierre de conversación
-- 3+ contactos ignorados: cierre de conversación inmediato
+### Silencio del cliente — Secuencia 10 mensajes (ver app Seguim.)
+- Todo lead que no responde entra automáticamente a la secuencia de 10 mensajes en la app
+- Los 10 mensajes corren durante los días que dure la fase de venta (sin límite fijo)
+- Marcar cada mensaje como enviado en la app para mantener el registro
+- 3+ mensajes ignorados consecutivos → esperar, no marcar como perdido aún
+- Solo cerrar el lead si el cliente dijo NO explícitamente
 
 ### Cuándo NO escribir
 - Si mandaste 3+ mensajes seguidos sin respuesta — esperar
 - Si es de noche y el cliente no ha respondido en horas — esperar hasta mañana 8am
 - Si el cliente dijo NO claramente — responder "entendido, cuando guste aquí estamos 😊" y cerrar
+
+---
+
+## SOBRE EL BOT AUTOMÁTICO
+
+- El bot responde automáticamente cuando el cliente escribe por primera vez
+- Si el cliente responde con una sola palabra (ej. "Precio") el bot puede duplicar el mensaje de bienvenida — es normal, no pasa nada
+- En ese caso el cliente ya vio el precio. El siguiente mensaje humano es D1AM estándar: "¿le pareció bien el precio o tiene alguna duda?"
+- NO intentar "arreglar" el duplicado ni disculparse — seguir normal
 
 ---
 
@@ -140,6 +148,26 @@
 - Si no hay agencia: preguntar por familiar en ciudad cercana
 - Tiempo de entrega: 3-4 días hábiles
 - Tiempo para retirar: 5 días máximo desde llegada
+- **Servientrega opera en Colombia (+57) también** — leads colombianos son válidos
+
+---
+
+## SOBRE COLOMBIA
+
+- Servientrega cubre Colombia → pedidos válidos
+- Misma operativa: pago al retirar en ventanilla
+- Verificar ciudad del cliente para confirmar agencia disponible
+- Precio en USD igual que Ecuador
+
+---
+
+## SOBRE LA AGENCIA (cliente que no pudo retirar)
+
+- Si el cliente fue a retirar pero la agencia estaba cerrada → mandar INMEDIATAMENTE la dirección exacta
+- NO responder solo "bendiciones" o saludos — eso no resuelve el problema
+- La dirección exacta está en la guía de envío (el cliente suele tenerla o enviártela)
+- Si no tienes la dirección → buscarla en servientrega.com.ec con el número de guía
+- Mensaje modelo: "Aquí la dirección exacta: [dirección]. Con la guía que tiene puede retirar hoy 🙌🏻"
 
 ---
 
@@ -214,3 +242,13 @@
 Al cerrar cada venta preguntar:
 > "¿nos encontró por Facebook o Instagram? 😊"
 Registrar en VENTAS/conversaciones.md
+
+---
+
+## SOBRE LA APP (Promarket Órdenes)
+
+- URL: **alejosl0801.github.io/promarket-ordenes/**
+- Tab **Seguim.**: seguimiento de todos los leads en 3 fases (Venta → Tránsito → Agencia)
+- Tab **Camila**: pegar chat del cliente → IA lee CEREBRO → devuelve mensaje exacto a enviar
+- Botón "🔄 Sincronizar" en Seguim.: actualiza fases y marcas de mensajes enviados
+- Cada mensaje enviado se marca en la app para saber exactamente dónde va cada lead
