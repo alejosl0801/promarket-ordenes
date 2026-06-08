@@ -5255,8 +5255,8 @@ function segSyncOrders(leads){
 
 // ── Auto-sync al cargar (una sola vez por sesión) ────────
 function segAutoSync(){
-  if(sessionStorage.getItem('pm_seg_v15_synced')) return;
-  sessionStorage.setItem('pm_seg_v15_synced','1');
+  if(sessionStorage.getItem('pm_seg_v16_synced')) return;
+  sessionStorage.setItem('pm_seg_v16_synced','1');
   if(typeof SEG_HISTORICO === 'undefined') return;
   segImportarHistorico();
 }
@@ -5485,6 +5485,7 @@ var SEG_HISTORICO = [
   {nombre:'Chat 6469',            tel:'+593960096469', fase:'venta',    fechaInicio:'2026-06-08T12:36:00.000Z'},
   {nombre:'Chat 4065',            tel:'+593967904065', fase:'venta',    fechaInicio:'2026-06-08T17:01:00.000Z'},
   {nombre:'Chat 0433',            tel:'+593993050433', fase:'venta',    fechaInicio:'2026-06-08T17:04:00.000Z'},
+  {nombre:'Chat 8581',            tel:'+593993438581', fase:'venta',    fechaInicio:'2026-06-08T23:18:00.000Z'},
   // ── LEADS DÍA 1 — D1AM+D1PM enviados hoy 8/6 ───────────────────
   {nombre:'Nuevo 270-7955',       tel:'+593992707955', fase:'venta', fechaInicio:'2026-06-07T20:33:00.000Z', chk:{v:_v2,a:[]}},
   {nombre:'Chat 3067',            tel:'+593981533067', fase:'venta', fechaInicio:'2026-06-07T11:08:00.000Z', chk:{v:_v2,a:[]}},
