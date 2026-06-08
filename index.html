@@ -3436,153 +3436,175 @@ function renderReportes(){
 // ════════════════════════════════════════════════════════
 //  EXCEL CRM EXPORT — sep=; BOM, 5 secciones
 // ════════════════════════════════════════════════════════
+//  EXCEL CRM — formato idéntico al REPORTE_GENERAL__CRM__Carlos_Luna.xlsx
+//  Hoja 1: REPORTE GENERAL | Hoja 2: PEDIDOS (≈GUANTE) | Hoja 3: INFO PRODUCT
+// ════════════════════════════════════════════════════════
 function statsExportExcel(){
   var leads = segGetLeads();
   var today = new Date().toISOString().slice(0,10);
   var S = ';';
   var lines = [];
 
-  // Rango: primer orden conocida → hoy
-  var fechaMin = '2026-06-02', fechaMax = today > '2026-06-26' ? '2026-06-26' : today;
+  // ── Fechas Jun 2 → Jun 26 (rango fijo del periodo) ──────────
+  var FECHA_INI = '2026-06-02', FECHA_FIN = '2026-06-26';
   var dates = [];
-  var cur = new Date(fechaMin), end = new Date(fechaMax);
+  var cur = new Date(FECHA_INI), end = new Date(FECHA_FIN);
   while(cur <= end){ dates.push(cur.toISOString().slice(0,10)); cur.setDate(cur.getDate()+1); }
+  // Formato DD/MM/YY igual que el Excel de referencia
   var dlbls = dates.map(function(d){ return d.slice(8)+'/'+d.slice(5,7)+'/'+d.slice(2,4); });
 
-  // Pedidos: leads con fechaTr y (transito|agencia|cerrado con orderId)
+  // ── Pedidos confirmados (tienen orden real) ──────────────────
   var pedLeads = leads.filter(function(l){
-    return l.fechaTr && (l.fase==='transito' || l.fase==='agencia' || (l.fase==='cerrado' && l.orderId));
+    return l.fechaTr && (l.fase==='transito' || l.fase==='agencia' ||
+           (l.fase==='cerrado' && l.orderId));
   }).sort(function(a,b){ return (a.fechaTr||'').localeCompare(b.fechaTr||''); });
 
-  // Inversión y conversaciones por día (desde campanas fbMetrics + csvHistory)
-  var invByDay = {}; // {fecha: {guante:n, ollas:n}}
-  var convTotG = 0, convTotO = 0, invTotG = 0, invTotO = 0;
+  // ── Inversión y conversaciones desde campanas ────────────────
+  var invByDay={}, invTotG=0, invTotO=0, convTotG=0, convTotO=0;
   campanas.forEach(function(c){
-    var isGuante = (c.nombre||'').toLowerCase().includes('guante') || (c.producto||'').toLowerCase().includes('guante');
-    var isOllas  = (c.nombre||'').toLowerCase().includes('olla')   || (c.producto||'').toLowerCase().includes('olla');
+    var nom = (c.nombre||'').toLowerCase();
+    var isG = nom.includes('guante'); var isO = nom.includes('olla');
     var inv = parseFloat(c.inversion)||0;
-    var convs = (c.fbMetrics && c.fbMetrics.conversaciones) ? parseFloat(c.fbMetrics.conversaciones) : 0;
-    if(isGuante){ invTotG += inv; convTotG += convs; }
-    else if(isOllas){ invTotO += inv; convTotO += convs; }
-    // Per-day from csvHistory (entries are cumulative, delta = diff between consecutive)
-    if(c.csvHistory && c.csvHistory.length){
-      var sorted = c.csvHistory.slice().sort(function(a,b){ return a.fecha.localeCompare(b.fecha); });
-      // keep last gasto per date
-      var byDate = {};
-      sorted.forEach(function(e){ byDate[e.fecha] = parseFloat(e.gasto)||0; });
-      var prevGasto = 0;
+    var cv  = (c.fbMetrics&&c.fbMetrics.conversaciones) ? parseFloat(c.fbMetrics.conversaciones) : 0;
+    if(isG){ invTotG+=inv; convTotG+=cv; }
+    else if(isO){ invTotO+=inv; convTotO+=cv; }
+    if(c.csvHistory&&c.csvHistory.length){
+      var byDate={};
+      c.csvHistory.forEach(function(e){ var g=parseFloat(e.gasto)||0; if(!byDate[e.fecha]||g>byDate[e.fecha]) byDate[e.fecha]=g; });
+      var prev=0;
       Object.keys(byDate).sort().forEach(function(d){
-        var delta = Math.max(0, byDate[d] - prevGasto);
-        prevGasto = byDate[d];
-        if(!invByDay[d]) invByDay[d] = {guante:0, ollas:0};
-        if(isGuante) invByDay[d].guante += delta;
-        else if(isOllas) invByDay[d].ollas += delta;
+        var delta=Math.max(0,byDate[d]-prev); prev=byDate[d];
+        if(!invByDay[d]) invByDay[d]={g:0,o:0};
+        if(isG) invByDay[d].g+=delta; else if(isO) invByDay[d].o+=delta;
       });
     }
   });
-  var invTot = invTotG + invTotO;
-  var convTot = convTotG + convTotO;
+  var invTot=invTotG+invTotO, convTot=convTotG+convTotO;
 
-  function pedDia(d, prod){
+  function pedDia(d,prod){
     return pedLeads.filter(function(l){
-      var match = !prod || (l.producto||'GUANTE')===prod;
-      return match && l.fechaTr && l.fechaTr.slice(0,10)===d;
+      return l.fechaTr&&l.fechaTr.slice(0,10)===d&&(!prod||(l.producto||'GUANTE')===prod);
     }).length;
   }
+  var pedTotG=pedLeads.filter(function(l){return(l.producto||'GUANTE')==='GUANTE';}).length;
+  var pedTotO=pedLeads.filter(function(l){return l.producto==='OLLAS';}).length;
+  var pedTot=pedLeads.length;
 
-  var pedTotG = pedLeads.filter(function(l){ return (l.producto||'GUANTE')==='GUANTE'; }).length;
-  var pedTotO = pedLeads.filter(function(l){ return l.producto==='OLLAS'; }).length;
-  var pedTot  = pedLeads.length;
+  function v(n){ return (n>0)?n:''; }
+  function cpaN(inv,p){ return (inv>0&&p>0)?(inv/p).toFixed(2):''; }
+  function pctN(p,c){ return (c>0&&p>0)?(p/c*100).toFixed(1)+'%':''; }
+  function dInvDia(inv,dias){ return (inv>0&&dias>0)?(inv/dias).toFixed(2):''; }
 
-  function cpa(inv, peds){ return (inv>0 && peds>0) ? (inv/peds).toFixed(2) : ''; }
-  function cierre(peds, convs){ return (convs>0 && peds>0) ? (peds/convs*100).toFixed(1)+'%' : ''; }
+  var diasActivos = Math.max(1, dates.filter(function(d){
+    return (invByDay[d]&&(invByDay[d].g+invByDay[d].o)>0) || pedDia(d)>0;
+  }).length);
 
   lines.push('sep=;');
   lines.push('');
 
-  // ── SECCIÓN 1: LANDING TRACKER ────────────────────────────────
-  lines.push(['LANDING TRACKER'].concat(dlbls).concat(['TOTAL']).join(S));
-  lines.push(['OLLA'].concat(dates.map(function(d){ return pedDia(d,'OLLAS')||''; })).concat([pedTotO||'']).join(S));
-  lines.push(['GUANTE'].concat(dates.map(function(d){ return pedDia(d,'GUANTE')||''; })).concat([pedTotG||'']).join(S));
-  for(var i=0;i<10;i++) lines.push([''].concat(dates.map(function(){ return ''; })).join(S));
-  lines.push(['Grand Total'].concat(dates.map(function(d){ var t=pedDia(d);return t||''; })).concat([pedTot||'']).join(S));
-  lines.push(['INV'].concat(dates.map(function(d){ var v=invByDay[d]; return v?(v.guante+v.ollas).toFixed(2):''; })).concat([invTot.toFixed(2)]).join(S));
-  lines.push(['MENS'].concat(dates.map(function(d){ var v=invByDay[d]; var inv=(v?(v.guante+v.ollas):0); var p=pedDia(d); return (inv>0&&p>0)?(inv/p).toFixed(2):''; })).concat([cpa(invTot,pedTot)]).join(S));
-  lines.push(['COMPRAS'].concat(dates.map(function(d){ return pedDia(d)||''; })).concat([pedTot||'']).join(S));
-  lines.push(['CPA'].concat(dates.map(function(d){ var v=invByDay[d]; var inv=(v?(v.guante+v.ollas):0); var p=pedDia(d); return (inv>0&&p>0)?(inv/p).toFixed(2):''; })).concat([cpa(invTot,pedTot)]).join(S));
-  lines.push(['% CIERRE'].concat(dates.map(function(){ return ''; })).concat([cierre(pedTot,convTot)]).join(S));
+  // ════════════════════════════════════════════════
+  //  HOJA 1: REPORTE GENERAL
+  // ════════════════════════════════════════════════
+  lines.push('REPORTE GENERAL');
+  // Fila 1: encabezado de fechas
+  lines.push(['LANDING'].concat(dlbls).concat(['TOTAL']).join(S));
+  // Fila 2: OLLA — pedidos diarios
+  lines.push(['OLLA'].concat(dates.map(function(d){return v(pedDia(d,'OLLAS'));})).concat([v(pedTotO)]).join(S));
+  // Fila 3: GUANTE — pedidos diarios
+  lines.push(['GUANTE '].concat(dates.map(function(d){return v(pedDia(d,'GUANTE'));})).concat([v(pedTotG)]).join(S));
+  // Filas 4-13: 10 filas vacías (otros productos/campañas)
+  for(var i=0;i<10;i++) lines.push([''].concat(dates.map(function(){return '';})).concat(['']).join(S));
+  // Fila 15: Grand Total
+  lines.push(['Grand Total'].concat(dates.map(function(d){return v(pedDia(d));})).concat([v(pedTot)]).join(S));
+  // Fila 16: INV (inversión diaria — calculada desde csvHistory)
+  lines.push(['INV'].concat(dates.map(function(d){
+    var x=invByDay[d]; return x?(x.g+x.o).toFixed(2):'';
+  })).concat([invTot.toFixed(2)]).join(S));
+  // Fila 17: MENS (conversaciones — total FB; desglose diario no disponible)
+  lines.push(['MENS'].concat(dates.map(function(){return'';})).concat([v(convTot)]).join(S));
+  // Fila 18: COMPRAS (= mismos pedidos reales)
+  lines.push(['COMPRAS'].concat(dates.map(function(d){return v(pedDia(d));})).concat([v(pedTot)]).join(S));
+  // Fila 19: CPA = INV / COMPRAS por día
+  lines.push(['CPA'].concat(dates.map(function(d){
+    var x=invByDay[d]; var inv=x?(x.g+x.o):0; var p=pedDia(d);
+    return cpaN(inv,p);
+  })).concat([cpaN(invTot,pedTot)]).join(S));
+  // Fila 20: % CIERRE = COMPRAS / MENS por día
+  lines.push(['% CIERRE'].concat(dates.map(function(){return'';})).concat([pctN(pedTot,convTot)]).join(S));
   lines.push('');
 
-  // ── SECCIÓN 2: RENDIMIENTO POR PRODUCTO ──────────────────────
-  lines.push(['RENDIMIENTO POR PRODUCTO','','','','',''].join(S));
-  lines.push(['PRODUCTO','PEDIDOS','VENTAS ($)','INVERSIÓN ($)','CPA ($)','% CIERRE'].join(S));
-  var ventasG = pedLeads.filter(function(l){ return (l.producto||'GUANTE')==='GUANTE'; }).reduce(function(s,l){ return s+(l.valor||0); },0);
-  var ventasO = pedLeads.filter(function(l){ return l.producto==='OLLAS'; }).reduce(function(s,l){ return s+(l.valor||0); },0);
-  lines.push(['GUANTE ROBÓTICO',pedTotG,ventasG.toFixed(2),invTotG.toFixed(2),cpa(invTotG,pedTotG),cierre(pedTotG,convTotG)].join(S));
-  lines.push(['SET DE OLLAS',pedTotO,ventasO.toFixed(2),invTotO.toFixed(2),cpa(invTotO,pedTotO),cierre(pedTotO,convTotO)].join(S));
-  lines.push(['TOTAL',pedTot,(ventasG+ventasO).toFixed(2),invTot.toFixed(2),cpa(invTot,pedTot),cierre(pedTot,convTot)].join(S));
+  // ── Tabla de rendimiento por producto (filas 21-28 del Excel) ──
+  lines.push(['PRODUCTO','GASTO EN ADS','CONVERSACIONES','COSTO POR CONVERSACION','PEDIDOS','CPA REAL','TASA DE CIERRE','INVERSIÓN DÍA','VENTAS OBJ'].join(S));
+  // OLLAS
+  var invDiaO=dInvDia(invTotO,diasActivos), cpaO=cpaN(invTotO,pedTotO);
+  lines.push(['OLLAS ',
+    invTotO.toFixed(2), v(convTotO), cpaN(invTotO,convTotO),
+    v(pedTotO), cpaO, pctN(pedTotO,convTotO),
+    invDiaO, (invDiaO&&cpaO)?(parseFloat(invDiaO)/parseFloat(cpaO)).toFixed(2):''
+  ].join(S));
+  // GUANTE
+  var invDiaG=dInvDia(invTotG,diasActivos), cpaG=cpaN(invTotG,pedTotG);
+  lines.push(['GUANTE ',
+    invTotG.toFixed(2), v(convTotG), cpaN(invTotG,convTotG),
+    v(pedTotG), cpaG, pctN(pedTotG,convTotG),
+    invDiaG, (invDiaG&&cpaG)?(parseFloat(invDiaG)/parseFloat(cpaG)).toFixed(2):''
+  ].join(S));
   lines.push('');
 
-  // ── SECCIÓN 3: ESTRUCTURA DE COSTOS ──────────────────────────
-  lines.push(['ESTRUCTURA DE COSTOS','','','','',''].join(S));
-  lines.push(['PRODUCTO','PRECIO VENTA','COSTO PROD','ENVÍO','FULFILLMENT','GANANCIA NETA'].join(S));
-  var cat = JSON.parse(localStorage.getItem('pm_catalogo_v1')||'[]');
-  cat.filter(function(p){ return p.activo; }).forEach(function(p){
-    var gan = (p.precio||0) - (p.costo||0) - (p.envio||0) - (p.fulfillment||0);
-    lines.push([p.nombre, (p.precio||0).toFixed(2), (p.costo||0).toFixed(2), (p.envio||0).toFixed(2), (p.fulfillment||0).toFixed(2), gan.toFixed(2)].join(S));
-  });
-  if(pedTotG >= 2){
-    var g2 = 107.98, c2 = 23.15*2, e2 = 7.52*2;
-    lines.push(['GUANTE x2 (par con 10% dto.)', g2.toFixed(2), c2.toFixed(2), e2.toFixed(2), '0.00', (g2-c2-e2).toFixed(2)].join(S));
-  }
-  lines.push('');
-
-  // ── SECCIÓN 4: PEDIDOS REGISTRADOS ───────────────────────────
-  lines.push(['PEDIDOS REGISTRADOS','','','','','','','','','','','',''].join(S));
-  lines.push(['#','ID ORDEN','GUÍA','NOMBRE','CELULAR','PRODUCTO','CANTIDAD','VALOR ($)','PLATAFORMA','ESTADO','FECHA PEDIDO','FECHA AGENCIA','OBSERVACIÓN'].join(S));
-  var FASE_ES = {transito:'En tránsito', agencia:'En agencia', cerrado:'Entregado'};
-  pedLeads.forEach(function(l, i){
-    var obs = (l.reclamo ? 'RECLAMO — ' : '') + (l.guia ? 'Guía: '+l.guia : '');
+  // ════════════════════════════════════════════════
+  //  HOJA 2: PEDIDOS  (≈ hoja "GUANTE" del Excel)
+  //  Cols: # | ID | NOMBRE | CELULAR | PRODUCTO | CANTIDAD | VALOR |
+  //        PLATAFORMA ENVÍO | ESTADO | FECHA | OBSERVACIÓN
+  // ════════════════════════════════════════════════
+  lines.push('PEDIDOS');
+  lines.push(['NÚMERO','ID','NOMBRE','CELULAR','PRODUCTO','CANTIDAD','VALOR','PLATAFORMA ENVÍO','ESTADO','FECHA','OBSERVACIÓN'].join(S));
+  var ESTADO_MAP={transito:'TRANSITO',agencia:'RETIRO',cerrado:'ENTREGADO'};
+  pedLeads.forEach(function(l,idx){
+    var obs=(l.reclamo?'RECLAMO — ':'')+(l.guia?'Guía: '+l.guia:'');
     lines.push([
-      i+1,
+      idx+1,
       l.orderId||'',
-      l.guia||'',
       l.nombre||'',
       l.tel||'',
       l.producto||'GUANTE',
       l.qty||1,
       (l.valor||0).toFixed(2),
-      'WhatsApp / Facebook',
-      FASE_ES[l.fase]||l.fase,
-      l.fechaTr ? l.fechaTr.slice(0,10) : '',
-      l.fechaAg ? l.fechaAg.slice(0,10) : '',
+      'SERVIENTREGA',
+      ESTADO_MAP[l.fase]||l.fase.toUpperCase(),
+      l.fechaTr?l.fechaTr.slice(0,10):'',
       obs
     ].join(S));
   });
   lines.push('');
 
-  // ── SECCIÓN 5: LEADS EN SEGUIMIENTO ─────────────────────────
-  var FASE_NOM = {venta:'En seguimiento', transito:'Pedido / en tránsito', agencia:'En agencia', cerrado:'Cerrado / perdido'};
-  lines.push(['LEADS EN SEGUIMIENTO','','','',''].join(S));
-  lines.push(['NOMBRE','CELULAR','FASE','FECHA INICIO','DÍAS EN SISTEMA'].join(S));
-  leads.slice().sort(function(a,b){
-    var o={cerrado:0,venta:1,transito:2,agencia:3};
-    return (o[b.fase]||0)-(o[a.fase]||0) || (a.fechaInicio||'').localeCompare(b.fechaInicio||'');
-  }).forEach(function(l){
-    var dias = l.fechaInicio ? Math.floor((Date.now()-new Date(l.fechaInicio))/86400000) : '';
-    lines.push([l.nombre||'', l.tel||'', FASE_NOM[l.fase]||l.fase, l.fechaInicio?l.fechaInicio.slice(0,10):'', dias].join(S));
+  // ════════════════════════════════════════════════
+  //  HOJA 3: INFO PRODUCT  (catálogo)
+  //  Cols: NOMBRE | PRECIO VENTA | CARACTERISTICAS | MENSAJE DE CIERRE | ESTADO
+  // ════════════════════════════════════════════════
+  lines.push('INFO PRODUCT');
+  lines.push(['NOMBRE DEL PRODUCTO','PRECIO DE VENTA','CARACTERISTICAS','MENSAJE DE CIERRE','ESTADO'].join(S));
+  var CIERRE_GUANTE='¿Le genero el pedido ahora? Le llega en 3-4 días a su agencia Servientrega más cercana y paga al retirar 🙌';
+  var CIERRE_OLLAS='Set de 12 ollas de acero inoxidable $49.99 con envío gratis — ¿Lo registramos a su nombre?';
+  var cat=JSON.parse(localStorage.getItem('pm_catalogo_v1')||'[]');
+  var estadoMap=function(p){
+    if((p.nombre||'').toLowerCase().includes('guante')||(p.nombre||'').toLowerCase().includes('olla')) return 'WINNER';
+    if((p.nombre||'').toLowerCase().includes('rodilla')) return 'TESTEO';
+    return 'TESTEO';
+  };
+  cat.filter(function(p){return p.activo;}).forEach(function(p){
+    var cierre=(p.nombre||'').toLowerCase().includes('guante')?CIERRE_GUANTE:
+               (p.nombre||'').toLowerCase().includes('olla')?CIERRE_OLLAS:'';
+    lines.push([p.nombre||'','$'+((p.precio||0).toFixed(2)),p.desc||'',cierre,estadoMap(p)].join(S));
   });
 
-  var csv = '﻿' + lines.join('\r\n');
-  var blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
-  var url  = URL.createObjectURL(blob);
-  var a    = document.createElement('a');
-  a.href   = url;
-  a.download = 'ProMarket_CRM_'+today.replace(/-/g,'')+'.csv';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  var csv='﻿'+lines.join('\r\n');
+  var blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  a.download='REPORTE_GENERAL__CRM_'+today.replace(/-/g,'')+'.csv';
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
   showToast('Excel descargado ✅');
 }
 
