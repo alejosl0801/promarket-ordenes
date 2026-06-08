@@ -3457,25 +3457,25 @@ function statsExportExcel(){
            (l.fase==='cerrado' && l.orderId));
   }).sort(function(a,b){ return (a.fechaTr||'').localeCompare(b.fechaTr||''); });
 
-  // ── Inversión y conversaciones desde campanas ────────────────
-  var invByDay={}, invTotG=0, invTotO=0, convTotG=0, convTotO=0;
+  // ── Inversión diaria desde csvHistory (valores directos del CSV de Facebook) ──
+  var invByDay={}, convByDay={}, invTotG=0, invTotO=0, convTotG=0, convTotO=0;
   campanas.forEach(function(c){
     var nom = (c.nombre||'').toLowerCase();
     var isG = nom.includes('guante'); var isO = nom.includes('olla');
-    var inv = parseFloat(c.inversion)||0;
-    var cv  = (c.fbMetrics&&c.fbMetrics.conversaciones) ? parseFloat(c.fbMetrics.conversaciones) : 0;
-    if(isG){ invTotG+=inv; convTotG+=cv; }
-    else if(isO){ invTotO+=inv; convTotO+=cv; }
+    var cv  = (c.fbMetrics&&c.fbMetrics.conversaciones) ? parseFloat(c.fbMetrics.conversaciones)||0 : 0;
+    if(isG) convTotG+=cv; else if(isO) convTotO+=cv;
     if(c.csvHistory&&c.csvHistory.length){
-      var byDate={};
-      c.csvHistory.forEach(function(e){ var g=parseFloat(e.gasto)||0; if(!byDate[e.fecha]||g>byDate[e.fecha]) byDate[e.fecha]=g; });
-      var prev=0;
-      Object.keys(byDate).sort().forEach(function(d){
-        var delta=Math.max(0,byDate[d]-prev); prev=byDate[d];
+      c.csvHistory.forEach(function(e){
+        var g=parseFloat(e.gasto)||0;
+        var d=e.fecha; if(!d) return;
         if(!invByDay[d]) invByDay[d]={g:0,o:0};
-        if(isG) invByDay[d].g+=delta; else if(isO) invByDay[d].o+=delta;
+        if(isG) invByDay[d].g+=g; else if(isO) invByDay[d].o+=g;
       });
     }
+  });
+  // Totales desde invByDay (fuente única de verdad)
+  Object.keys(invByDay).forEach(function(d){
+    invTotG+=invByDay[d].g; invTotO+=invByDay[d].o;
   });
   var invTot=invTotG+invTotO, convTot=convTotG+convTotO;
 
@@ -3498,16 +3498,16 @@ function statsExportExcel(){
   }).length);
 
   lines.push('sep=;');
-  lines.push('REPORTE GENERAL DE CAMPAÑAS — ProMarket Ecuador');
-  lines.push('Generado: '+today+';;Período: '+FECHA_INI+' → '+FECHA_FIN);
+  lines.push('REPORTE GENERAL DE CAMPANAS - ProMarket Ecuador');
+  lines.push('Generado: '+today+';;Periodo: '+FECHA_INI+' al '+FECHA_FIN);
   lines.push('');
 
   // ════════════════════════════════════════════════
   //  HOJA 1: REPORTE GENERAL
   // ════════════════════════════════════════════════
-  lines.push('INVERSIÓN DIARIA POR CAMPAÑA ($)');
+  lines.push('INVERSION DIARIA POR CAMPANA ($)');
   // Fila encabezado de fechas
-  lines.push(['CAMPAÑA'].concat(dlbls).concat(['TOTAL']).join(S));
+  lines.push(['CAMPANA'].concat(dlbls).concat(['TOTAL']).join(S));
   // OLLA — gasto diario en ads
   lines.push(['OLLA'].concat(dates.map(function(d){
     var x=invByDay[d]; return (x&&x.o)?x.o.toFixed(2):'';
@@ -3525,8 +3525,8 @@ function statsExportExcel(){
   lines.push('');
   // ── Métricas de resultados ──
   lines.push('RESULTADOS');
-  lines.push(['MÉTRICA'].concat(dlbls).concat(['TOTAL']).join(S));
-  lines.push(['MENS (conv.)'].concat(dates.map(function(){return'';})).concat([v(convTot)]).join(S));
+  lines.push(['METRICA'].concat(dlbls).concat(['TOTAL']).join(S));
+  lines.push(['MENS (conv)'].concat(dates.map(function(){return'';})).concat([v(convTot)]).join(S));
   lines.push(['COMPRAS'].concat(dates.map(function(d){return v(pedDia(d));})).concat([v(pedTot)]).join(S));
   lines.push(['CPA ($)'].concat(dates.map(function(d){
     var x=invByDay[d]; var inv=x?(x.g+x.o):0; var p=pedDia(d);
@@ -3536,8 +3536,8 @@ function statsExportExcel(){
   lines.push('');
 
   // ── Tabla de rendimiento por producto ──
-  lines.push('RENDIMIENTO POR CAMPAÑA');
-  lines.push(['PRODUCTO','GASTO EN ADS ($)','CONVERSACIONES','COSTO/CONV ($)','PEDIDOS','CPA REAL ($)','TASA CIERRE','INV/DÍA ($)','VENTAS OBJ/DÍA'].join(S));
+  lines.push('RENDIMIENTO POR CAMPANA');
+  lines.push(['PRODUCTO','GASTO EN ADS ($)','CONVERSACIONES','COSTO/CONV ($)','PEDIDOS','CPA REAL ($)','TASA CIERRE','INV/DIA ($)','VENTAS OBJ/DIA'].join(S));
   var invDiaO=dInvDia(invTotO,diasActivos), cpaO=cpaN(invTotO,pedTotO);
   lines.push(['OLLAS',
     invTotO>0?invTotO.toFixed(2):'—', v(convTotO)||'—', cpaN(invTotO,convTotO)||'—',
@@ -5839,6 +5839,7 @@ function importarCSVFacebook(input){
       conv:       hi(['conversaciones con mensajes iniciadas','messaging conversations started','conversaciones iniciadas','conversations']),
     };
     var creadas=0, actualizadas=0;
+    var resetedCamps = new Set();
     for(var i=1;i<lines.length;i++){
       var cols = parseCsvLine(lines[i], sep);
       if(!cols.length || cols.every(c=>!c.trim())) continue;
@@ -5849,6 +5850,11 @@ function importarCSVFacebook(input){
       var nombreNorm = nombre.toLowerCase().replace(/[^a-z0-9]/g,'');
       var camp = campanas.find(c=>c.nombre===nombre || c.nombre.toLowerCase().replace(/[^a-z0-9]/g,'')===nombreNorm);
       var esNueva = !camp;
+      // Resetear métricas FB la primera vez que aparece esta campaña en este CSV
+      if(camp && !resetedCamps.has(camp.id)){
+        camp.fbMetrics = {};
+        resetedCamps.add(camp.id);
+      }
       if(!camp){
         camp = {
           id: 'camp_'+Date.now()+'_'+i,
@@ -5863,18 +5869,23 @@ function importarCSVFacebook(input){
         campanas.unshift(camp);
         creadas++;
       } else { actualizadas++; }
-      var gasto=parseFloat(col('gasto'))||0; if(gasto) camp.inversion=gasto;
+      var gasto=parseFloat(col('gasto'))||0;
+      var fechaFila=col('inicio')||new Date().toISOString().substring(0,10);
       camp.fbMetrics = camp.fbMetrics||{};
-      var al=col('alcance'); if(al) camp.fbMetrics.alcance=parseInt(al)||0;
-      var im=col('impresiones'); if(im) camp.fbMetrics.impresiones=parseInt(im)||0;
+      var al=col('alcance'); if(al) camp.fbMetrics.alcance=(camp.fbMetrics.alcance||0)+parseInt(al)||0;
+      var im=col('impresiones'); if(im) camp.fbMetrics.impresiones=(camp.fbMetrics.impresiones||0)+parseInt(im)||0;
       var cp=col('cpm'); if(cp) camp.fbMetrics.cpm=parseFloat(cp)||0;
       var cc=col('cpc'); if(cc) camp.fbMetrics.cpc=parseFloat(cc)||0;
       var ct=col('ctr'); if(ct) camp.fbMetrics.ctr=parseFloat(ct)||0;
-      var cv=col('conv'); if(cv) camp.fbMetrics.conversaciones=parseInt(cv)||0;
+      var cv=col('conv'); if(cv) camp.fbMetrics.conversaciones=(camp.fbMetrics.conversaciones||0)+(parseInt(cv)||0);
       camp.fbUpdatedAt = new Date().toISOString();
+      // Guardar gasto real por fecha del CSV (no la fecha de hoy)
       camp.csvHistory = camp.csvHistory||[];
-      camp.csvHistory.unshift({fecha:new Date().toISOString().substring(0,10), gasto:camp.inversion});
-      if(camp.csvHistory.length>10) camp.csvHistory=camp.csvHistory.slice(0,10);
+      var existente = camp.csvHistory.find(function(e){ return e.fecha===fechaFila; });
+      if(existente){ existente.gasto=gasto; }
+      else { camp.csvHistory.push({fecha:fechaFila, gasto:gasto}); }
+      // Recalcular inversión total desde historial
+      camp.inversion = camp.csvHistory.reduce(function(s,e){ return s+(parseFloat(e.gasto)||0); },0);
     }
     saveCampanas();
     renderCampanas();
