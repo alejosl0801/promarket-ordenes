@@ -5006,18 +5006,14 @@ function usarOrdenesReales(id){
 function escH(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function escA(s){ return String(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
 
-// ── Mensajes de VENTA (1 por día, cerrar en ~10 días) ───
-var SEG_VENTA_MSGS = [
-  'Hola! Solo quería saber — ¿le pareció bien el precio o tiene alguna duda que pueda resolver? 😊',
-  'Hola de nuevo! 💛 Por si le ayuda — el guante tiene un Modo Espejo: la mano sana de un familiar guía los movimientos de la mano afectada. Trabajan juntos desde casa, sin turnos 😊 ¿Se anima?',
-  'Hola! 😊 Esta semana cerramos pedidos el viernes — si lo separamos hoy le llega a tiempo 📦 ¿Se anima?',
-  'Hola! 💛 Solo para que tenga el dato — una sesión de fisioterapia cuesta $30-50. Este guante hace lo mismo todos los días por $59.99 en total, pago al retirar ✅ ¿Se decide?',
-  'Hola! 💛 Camila de ProMarket — hoy le incluimos GRATIS el Kit Hand Grip 5 accesorios 🎁 El guante a $49.99 con todo incluido ✅ ¿Se anima?',
-  'Hola! 😊 Más de 2.400 pacientes en Latinoamérica ya lo usan — recomendado por fisioterapeutas y neurólogos 😊 Y el pago es al retirar, sin adelantar nada ✅ ¿Le proceso?',
-  '📸 Enviar foto del guante + escribir: ¿Ve? 😊',
-  'Hola! 💛 Muchos de nuestros clientes están en ciudades sin clínica de rehabilitación especializada — el guante es su terapia diaria desde casa, a toda hora 😊 ¿Le genero la orden?',
-  'Hola! 😊 El cerebro tiene una ventana de recuperación después de una lesión — cuanto antes empieza la terapia, mejores los resultados 💛 ¿Se decide hoy?',
-  'Voy a dejar libre su consulta — cuando guste aquí estamos 😊'
+// ── Triggers de VENTA (tiempo-basados, Camila genera el mensaje) ──
+var SEG_VENTA_TRIGGERS = [
+  {h:4,   label:'Opinión del precio',  emoji:'💬', tipo:'OPINION'},
+  {h:24,  label:'Ángulo de beneficio', emoji:'💡', tipo:'BENEFICIO'},
+  {h:48,  label:'Urgencia',            emoji:'⏰', tipo:'URGENCIA'},
+  {h:72,  label:'Oferta especial',     emoji:'🎁', tipo:'OFERTA'},
+  {h:96,  label:'Testimonio',          emoji:'⭐', tipo:'TESTIMONIO'},
+  {h:120, label:'Oferta final',        emoji:'🚨', tipo:'CIERRE'}
 ];
 
 // ── Mensajes de AGENCIA (2/día desde que llega el pedido) ──
@@ -5142,31 +5138,63 @@ function segCardHTML(lead){
 // ── Fase VENTA ───────────────────────────────────────────
 function segVentaHTML(lead,chk,diasT){
   var v=chk.v||Array(10).fill(false);
-  var nx=v.indexOf(false);
-  var dots=v.map(function(done,i){
-    var isN=i===nx;
-    var bg=done?'#27AE60':isN?'#E8650A':'#1a1a1a';
-    var bd=done?'#27AE60':isN?'#E8650A':'#2a2a2a';
-    var c=done?'#fff':isN?'#fff':'#444';
-    return '<span onclick="segMarkV(\''+escA(lead.id)+'\','+i+')" title="Mensaje '+(i+1)+'" style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;border:2px solid '+bd+';background:'+bg+';color:'+c+';font-size:11px;font-weight:700;cursor:pointer;margin:2px;">'+(done?'✓':String(i+1))+'</span>';
-  }).join('');
+  var times=chk.times||[];
+  var T=SEG_VENTA_TRIGGERS;
+  // Find next unsent trigger
+  var nx=-1;
+  for(var i=0;i<T.length;i++){if(!v[i]){nx=i;break;}}
+  // Base time: since last sent trigger, or fechaInicio
+  var baseMs = nx>0&&times[nx-1] ? new Date(times[nx-1]).getTime() : new Date(lead.fechaInicio).getTime();
+  var elapsedH = (Date.now()-baseMs)/3600000;
+
+  // Timeline nodes
+  var nodes=T.map(function(t,i){
+    var done=v[i], isNext=(i===nx);
+    var isDue=isNext&&elapsedH>=t.h;
+    var bg=done?'#0d3320':isDue?'#1a0600':isNext?'#111':'#0a0a0a';
+    var bd=done?'#27AE60':isDue?'#E8650A':isNext?'#2a2a2a':'#181818';
+    var c=done?'#27AE60':isDue?'#E8650A':isNext?'#555':'#2a2a2a';
+    var lbl=done?'✓':t.emoji;
+    return '<div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0;">'
+      +'<div style="width:34px;height:34px;border-radius:50%;border:2px solid '+bd+';background:'+bg+';display:flex;align-items:center;justify-content:center;font-size:'+(done?'13':'15')+'px;color:'+c+';">'+lbl+'</div>'
+      +'<div style="font-size:9px;color:'+c+';text-align:center;line-height:1.1;">'+(done?'Listo':isDue?'¡Ya!':t.h+'h')+'</div>'
+    +'</div>';
+  });
+  var timeline='<div style="display:flex;align-items:flex-start;gap:0;margin-bottom:10px;">';
+  for(var j=0;j<nodes.length;j++){
+    timeline+=nodes[j];
+    if(j<nodes.length-1) timeline+='<div style="flex:1;height:2px;background:#1a1a1a;margin-top:16px;"></div>';
+  }
+  timeline+='</div>';
+
+  // Action block
   var msgBlock='';
   if(nx===-1){
-    msgBlock='<div style="padding:10px;background:#0d3320;border-radius:8px;color:#27AE60;font-size:13px;text-align:center;margin-top:8px;">✅ Todos los mensajes enviados</div>';
+    msgBlock='<div style="padding:10px;background:#0d3320;border-radius:8px;color:#27AE60;font-size:13px;text-align:center;margin-top:4px;">✅ Secuencia completa</div>';
   } else {
-    var txt=SEG_VENTA_MSGS[nx];
-    msgBlock='<div style="margin-top:10px;background:#0a0a16;border:1.5px solid #E8650A;border-radius:10px;padding:12px;">'
-      +'<div style="font-size:11px;font-weight:700;color:#E8650A;margin-bottom:7px;">📨 MENSAJE '+(nx+1)+'/10 — Copiar y enviar</div>'
-      +'<div style="font-size:14px;color:#eee;line-height:1.6;margin-bottom:11px;white-space:pre-line;">'+escH(txt)+'</div>'
-      +'<div style="display:flex;gap:8px;">'
-        +'<button onclick="segCopy('+JSON.stringify(txt)+')" style="flex:1;padding:10px;border:1px solid #333;border-radius:8px;background:#1a1a2a;color:#fff;font-size:13px;font-weight:600;cursor:pointer;">📋 Copiar</button>'
-        +'<button onclick="segMarkV(\''+escA(lead.id)+'\','+nx+')" style="flex:1;padding:10px;border:none;border-radius:8px;background:#27AE60;color:#fff;font-size:13px;font-weight:600;cursor:pointer;">✅ Enviado</button>'
-      +'</div>'
-    +'</div>';
+    var tr=T[nx];
+    var isDue2=elapsedH>=tr.h;
+    var remH=tr.h-elapsedH;
+    var remLabel=remH<1?Math.round(remH*60)+'min':remH<24?remH.toFixed(1)+'h':Math.floor(remH/24)+'d '+Math.round(remH%24)+'h';
+    var elLabel=elapsedH<1?Math.round(elapsedH*60)+'min':elapsedH<24?elapsedH.toFixed(1)+'h':Math.floor(elapsedH/24)+'d '+Math.round(elapsedH%24)+'h';
+    if(isDue2){
+      msgBlock='<div style="background:#0a0a16;border:1.5px solid #E8650A;border-radius:10px;padding:12px;">'
+        +'<div style="font-size:11px;font-weight:700;color:#E8650A;margin-bottom:4px;">'+tr.emoji+' TOCA ENVIAR — '+(nx+1)+'/'+T.length+': '+tr.label.toUpperCase()+'</div>'
+        +'<div style="font-size:11px;color:#666;margin-bottom:10px;">Hace '+elLabel+' sin respuesta</div>'
+        +'<div style="display:flex;gap:8px;">'
+          +'<button onclick="segAbrirCamila(\''+escA(lead.id)+'\',\''+tr.tipo+'\')" style="flex:2;padding:10px;border:1.5px solid #E8650A;border-radius:8px;background:#1a0600;color:#E8650A;font-size:13px;font-weight:600;cursor:pointer;">🤖 Pedir a Camila</button>'
+          +'<button onclick="segMarkV(\''+escA(lead.id)+'\','+nx+')" style="flex:1;padding:10px;border:none;border-radius:8px;background:#27AE60;color:#fff;font-size:13px;font-weight:600;cursor:pointer;">✅ Enviado</button>'
+        +'</div>'
+      +'</div>';
+    } else {
+      msgBlock='<div style="background:#0a0a0a;border:1px solid #1a1a1a;border-radius:10px;padding:10px;text-align:center;">'
+        +'<div style="font-size:11px;color:#444;">'+tr.emoji+' Próximo: '+tr.label+'</div>'
+        +'<div style="font-size:22px;font-weight:700;color:#666;margin:4px 0;">'+remLabel+'</div>'
+        +'<div style="font-size:10px;color:#333;">restantes para trigger '+tr.h+'h</div>'
+      +'</div>';
+    }
   }
-  return '<div style="display:flex;flex-wrap:wrap;gap:1px;margin-bottom:8px;">'+dots+'</div>'
-    +'<div style="font-size:11px;color:#555;margin-bottom:6px;">'+v.filter(Boolean).length+'/10 mensajes de venta</div>'
-    +msgBlock
+  return timeline+msgBlock
     +'<button onclick="segGoTransito(\''+escA(lead.id)+'\')" style="margin-top:10px;width:100%;padding:9px;border:1px solid #F59E0B;border-radius:8px;background:#120e00;color:#F59E0B;font-size:13px;font-weight:600;cursor:pointer;">📦 Ya compró → Marcar en tránsito</button>';
 }
 
@@ -5257,7 +5285,7 @@ var SEG_HISTORICO = [
   {nombre:'Carmen Sosa',          tel:'+593999652705', fase:'agencia',  fechaInicio:'2026-05-20T10:00:00.000Z', fechaTr:'2026-05-28T10:00:00.000Z', fechaAg:'2026-06-03T10:00:00.000Z'},
   {nombre:'Blanca Rodríguez',     tel:'+593981754740', fase:'agencia',  fechaInicio:'2026-05-25T10:00:00.000Z', fechaTr:'2026-05-28T10:00:00.000Z', fechaAg:'2026-06-01T10:00:00.000Z'},
   // ── EN TRÁNSITO ─────────────────────────────────────────────────
-  {nombre:'Willman Zúñiga',       tel:'+593998235058', fase:'transito', fechaInicio:'2026-06-01T10:00:00.000Z', fechaTr:'2026-06-04T10:00:00.000Z'},
+  {nombre:'Willman Zúñiga',       tel:'+593998235058', fase:'agencia',  fechaInicio:'2026-06-01T10:00:00.000Z', fechaTr:'2026-06-04T10:00:00.000Z', fechaAg:'2026-06-08T10:00:00.000Z'},
   // ── NO COMPRARON (cerrado) ───────────────────────────────────────
   {nombre:'Rosa Carranza',        tel:'+593968055707', fase:'cerrado',  fechaInicio:'2026-05-28T10:00:00.000Z'},
   {nombre:'Rose',                 tel:'+593997437282', fase:'cerrado',  fechaInicio:'2026-05-28T10:00:00.000Z'},
@@ -5277,6 +5305,7 @@ var SEG_HISTORICO = [
   // ── LEADS HOY 8/6 — sin mensajes aún ────────────────────────────
   {nombre:'Chat 5440',            tel:'+593998065440', fase:'venta', fechaInicio:'2026-06-08T05:39:00.000Z'},
   {nombre:'Chat 7876',            tel:'+593982467876', fase:'venta', fechaInicio:'2026-06-08T06:55:00.000Z'},
+  {nombre:'Chat 7383',            tel:'+593993907383', fase:'venta', fechaInicio:'2026-06-08T10:00:00.000Z'},
   // ── LEADS DÍA 2 — D1AM enviado (inicio 6/6) ─────────────────────
   {nombre:'kushita2016',          tel:'+593999200994', fase:'venta', fechaInicio:'2026-06-06T08:00:00.000Z', chk:{v:_v1,a:[]}},
   {nombre:'Nuevo 1730',           tel:'+593979871730', fase:'venta', fechaInicio:'2026-06-06T09:00:00.000Z', chk:{v:_v1,a:[]}},
@@ -5372,7 +5401,22 @@ function segDel(id){
   renderSeguimiento();
 }
 function segMarkV(id,i){
-  var c=segGetChk(id);c.v=c.v||Array(10).fill(false);c.v[i]=true;segSaveChk(id,c);renderSeguimiento();
+  var c=segGetChk(id);
+  c.v=c.v||Array(10).fill(false);
+  if(!c.times)c.times=[];
+  c.v[i]=true;
+  c.times[i]=new Date().toISOString();
+  segSaveChk(id,c);
+  renderSeguimiento();
+}
+function segAbrirCamila(id,tipo){
+  var lead=segGetLeads().find(function(l){return l.id===id;});
+  if(!lead)return;
+  var desc={OPINION:'pregúntale su opinión sobre el precio (regla D1AM: "¿le pareció bien el precio?")',BENEFICIO:'explícale un beneficio clave (Modo Espejo, uso diario desde casa)',URGENCIA:'crea urgencia real (cierre de pedidos esta semana, envío incluido solo esta temporada)',OFERTA:'ofrécele la oferta especial Kit Hand Grip gratis o precio reducido',TESTIMONIO:'comparte prueba social (2.400+ pacientes, recomendado por fisioterapeutas)',CIERRE:'oferta final — si no responde dejarlo libre amablemente'}[tipo]||'genera el siguiente mensaje de seguimiento';
+  var dias=Math.floor((Date.now()-new Date(lead.fechaInicio).getTime())/86400000);
+  var ctx='SEGUIMIENTO DE VENTA — TRIGGER: '+tipo+'\nCliente: '+lead.nombre+' ('+lead.tel+')\nDías en seguimiento: '+dias+'\nTAREA: '+desc+'\n\n[Pega el chat de WhatsApp del cliente aquí si tienes historial, o borra esta línea]';
+  switchTab('camila');
+  setTimeout(function(){var el=document.getElementById('cam-in');if(el){el.value=ctx;el.focus();}},150);
 }
 function segMarkA(id,d,t){
   var c=segGetChk(id);while(c.a.length<=d)c.a.push([false,false]);c.a[d][t]=true;segSaveChk(id,c);renderSeguimiento();
