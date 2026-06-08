@@ -5324,7 +5324,7 @@ function segFormHTML(){
     +'<input id="sg-n" placeholder="Nombre o alias" style="width:100%;padding:10px 12px;background:#111;border:1px solid #222;border-radius:8px;color:#fff;font-size:14px;margin-bottom:8px;box-sizing:border-box;">'
     +'<input id="sg-t" placeholder="Teléfono (ej: +593 99 270 7955)" style="width:100%;padding:10px 12px;background:#111;border:1px solid #222;border-radius:8px;color:#fff;font-size:14px;margin-bottom:12px;box-sizing:border-box;">'
     +'<button onclick="segAdd()" style="width:100%;padding:12px;background:#E8650A;border:none;border-radius:9px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.02em;margin-bottom:8px;">Agregar al seguimiento</button>'
-    +'<button onclick="segImportarHistorico()" style="width:100%;padding:10px;background:#1a1a2e;border:1px solid #333;border-radius:9px;color:#aaa;font-size:12px;cursor:pointer;">🔄 Sincronizar todos los estados ('+SEG_HISTORICO.length+' leads)</button>'
+    +'<button onclick="segImportarHistorico()" style="width:100%;padding:10px;background:#1a1a2e;border:1px solid #333;border-radius:9px;color:#aaa;font-size:12px;cursor:pointer;">🔄 Sincronizar todos los estados ('+(typeof SEG_HISTORICO!=='undefined'?SEG_HISTORICO.length:36)+' leads)</button>'
   +'</div>';
 }
 
