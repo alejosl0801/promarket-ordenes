@@ -5073,8 +5073,8 @@ function segSyncOrders(leads){
 
 // ── Auto-sync al cargar (una sola vez por sesión) ────────
 function segAutoSync(){
-  if(sessionStorage.getItem('pm_seg_synced')) return;
-  sessionStorage.setItem('pm_seg_synced','1');
+  if(sessionStorage.getItem('pm_seg_v14_synced')) return;
+  sessionStorage.setItem('pm_seg_v14_synced','1');
   if(typeof SEG_HISTORICO === 'undefined') return;
   segImportarHistorico();
 }
@@ -5287,11 +5287,11 @@ var _v0=[false,false,false,false,false,false,false,false,false,false];
 
 var SEG_HISTORICO = [
   // ── EN AGENCIA — esperando retiro ──────────────────────────────
-  {nombre:'Alex Fernando Lara',   tel:'+593979269065', fase:'agencia',  fechaInicio:'2026-05-20T10:00:00.000Z', fechaTr:'2026-05-28T10:00:00.000Z', fechaAg:'2026-06-03T10:00:00.000Z'},
-  {nombre:'Carmen Sosa',          tel:'+593999652705', fase:'agencia',  fechaInicio:'2026-05-20T10:00:00.000Z', fechaTr:'2026-05-28T10:00:00.000Z', fechaAg:'2026-06-03T10:00:00.000Z'},
-  {nombre:'Blanca Rodríguez',     tel:'+593981754740', fase:'agencia',  fechaInicio:'2026-05-25T10:00:00.000Z', fechaTr:'2026-05-28T10:00:00.000Z', fechaAg:'2026-06-01T10:00:00.000Z'},
-  // ── EN TRÁNSITO ─────────────────────────────────────────────────
-  {nombre:'Willman Zúñiga',       tel:'+593998235058', fase:'agencia',  fechaInicio:'2026-06-01T10:00:00.000Z', fechaTr:'2026-06-04T10:00:00.000Z', fechaAg:'2026-06-08T10:00:00.000Z'},
+  {nombre:'Alex Fernando Lara',   tel:'+593979269065', fase:'agencia',  fechaInicio:'2026-05-20T10:00:00.000Z', fechaTr:'2026-06-03T10:00:00.000Z', fechaAg:'2026-06-05T10:00:00.000Z', orderId:'146271', qty:2, valor:107.98, producto:'GUANTE'},
+  {nombre:'Carmen Sosa',          tel:'+593999652705', fase:'agencia',  fechaInicio:'2026-05-20T10:00:00.000Z', fechaTr:'2026-06-03T10:00:00.000Z', fechaAg:'2026-06-05T10:00:00.000Z', orderId:'146504', qty:2, valor:107.98, producto:'GUANTE'},
+  {nombre:'Blanca Rodríguez',     tel:'+593981754740', fase:'agencia',  fechaInicio:'2026-05-25T10:00:00.000Z', fechaTr:'2026-06-02T10:00:00.000Z', fechaAg:'2026-06-04T10:00:00.000Z', orderId:'144356', qty:1, valor:59.99,  producto:'GUANTE', reclamo:true},
+  // ── EN TRÁNSITO — producto OLLAS ────────────────────────────────
+  {nombre:'Willman Zúñiga',       tel:'+593998235058', fase:'transito', fechaInicio:'2026-06-01T10:00:00.000Z', fechaTr:'2026-06-03T10:00:00.000Z', fechaAg:'2026-06-08T10:00:00.000Z', orderId:'146110', qty:1, valor:49.99,  producto:'OLLAS'},
   // ── NO COMPRARON (cerrado) ───────────────────────────────────────
   {nombre:'Rosa Carranza',        tel:'+593968055707', fase:'cerrado',  fechaInicio:'2026-05-28T10:00:00.000Z'},
   {nombre:'Rose',                 tel:'+593997437282', fase:'cerrado',  fechaInicio:'2026-05-28T10:00:00.000Z'},
@@ -5344,8 +5344,13 @@ function segImportarHistorico(){
       // Actualizar fase si cambia a una más avanzada
       var ord = {venta:0,transito:1,agencia:2,cerrado:3};
       if((ord[h.fase]||0) > (ord[ex.fase]||0)) ex.fase = h.fase;
-      if(h.fechaTr && !ex.fechaTr) ex.fechaTr = h.fechaTr;
-      if(h.fechaAg && !ex.fechaAg) ex.fechaAg = h.fechaAg;
+      if(h.fechaTr) ex.fechaTr = h.fechaTr;
+      if(h.fechaAg) ex.fechaAg = h.fechaAg;
+      if(h.orderId !== undefined) ex.orderId = h.orderId;
+      if(h.qty     !== undefined) ex.qty     = h.qty;
+      if(h.valor   !== undefined) ex.valor   = h.valor;
+      if(h.producto!== undefined) ex.producto= h.producto;
+      if(h.reclamo !== undefined) ex.reclamo = h.reclamo;
       // Aplicar marcas (solo marcar true, nunca desmarcar)
       if(h.chk){
         var c = segGetChk(ex.id);
@@ -5361,7 +5366,9 @@ function segImportarHistorico(){
     } else {
       var id = 'sg'+Date.now()+Math.random().toString(36).slice(2,6);
       leads.push({id:id, nombre:h.nombre, tel:h.tel, fechaInicio:h.fechaInicio,
-        orderId:null, fase:h.fase, fechaTr:h.fechaTr||null, fechaAg:h.fechaAg||null});
+        fase:h.fase, fechaTr:h.fechaTr||null, fechaAg:h.fechaAg||null,
+        orderId:h.orderId||null, qty:h.qty||null, valor:h.valor||null,
+        producto:h.producto||null, reclamo:h.reclamo||false});
       if(h.chk){
         var c2={v:Array(10).fill(false),a:[]};
         if(h.chk.v) h.chk.v.forEach(function(v,i){ if(v) c2.v[i]=true; });
@@ -6398,39 +6405,53 @@ function renderStats(){
 }
 
 function statsExportExcel(){
-  var leads=segGetLeads();
-  var inv=statsGetAllInv();
-  var convs=statsGetAllConvs();
-  var today=new Date().toISOString().slice(0,10);
-  var lines=[];
-  var S=';'; // Punto y coma — Excel en español (Ecuador)
+  var leads = segGetLeads();
+  var inv   = statsGetAllInv();
+  var convs = statsGetAllConvs();
+  var today = new Date().toISOString().slice(0,10);
+  var lines = [];
+  var S = ';';
 
-  // Fechas 02/06/26 → 26/06/26 (igual que el Google Sheets)
-  var dates=[];
-  var cur=new Date('2026-06-02'), end=new Date('2026-06-26');
-  while(cur<=end){dates.push(cur.toISOString().slice(0,10));cur.setDate(cur.getDate()+1);}
-  var dlbls=dates.map(function(d){return d.slice(8)+'/'+d.slice(5,7)+'/'+d.slice(2,4);});
+  // Rango 02/06/26 → 26/06/26 (igual al Google Sheets)
+  var dates = [];
+  var cur = new Date('2026-06-02'), end = new Date('2026-06-26');
+  while(cur <= end){ dates.push(cur.toISOString().slice(0,10)); cur.setDate(cur.getDate()+1); }
+  var dlbls = dates.map(function(d){ return d.slice(8)+'/'+d.slice(5,7)+'/'+d.slice(2,4); });
 
-  // Acumulados totales
-  var sumIG=0,sumIO=0,sumCG=0,sumCO=0,sumPed=0;
+  // Pedidos reales: tienen fechaTr y fase activa (no cerrado-sin-compra)
+  var pedLeads = leads
+    .filter(function(l){ return l.fechaTr && (l.fase==='transito'||l.fase==='agencia'||(l.fase==='cerrado'&&l.orderId)); })
+    .sort(function(a,b){ return (a.fechaTr||'').localeCompare(b.fechaTr||''); });
+
+  // Acumulados del período
+  var sumIG=0, sumIO=0, sumCG=0, sumCO=0;
   dates.forEach(function(d){
     var iv=inv[d]||{guante:0,ollas:0}; sumIG+=(iv.guante||0); sumIO+=(iv.ollas||0);
     var cv=convs[d]||{guante:0,ollas:0}; sumCG+=(cv.guante||0); sumCO+=(cv.ollas||0);
-    sumPed+=statsGetPedidosForDate(leads,d);
   });
   var sumIT=sumIG+sumIO, sumCT=sumCG+sumCO;
+  var sumPedG = pedLeads.filter(function(l){ return (l.producto||'GUANTE')==='GUANTE'; }).length;
+  var sumPedO = pedLeads.filter(function(l){ return l.producto==='OLLAS'; }).length;
+  var sumPedT = sumPedG + sumPedO;
+
+  function cDia(d){
+    return leads.filter(function(l){ return l.fechaTr && l.fechaTr.slice(0,10)===d; }).length;
+  }
 
   lines.push('sep=;');
   lines.push('');
 
-  // ══ TABLA 1: LANDING TRACKER (idéntico al Google Sheets) ══
-  // Fechas como columnas, métricas como filas
+  // ═══ TABLA 1: LANDING TRACKER ═══════════════════════════════════
   lines.push(['LANDING'].concat(dlbls).join(S));
-  lines.push(['OLLA'].concat(dates.map(function(d){var v=(convs[d]||{}).ollas||0;return v||'';})).join(S));
-  lines.push(['GUANTE'].concat(dates.map(function(d){var v=(convs[d]||{}).guante||0;return v||'';})).join(S));
+  lines.push(['OLLA'].concat(dates.map(function(d){
+    var v=(convs[d]||{}).ollas||0; return v||'';
+  })).join(S));
+  lines.push(['GUANTE'].concat(dates.map(function(d){
+    var v=(convs[d]||{}).guante||0; return v||'';
+  })).join(S));
   for(var e=0;e<10;e++) lines.push([''].concat(dates.map(function(){return '';})).join(S));
   lines.push(['Grand Total'].concat(dates.map(function(d){
-    var cv=convs[d]||{guante:0,ollas:0}; var t=(cv.guante||0)+(cv.ollas||0); return t||0;
+    var cv=convs[d]||{guante:0,ollas:0}; var t=(cv.guante||0)+(cv.ollas||0); return t||'';
   })).join(S));
   lines.push(['INV'].concat(dates.map(function(d){
     var iv=inv[d]||{guante:0,ollas:0}; var t=(iv.guante||0)+(iv.ollas||0); return t?t.toFixed(2):'';
@@ -6440,54 +6461,75 @@ function statsExportExcel(){
     var ct=(cv.guante||0)+(cv.ollas||0); var it=(iv.guante||0)+(iv.ollas||0);
     return ct>0?(it/ct).toFixed(2):'';
   })).join(S));
-  lines.push(['COMPRAS'].concat(dates.map(function(d){var p=statsGetPedidosForDate(leads,d);return p||'';})).join(S));
+  lines.push(['COMPRAS'].concat(dates.map(function(d){ var p=cDia(d); return p||''; })).join(S));
   lines.push(['CPA'].concat(dates.map(function(d){
-    var iv=inv[d]||{guante:0,ollas:0}; var it=(iv.guante||0)+(iv.ollas||0);
-    var p=statsGetPedidosForDate(leads,d); return p>0&&it>0?(it/p).toFixed(2):'';
+    var iv=inv[d]||{guante:0,ollas:0}; var it=(iv.guante||0)+(iv.ollas||0); var p=cDia(d);
+    return (p>0&&it>0)?(it/p).toFixed(2):'';
   })).join(S));
   lines.push(['% CIERRE'].concat(dates.map(function(d){
-    var cv=convs[d]||{guante:0,ollas:0}; var ct=(cv.guante||0)+(cv.ollas||0);
-    var p=statsGetPedidosForDate(leads,d); return ct>0?((p/ct)*100).toFixed(1)+'%':'';
+    var cv=convs[d]||{guante:0,ollas:0}; var ct=(cv.guante||0)+(cv.ollas||0); var p=cDia(d);
+    return ct>0?((p/ct)*100).toFixed(1)+'%':'';
   })).join(S));
 
   lines.push(''); lines.push('');
 
-  // ══ TABLA 2: RENDIMIENTO POR PRODUCTO ══
-  lines.push(['PRODUCTO','GASTO EN ADS','CONVERSACIONES','COSTO POR CONVERSACION','PEDIDOS','CPA REAL','TASA DE CIERRE','INVERSIÓN DÍA','VENTAS OBJ','PEDIDOS DIARIOS'].join(S));
-  lines.push(['OLLAS','$'+sumIO.toFixed(2),sumCO,sumCO>0?'$'+(sumIO/sumCO).toFixed(2):'',1,'$'+sumIO.toFixed(2),sumCO>0?((1/sumCO)*100).toFixed(2)+'%':'','$26.64',1,3].join(S));
-  lines.push(['GUANTE','$'+sumIG.toFixed(2),sumCG,sumCG>0?'$'+(sumIG/sumCG).toFixed(2):'',sumPed,sumPed>0?'$'+(sumIG/sumPed).toFixed(2):'',sumCG>0?((sumPed/sumCG)*100).toFixed(2)+'%':'','$9.99',1,''].join(S));
-
-  lines.push(''); lines.push('');
-
-  // ══ TABLA 3: COSTOS ══
-  lines.push(['COSTO DE PRODUCTO','$23.15'].join(S));
-  lines.push(['FLETE','$8.00'].join(S));
-  lines.push(['FULLFILMENT','$0.85'].join(S));
-  lines.push(['COSTO POR COMPRA','$32.00'].join(S));
-  lines.push(['PRECIO DE VENTA','$59.99'].join(S));
-
-  lines.push(''); lines.push('');
-
-  // ══ TABLA 4: PEDIDOS ══
-  lines.push(['NÚMERO','ID','NOMBRE','CELULAR','PRODUCTO','CANTIDAD','VALOR','PLATAFORMA ENVÍO','ESTADO','FECHA','OBSERVACIÓN'].join(S));
-  var pedLeads=leads.filter(function(l){return l.fase==='transito'||l.fase==='agencia'||l.fase==='cerrado';});
-  pedLeads.forEach(function(l,i){
-    var est={transito:'EN TRÁNSITO',agencia:'EN AGENCIA',cerrado:'ENTREGADO'}[l.fase]||l.fase;
-    lines.push([(i+1),l.orderId||'',l.nombre,l.tel||'','GUANTE',1,59.99,'SERVIENTREGA',est,l.fechaTr?l.fechaTr.slice(0,10):'',''].join(S));
+  // ═══ TABLA 2: RENDIMIENTO POR PRODUCTO ══════════════════════════
+  lines.push(['RENDIMIENTO POR PRODUCTO'].join(S));
+  lines.push(['PRODUCTO','GASTO ADS ($)','CONVERSACIONES','MENS ($/conv)','PEDIDOS','CPA ($)','% CIERRE','INV DÍA OBJ ($)'].join(S));
+  [{n:'GUANTE',inv:sumIG,cv:sumCG,ped:sumPedG,obj:'9.99'},
+   {n:'OLLAS', inv:sumIO,cv:sumCO,ped:sumPedO,obj:'26.64'},
+   {n:'TOTAL', inv:sumIT,cv:sumCT,ped:sumPedT,obj:''}
+  ].forEach(function(p){
+    lines.push([
+      p.n, p.inv.toFixed(2), p.cv||'',
+      p.cv>0?(p.inv/p.cv).toFixed(2):'', p.ped||'',
+      p.ped>0?(p.inv/p.ped).toFixed(2):'',
+      p.cv>0?((p.ped/p.cv)*100).toFixed(1)+'%':'', p.obj
+    ].join(S));
   });
 
   lines.push(''); lines.push('');
 
-  // ══ TABLA 5: LEADS ACTIVOS ══
+  // ═══ TABLA 3: ESTRUCTURA DE COSTOS ══════════════════════════════
+  lines.push(['ESTRUCTURA DE COSTOS'].join(S));
+  lines.push(['CONCEPTO','VALOR ($)'].join(S));
+  [['Costo de producto','23.15'],['Flete','8.00'],['Fulfillment','0.85'],
+   ['Costo total por venta','32.00'],['Precio 1 guante','59.99'],
+   ['Precio par (2 guantes -10%)','107.98'],
+   ['Margen bruto 1 guante','27.99'],['Margen bruto par','43.98']
+  ].forEach(function(r){ lines.push(r.join(S)); });
+
+  lines.push(''); lines.push('');
+
+  // ═══ TABLA 4: PEDIDOS ════════════════════════════════════════════
+  lines.push(['PEDIDOS REGISTRADOS'].join(S));
+  lines.push(['#','ID ORDEN','NOMBRE','CELULAR','PRODUCTO','CANTIDAD','VALOR ($)','PLATAFORMA','ESTADO','FECHA PEDIDO','FECHA AGENCIA','OBSERVACIÓN'].join(S));
+  pedLeads.forEach(function(l,i){
+    var est={transito:'EN TRÁNSITO',agencia:'EN AGENCIA',cerrado:'ENTREGADO'}[l.fase]||l.fase;
+    lines.push([
+      i+1, l.orderId||'', l.nombre, l.tel||'',
+      l.producto||'GUANTE', l.qty||1, (l.valor||59.99).toFixed(2),
+      'SERVIENTREGA', est,
+      l.fechaTr?l.fechaTr.slice(0,10):'',
+      l.fechaAg?l.fechaAg.slice(0,10):'',
+      l.reclamo?'RECLAMO ABIERTO':''
+    ].join(S));
+  });
+
+  lines.push(''); lines.push('');
+
+  // ═══ TABLA 5: LEADS EN SEGUIMIENTO ══════════════════════════════
+  lines.push(['LEADS EN SEGUIMIENTO'].join(S));
   lines.push(['NOMBRE','CELULAR','FASE','FECHA INICIO','DÍAS','TRIGGERS ENVIADOS'].join(S));
+  var faseLabel={venta:'En venta',transito:'En tránsito',agencia:'En agencia',cerrado:'Cerrado/Perdido'};
   leads.forEach(function(l){
     var dias=Math.floor((Date.now()-new Date(l.fechaInicio).getTime())/86400000);
     var chk=segGetChk(l.id);
     var msgs=(chk.v||[]).filter(Boolean).length;
-    lines.push([l.nombre,l.tel||'',l.fase,l.fechaInicio.slice(0,10),dias,msgs].join(S));
+    lines.push([l.nombre,l.tel||'',faseLabel[l.fase]||l.fase,l.fechaInicio.slice(0,10),dias,msgs].join(S));
   });
 
-  // ── Descargar ──
+  // Descargar
   var csv='﻿'+lines.join('\r\n');
   var blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
   var url=URL.createObjectURL(blob);
