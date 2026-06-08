@@ -847,6 +847,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
     📋 Seguim.
   </div>
   <div class="tab" data-tab="camila" onclick="switchTab('camila')">💬 Camila</div>
+  <div class="tab" data-tab="stats" onclick="switchTab('stats')">📊 Stats</div>
 </div>
 
 <div class="wrap">
@@ -1263,6 +1264,10 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
   <div id="seg-container" style="padding:12px;"></div>
 </div>
 
+<div class="panel" id="panel-stats">
+  <div id="stats-container" style="padding:0;overflow-y:auto;"></div>
+</div>
+
 </div><!-- /wrap -->
 
 <div style="background:var(--bg2);border-top:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--muted)" id="app-footer">
@@ -1656,6 +1661,7 @@ function switchTab(name){
   if(name==='marcados')  renderMarcados();
   if(name==='seguimiento') renderSeguimiento();
   if(name==='camila') renderCamila();
+  if(name==='stats')  renderStats();
 }
 
 // ════════════════════════════════════════════════════════
@@ -6126,8 +6132,343 @@ function toggleHideAmounts(){
 }
 
 if('serviceWorker' in navigator){
-  // Registro limpio. El SW es network-first: siempre trae la última versión si hay internet.
   navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).catch(()=>{});
+}
+
+// ════════════════ STATS / GESTIÓN DIARIA ════════════════
+
+var STATS_INV_HIST = {
+  '2026-06-01':{guante:0,    ollas:0   },
+  '2026-06-02':{guante:2.25, ollas:2.02},
+  '2026-06-03':{guante:3.33, ollas:3.67},
+  '2026-06-04':{guante:5.08, ollas:5.30},
+  '2026-06-05':{guante:7.77, ollas:8.01},
+  '2026-06-06':{guante:10.26,ollas:0   },
+  '2026-06-07':{guante:11.96,ollas:0   },
+  '2026-06-08':{guante:5.27, ollas:0   }
+};
+
+// Conversaciones reales de Facebook (ground truth por campaña)
+var STATS_CONVS_HIST = {
+  '2026-06-01':{guante:0,  ollas:0},
+  '2026-06-02':{guante:3,  ollas:1},
+  '2026-06-03':{guante:5,  ollas:2},
+  '2026-06-04':{guante:2,  ollas:8},
+  '2026-06-05':{guante:1,  ollas:8},
+  '2026-06-06':{guante:8,  ollas:0},
+  '2026-06-07':{guante:17, ollas:0},
+  '2026-06-08':{guante:5,  ollas:0}
+};
+
+function statsGetAllInv(){
+  var saved=JSON.parse(localStorage.getItem('pm_inv_v1')||'{}');
+  var merged={};
+  Object.keys(STATS_INV_HIST).forEach(function(d){
+    merged[d]={guante:STATS_INV_HIST[d].guante,ollas:STATS_INV_HIST[d].ollas};
+  });
+  Object.keys(saved).forEach(function(d){
+    if(!merged[d])merged[d]={guante:0,ollas:0};
+    if(saved[d].guante!==undefined)merged[d].guante=saved[d].guante;
+    if(saved[d].ollas!==undefined) merged[d].ollas=saved[d].ollas;
+  });
+  return merged;
+}
+
+function statsGetAllConvs(){
+  var saved=JSON.parse(localStorage.getItem('pm_convs_v1')||'{}');
+  var merged={};
+  Object.keys(STATS_CONVS_HIST).forEach(function(d){
+    merged[d]={guante:STATS_CONVS_HIST[d].guante,ollas:STATS_CONVS_HIST[d].ollas};
+  });
+  Object.keys(saved).forEach(function(d){
+    if(!merged[d])merged[d]={guante:0,ollas:0};
+    if(saved[d].guante!==undefined)merged[d].guante=saved[d].guante;
+    if(saved[d].ollas!==undefined) merged[d].ollas=saved[d].ollas;
+  });
+  return merged;
+}
+
+function statsSaveHoy(){
+  var today=new Date().toISOString().slice(0,10);
+  var saved=JSON.parse(localStorage.getItem('pm_inv_v1')||'{}');
+  if(!saved[today])saved[today]={};
+  saved[today].guante=parseFloat((document.getElementById('inv-g')||{}).value)||0;
+  saved[today].ollas =parseFloat((document.getElementById('inv-o')||{}).value)||0;
+  localStorage.setItem('pm_inv_v1',JSON.stringify(saved));
+  var savedC=JSON.parse(localStorage.getItem('pm_convs_v1')||'{}');
+  if(!savedC[today])savedC[today]={};
+  savedC[today].guante=parseInt((document.getElementById('conv-g')||{}).value)||0;
+  savedC[today].ollas =parseInt((document.getElementById('conv-o')||{}).value)||0;
+  localStorage.setItem('pm_convs_v1',JSON.stringify(savedC));
+  showToast('Guardado ✅');
+  renderStats();
+}
+
+function statsGetPedidosForDate(leads,dateStr){
+  return leads.filter(function(l){return l.fechaTr&&l.fechaTr.slice(0,10)===dateStr;}).length;
+}
+
+function statsDateRange(){
+  var start=new Date('2026-06-01');
+  var end=new Date(); end.setDate(end.getDate()+1);
+  var dates=[]; var cur=new Date(start);
+  while(cur<=end){dates.push(cur.toISOString().slice(0,10));cur.setDate(cur.getDate()+1);}
+  return dates;
+}
+
+function renderStats(){
+  var el=document.getElementById('stats-container');
+  if(!el)return;
+  var leads=segGetLeads();
+  var inv=statsGetAllInv();
+  var convs=statsGetAllConvs();
+  var dates=statsDateRange();
+  var today=new Date().toISOString().slice(0,10);
+  var todayInv=inv[today]||{guante:0,ollas:0};
+  var todayConvs=convs[today]||{guante:0,ollas:0};
+
+  // Pre-calculate totals & rows
+  var rows=[];
+  var sumInvG=0,sumInvO=0,sumCG=0,sumCO=0,sumPed=0;
+  dates.forEach(function(d){
+    var invD=inv[d]||{guante:0,ollas:0};
+    var convD=convs[d]||{guante:0,ollas:0};
+    var ped=statsGetPedidosForDate(leads,d);
+    var invT=(invD.guante||0)+(invD.ollas||0);
+    var totalConvs=(convD.guante||0)+(convD.ollas||0);
+    sumInvG+=invD.guante||0; sumInvO+=invD.ollas||0;
+    sumCG+=convD.guante||0;  sumCO+=convD.ollas||0;
+    sumPed+=ped;
+    if(invT||totalConvs||ped||d===today){
+      rows.push({d:d,cg:convD.guante||0,co:convD.ollas||0,ct:totalConvs,ped:ped,invG:invD.guante||0,invO:invD.ollas||0,invT:invT,isToday:d===today});
+    }
+  });
+  var sumInvT=sumInvG+sumInvO, sumCT=sumCG+sumCO;
+  var overallCPA=sumPed>0?'$'+(sumInvT/sumPed).toFixed(2):'-';
+  var overallCierre=sumCT>0?((sumPed/sumCT)*100).toFixed(1)+'%':'-';
+
+  var h='<div style="padding:14px;">';
+
+  // Header
+  h+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">'
+    +'<div style="font-size:13px;font-weight:700;color:#E8650A;letter-spacing:.06em;">📊 GESTIÓN DIARIA</div>'
+    +'<button onclick="statsExportExcel()" style="padding:8px 14px;background:#0a3020;border:1.5px solid #27AE60;border-radius:8px;color:#27AE60;font-size:12px;font-weight:700;cursor:pointer;">⬇ Descargar Excel</button>'
+  +'</div>';
+
+  // Registro hoy
+  h+='<div style="background:#111;border:1.5px solid #E8650A;border-radius:12px;padding:14px;margin-bottom:14px;">'
+    +'<div style="font-size:11px;font-weight:700;color:#E8650A;margin-bottom:10px;letter-spacing:.06em;">📝 REGISTRAR HOY ('+today.slice(5).replace('-','/')+')</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-bottom:10px;">'
+      +'<div><div style="font-size:9px;color:#666;margin-bottom:3px;">INV GUANTE $</div><input id="inv-g" type="number" step="0.01" min="0" value="'+todayInv.guante+'" style="width:100%;padding:7px;background:#0a0a0a;border:1px solid #2a2a2a;border-radius:6px;color:#fff;font-size:13px;box-sizing:border-box;"></div>'
+      +'<div><div style="font-size:9px;color:#666;margin-bottom:3px;">INV OLLAS $</div><input id="inv-o" type="number" step="0.01" min="0" value="'+todayInv.ollas+'" style="width:100%;padding:7px;background:#0a0a0a;border:1px solid #2a2a2a;border-radius:6px;color:#fff;font-size:13px;box-sizing:border-box;"></div>'
+      +'<div><div style="font-size:9px;color:#666;margin-bottom:3px;">CONVS GUANTE</div><input id="conv-g" type="number" min="0" value="'+todayConvs.guante+'" style="width:100%;padding:7px;background:#0a0a0a;border:1px solid #2a2a2a;border-radius:6px;color:#fff;font-size:13px;box-sizing:border-box;"></div>'
+      +'<div><div style="font-size:9px;color:#666;margin-bottom:3px;">CONVS OLLAS</div><input id="conv-o" type="number" min="0" value="'+todayConvs.ollas+'" style="width:100%;padding:7px;background:#0a0a0a;border:1px solid #2a2a2a;border-radius:6px;color:#fff;font-size:13px;box-sizing:border-box;"></div>'
+    +'</div>'
+    +'<button onclick="statsSaveHoy()" style="width:100%;padding:10px;background:#E8650A;border:none;border-radius:8px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">💾 Guardar día</button>'
+  +'</div>';
+
+  // KPI summary cards
+  h+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;">'
+    +['<div style="background:#111;border:1px solid #1a1a1a;border-radius:10px;padding:10px;text-align:center;"><div style="font-size:20px;font-weight:700;color:#3B82F6;">'+sumCT+'</div><div style="font-size:10px;color:#555;margin-top:2px;">CONVS</div></div>'
+    ,'<div style="background:#111;border:1px solid #1a1a1a;border-radius:10px;padding:10px;text-align:center;"><div style="font-size:20px;font-weight:700;color:#27AE60;">'+sumPed+'</div><div style="font-size:10px;color:#555;margin-top:2px;">PEDIDOS</div></div>'
+    ,'<div style="background:#111;border:1px solid #1a1a1a;border-radius:10px;padding:10px;text-align:center;"><div style="font-size:20px;font-weight:700;color:#E8650A;">'+overallCPA+'</div><div style="font-size:10px;color:#555;margin-top:2px;">CPA</div></div>'
+    ,'<div style="background:#111;border:1px solid #1a1a1a;border-radius:10px;padding:10px;text-align:center;"><div style="font-size:20px;font-weight:700;color:#F59E0B;">$'+sumInvT.toFixed(2)+'</div><div style="font-size:10px;color:#555;margin-top:2px;">INVERTIDO</div></div>'
+    ].join('')
+  +'</div>';
+
+  // Daily table
+  h+='<div style="font-size:10px;font-weight:700;color:#444;margin-bottom:6px;letter-spacing:.06em;">TRACKER DIARIO</div>'
+  +'<div style="overflow-x:auto;margin-bottom:16px;border-radius:10px;border:1px solid #1a1a1a;">'
+  +'<table style="width:100%;border-collapse:collapse;font-size:12px;">'
+  +'<thead><tr style="background:#0d0d0d;">'
+  +'<th style="padding:9px 10px;text-align:left;color:#555;border-bottom:1px solid #1a1a1a;white-space:nowrap;">FECHA</th>'
+  +'<th style="padding:9px 6px;text-align:center;color:#3B82F6;border-bottom:1px solid #1a1a1a;">🟦 G</th>'
+  +'<th style="padding:9px 6px;text-align:center;color:#E8650A;border-bottom:1px solid #1a1a1a;">🟠 O</th>'
+  +'<th style="padding:9px 6px;text-align:center;color:#aaa;border-bottom:1px solid #1a1a1a;">TOTAL</th>'
+  +'<th style="padding:9px 6px;text-align:center;color:#27AE60;border-bottom:1px solid #1a1a1a;">PEDIDOS</th>'
+  +'<th style="padding:9px 6px;text-align:center;color:#E8650A;border-bottom:1px solid #1a1a1a;">INV $</th>'
+  +'<th style="padding:9px 6px;text-align:center;color:#F59E0B;border-bottom:1px solid #1a1a1a;">CPA $</th>'
+  +'<th style="padding:9px 6px;text-align:center;color:#888;border-bottom:1px solid #1a1a1a;">%</th>'
+  +'</tr></thead><tbody>';
+
+  rows.slice().reverse().forEach(function(r){
+    var isT=r.isToday;
+    var cpa=r.ped>0&&r.invT>0?'$'+(r.invT/r.ped).toFixed(2):'—';
+    var cierre=r.ct>0?((r.ped/r.ct)*100).toFixed(0)+'%':'—';
+    h+='<tr style="border-bottom:1px solid #0d0d0d;'+(isT?'background:#150c00;':'')+'"">'
+      +'<td style="padding:8px 10px;color:'+(isT?'#E8650A':'#666')+';font-weight:'+(isT?'700':'400')+';white-space:nowrap;">'+r.d.slice(5).replace('-','/')+(isT?' ◀':'')+'</td>'
+      +'<td style="padding:8px 6px;text-align:center;color:'+(r.cg?'#3B82F6':'#2a2a2a')+';">'+(r.cg||'—')+'</td>'
+      +'<td style="padding:8px 6px;text-align:center;color:'+(r.co?'#E8650A':'#2a2a2a')+';">'+(r.co||'—')+'</td>'
+      +'<td style="padding:8px 6px;text-align:center;color:'+(r.ct?'#aaa':'#2a2a2a')+';font-weight:'+(r.ct?'600':'400')+';">'+(r.ct||'—')+'</td>'
+      +'<td style="padding:8px 6px;text-align:center;color:'+(r.ped?'#27AE60':'#2a2a2a')+';font-weight:'+(r.ped?'700':'400')+';">'+(r.ped||'—')+'</td>'
+      +'<td style="padding:8px 6px;text-align:center;color:'+(r.invT?'#E8650A':'#2a2a2a')+';">'+(r.invT?'$'+r.invT.toFixed(2):'—')+'</td>'
+      +'<td style="padding:8px 6px;text-align:center;color:'+(r.ped?'#F59E0B':'#2a2a2a')+';">'+cpa+'</td>'
+      +'<td style="padding:8px 6px;text-align:center;color:'+(r.ct?'#888':'#2a2a2a')+';">'+cierre+'</td>'
+    +'</tr>';
+  });
+
+  // Totals row
+  h+='<tr style="background:#0d0d0d;border-top:2px solid #2a2a2a;">'
+    +'<td style="padding:9px 10px;color:#aaa;font-weight:700;">TOTAL</td>'
+    +'<td style="padding:9px 6px;text-align:center;color:#3B82F6;font-weight:700;">'+sumCG+'</td>'
+    +'<td style="padding:9px 6px;text-align:center;color:#E8650A;font-weight:700;">'+sumCO+'</td>'
+    +'<td style="padding:9px 6px;text-align:center;color:#aaa;font-weight:700;">'+sumCT+'</td>'
+    +'<td style="padding:9px 6px;text-align:center;color:#27AE60;font-weight:700;">'+sumPed+'</td>'
+    +'<td style="padding:9px 6px;text-align:center;color:#E8650A;font-weight:700;">$'+sumInvT.toFixed(2)+'</td>'
+    +'<td style="padding:9px 6px;text-align:center;color:#F59E0B;font-weight:700;">'+overallCPA+'</td>'
+    +'<td style="padding:9px 6px;text-align:center;color:#888;font-weight:700;">'+overallCierre+'</td>'
+  +'</tr>';
+  h+='</tbody></table></div>';
+
+  // Product performance
+  h+='<div style="font-size:10px;font-weight:700;color:#444;margin-bottom:8px;letter-spacing:.06em;">RENDIMIENTO POR PRODUCTO</div>';
+  var prods=[
+    {n:'GUANTE',inv:sumInvG,  convs:sumCG, ped:sumPed, c:'#3B82F6', estado:'WINNER ✅'},
+    {n:'OLLAS',  inv:sumInvO, convs:sumCO, ped:1,       c:'#E8650A', estado:'PAUSADO ⏸'}
+  ];
+  h+='<div style="display:grid;gap:8px;margin-bottom:16px;">';
+  prods.forEach(function(p){
+    var cpaP=p.ped>0&&p.inv>0?'$'+(p.inv/p.ped).toFixed(2):'-';
+    var cierreP=p.convs>0?((p.ped/p.convs)*100).toFixed(1)+'%':'-';
+    var cxc=p.convs>0?'$'+(p.inv/p.convs).toFixed(2):'-';
+    h+='<div style="background:#111;border:1px solid #1a1a1a;border-radius:10px;padding:12px;">'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">'
+        +'<span style="font-size:14px;font-weight:700;color:'+p.c+';">'+p.n+'</span>'
+        +'<span style="font-size:10px;font-weight:700;color:#555;">'+p.estado+'</span>'
+      +'</div>'
+      +'<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;text-align:center;">'
+        +'<div><div style="font-size:14px;font-weight:700;color:#f0f0f0;">$'+p.inv.toFixed(2)+'</div><div style="font-size:9px;color:#444;margin-top:2px;">INV</div></div>'
+        +'<div><div style="font-size:14px;font-weight:700;color:#aaa;">'+p.convs+'</div><div style="font-size:9px;color:#444;margin-top:2px;">CONVS</div></div>'
+        +'<div><div style="font-size:14px;font-weight:700;color:#27AE60;">'+p.ped+'</div><div style="font-size:9px;color:#444;margin-top:2px;">PEDIDOS</div></div>'
+        +'<div><div style="font-size:14px;font-weight:700;color:#F59E0B;">'+cpaP+'</div><div style="font-size:9px;color:#444;margin-top:2px;">CPA</div></div>'
+        +'<div><div style="font-size:14px;font-weight:700;color:#888;">'+cierreP+'</div><div style="font-size:9px;color:#444;margin-top:2px;">CIERRE</div></div>'
+      +'</div>'
+    +'</div>';
+  });
+  h+='</div>';
+
+  // Orders table
+  h+='<div style="font-size:10px;font-weight:700;color:#444;margin-bottom:8px;letter-spacing:.06em;">PEDIDOS REGISTRADOS</div>';
+  var pedLeads=leads.filter(function(l){return l.fase==='transito'||l.fase==='agencia'||l.fase==='cerrado';});
+  if(pedLeads.length){
+    h+='<div style="overflow-x:auto;border-radius:10px;border:1px solid #1a1a1a;margin-bottom:16px;">'
+      +'<table style="width:100%;border-collapse:collapse;font-size:12px;">'
+      +'<thead><tr style="background:#0d0d0d;">'
+      +'<th style="padding:8px 10px;text-align:left;color:#444;border-bottom:1px solid #1a1a1a;">#</th>'
+      +'<th style="padding:8px 10px;text-align:left;color:#444;border-bottom:1px solid #1a1a1a;">NOMBRE</th>'
+      +'<th style="padding:8px 8px;text-align:left;color:#444;border-bottom:1px solid #1a1a1a;">TEL</th>'
+      +'<th style="padding:8px 8px;text-align:center;color:#444;border-bottom:1px solid #1a1a1a;">ESTADO</th>'
+      +'<th style="padding:8px 8px;text-align:center;color:#444;border-bottom:1px solid #1a1a1a;">FECHA PEDIDO</th>'
+      +'</tr></thead><tbody>';
+    pedLeads.forEach(function(l,i){
+      var est={transito:'TRÁNSITO',agencia:'AGENCIA',cerrado:'ENTREGADO'}[l.fase]||l.fase.toUpperCase();
+      var ec={transito:'#F59E0B',agencia:'#27AE60',cerrado:'#3B82F6'}[l.fase]||'#aaa';
+      var fecha=l.fechaTr?l.fechaTr.slice(0,10).slice(5).replace('-','/'):l.fechaInicio.slice(0,10).slice(5).replace('-','/');
+      h+='<tr style="border-bottom:1px solid #0d0d0d;">'
+        +'<td style="padding:8px 10px;color:#444;">'+(i+1)+'</td>'
+        +'<td style="padding:8px 10px;color:#eee;font-weight:600;">'+escH(l.nombre)+'</td>'
+        +'<td style="padding:8px 8px;color:#666;font-size:11px;">'+escH(l.tel||'—')+'</td>'
+        +'<td style="padding:8px 8px;text-align:center;"><span style="font-size:10px;font-weight:700;color:'+ec+';">'+est+'</span></td>'
+        +'<td style="padding:8px 8px;text-align:center;color:#555;">'+fecha+'</td>'
+      +'</tr>';
+    });
+    h+='</tbody></table></div>';
+  } else {
+    h+='<div style="text-align:center;padding:20px;color:#333;font-size:12px;">Ningún pedido registrado todavía</div>';
+  }
+
+  h+='</div>';
+  el.innerHTML=h;
+}
+
+function statsExportExcel(){
+  var leads=segGetLeads();
+  var inv=statsGetAllInv();
+  var convs=statsGetAllConvs();
+  var dates=statsDateRange();
+  var today=new Date().toISOString().slice(0,10);
+  var lines=[];
+
+  // ── Hoja 1: LANDING TRACKER ──
+  lines.push('LANDING TRACKER PROMARKET — Generado: '+today);
+  lines.push('');
+  lines.push('FECHA,GUANTE (convs),OLLAS (convs),TOTAL CONVS,PEDIDOS,INV GUANTE ($),INV OLLAS ($),INV TOTAL ($),CPA ($),% CIERRE');
+  var sumIG=0,sumIO=0,sumCG=0,sumCO=0,sumPed=0;
+  dates.forEach(function(d){
+    var invD=inv[d]||{guante:0,ollas:0};
+    var convD=convs[d]||{guante:0,ollas:0};
+    var ped=statsGetPedidosForDate(leads,d);
+    var invT=(invD.guante||0)+(invD.ollas||0);
+    var ct=(convD.guante||0)+(convD.ollas||0);
+    if(!invT&&!ct&&!ped)return;
+    var cpa=ped>0&&invT>0?(invT/ped).toFixed(2):'';
+    var cierre=ct>0?((ped/ct)*100).toFixed(1)+'%':'';
+    sumIG+=invD.guante||0; sumIO+=invD.ollas||0;
+    sumCG+=convD.guante||0; sumCO+=convD.ollas||0; sumPed+=ped;
+    lines.push([d,(convD.guante||0),(convD.ollas||0),ct,ped,(invD.guante||0).toFixed(2),(invD.ollas||0).toFixed(2),invT.toFixed(2),cpa,cierre].join(','));
+  });
+  var sumIT=sumIG+sumIO,sumCT=sumCG+sumCO;
+  lines.push(['TOTAL',sumCG,sumCO,sumCT,sumPed,sumIG.toFixed(2),sumIO.toFixed(2),sumIT.toFixed(2),sumPed>0?(sumIT/sumPed).toFixed(2):'',sumCT>0?((sumPed/sumCT)*100).toFixed(1)+'%':''].join(','));
+  lines.push('');
+
+  // ── Hoja 2: RENDIMIENTO POR PRODUCTO ──
+  lines.push('');
+  lines.push('RENDIMIENTO POR PRODUCTO');
+  lines.push('PRODUCTO,GASTO ($),CONVERSACIONES,COSTO X CONV ($),PEDIDOS,CPA ($),TASA DE CIERRE,INV DÍA OBJ ($),ESTADO');
+  var prods=[
+    {n:'GUANTE',inv:sumIG,convs:sumCG,ped:sumPed,invObj:9.99,estado:'WINNER'},
+    {n:'OLLAS',  inv:sumIO, convs:sumCO,ped:1,      invObj:26.64,estado:'PAUSADO'}
+  ];
+  prods.forEach(function(p){
+    lines.push([p.n,p.inv.toFixed(2),p.convs,p.convs>0?(p.inv/p.convs).toFixed(2):'',p.ped,p.ped>0?(p.inv/p.ped).toFixed(2):'',p.convs>0?((p.ped/p.convs)*100).toFixed(1)+'%':'',p.invObj,p.estado].join(','));
+  });
+  lines.push('');
+
+  // ── Hoja 3: COSTOS ──
+  lines.push('');
+  lines.push('ESTRUCTURA DE COSTOS');
+  lines.push('CONCEPTO,VALOR');
+  lines.push('Costo producto,$23.15');
+  lines.push('Flete,$8.00');
+  lines.push('Fulfillment,$0.85');
+  lines.push('Costo total por venta,$32.00');
+  lines.push('Precio WINNER 1,$59.99');
+  lines.push('Precio WINNER 2,$49.99');
+  lines.push('Margen bruto WINNER 1,$27.99');
+  lines.push('Margen bruto WINNER 2,$17.99');
+  lines.push('');
+
+  // ── Hoja 4: PEDIDOS ──
+  lines.push('');
+  lines.push('PEDIDOS REGISTRADOS');
+  lines.push('#,NOMBRE,CELULAR,PRODUCTO,CANTIDAD,VALOR ($),PLATAFORMA,ESTADO,FECHA PEDIDO,FECHA AGENCIA,OBSERVACIÓN');
+  var pedLeads=leads.filter(function(l){return l.fase==='transito'||l.fase==='agencia'||l.fase==='cerrado';});
+  pedLeads.forEach(function(l,i){
+    var est={transito:'EN TRÁNSITO',agencia:'EN AGENCIA',cerrado:'ENTREGADO'}[l.fase]||l.fase;
+    lines.push([(i+1),'"'+l.nombre+'"',l.tel||'','GUANTE',1,59.99,'SERVIENTREGA',est,l.fechaTr?l.fechaTr.slice(0,10):'',l.fechaAg?l.fechaAg.slice(0,10):'',''].join(','));
+  });
+  lines.push('');
+
+  // ── Hoja 5: LEADS ACTIVOS ──
+  lines.push('');
+  lines.push('LEADS EN SEGUIMIENTO');
+  lines.push('NOMBRE,CELULAR,FASE,FECHA INICIO,DÍAS EN SEGUIMIENTO,TRIGGERS ENVIADOS');
+  leads.forEach(function(l){
+    var dias=Math.floor((Date.now()-new Date(l.fechaInicio).getTime())/86400000);
+    var chk=segGetChk(l.id);
+    var msgs=(chk.v||[]).filter(Boolean).length;
+    lines.push(['"'+l.nombre+'"',l.tel||'',l.fase,l.fechaInicio.slice(0,10),dias,msgs].join(','));
+  });
+
+  // ── Descargar ──
+  var csv='﻿'+lines.join('\r\n');
+  var blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url; a.download='ProMarket_Stats_'+today+'.csv';
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
+  showToast('Excel descargado ✅');
 }
 </script>
 </body>
