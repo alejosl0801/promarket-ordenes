@@ -1221,11 +1221,14 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 
 <!-- ══════════ REPORTES ══════════ -->
 <div class="panel" id="panel-reportes">
-  <div class="period-btns">
-    <button class="period-btn active" onclick="setPeriod('hoy',this)">Hoy</button>
-    <button class="period-btn" onclick="setPeriod('semana',this)">Esta semana</button>
-    <button class="period-btn" onclick="setPeriod('mes',this)">Este mes</button>
-    <button class="period-btn" onclick="setPeriod('todo',this)">Todo</button>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px">
+    <div class="period-btns" style="margin-bottom:0">
+      <button class="period-btn active" onclick="setPeriod('hoy',this)">Hoy</button>
+      <button class="period-btn" onclick="setPeriod('semana',this)">Esta semana</button>
+      <button class="period-btn" onclick="setPeriod('mes',this)">Este mes</button>
+      <button class="period-btn" onclick="setPeriod('todo',this)">Todo</button>
+    </div>
+    <button class="btn btn-dark btn-sm" onclick="statsExportExcel()">⬇ Excel CRM</button>
   </div>
   <div class="kpi-row" id="kpi-row"></div>
   <div id="trends-container"></div>
@@ -1523,6 +1526,15 @@ function saveCatalog(){ localStorage.setItem(CATALOG_KEY, JSON.stringify(catalog
   var cat2 = JSON.parse(localStorage.getItem('pm_catalogo_v1')||'[]');
   if(!cat2.some(function(p){ return p.nombre&&p.nombre.toLowerCase().includes('hand grip'); })){
     cat2.push({id:'prod_handgrip',nombre:'Kit Hand Grip',ref:'KHG-001',precio:4.55,costo:2.00,fulfillment:0,envio:0,peso:0.3,ico:'🤝',desc:'5 accesorios: pinza, entrenador de muñeca, banda elástica, anillo de agarre y bola antiestrés',activo:1,stock:{S:99,M:99,L:99,XL:99}});
+    localStorage.setItem('pm_catalogo_v1', JSON.stringify(cat2));
+  }
+})();
+
+// Seed Masajeador de Rodillas y Codos 3 en 1 si no existe en catálogo
+(function(){
+  var cat2 = JSON.parse(localStorage.getItem('pm_catalogo_v1')||'[]');
+  if(!cat2.some(function(p){ return p.nombre&&p.nombre.toLowerCase().includes('rodilla'); })){
+    cat2.push({id:'prod_rodilla',nombre:'Masajeador de Rodillas y Codos 3 en 1 con Parches',ref:'MASAJEADORRODILLAINALAMBRICO',precio:39.20,costo:4.60,fulfillment:0,envio:0,peso:0,ico:'🦵',desc:'Rodillera eléctrica 3 en 1: calor + vibración + masaje. Rodillas, codos y hombros. Inalámbrico, recargable. Incluye parches terapéuticos. Precio $39.20 incluye envío.',activo:1,stock:{S:115,M:115,L:115,XL:115}});
     localStorage.setItem('pm_catalogo_v1', JSON.stringify(cat2));
   }
 })();
@@ -3422,6 +3434,159 @@ function renderReportes(){
 }
 
 // ════════════════════════════════════════════════════════
+//  EXCEL CRM EXPORT — sep=; BOM, 5 secciones
+// ════════════════════════════════════════════════════════
+function statsExportExcel(){
+  var leads = segGetLeads();
+  var today = new Date().toISOString().slice(0,10);
+  var S = ';';
+  var lines = [];
+
+  // Rango: primer orden conocida → hoy
+  var fechaMin = '2026-06-02', fechaMax = today > '2026-06-26' ? '2026-06-26' : today;
+  var dates = [];
+  var cur = new Date(fechaMin), end = new Date(fechaMax);
+  while(cur <= end){ dates.push(cur.toISOString().slice(0,10)); cur.setDate(cur.getDate()+1); }
+  var dlbls = dates.map(function(d){ return d.slice(8)+'/'+d.slice(5,7)+'/'+d.slice(2,4); });
+
+  // Pedidos: leads con fechaTr y (transito|agencia|cerrado con orderId)
+  var pedLeads = leads.filter(function(l){
+    return l.fechaTr && (l.fase==='transito' || l.fase==='agencia' || (l.fase==='cerrado' && l.orderId));
+  }).sort(function(a,b){ return (a.fechaTr||'').localeCompare(b.fechaTr||''); });
+
+  // Inversión y conversaciones por día (desde campanas fbMetrics + csvHistory)
+  var invByDay = {}; // {fecha: {guante:n, ollas:n}}
+  var convTotG = 0, convTotO = 0, invTotG = 0, invTotO = 0;
+  campanas.forEach(function(c){
+    var isGuante = (c.nombre||'').toLowerCase().includes('guante') || (c.producto||'').toLowerCase().includes('guante');
+    var isOllas  = (c.nombre||'').toLowerCase().includes('olla')   || (c.producto||'').toLowerCase().includes('olla');
+    var inv = parseFloat(c.inversion)||0;
+    var convs = (c.fbMetrics && c.fbMetrics.conversaciones) ? parseFloat(c.fbMetrics.conversaciones) : 0;
+    if(isGuante){ invTotG += inv; convTotG += convs; }
+    else if(isOllas){ invTotO += inv; convTotO += convs; }
+    // Per-day from csvHistory (entries are cumulative, delta = diff between consecutive)
+    if(c.csvHistory && c.csvHistory.length){
+      var sorted = c.csvHistory.slice().sort(function(a,b){ return a.fecha.localeCompare(b.fecha); });
+      // keep last gasto per date
+      var byDate = {};
+      sorted.forEach(function(e){ byDate[e.fecha] = parseFloat(e.gasto)||0; });
+      var prevGasto = 0;
+      Object.keys(byDate).sort().forEach(function(d){
+        var delta = Math.max(0, byDate[d] - prevGasto);
+        prevGasto = byDate[d];
+        if(!invByDay[d]) invByDay[d] = {guante:0, ollas:0};
+        if(isGuante) invByDay[d].guante += delta;
+        else if(isOllas) invByDay[d].ollas += delta;
+      });
+    }
+  });
+  var invTot = invTotG + invTotO;
+  var convTot = convTotG + convTotO;
+
+  function pedDia(d, prod){
+    return pedLeads.filter(function(l){
+      var match = !prod || (l.producto||'GUANTE')===prod;
+      return match && l.fechaTr && l.fechaTr.slice(0,10)===d;
+    }).length;
+  }
+
+  var pedTotG = pedLeads.filter(function(l){ return (l.producto||'GUANTE')==='GUANTE'; }).length;
+  var pedTotO = pedLeads.filter(function(l){ return l.producto==='OLLAS'; }).length;
+  var pedTot  = pedLeads.length;
+
+  function cpa(inv, peds){ return (inv>0 && peds>0) ? (inv/peds).toFixed(2) : ''; }
+  function cierre(peds, convs){ return (convs>0 && peds>0) ? (peds/convs*100).toFixed(1)+'%' : ''; }
+
+  lines.push('sep=;');
+  lines.push('');
+
+  // ── SECCIÓN 1: LANDING TRACKER ────────────────────────────────
+  lines.push(['LANDING TRACKER'].concat(dlbls).concat(['TOTAL']).join(S));
+  lines.push(['OLLA'].concat(dates.map(function(d){ return pedDia(d,'OLLAS')||''; })).concat([pedTotO||'']).join(S));
+  lines.push(['GUANTE'].concat(dates.map(function(d){ return pedDia(d,'GUANTE')||''; })).concat([pedTotG||'']).join(S));
+  for(var i=0;i<10;i++) lines.push([''].concat(dates.map(function(){ return ''; })).join(S));
+  lines.push(['Grand Total'].concat(dates.map(function(d){ var t=pedDia(d);return t||''; })).concat([pedTot||'']).join(S));
+  lines.push(['INV'].concat(dates.map(function(d){ var v=invByDay[d]; return v?(v.guante+v.ollas).toFixed(2):''; })).concat([invTot.toFixed(2)]).join(S));
+  lines.push(['MENS'].concat(dates.map(function(d){ var v=invByDay[d]; var inv=(v?(v.guante+v.ollas):0); var p=pedDia(d); return (inv>0&&p>0)?(inv/p).toFixed(2):''; })).concat([cpa(invTot,pedTot)]).join(S));
+  lines.push(['COMPRAS'].concat(dates.map(function(d){ return pedDia(d)||''; })).concat([pedTot||'']).join(S));
+  lines.push(['CPA'].concat(dates.map(function(d){ var v=invByDay[d]; var inv=(v?(v.guante+v.ollas):0); var p=pedDia(d); return (inv>0&&p>0)?(inv/p).toFixed(2):''; })).concat([cpa(invTot,pedTot)]).join(S));
+  lines.push(['% CIERRE'].concat(dates.map(function(){ return ''; })).concat([cierre(pedTot,convTot)]).join(S));
+  lines.push('');
+
+  // ── SECCIÓN 2: RENDIMIENTO POR PRODUCTO ──────────────────────
+  lines.push(['RENDIMIENTO POR PRODUCTO','','','','',''].join(S));
+  lines.push(['PRODUCTO','PEDIDOS','VENTAS ($)','INVERSIÓN ($)','CPA ($)','% CIERRE'].join(S));
+  var ventasG = pedLeads.filter(function(l){ return (l.producto||'GUANTE')==='GUANTE'; }).reduce(function(s,l){ return s+(l.valor||0); },0);
+  var ventasO = pedLeads.filter(function(l){ return l.producto==='OLLAS'; }).reduce(function(s,l){ return s+(l.valor||0); },0);
+  lines.push(['GUANTE ROBÓTICO',pedTotG,ventasG.toFixed(2),invTotG.toFixed(2),cpa(invTotG,pedTotG),cierre(pedTotG,convTotG)].join(S));
+  lines.push(['SET DE OLLAS',pedTotO,ventasO.toFixed(2),invTotO.toFixed(2),cpa(invTotO,pedTotO),cierre(pedTotO,convTotO)].join(S));
+  lines.push(['TOTAL',pedTot,(ventasG+ventasO).toFixed(2),invTot.toFixed(2),cpa(invTot,pedTot),cierre(pedTot,convTot)].join(S));
+  lines.push('');
+
+  // ── SECCIÓN 3: ESTRUCTURA DE COSTOS ──────────────────────────
+  lines.push(['ESTRUCTURA DE COSTOS','','','','',''].join(S));
+  lines.push(['PRODUCTO','PRECIO VENTA','COSTO PROD','ENVÍO','FULFILLMENT','GANANCIA NETA'].join(S));
+  var cat = JSON.parse(localStorage.getItem('pm_catalogo_v1')||'[]');
+  cat.filter(function(p){ return p.activo; }).forEach(function(p){
+    var gan = (p.precio||0) - (p.costo||0) - (p.envio||0) - (p.fulfillment||0);
+    lines.push([p.nombre, (p.precio||0).toFixed(2), (p.costo||0).toFixed(2), (p.envio||0).toFixed(2), (p.fulfillment||0).toFixed(2), gan.toFixed(2)].join(S));
+  });
+  if(pedTotG >= 2){
+    var g2 = 107.98, c2 = 23.15*2, e2 = 7.52*2;
+    lines.push(['GUANTE x2 (par con 10% dto.)', g2.toFixed(2), c2.toFixed(2), e2.toFixed(2), '0.00', (g2-c2-e2).toFixed(2)].join(S));
+  }
+  lines.push('');
+
+  // ── SECCIÓN 4: PEDIDOS REGISTRADOS ───────────────────────────
+  lines.push(['PEDIDOS REGISTRADOS','','','','','','','','','','','',''].join(S));
+  lines.push(['#','ID ORDEN','GUÍA','NOMBRE','CELULAR','PRODUCTO','CANTIDAD','VALOR ($)','PLATAFORMA','ESTADO','FECHA PEDIDO','FECHA AGENCIA','OBSERVACIÓN'].join(S));
+  var FASE_ES = {transito:'En tránsito', agencia:'En agencia', cerrado:'Entregado'};
+  pedLeads.forEach(function(l, i){
+    var obs = (l.reclamo ? 'RECLAMO — ' : '') + (l.guia ? 'Guía: '+l.guia : '');
+    lines.push([
+      i+1,
+      l.orderId||'',
+      l.guia||'',
+      l.nombre||'',
+      l.tel||'',
+      l.producto||'GUANTE',
+      l.qty||1,
+      (l.valor||0).toFixed(2),
+      'WhatsApp / Facebook',
+      FASE_ES[l.fase]||l.fase,
+      l.fechaTr ? l.fechaTr.slice(0,10) : '',
+      l.fechaAg ? l.fechaAg.slice(0,10) : '',
+      obs
+    ].join(S));
+  });
+  lines.push('');
+
+  // ── SECCIÓN 5: LEADS EN SEGUIMIENTO ─────────────────────────
+  var FASE_NOM = {venta:'En seguimiento', transito:'Pedido / en tránsito', agencia:'En agencia', cerrado:'Cerrado / perdido'};
+  lines.push(['LEADS EN SEGUIMIENTO','','','',''].join(S));
+  lines.push(['NOMBRE','CELULAR','FASE','FECHA INICIO','DÍAS EN SISTEMA'].join(S));
+  leads.slice().sort(function(a,b){
+    var o={cerrado:0,venta:1,transito:2,agencia:3};
+    return (o[b.fase]||0)-(o[a.fase]||0) || (a.fechaInicio||'').localeCompare(b.fechaInicio||'');
+  }).forEach(function(l){
+    var dias = l.fechaInicio ? Math.floor((Date.now()-new Date(l.fechaInicio))/86400000) : '';
+    lines.push([l.nombre||'', l.tel||'', FASE_NOM[l.fase]||l.fase, l.fechaInicio?l.fechaInicio.slice(0,10):'', dias].join(S));
+  });
+
+  var csv = '﻿' + lines.join('\r\n');
+  var blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  var url  = URL.createObjectURL(blob);
+  var a    = document.createElement('a');
+  a.href   = url;
+  a.download = 'ProMarket_CRM_'+today.replace(/-/g,'')+'.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('Excel descargado ✅');
+}
+
+// ════════════════════════════════════════════════════════
 //  TENDENCIAS (30 días · mes vs mes · récords · velocidad)
 //  Usa SIEMPRE todas las órdenes (no depende del filtro de período).
 // ════════════════════════════════════════════════════════
@@ -5067,8 +5232,8 @@ function segSyncOrders(leads){
 
 // ── Auto-sync al cargar (una sola vez por sesión) ────────
 function segAutoSync(){
-  if(sessionStorage.getItem('pm_seg_synced')) return;
-  sessionStorage.setItem('pm_seg_synced','1');
+  if(sessionStorage.getItem('pm_seg_v15_synced')) return;
+  sessionStorage.setItem('pm_seg_v15_synced','1');
   if(typeof SEG_HISTORICO === 'undefined') return;
   segImportarHistorico();
 }
@@ -5281,16 +5446,20 @@ var _v0=[false,false,false,false,false,false,false,false,false,false];
 
 var SEG_HISTORICO = [
   // ── EN AGENCIA — esperando retiro ──────────────────────────────
-  {nombre:'Alex Fernando Lara',   tel:'+593979269065', fase:'agencia',  fechaInicio:'2026-05-20T10:00:00.000Z', fechaTr:'2026-05-28T10:00:00.000Z', fechaAg:'2026-06-03T10:00:00.000Z'},
-  {nombre:'Carmen Sosa',          tel:'+593999652705', fase:'agencia',  fechaInicio:'2026-05-20T10:00:00.000Z', fechaTr:'2026-05-28T10:00:00.000Z', fechaAg:'2026-06-03T10:00:00.000Z'},
-  {nombre:'Blanca Rodríguez',     tel:'+593981754740', fase:'agencia',  fechaInicio:'2026-05-25T10:00:00.000Z', fechaTr:'2026-05-28T10:00:00.000Z', fechaAg:'2026-06-01T10:00:00.000Z'},
-  // ── EN TRÁNSITO ─────────────────────────────────────────────────
-  {nombre:'Willman Zúñiga',       tel:'+593998235058', fase:'agencia',  fechaInicio:'2026-06-01T10:00:00.000Z', fechaTr:'2026-06-04T10:00:00.000Z', fechaAg:'2026-06-08T10:00:00.000Z'},
+  {nombre:'Alex Fernando Lara',   tel:'+593979269065', fase:'agencia',  fechaInicio:'2026-05-20T10:00:00.000Z', fechaTr:'2026-06-03T10:00:00.000Z', fechaAg:'2026-06-05T10:00:00.000Z', orderId:'146271', qty:2, valor:107.98, producto:'GUANTE', guia:'185956218'},
+  {nombre:'Carmen Sosa',          tel:'+593999652705', fase:'agencia',  fechaInicio:'2026-05-20T10:00:00.000Z', fechaTr:'2026-06-03T10:00:00.000Z', fechaAg:'2026-06-05T10:00:00.000Z', orderId:'146504', qty:2, valor:107.98, producto:'GUANTE', guia:'185956219'},
+  {nombre:'Blanca Rodríguez',     tel:'+593981754740', fase:'cerrado',  fechaInicio:'2026-05-25T10:00:00.000Z', fechaTr:'2026-06-02T10:00:00.000Z', fechaAg:'2026-06-04T10:00:00.000Z', orderId:'144356', qty:1, valor:59.99,  producto:'GUANTE', guia:'185954927', reclamo:true},
+  {nombre:'Willman Zúñiga',       tel:'+593998235058', fase:'agencia',  fechaInicio:'2026-06-01T10:00:00.000Z', fechaTr:'2026-06-03T10:00:00.000Z', fechaAg:'2026-06-08T10:00:00.000Z', orderId:'146110', qty:1, valor:49.99,  producto:'OLLAS',  guia:'185955963'},
+  // ── NUEVO — orden generada, en camino ─────────────────────────
+  {nombre:'César Augusto López',  tel:'+593968339428', fase:'transito', fechaInicio:'2026-06-07T16:02:18.103Z', fechaTr:'2026-06-07T16:02:18.103Z', orderId:'151381', qty:1, valor:59.99,  producto:'GUANTE'},
+  {nombre:'Jimmy vera peñafiel',  tel:'+593939184423', fase:'transito', fechaInicio:'2026-06-07T03:20:43.853Z', fechaTr:'2026-06-07T03:20:43.853Z', orderId:'151380', qty:1, valor:49.99,  producto:'GUANTE'},
   // ── NO COMPRARON (cerrado) ───────────────────────────────────────
   {nombre:'Rosa Carranza',        tel:'+593968055707', fase:'cerrado',  fechaInicio:'2026-05-28T10:00:00.000Z'},
   {nombre:'Rose',                 tel:'+593997437282', fase:'cerrado',  fechaInicio:'2026-05-28T10:00:00.000Z'},
   {nombre:'Gregorio Barzallo',    tel:'+593997580200', fase:'cerrado',  fechaInicio:'2026-05-28T10:00:00.000Z'},
   {nombre:'ivanojeda',            tel:'+593989460509', fase:'cerrado',  fechaInicio:'2026-06-01T10:00:00.000Z'},
+  // ── LEAD NUEVO 8/6 — oportunidad doble ──────────────────────────
+  {nombre:'Chat 6469',            tel:'+593960096469', fase:'venta',    fechaInicio:'2026-06-08T12:36:00.000Z'},
   // ── LEADS DÍA 1 — D1AM+D1PM enviados hoy 8/6 ───────────────────
   {nombre:'Nuevo 270-7955',       tel:'+593992707955', fase:'venta', fechaInicio:'2026-06-07T20:33:00.000Z', chk:{v:_v2,a:[]}},
   {nombre:'Chat 3067',            tel:'+593981533067', fase:'venta', fechaInicio:'2026-06-07T11:08:00.000Z', chk:{v:_v2,a:[]}},
@@ -5338,8 +5507,15 @@ function segImportarHistorico(){
       // Actualizar fase si cambia a una más avanzada
       var ord = {venta:0,transito:1,agencia:2,cerrado:3};
       if((ord[h.fase]||0) > (ord[ex.fase]||0)) ex.fase = h.fase;
-      if(h.fechaTr && !ex.fechaTr) ex.fechaTr = h.fechaTr;
-      if(h.fechaAg && !ex.fechaAg) ex.fechaAg = h.fechaAg;
+      // Siempre sobreescribir datos de orden (corrige fechas erróneas)
+      if(h.fechaTr)              ex.fechaTr  = h.fechaTr;
+      if(h.fechaAg)              ex.fechaAg  = h.fechaAg;
+      if(h.orderId !== undefined) ex.orderId  = h.orderId;
+      if(h.qty     !== undefined) ex.qty      = h.qty;
+      if(h.valor   !== undefined) ex.valor    = h.valor;
+      if(h.producto!== undefined) ex.producto = h.producto;
+      if(h.guia    !== undefined) ex.guia     = h.guia;
+      if(h.reclamo !== undefined) ex.reclamo  = h.reclamo;
       // Aplicar marcas (solo marcar true, nunca desmarcar)
       if(h.chk){
         var c = segGetChk(ex.id);
@@ -5355,7 +5531,9 @@ function segImportarHistorico(){
     } else {
       var id = 'sg'+Date.now()+Math.random().toString(36).slice(2,6);
       leads.push({id:id, nombre:h.nombre, tel:h.tel, fechaInicio:h.fechaInicio,
-        orderId:null, fase:h.fase, fechaTr:h.fechaTr||null, fechaAg:h.fechaAg||null});
+        fase:h.fase, fechaTr:h.fechaTr||null, fechaAg:h.fechaAg||null,
+        orderId:h.orderId||null, qty:h.qty||null, valor:h.valor||null,
+        producto:h.producto||null, guia:h.guia||null, reclamo:h.reclamo||false});
       if(h.chk){
         var c2={v:Array(10).fill(false),a:[]};
         if(h.chk.v) h.chk.v.forEach(function(v,i){ if(v) c2.v[i]=true; });
