@@ -5231,6 +5231,12 @@ function segClosedHTML(l){
 
 // ── Historial completo de leads (UPSERT — actualiza fases y marcas) ──
 // chk.v = [bool x10] mensajes venta enviados; chk.a = [[AM,PM],...] días agencia
+// chk helpers
+var _v1=[true,false,false,false,false,false,false,false,false,false];
+var _v2=[true,true,false,false,false,false,false,false,false,false];
+var _v3=[true,true,true,false,false,false,false,false,false,false];
+var _v0=[false,false,false,false,false,false,false,false,false,false];
+
 var SEG_HISTORICO = [
   // ── EN AGENCIA — esperando retiro ──────────────────────────────
   {nombre:'Alex Fernando Lara',   tel:'+593979269065', fase:'agencia',  fechaInicio:'2026-05-20T10:00:00.000Z', fechaTr:'2026-05-28T10:00:00.000Z', fechaAg:'2026-06-03T10:00:00.000Z'},
@@ -5243,38 +5249,40 @@ var SEG_HISTORICO = [
   {nombre:'Rose',                 tel:'+593997437282', fase:'cerrado',  fechaInicio:'2026-05-28T10:00:00.000Z'},
   {nombre:'Gregorio Barzallo',    tel:'+593997580200', fase:'cerrado',  fechaInicio:'2026-05-28T10:00:00.000Z'},
   {nombre:'ivanojeda',            tel:'+593989460509', fase:'cerrado',  fechaInicio:'2026-06-01T10:00:00.000Z'},
-  // ── LEADS ACTIVOS — VENTA ────────────────────────────────────────
-  // D1AM confirmado enviado → chk.v[0]=true
-  {nombre:'Nuevo 270-7955',       tel:'+593992707955', fase:'venta', fechaInicio:'2026-06-07T20:33:00.000Z', chk:{v:[true,false,false,false,false,false,false,false,false,false],a:[]}},
-  {nombre:'Chat 3067',            tel:'+593981533067', fase:'venta', fechaInicio:'2026-06-07T11:08:00.000Z', chk:{v:[true,false,false,false,false,false,false,false,false,false],a:[]}},
-  {nombre:'Chat 2507',            tel:'+593967462507', fase:'venta', fechaInicio:'2026-06-07T11:48:00.000Z', chk:{v:[true,false,false,false,false,false,false,false,false,false],a:[]}},
-  // Bienvenida enviada — D1AM pendiente hoy
-  {nombre:'Chat 8379',            tel:'+593967878379', fase:'venta', fechaInicio:'2026-06-07T19:35:00.000Z'},
-  {nombre:'Chat 4227',            tel:'+593962084227', fase:'venta', fechaInicio:'2026-06-07T20:21:00.000Z'},
-  {nombre:'Chat 3779',            tel:'+593988873779', fase:'venta', fechaInicio:'2026-06-07T22:51:00.000Z'},
-  {nombre:'Chat 9345',            tel:'+593939969345', fase:'venta', fechaInicio:'2026-06-07T22:11:00.000Z'},
-  {nombre:'Chat 5202',            tel:'+593980825202', fase:'venta', fechaInicio:'2026-06-07T23:37:00.000Z'},
+  // ── LEADS DÍA 1 — D1AM+D1PM enviados hoy 8/6 ───────────────────
+  {nombre:'Nuevo 270-7955',       tel:'+593992707955', fase:'venta', fechaInicio:'2026-06-07T20:33:00.000Z', chk:{v:_v2,a:[]}},
+  {nombre:'Chat 3067',            tel:'+593981533067', fase:'venta', fechaInicio:'2026-06-07T11:08:00.000Z', chk:{v:_v2,a:[]}},
+  {nombre:'Chat 2507',            tel:'+593967462507', fase:'venta', fechaInicio:'2026-06-07T11:48:00.000Z', chk:{v:_v2,a:[]}},
+  // ── LEADS DÍA 1 — solo D1AM enviado hoy 8/6 ─────────────────────
+  {nombre:'Chat 8379',            tel:'+593967878379', fase:'venta', fechaInicio:'2026-06-07T19:35:00.000Z', chk:{v:_v1,a:[]}},
+  {nombre:'Chat 4227',            tel:'+593962084227', fase:'venta', fechaInicio:'2026-06-07T20:21:00.000Z', chk:{v:_v1,a:[]}},
+  {nombre:'Chat 3779',            tel:'+593988873779', fase:'venta', fechaInicio:'2026-06-07T22:51:00.000Z', chk:{v:_v1,a:[]}},
+  {nombre:'Chat 9345',            tel:'+593939969345', fase:'venta', fechaInicio:'2026-06-07T22:11:00.000Z', chk:{v:_v1,a:[]}},
+  {nombre:'Chat 5202',            tel:'+593980825202', fase:'venta', fechaInicio:'2026-06-07T23:37:00.000Z', chk:{v:_v1,a:[]}},
+  {nombre:'Chat Colombia 7337',   tel:'+573214757337', fase:'venta', fechaInicio:'2026-06-08T07:50:00.000Z', chk:{v:_v1,a:[]}},
+  // ── LEADS HOY 8/6 — sin mensajes aún ────────────────────────────
   {nombre:'Chat 5440',            tel:'+593998065440', fase:'venta', fechaInicio:'2026-06-08T05:39:00.000Z'},
   {nombre:'Chat 7876',            tel:'+593982467876', fase:'venta', fechaInicio:'2026-06-08T06:55:00.000Z'},
-  {nombre:'Chat Colombia 7337',   tel:'+573214757337', fase:'venta', fechaInicio:'2026-06-08T07:50:00.000Z'},
-  // Leads anteriores — venta en curso
-  {nombre:'kushita2016',          tel:'+593999200994', fase:'venta', fechaInicio:'2026-06-06T08:00:00.000Z'},
-  {nombre:'Nuevo 1730',           tel:'+593979871730', fase:'venta', fechaInicio:'2026-06-06T09:00:00.000Z'},
-  {nombre:'Mendez',               tel:'+593988876692', fase:'venta', fechaInicio:'2026-06-06T10:00:00.000Z'},
-  {nombre:'Norma Chavarría',      tel:'+593984800900', fase:'venta', fechaInicio:'2026-06-05T08:00:00.000Z'},
-  {nombre:'Wuinston Sicifredo',   tel:'+593981099770', fase:'venta', fechaInicio:'2026-06-05T10:00:00.000Z'},
-  {nombre:'Dr. R. Barros',        tel:'+593981102387', fase:'venta', fechaInicio:'2026-06-05T10:00:00.000Z'},
-  {nombre:'Gustavo Tuarez',       tel:'+593996157785', fase:'venta', fechaInicio:'2026-06-05T10:00:00.000Z'},
-  {nombre:'Sery',                 tel:'+593978743450', fase:'venta', fechaInicio:'2026-06-05T10:00:00.000Z'},
-  {nombre:'Rosa Torres',          tel:'+593986516901', fase:'venta', fechaInicio:'2026-06-05T08:00:00.000Z'},
-  {nombre:'Carlota',              tel:'+593990276468', fase:'venta', fechaInicio:'2026-06-05T08:00:00.000Z'},
-  {nombre:'Mangu',                tel:'+593995577529', fase:'venta', fechaInicio:'2026-06-04T10:00:00.000Z'},
-  {nombre:'Bettys',               tel:'+593985011737', fase:'venta', fechaInicio:'2026-06-04T10:00:00.000Z'},
-  {nombre:'tu papa',              tel:'+593939763359', fase:'venta', fechaInicio:'2026-06-04T10:00:00.000Z'},
-  {nombre:'Alvita Suarez',        tel:'+593939577932', fase:'venta', fechaInicio:'2026-06-04T10:00:00.000Z'},
-  {nombre:'Maggi',                tel:'+593967004465', fase:'venta', fechaInicio:'2026-06-04T10:00:00.000Z'},
-  {nombre:'Ita Vera',             tel:'+593967053789', fase:'venta', fechaInicio:'2026-06-04T10:00:00.000Z'},
-  {nombre:'Cecilia Maruri',       tel:'+593987371421', fase:'venta', fechaInicio:'2026-06-04T10:00:00.000Z'},
+  // ── LEADS DÍA 2 — D1AM enviado (inicio 6/6) ─────────────────────
+  {nombre:'kushita2016',          tel:'+593999200994', fase:'venta', fechaInicio:'2026-06-06T08:00:00.000Z', chk:{v:_v1,a:[]}},
+  {nombre:'Nuevo 1730',           tel:'+593979871730', fase:'venta', fechaInicio:'2026-06-06T09:00:00.000Z', chk:{v:_v1,a:[]}},
+  {nombre:'Mendez',               tel:'+593988876692', fase:'venta', fechaInicio:'2026-06-06T10:00:00.000Z', chk:{v:_v1,a:[]}},
+  // ── LEADS DÍA 3 — D1AM+D1PM enviados (inicio 6/5) ───────────────
+  {nombre:'Norma Chavarría',      tel:'+593984800900', fase:'venta', fechaInicio:'2026-06-05T08:00:00.000Z', chk:{v:_v2,a:[]}},
+  {nombre:'Wuinston Sicifredo',   tel:'+593981099770', fase:'venta', fechaInicio:'2026-06-05T10:00:00.000Z', chk:{v:_v2,a:[]}},
+  {nombre:'Dr. R. Barros',        tel:'+593981102387', fase:'venta', fechaInicio:'2026-06-05T10:00:00.000Z', chk:{v:_v2,a:[]}},
+  {nombre:'Gustavo Tuarez',       tel:'+593996157785', fase:'venta', fechaInicio:'2026-06-05T10:00:00.000Z', chk:{v:_v2,a:[]}},
+  {nombre:'Sery',                 tel:'+593978743450', fase:'venta', fechaInicio:'2026-06-05T10:00:00.000Z', chk:{v:_v2,a:[]}},
+  {nombre:'Rosa Torres',          tel:'+593986516901', fase:'venta', fechaInicio:'2026-06-05T08:00:00.000Z', chk:{v:_v2,a:[]}},
+  {nombre:'Carlota',              tel:'+593990276468', fase:'venta', fechaInicio:'2026-06-05T08:00:00.000Z', chk:{v:_v2,a:[]}},
+  // ── LEADS DÍA 4 — D1AM+D1PM+D2AM enviados (inicio 6/4) ──────────
+  {nombre:'Mangu',                tel:'+593995577529', fase:'venta', fechaInicio:'2026-06-04T10:00:00.000Z', chk:{v:_v3,a:[]}},
+  {nombre:'Bettys',               tel:'+593985011737', fase:'venta', fechaInicio:'2026-06-04T10:00:00.000Z', chk:{v:_v3,a:[]}},
+  {nombre:'tu papa',              tel:'+593939763359', fase:'venta', fechaInicio:'2026-06-04T10:00:00.000Z', chk:{v:_v3,a:[]}},
+  {nombre:'Alvita Suarez',        tel:'+593939577932', fase:'venta', fechaInicio:'2026-06-04T10:00:00.000Z', chk:{v:_v3,a:[]}},
+  {nombre:'Maggi',                tel:'+593967004465', fase:'venta', fechaInicio:'2026-06-04T10:00:00.000Z', chk:{v:_v3,a:[]}},
+  {nombre:'Ita Vera',             tel:'+593967053789', fase:'venta', fechaInicio:'2026-06-04T10:00:00.000Z', chk:{v:_v3,a:[]}},
+  {nombre:'Cecilia Maruri',       tel:'+593987371421', fase:'venta', fechaInicio:'2026-06-04T10:00:00.000Z', chk:{v:_v3,a:[]}},
 ];
 
 function segImportarHistorico(){
