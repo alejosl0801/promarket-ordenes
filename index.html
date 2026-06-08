@@ -4999,7 +4999,23 @@ function usarOrdenesReales(id){
 // ════════════════════════════════════════════════════════
 //  SEGUIMIENTO
 // ════════════════════════════════════════════════════════
-var SEG_MSGS = [
+
+// Mensajes post-venta: presionar retiro en agencia (5 días × 2 = 10)
+var SEG_MSGS_RETIRO = [
+  {label:'D1 AM', texto:'Su pedido ya llegó a la agencia Servientrega 🎉 Puede retirarlo hoy presentando su cédula. ¡Le va a encantar! 💛'},
+  {label:'D1 PM', texto:'Hola! 😊 ¿Pudo pasar por la agencia a retirar su pedido? Si tiene alguna novedad me cuenta 💛'},
+  {label:'D2 AM', texto:'Buen día! 📦 Su pedido lleva un día en agencia — recuerde que tiene 5 días para retirarlo. ¿Va hoy?'},
+  {label:'D2 PM', texto:'Hola! 😊 Cuanto antes empiece con el guante mejores los resultados — el cerebro responde mejor en los primeros meses 💛 ¿Pasa hoy por la agencia?'},
+  {label:'D3 AM', texto:'Hola! ⏰ Su pedido lleva 3 días en agencia — quedan solo 2 días para retirarlo antes de que regrese. ¿Puede ir hoy o mañana?'},
+  {label:'D3 PM', texto:'Hola! 💛 ¿Todo bien? Solo quiero asegurarme de que pueda pasar a retirar su pedido a tiempo 😊 Si tuvo algún inconveniente me cuenta y coordinamos'},
+  {label:'D4 AM', texto:'⚠️ Hola! Mañana vence el plazo de retiro — si el pedido no es retirado hoy o mañana Servientrega lo devuelve. ¿Puede ir hoy?'},
+  {label:'D4 PM', texto:'Hola! 🚨 Es muy importante que pase mañana a más tardar — si el pedido regresa debemos hacer un nuevo envío y se demora más 😔 ¿Va mañana?'},
+  {label:'D5 AM', texto:'🚨 HOY ES EL ÚLTIMO DÍA para retirar su pedido en la agencia Servientrega. Si no lo retira hoy regresa a bodega. ¿Va a poder pasar?'},
+  {label:'D5 PM', texto:'Hola! 💛 ¿Pudo ir a la agencia hoy? Si tuvo algún inconveniente cuénteme para coordinamos un reenvío 😊'}
+];
+
+// Mensajes pre-venta: cerrar la venta en 10 días (5 días × 2/día)
+var SEG_MSGS_VENTA = [
   {label:'D1 AM', texto:'Hola! Solo quería saber — ¿le pareció bien el precio o tiene alguna duda que pueda resolver? 😊'},
   {label:'D1 PM', texto:'Hola de nuevo! 💛 Por si le ayuda — el guante tiene un Modo Espejo: la mano sana de un familiar guía los movimientos de la mano afectada. Trabajan juntos desde casa, sin turnos 😊 ¿Se anima?'},
   {label:'D2 AM', texto:'Hola! 😊 Esta semana cerramos pedidos el viernes — si lo separamos hoy le llega a tiempo 📦 ¿Se anima?'},
@@ -5012,85 +5028,177 @@ var SEG_MSGS = [
   {label:'D5 PM', texto:'Voy a dejar libre su consulta — cuando guste aquí estamos 😊'}
 ];
 
+// ── HELPERS SEGUIMIENTO ──────────────────────────────────
+
+function renderSegDots(seg, msgs, orderId, prefix){
+  return seg.map(function(done,i){
+    var lbl = msgs[i].label;
+    var nextIdx = seg.indexOf(false);
+    var isNext = i === nextIdx;
+    var color = done ? '#27AE60' : (isNext ? '#E8650A' : '#1a1a1a');
+    var border = done ? '#27AE60' : (isNext ? '#E8650A' : '#444');
+    var txt = done ? '✓' : (isNext ? '!' : '');
+    return '<span title="'+lbl+'" onclick="toggleSegMsg(''+prefix+orderId+'','+i+',event)" style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;border:2px solid '+border+';background:'+color+';color:#fff;font-size:11px;font-weight:700;margin:2px;cursor:pointer;flex-shrink:0;">'+txt+'</span>';
+  }).join('');
+}
+
+function renderNextMsgBlock(seg, msgs, orderId, prefix){
+  var nextIdx = seg.indexOf(false);
+  if(nextIdx === -1) return '<div style="padding:10px;background:#0d3320;border-radius:8px;color:#27AE60;font-size:13px;text-align:center;margin-top:10px;">✅ Secuencia completa</div>';
+  var msg = msgs[nextIdx];
+  return '<div style="margin-top:10px;background:#1a1000;border:1.5px solid #E8650A;border-radius:10px;padding:12px;">'
+    +'<div style="font-size:11px;font-weight:700;color:#E8650A;margin-bottom:6px;">📨 '+msg.label+' — Copiar y enviar:</div>'
+    +'<div style="font-size:14px;color:#eee;line-height:1.5;margin-bottom:10px;white-space:pre-wrap;">'+msg.texto+'</div>'
+    +'<div style="display:flex;gap:8px;">'
+      +'<button onclick="copiarSegMsg(''+prefix+'',''+orderId+'','+nextIdx+')" style="flex:1;padding:10px;border:none;border-radius:8px;background:#333;color:#fff;font-size:13px;font-weight:600;cursor:pointer;">📋 Copiar</button>'
+      +'<button onclick="marcarEnviadoSeg(''+prefix+orderId+'','+nextIdx+')" style="flex:1;padding:10px;border:none;border-radius:8px;background:#27AE60;color:#fff;font-size:13px;font-weight:600;cursor:pointer;">✅ Enviado</button>'
+    +'</div>'
+  +'</div>';
+}
+
+function getSegData(id){
+  // storage key: 'pm_seg_'+id
+  var raw = localStorage.getItem('pm_seg_'+id);
+  return raw ? JSON.parse(raw) : Array(10).fill(false);
+}
+function saveSegData(id, arr){
+  localStorage.setItem('pm_seg_'+id, JSON.stringify(arr));
+}
+
+// ── MAIN RENDER ──────────────────────────────────────────
+
 function renderSeguimiento(){
   var container = document.getElementById('seg-container');
   if(!container) return;
 
-  var leads = orders.filter(function(o){
-    return o.status === 'NUEVO' || (Array.isArray(o.seguimiento) && o.seguimiento.some(function(s){ return !s; }));
+  // ── SECCIÓN 1: CONFIRMADOS (órdenes activas) ──
+  var activos = orders.filter(function(o){
+    return ['NUEVO','CONFIRMADO','PREPARADO','EN TRANSITO','EN AGENCIA'].indexOf(o.status) !== -1;
+  });
+  activos.sort(function(a,b){
+    var order = {'EN AGENCIA':0,'EN TRANSITO':1,'PREPARADO':2,'CONFIRMADO':3,'NUEVO':4};
+    return (order[a.status]||9) - (order[b.status]||9);
   });
 
-  leads.sort(function(a,b){
-    var da = daysSince(a.createdAt||a.updatedAt);
-    var db = daysSince(b.createdAt||b.updatedAt);
-    return db - da;
-  });
+  var htmlConfirmados = '';
+  if(activos.length){
+    htmlConfirmados = activos.map(function(o){
+      var seg = getSegData('order_'+o.id);
+      var msgs = SEG_MSGS_RETIRO;
+      var nombre = o.nombreCliente||o.cliente||o.nombre||'Sin nombre';
+      var telefono = o.telefono||o.celular||'';
+      var producto = o.producto||'—';
+      var dias = daysSince(o.updatedAt||o.createdAt);
+      var esAgencia = o.status === 'EN AGENCIA';
 
-  if(!leads.length){
-    container.innerHTML = '<div style="text-align:center;padding:40px;color:#666;font-size:15px;">No hay leads activos en seguimiento</div>';
-    return;
+      var statusColor = {'NUEVO':'#3B82F6','CONFIRMADO':'#27AE60','PREPARADO':'#F59E0B','EN TRANSITO':'#8B5CF6','EN AGENCIA':'#E8650A'}[o.status]||'#888';
+      var urgBorder = esAgencia && dias>=5 ? 'border:2px solid #c0392b;box-shadow:0 0 8px rgba(192,57,43,.4);'
+                    : esAgencia && dias>=3 ? 'border:2px solid #E8650A;'
+                    : esAgencia && dias>=1 ? 'border:2px solid #F59E0B;'
+                    : 'border:1px solid #2a2a2a;';
+
+      var dotsBlock = esAgencia
+        ? '<div style="display:flex;flex-wrap:wrap;gap:2px;margin:8px 0 2px;">'+renderSegDots(seg, msgs, o.id, 'order_')+'</div>'
+          +'<div style="font-size:11px;color:#666;margin-bottom:4px;">'+seg.filter(Boolean).length+'/10 mensajes enviados</div>'
+          + renderNextMsgBlock(seg, msgs, o.id, 'order_')
+        : '<div style="padding:8px;background:#111;border-radius:6px;font-size:13px;color:#888;margin-top:6px;">📦 En camino — cuando llegue a agencia empieza el seguimiento</div>';
+
+      return '<div style="background:#111;border-radius:12px;padding:14px;margin-bottom:10px;'+urgBorder+'">'
+        +'<div style="display:flex;justify-content:space-between;align-items:flex-start;">'
+          +'<div style="flex:1;min-width:0;">'
+            +'<div style="font-size:15px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+nombre+'</div>'
+            +(telefono?'<div style="font-size:12px;color:#aaa;">'+telefono+'</div>':'')
+            +'<div style="font-size:12px;color:#888;margin-top:2px;">'+producto+'</div>'
+          +'</div>'
+          +'<div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;margin-left:10px;">'
+            +'<span style="font-size:11px;padding:3px 8px;border-radius:12px;background:'+statusColor+'22;color:'+statusColor+';border:1px solid '+statusColor+';font-weight:700;white-space:nowrap;">'+o.status+'</span>'
+            +(esAgencia?'<span style="font-size:11px;padding:2px 6px;border-radius:6px;background:'+(dias>=4?'#4a0000':'#1a1a1a')+';color:'+(dias>=4?'#ff6b6b':'#888')+';font-weight:700;">'+dias+'d en agencia</span>':'')
+          +'</div>'
+        +'</div>'
+        +dotsBlock
+      +'</div>';
+    }).join('');
+  } else {
+    htmlConfirmados = '<div style="text-align:center;padding:20px;color:#555;font-size:13px;">Sin órdenes activas</div>';
   }
 
-  container.innerHTML = leads.map(function(o){
-    var seg = Array.isArray(o.seguimiento) ? o.seguimiento : Array(10).fill(false);
-    seg = seg.map(function(s){ return s===true||s===1||(s&&s.sent)?true:false; });
+  // ── SECCIÓN 2: SIN CONFIRMAR (leads manuales) ──
+  var leadsRaw = localStorage.getItem('pm_leads_seg_v1');
+  var leads = leadsRaw ? JSON.parse(leadsRaw) : [];
 
-    var nextIdx = seg.indexOf(false);
-    var allDone = nextIdx === -1;
-    var dias = daysSince(o.createdAt||o.updatedAt);
-    var nombre = o.nombreCliente||o.cliente||o.nombre||'Sin nombre';
-    var telefono = o.telefono||o.celular||'';
-    var producto = o.producto||'Guante';
-    var fechaInicio = o.createdAt ? new Date(o.createdAt).toLocaleDateString('es-EC',{day:'2-digit',month:'2-digit'}) : '—';
-    var horaInicio = o.createdAt ? new Date(o.createdAt).toLocaleTimeString('es-EC',{hour:'2-digit',minute:'2-digit'}) : '';
+  var htmlLeads = '';
+  if(leads.length){
+    htmlLeads = leads.map(function(lead){
+      var seg = getSegData('lead_'+lead.id);
+      var msgs = SEG_MSGS_VENTA;
+      var dias = Math.floor((Date.now() - new Date(lead.fecha).getTime())/(1000*3600*24));
+      var urgBorder = dias>=5 ? 'border:2px solid #c0392b;' : dias>=3 ? 'border:2px solid #E8650A;' : 'border:1px solid #2a2a2a;';
 
-    var dots = seg.map(function(done,i){
-      var lbl = SEG_MSGS[i].label;
-      var color = done ? '#27AE60' : (i===nextIdx ? '#E8650A' : '#333');
-      var border = done ? '#27AE60' : (i===nextIdx ? '#E8650A' : '#555');
-      var txt = done ? '✓' : (i===nextIdx ? '!' : '');
-      return '<span title="'+lbl+'" style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;border:2px solid '+border+';background:'+color+';color:#fff;font-size:10px;font-weight:700;margin:2px;cursor:pointer;" onclick="toggleSegMsg(\''+o.id+'\','+i+',event)">'+txt+'</span>';
+      return '<div style="background:#111;border-radius:12px;padding:14px;margin-bottom:10px;'+urgBorder+'">'
+        +'<div style="display:flex;justify-content:space-between;align-items:center;">'
+          +'<div>'
+            +'<div style="font-size:15px;font-weight:700;color:#fff;">'+lead.nombre+'</div>'
+            +(lead.telefono?'<div style="font-size:12px;color:#aaa;">'+lead.telefono+'</div>':'')
+            +'<div style="font-size:12px;color:#888;">Contacto: '+new Date(lead.fecha).toLocaleDateString('es-EC',{day:'2-digit',month:'2-digit'})+'</div>'
+          +'</div>'
+          +'<div style="display:flex;gap:6px;align-items:center;">'
+            +'<span style="font-size:11px;padding:2px 6px;border-radius:6px;background:#1a1a1a;color:#aaa;font-weight:700;">'+dias+'d</span>'
+            +'<button onclick="eliminarLead(''+lead.id+'')" style="background:#2a0000;border:1px solid #7F1D1D;color:#EF4444;padding:4px 8px;border-radius:6px;font-size:12px;cursor:pointer;">✕</button>'
+          +'</div>'
+        +'</div>'
+        +'<div style="display:flex;flex-wrap:wrap;gap:2px;margin:8px 0 2px;">'+renderSegDots(seg, msgs, lead.id, 'lead_')+'</div>'
+        +'<div style="font-size:11px;color:#666;margin-bottom:4px;">'+seg.filter(Boolean).length+'/10 mensajes enviados</div>'
+        +renderNextMsgBlock(seg, msgs, lead.id, 'lead_')
+      +'</div>';
     }).join('');
+  } else {
+    htmlLeads = '<div style="text-align:center;padding:16px;color:#555;font-size:13px;">Sin leads activos — agrega uno abajo</div>';
+  }
 
-    var nextBlock = '';
-    if(!allDone && nextIdx >= 0){
-      var msg = SEG_MSGS[nextIdx];
-      nextBlock = '<div style="margin-top:12px;background:#1a1000;border:1.5px solid #E8650A;border-radius:10px;padding:12px;">'+
-        '<div style="font-size:11px;font-weight:700;color:#E8650A;margin-bottom:6px;">📨 '+msg.label+' — Enviar ahora:</div>'+
-        '<div style="font-size:14px;color:#eee;line-height:1.5;margin-bottom:10px;">'+msg.texto+'</div>'+
-        '<div style="display:flex;gap:8px;">'+
-          '<button onclick="copiarMensajeSeg(\''+o.id+'\','+nextIdx+')" style="flex:1;padding:10px;border:none;border-radius:8px;background:#333;color:#fff;font-size:13px;font-weight:600;cursor:pointer;">📋 Copiar</button>'+
-          '<button onclick="marcarEnviadoSeg(\''+o.id+'\','+nextIdx+')" style="flex:1;padding:10px;border:none;border-radius:8px;background:#27AE60;color:#fff;font-size:13px;font-weight:600;cursor:pointer;">✅ Marcar enviado</button>'+
-        '</div>'+
-      '</div>';
-    } else if(allDone){
-      nextBlock = '<div style="margin-top:10px;padding:10px;background:#0d3320;border-radius:8px;color:#27AE60;font-size:13px;text-align:center;">✅ Seguimiento completo — mover a lista negra si no respondió</div>';
-    }
+  // ── FORM AGREGAR LEAD ──
+  var formLead = '<div style="background:#1a1a1a;border-radius:10px;padding:14px;margin-top:8px;">'
+    +'<div style="font-size:12px;font-weight:700;color:#888;margin-bottom:10px;">➕ AGREGAR LEAD</div>'
+    +'<input id="seg-lead-nombre" placeholder="Nombre o alias" style="width:100%;padding:8px 10px;background:#111;border:1px solid #333;border-radius:6px;color:#fff;font-size:14px;margin-bottom:6px;">'
+    +'<input id="seg-lead-tel" placeholder="Teléfono (opcional)" style="width:100%;padding:8px 10px;background:#111;border:1px solid #333;border-radius:6px;color:#fff;font-size:14px;margin-bottom:10px;">'
+    +'<button onclick="agregarLead()" style="width:100%;padding:10px;background:#E8650A;border:none;border-radius:8px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;">Agregar lead al seguimiento</button>'
+  +'</div>';
 
-    var urgencia = dias >= 4 ? 'border:2px solid #c0392b;' : dias >= 2 ? 'border:2px solid #E8650A;' : 'border:1px solid #333;';
-
-    return '<div style="background:#111;border-radius:12px;padding:14px;margin-bottom:14px;'+urgencia+'">'+
-      '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">'+
-        '<div>'+
-          '<div style="font-size:15px;font-weight:700;color:#fff;">'+nombre+'</div>'+
-          '<div style="font-size:12px;color:#888;">'+producto+' · desde '+fechaInicio+' '+horaInicio+'</div>'+
-          (telefono?'<div style="font-size:12px;color:#aaa;">'+telefono+'</div>':'')+
-        '</div>'+
-        '<div style="font-size:11px;padding:4px 8px;border-radius:6px;background:'+(dias>=4?'#4a0000':dias>=2?'#3a1800':'#1a1a1a')+';color:'+(dias>=4?'#ff6b6b':dias>=2?'#ffa500':'#888')+';font-weight:700;">'+dias+'d</div>'+
-      '</div>'+
-      '<div style="display:flex;flex-wrap:wrap;gap:2px;margin-bottom:4px;">'+dots+'</div>'+
-      '<div style="font-size:11px;color:#666;margin-bottom:2px;">'+seg.filter(Boolean).length+'/10 enviados</div>'+
-      nextBlock+
-    '</div>';
-  }).join('');
+  container.innerHTML =
+    '<div style="font-size:12px;font-weight:700;color:#888;letter-spacing:.08em;padding:4px 0 10px;">✅ CONFIRMADOS — '+activos.length+' ÓRDENES ACTIVAS</div>'
+    + htmlConfirmados
+    + '<div style="height:1px;background:#222;margin:16px 0;"></div>'
+    + '<div style="font-size:12px;font-weight:700;color:#888;letter-spacing:.08em;padding:4px 0 10px;">🔔 SIN CONFIRMAR — CERRAR EN 10 DÍAS</div>'
+    + htmlLeads
+    + formLead;
 }
 
-function copiarMensajeSeg(orderId, idx){
-  var texto = SEG_MSGS[idx].texto;
+// ── ACCIONES ─────────────────────────────────────────────
+
+function agregarLead(){
+  var nombre = (document.getElementById('seg-lead-nombre')||{}).value||'';
+  var telefono = (document.getElementById('seg-lead-tel')||{}).value||'';
+  if(!nombre.trim()){ alert('Ingresa un nombre'); return; }
+  var raw = localStorage.getItem('pm_leads_seg_v1');
+  var leads = raw ? JSON.parse(raw) : [];
+  leads.push({id:'lead_'+(Date.now()), nombre:nombre.trim(), telefono:telefono.trim(), fecha:new Date().toISOString()});
+  localStorage.setItem('pm_leads_seg_v1', JSON.stringify(leads));
+  renderSeguimiento();
+}
+
+function eliminarLead(leadId){
+  if(!confirm('¿Eliminar este lead del seguimiento?')) return;
+  var raw = localStorage.getItem('pm_leads_seg_v1');
+  var leads = raw ? JSON.parse(raw) : [];
+  leads = leads.filter(function(l){ return l.id !== leadId; });
+  localStorage.setItem('pm_leads_seg_v1', JSON.stringify(leads));
+  renderSeguimiento();
+}
+
+function copiarSegMsg(prefix, id, idx){
+  var msgs = prefix === 'order_' ? SEG_MSGS_RETIRO : SEG_MSGS_VENTA;
+  var texto = msgs[idx].texto;
   if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(texto).then(function(){
-      showToast('Mensaje copiado ✅');
-    });
+    navigator.clipboard.writeText(texto).then(function(){ showToast('Mensaje copiado ✅'); });
   } else {
     var ta = document.createElement('textarea');
     ta.value = texto; document.body.appendChild(ta); ta.select();
@@ -5099,20 +5207,20 @@ function copiarMensajeSeg(orderId, idx){
   }
 }
 
-function marcarEnviadoSeg(orderId, idx){
-  var i = orders.findIndex(function(o){ return o.id===orderId; });
-  if(i<0) return;
-  if(!Array.isArray(orders[i].seguimiento)) orders[i].seguimiento = Array(10).fill(false);
-  orders[i].seguimiento[idx] = true;
-  orders[i].updatedAt = new Date().toISOString();
-  saveOrders();
+function marcarEnviadoSeg(fullId, idx){
+  var seg = getSegData(fullId);
+  seg[idx] = true;
+  saveSegData(fullId, seg);
   renderSeguimiento();
 }
 
-function toggleSegMsg(orderId, idx, e){
+function toggleSegMsg(fullId, idx, e){
   e&&e.stopPropagation();
-  marcarEnviadoSeg(orderId, idx);
+  marcarEnviadoSeg(fullId, idx);
 }
+
+// Legacy aliases (modal seguimiento uses these)
+function copiarMensajeSeg(orderId, idx){ copiarSegMsg('order_', orderId, idx); }
 
 // ════════════════════════════════════════════════════════
 //  IMPORTAR CSV FACEBOOK
