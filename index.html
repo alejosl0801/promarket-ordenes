@@ -5387,102 +5387,114 @@ function toggleSeg(){}
 //  CAMILA AI
 // ════════════════════════════════════════════════════════
 
-var CAMILA_SP = 'Eres Camila, vendedora de ProMarket Ecuador por WhatsApp. Vendes el Guante Robot de Rehabilitación.\n\n'
-+'REGLAS ESTRICTAS:\n'
-+'- Primera letra de cada oración en MAYÚSCULA. Expresiones naturales (jaja, ya mismo) quedan en minúscula dentro del mensaje.\n'
-+'- Mensajes cortos — máximo 3 líneas por bloque. Sin listas ni bullet points en conversación.\n'
-+'- Tono cálido, directo. No parecer desesperada.\n'
-+'- Responde ÚNICAMENTE con el mensaje exacto a enviar — sin explicaciones, sin prefijos, sin comillas.\n\n'
-+'PRODUCTOS Y PRECIOS:\n'
-+'• Guante Robot de Rehabilitación REF GR-001: $59.99 (lead nuevo primer contacto)\n'
-+'• Par de guantes: $107.98 (10% off sobre 2x$59.99)\n'
-+'• "Muy caro" opción 1: $54.99 + Kit Hand Grip GRATIS\n'
-+'• "Muy caro" opción 2 (última): $49.19\n'
-+'• Lead sin respuesta día 3+ o reactivación: $49.99 + Kit Hand Grip GRATIS\n'
-+'• Kit Hand Grip SKU KHG-001: pinza ajustable, entrenador muñeca, banda elástica, anillo agarre, bola antiestrés\n'
-+'• Ollas 12pzas inox REF OLL-001: $39.99 (SOLO leads viejos, campaña pausada)\n\n'
-+'FLUJO GUANTE (seguir SIEMPRE en este orden):\n'
-+'1. Bienvenida al mensaje estándar: "$59.99 envío gratis + pago al retirar + ¿para quién es?"\n'
-+'2. Según para quién: para mí → respuesta funcional (niveles, progreso). Para familiar → respuesta emocional (cuidado, amor).\n'
-+'3. ¿De qué ciudad? → verificar agencia Servientrega\n'
-+'4. Confirmar agencia → pedir datos: nombre completo, cédula, celular, dirección referencia, guante izquierdo o derecho\n'
-+'5. Datos recibidos → "Perfecto! En unos minutos le mando la orden 📄"\n\n'
-+'OBJECIONES:\n'
-+'- ¿Funciona? → Sí! 2.400+ pacientes en Latinoamérica. Pago al retirar, si no convence no lo retira 😊\n'
-+'- ¿Viene cargador? → Sí viene completo: guante, cargador, guante espejo, controlador y pelota de terapia 😊\n'
-+'- Muy caro → dos opciones: $54.99+KitHandGrip o $49.19\n'
-+'- Lo pienso → Claro! El envío incluido solo esta temporada ¿Le reservo una unidad mientras decide?\n'
-+'- Dudas técnicas múltiples → bloque completo: cargador ✅ + flexión y extensión completa ✅ + 3 niveles ✅ + pago al retirar ✅\n'
-+'- Par de guantes → $107.98 (10% aplicado), ¿Le proceso el par?\n\n'
-+'REGLAS ABSOLUTAS:\n'
-+'- NUNCA preguntar por stock ni tallas (stock infinito)\n'
+var CAMILA_SP = 'Eres Camila, asistente de ventas de ProMarket Ecuador. Analizas conversaciones de WhatsApp y devuelves el siguiente mensaje exacto a enviar.\n\n'
++'INSTRUCCIÓN CRÍTICA: Devuelve SIEMPRE un JSON válido, sin markdown, sin bloques de código, sin texto adicional. Formato exacto:\n'
++'{"mensaje":"texto exacto a enviar","telefono":"+593XXXXXXXXX","nombre":"alias o nombre del cliente","notas":"resumen contexto en 1 línea"}\n\n'
++'REGLAS DEL MENSAJE:\n'
++'- Primera letra de cada oración en MAYÚSCULA\n'
++'- Máximo 3 líneas. Sin listas ni bullet points\n'
++'- Tono cálido, directo, nunca desesperado\n'
 +'- NUNCA mencionar a Alejandro — siempre Camila de ProMarket\n'
-+'- NUNCA decir "descuento" — decir "precio especial"\n'
-+'- Si el cliente ya dio su ciudad → NO volver a preguntar\n'
-+'- "¿Le genero la orden?" SOLO cuando el cliente ya dio todos sus datos\n'
-+'- Si el cliente dice NO claramente → "Entendido! Cuando guste aquí estamos 😊"';
++'- NUNCA decir "descuento" — decir "precio especial"\n\n'
++'PRODUCTOS Y PRECIOS:\n'
++'• Guante Robot REF GR-001: $59.99 lead nuevo\n'
++'• Par de guantes: $107.98\n'
++'• Objeción precio op1: $54.99 + Kit Hand Grip GRATIS\n'
++'• Objeción precio op2 (última): $49.19\n'
++'• Día 3+ sin respuesta: $49.99 + Kit Hand Grip GRATIS\n'
++'• Ollas 12pzas REF OLL-001: $39.99 (solo leads viejos)\n\n'
++'FLUJO DE VENTA:\n'
++'1. Bienvenida → precio + envío gratis + pago al retirar + ¿para quién?\n'
++'2. Para mí → funcional. Para familiar → emocional\n'
++'3. ¿Ciudad? → verificar Servientrega\n'
++'4. Confirmar agencia → pedir: nombre, cédula, celular, dirección, mano (izq/der)\n'
++'5. Datos completos → "Perfecto! En unos minutos le mando la orden 📄"\n\n'
++'REGLA D1AM: Si el cliente vio el precio y no respondió → mensaje: "Hola! 😊 Solo quería saber — ¿le pareció bien el precio o tiene alguna duda que pueda resolver?"\n'
++'REGLA CIUDAD: Si el cliente ya dio ciudad → NO volver a preguntar\n'
++'REGLA CIERRE: "¿Le genero la orden?" solo cuando ya dio todos los datos\n'
++'REGLA NO: Si dice NO → "Entendido! Cuando guste aquí estamos 😊"\n\n'
++'OBJECIONES:\n'
++'- ¿Funciona? → 2.400+ pacientes en Latinoamérica. Pago al retirar 😊\n'
++'- ¿Viene cargador? → Sí completo: guante, cargador, guante espejo, controlador, pelota\n'
++'- Muy caro → op1: $54.99+KitHandGrip / op2: $49.19\n'
++'- Lo pienso → El envío incluido solo esta temporada ¿Le reservo una unidad?\n'
++'- Colombia (+57) → Sí, Servientrega cubre Colombia, misma operativa';
 
 function renderCamila(){
   var el=document.getElementById('camila-container');
   if(!el)return;
-  var leads=segGetLeads().filter(function(l){return l.fase!=='cerrado';});
-  var opts=leads.map(function(l){return '<option value="'+escH(l.id)+'">'+escH(l.nombre)+(l.tel?' · '+escH(l.tel):'')+'</option>';}).join('');
   el.innerHTML=
     '<div style="padding:14px;">'
-    +'<div style="margin-bottom:12px;">'
-      +'<div style="font-size:11px;font-weight:700;color:#888;margin-bottom:6px;letter-spacing:.06em;">LEAD (registra la conversación)</div>'
-      +'<select id="cam-lead" onchange="camilaShowHistory()" style="width:100%;padding:10px;background:#111;border:1px solid #222;border-radius:8px;color:#fff;font-size:14px;">'
-        +'<option value="">— Sin asignar —</option>'+opts
-      +'</select>'
-    +'</div>'
-    +'<div style="margin-bottom:12px;">'
-      +'<div style="font-size:11px;font-weight:700;color:#888;margin-bottom:6px;letter-spacing:.06em;">PEGA EL CHAT DEL CLIENTE</div>'
-      +'<textarea id="cam-in" placeholder="Pega aquí el mensaje o conversación completa del cliente..." rows="5" style="width:100%;padding:12px;background:#111;border:1px solid #222;border-radius:8px;color:#fff;font-size:14px;resize:vertical;box-sizing:border-box;font-family:inherit;line-height:1.5;"></textarea>'
-    +'</div>'
-    +'<button id="cam-btn" onclick="camilaEnviar()" style="width:100%;padding:13px;background:#E8650A;border:none;border-radius:9px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:14px;letter-spacing:.02em;">🤖 Obtener respuesta de Camila</button>'
-    +'<div id="cam-resp" style="display:none;background:#0a0a16;border:2px solid #E8650A;border-radius:12px;padding:14px;margin-bottom:14px;">'
-      +'<div style="font-size:11px;font-weight:700;color:#E8650A;margin-bottom:8px;letter-spacing:.06em;">💬 CAMILA RESPONDE:</div>'
-      +'<div id="cam-resp-txt" style="font-size:15px;color:#f0f0f0;line-height:1.7;white-space:pre-wrap;margin-bottom:12px;"></div>'
-      +'<div style="display:flex;gap:8px;">'
-        +'<button onclick="camilaCopy()" style="flex:1;padding:11px;border:1px solid #333;border-radius:8px;background:#1a1a2a;color:#fff;font-size:14px;font-weight:600;cursor:pointer;">📋 Copiar</button>'
-        +'<button onclick="camilaGuardar()" style="flex:1;padding:11px;border:none;border-radius:8px;background:#27AE60;color:#fff;font-size:14px;font-weight:600;cursor:pointer;">✅ Enviado y guardar</button>'
+    +'<div style="font-size:12px;font-weight:700;color:#E8650A;margin-bottom:10px;letter-spacing:.06em;">💬 CAMILA — ANÁLISIS AUTOMÁTICO DE CHAT</div>'
+    +'<div style="font-size:12px;color:#666;margin-bottom:12px;line-height:1.5;">Pega el chat completo de WhatsApp → Camila lee el contexto, detecta el cliente y te dice exactamente qué responder.</div>'
+    +'<textarea id="cam-in" placeholder="[7:50 a.m., 8/6/2026] +593 99 123 4567: Hola quiero el guante&#10;[7:51 a.m., 8/6/2026] Promarket Ec: Hola! 👋..." rows="7" style="width:100%;padding:12px;background:#111;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;resize:vertical;box-sizing:border-box;font-family:inherit;line-height:1.5;margin-bottom:12px;"></textarea>'
+    +'<button id="cam-btn" onclick="camilaEnviar()" style="width:100%;padding:13px;background:#E8650A;border:none;border-radius:9px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:14px;letter-spacing:.02em;">🤖 Analizar y obtener mensaje</button>'
+    +'<div id="cam-resp" style="display:none;">'
+      +'<div style="background:#0a1a0a;border:2px solid #27AE60;border-radius:12px;padding:14px;margin-bottom:10px;">'
+        +'<div style="font-size:11px;font-weight:700;color:#27AE60;margin-bottom:6px;letter-spacing:.06em;">✉️ MENSAJE A ENVIAR:</div>'
+        +'<div id="cam-resp-txt" style="font-size:16px;color:#f0f0f0;line-height:1.7;white-space:pre-wrap;margin-bottom:12px;"></div>'
+        +'<button onclick="camilaCopy()" style="width:100%;padding:12px;border:none;border-radius:8px;background:#27AE60;color:#fff;font-size:15px;font-weight:700;cursor:pointer;">📋 Copiar mensaje</button>'
       +'</div>'
+      +'<div id="cam-meta" style="background:#111;border:1px solid #222;border-radius:10px;padding:12px;margin-bottom:10px;font-size:12px;color:#888;"></div>'
+      +'<button onclick="camilaGuardar()" style="width:100%;padding:11px;border:1px solid #27AE60;border-radius:8px;background:transparent;color:#27AE60;font-size:13px;font-weight:600;cursor:pointer;margin-bottom:14px;">✅ Marcar como enviado y registrar</button>'
     +'</div>'
     +'<div id="cam-hist"></div>'
     +'</div>';
-  camilaShowHistory();
 }
 
 async function camilaEnviar(){
   var key;
   try{ key=getGeminiKey(); }catch(e){ showToast('Configura tu API Key (botón 🔑 arriba)'); return; }
   var inp=(document.getElementById('cam-in')||{}).value||'';
-  if(!inp.trim()){showToast('Pega el mensaje del cliente primero');return;}
+  if(!inp.trim()){showToast('Pega el chat del cliente primero');return;}
   var btn=document.getElementById('cam-btn');
-  if(btn){btn.disabled=true;btn.textContent='⏳ Pensando...';}
-  var leadId=(document.getElementById('cam-lead')||{}).value||'';
-  var ctx='';
-  if(leadId){
-    var lx=segGetLeads().find(function(l){return l.id===leadId;});
-    if(lx) ctx='\n\nCONTEXTO DEL LEAD: Nombre='+lx.nombre+(lx.tel?', Tel='+lx.tel:'')+', Fase actual='+lx.fase;
-  }
+  if(btn){btn.disabled=true;btn.textContent='⏳ Analizando chat...';}
   try{
     var url='https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+encodeURIComponent(key);
     var body={
-      systemInstruction:{parts:[{text:CAMILA_SP+ctx}]},
-      contents:[{role:'user',parts:[{text:inp}]}],
-      generationConfig:{temperature:0.4,maxOutputTokens:300,topP:0.85}
+      systemInstruction:{parts:[{text:CAMILA_SP}]},
+      contents:[{role:'user',parts:[{text:'Analiza este chat de WhatsApp y devuelve el JSON:\n\n'+inp}]}],
+      generationConfig:{temperature:0.3,maxOutputTokens:400,topP:0.85}
     };
     var res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
     if(!res.ok){var er=await res.json();throw new Error((er.error&&er.error.message)||'HTTP '+res.status);}
     var data=await res.json();
-    var txt=data.candidates&&data.candidates[0]&&data.candidates[0].content&&data.candidates[0].content.parts&&data.candidates[0].content.parts[0]&&data.candidates[0].content.parts[0].text||'';
-    if(!txt)throw new Error('Respuesta vacía');
-    window._camResp=txt;window._camIn=inp;window._camLead=leadId;
-    var rd=document.getElementById('cam-resp');var rt=document.getElementById('cam-resp-txt');
-    if(rd)rd.style.display='block';if(rt)rt.textContent=txt;
+    var raw=data.candidates&&data.candidates[0]&&data.candidates[0].content&&data.candidates[0].content.parts&&data.candidates[0].content.parts[0]&&data.candidates[0].content.parts[0].text||'';
+    if(!raw)throw new Error('Respuesta vacía');
+    // Limpiar markdown si viene con ```json
+    var clean=raw.replace(/```json\s*/gi,'').replace(/```\s*/gi,'').trim();
+    var parsed;
+    try{ parsed=JSON.parse(clean); }catch(pe){ throw new Error('IA no devolvió JSON válido: '+raw.slice(0,80)); }
+    var msg=parsed.mensaje||'';
+    var tel=(parsed.telefono||'').replace(/\s/g,'');
+    var nom=parsed.nombre||('Chat '+tel.slice(-4));
+    var notas=parsed.notas||'';
+    if(!msg)throw new Error('No se generó mensaje');
+    // Auto-registrar o actualizar lead en Seguimiento
+    var leads=segGetLeads();
+    var t8=tel.replace(/\D/g,'').slice(-8);
+    var ex=t8?leads.find(function(l){return (l.tel||'').replace(/\D/g,'').slice(-8)===t8;}):null;
+    var leadId='';
+    if(ex){
+      leadId=ex.id;
+    } else if(tel){
+      leadId='sg'+Date.now()+Math.random().toString(36).slice(2,5);
+      leads.push({id:leadId,nombre:nom,tel:tel,fechaInicio:new Date().toISOString(),orderId:null,fase:'venta',fechaTr:null,fechaAg:null});
+      segSaveLeads(leads);
+    }
+    window._camResp=msg;window._camIn=inp;window._camLead=leadId;window._camNom=nom;window._camTel=tel;
+    var rd=document.getElementById('cam-resp');
+    var rt=document.getElementById('cam-resp-txt');
+    var rm=document.getElementById('cam-meta');
+    if(rd)rd.style.display='block';
+    if(rt)rt.textContent=msg;
+    if(rm){
+      rm.innerHTML='<b style="color:#aaa;">👤 Cliente:</b> '+escH(nom)+' &nbsp;·&nbsp; <b style="color:#aaa;">📱</b> '+escH(tel)
+        +(notas?'<br><b style="color:#aaa;">📝</b> '+escH(notas):'')
+        +(ex?'<br><span style="color:#27AE60;">✅ Lead ya registrado en Seguimiento</span>':'<br><span style="color:#E8650A;">➕ Lead nuevo — se agregó a Seguimiento</span>');
+    }
   }catch(e){showToast('Error Camila: '+e.message);}
-  finally{if(btn){btn.disabled=false;btn.textContent='🤖 Obtener respuesta de Camila';}}
+  finally{if(btn){btn.disabled=false;btn.textContent='🤖 Analizar y obtener mensaje';}}
 }
 
 function camilaCopy(){
@@ -5504,27 +5516,28 @@ function camilaGuardar(){
   localStorage.setItem('pm_conv_v1',JSON.stringify(conv));
   var el=document.getElementById('cam-in');if(el)el.value='';
   var rd=document.getElementById('cam-resp');if(rd)rd.style.display='none';
-  window._camResp='';window._camIn='';
-  showToast('Guardado ✅');
-  camilaShowHistory();
+  window._camResp='';window._camIn='';window._camLead='';
+  showToast('Registrado en Seguimiento ✅');
+  renderCamila();
 }
 
 function camilaShowHistory(){
   var el=document.getElementById('cam-hist');if(!el)return;
-  var lid=(document.getElementById('cam-lead')||{}).value||'';
-  if(!lid){el.innerHTML='';return;}
   var conv=JSON.parse(localStorage.getItem('pm_conv_v1')||'{}');
-  var msgs=(conv[lid]||[]).slice(-30).reverse();
-  if(!msgs.length){el.innerHTML='<div style="text-align:center;padding:16px;color:#444;font-size:13px;">Sin conversación registrada</div>';return;}
-  el.innerHTML='<div style="font-size:11px;font-weight:700;color:#555;margin:12px 0 8px;letter-spacing:.06em;">HISTORIAL</div>'
-    +msgs.map(function(m){
-      var out=m.d==='out';
-      var h=new Date(m.f).toLocaleTimeString('es-EC',{hour:'2-digit',minute:'2-digit'});
-      return '<div style="display:flex;justify-content:'+(out?'flex-end':'flex-start')+';margin-bottom:8px;">'
-        +'<div style="max-width:82%;padding:9px 12px;border-radius:'+(out?'12px 3px 12px 12px':'3px 12px 12px 12px')+';background:'+(out?'#1a1000':'#0d0d0d')+';border:1px solid '+(out?'#E8650A':'#1a1a1a')+';font-size:13px;color:#ddd;line-height:1.5;">'
-          +'<div style="white-space:pre-wrap;">'+escH(m.t)+'</div>'
-          +'<div style="font-size:10px;color:#444;margin-top:4px;text-align:right;">'+h+'</div>'
-        +'</div>'
+  var allKeys=Object.keys(conv).filter(function(k){return k!=='_sin_lead'&&conv[k].length;});
+  if(!allKeys.length){el.innerHTML='';return;}
+  var leads=segGetLeads();
+  el.innerHTML='<div style="font-size:11px;font-weight:700;color:#555;margin:12px 0 8px;letter-spacing:.06em;">HISTORIAL RECIENTE</div>'
+    +allKeys.slice(-5).reverse().map(function(k){
+      var lead=leads.find(function(l){return l.id===k;});
+      var nom=lead?lead.nombre:k.slice(-6);
+      var msgs=(conv[k]||[]).slice(-4);
+      return '<div style="background:#111;border-radius:8px;padding:10px;margin-bottom:8px;">'
+        +'<div style="font-size:12px;font-weight:700;color:#888;margin-bottom:6px;">👤 '+escH(nom)+'</div>'
+        +msgs.map(function(m){
+          var out=m.d==='out';
+          return '<div style="font-size:12px;color:'+(out?'#E8650A':'#aaa')+';margin-bottom:3px;">'+(out?'→ ':'← ')+escH(m.t.slice(0,80))+(m.t.length>80?'…':'')+'</div>';
+        }).join('')
       +'</div>';
     }).join('');
 }
