@@ -4280,16 +4280,22 @@ function getAIKey(){
   if(geminiKey) return {provider:'gemini',key:geminiKey};
   throw new Error('Configura tu API Key (botón 🔑 arriba)');
 }
-async function camilaCallAI(systemPrompt, userMsg, history){
+// opts: {temperature:0.3, maxTokens:1200, jsonMode:false}
+async function camilaCallAI(systemPrompt, userMsg, history, opts){
+  var temperature=(opts&&opts.temperature!=null)?opts.temperature:0.3;
+  var maxTokens=(opts&&opts.maxTokens)?opts.maxTokens:1200;
+  var jsonMode=!!(opts&&opts.jsonMode);
   var ai=getAIKey();
   if(ai.provider==='groq'){
     var msgs=[{role:'system',content:systemPrompt}];
     (history||[]).forEach(function(m){msgs.push({role:m.role,content:m.content});});
     msgs.push({role:'user',content:userMsg});
+    var groqBody={model:GROQ_MODEL,messages:msgs,temperature:temperature,max_tokens:maxTokens};
+    if(jsonMode) groqBody.response_format={type:'json_object'};
     var res=await fetch(GROQ_URL,{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+ai.key},
-      body:JSON.stringify({model:GROQ_MODEL,messages:msgs,temperature:0.3,max_tokens:1200})
+      body:JSON.stringify(groqBody)
     });
     if(!res.ok){
       var er=await res.json();
@@ -4305,8 +4311,9 @@ async function camilaCallAI(systemPrompt, userMsg, history){
     var body={
       systemInstruction:{parts:[{text:systemPrompt}]},
       contents:contents,
-      generationConfig:{temperature:0.3,maxOutputTokens:1200,topP:0.85}
+      generationConfig:{temperature:temperature,maxOutputTokens:maxTokens,topP:0.85}
     };
+    if(jsonMode) body.generationConfig.responseMimeType='application/json';
     var url=GEMINI_URL+encodeURIComponent(ai.key);
     var res2=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
     if(!res2.ok){
@@ -5938,20 +5945,25 @@ var CAMILA_SP = [
 'Colombia → verificar cobertura antes de confirmar'
 ].join('\n');
 
-var CAMILA_SP_DIRECT = [
-'Eres Camila, asistente experta de ProMarket Ecuador.',
-'Ahora estás hablando directamente con tu dueño/jefe (Alejo). NO estás analizando un chat de cliente — es una conversación 1:1.',
-'Responde en texto normal (no JSON). Puedes:',
-'- Responder preguntas de estrategia de ventas',
-'- Ayudar a redactar mensajes difíciles',
-'- Recibir instrucciones nuevas y confirmar que las aprendiste',
-'- Analizar situaciones de clientes específicos',
-'- Sugerir mejoras al proceso de venta',
-'- Explicar cómo manejar objecciones o casos especiales',
-'Cuando el dueño te enseñe algo nuevo importante que debas aplicar siempre,',
-'di al FINAL de tu respuesta en una línea sola: 💾 GUARDAR: [resumen del aprendizaje en 1 línea]',
-'Sé directa, concisa y útil. Habla como una vendedora experta hablando con su jefe — sin rodeos.'
+// Extensión que se concatena a CAMILA_SP para el modo conversación directa con Alejo
+var CAMILA_SP_DIRECT_EXT = [
+'',
+'═══ MODO DIRECTO: ESTÁS HABLANDO CON ALEJO (TU JEFE) ═══',
+'NO estás analizando un chat de cliente. Es una conversación 1:1 con el dueño de ProMarket.',
+'Responde en texto normal, NO en JSON. Tienes acceso a todo el conocimiento de arriba.',
+'Puedes: redactar mensajes para situaciones difíciles, responder preguntas de estrategia,',
+'analizar casos de clientes específicos, sugerir mejoras, explicar objeciones.',
+'Cuando Alejo te enseñe algo nuevo que debas aplicar SIEMPRE,',
+'di al FINAL en una línea sola: 💾 GUARDAR: [resumen en 1 línea]',
+'Sé directa, concisa. Habla como una experta con su jefe — sin rodeos ni formalidades.'
 ].join('\n');
+
+function buildCamilaSP(){
+  var today=new Date();
+  var meses=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  var fechaHoy=today.getDate()+' de '+meses[today.getMonth()]+' de '+today.getFullYear();
+  return CAMILA_SP.replace(/FECHA HOY: [^\n]+/,'FECHA HOY: '+fechaHoy);
+}
 
 function camilaBrainGet(){
   var brain=JSON.parse(localStorage.getItem('pm_camila_brain_v1')||'[]');
@@ -5965,7 +5977,8 @@ function renderCamila(){
   var tab=window._camilaTab||'analizar';
   el.innerHTML=
     '<div style="padding:14px;">'
-    +'<div style="font-size:12px;font-weight:700;color:#E8650A;margin-bottom:10px;letter-spacing:.06em;">🤖 CAMILA — ASISTENTE VIRTUAL PROMARKET</div>'
+    +(function(){var p=getActiveProvider();var badge=p?'<span style="font-size:10px;padding:2px 7px;border-radius:4px;background:'+(p==='groq'?'#0d1a2e':'#0a1a0a')+';border:1px solid '+(p==='groq'?'#4A90E2':'#27AE60')+';color:'+(p==='groq'?'#4A90E2':'#27AE60')+';font-weight:700;margin-left:6px;">'+(p==='groq'?'⚡ GROQ':'🔵 GEMINI')+'</span>':'<span style="font-size:10px;color:#555;margin-left:6px;">Sin key</span>';return '<div style="display:flex;align-items:center;margin-bottom:10px;"><span style="font-size:12px;font-weight:700;color:#E8650A;letter-spacing:.06em;">🤖 CAMILA — ASISTENTE VIRTUAL PROMARKET</span>'+badge+'</div>';})()
+
     +'<div style="display:flex;gap:6px;margin-bottom:14px;">'
       +'<button onclick="window._camilaTab=\'analizar\';renderCamila();" style="flex:1;padding:8px 4px;background:'+(tab==='analizar'?'#E8650A':'#1a1a1a')+';border:1px solid '+(tab==='analizar'?'#E8650A':'#333')+';border-radius:7px;color:'+(tab==='analizar'?'#fff':'#888')+';font-size:11px;font-weight:700;cursor:pointer;letter-spacing:.03em;">💬 ANALIZAR</button>'
       +'<button onclick="window._camilaTab=\'hablar\';renderCamila();" style="flex:1;padding:8px 4px;background:'+(tab==='hablar'?'#E8650A':'#1a1a1a')+';border:1px solid '+(tab==='hablar'?'#E8650A':'#333')+';border-radius:7px;color:'+(tab==='hablar'?'#fff':'#888')+';font-size:11px;font-weight:700;cursor:pointer;letter-spacing:.03em;">🧠 HABLAR</button>'
@@ -5994,9 +6007,15 @@ function _camilaTabAnalizar(){
 function _camilaTabHablar(){
   if(!window._camilaChat)window._camilaChat=[];
   var msgs=window._camilaChat;
+  window._camilaHints=[];
   var msgsHtml=msgs.length?msgs.map(function(m){
     var isUser=m.r==='user';
-    var saveBtn=m.saveHint?('<div style="margin-top:5px;"><button onclick="camilaSaveLearn(\''+m.saveHint.replace(/\\/g,'\\\\').replace(/'/g,"\\'")+'\')" style="padding:3px 9px;background:transparent;border:1px solid #27AE60;border-radius:5px;color:#27AE60;font-size:11px;cursor:pointer;">💾 Guardar este aprendizaje</button></div>'):'';
+    var saveBtn='';
+    if(m.saveHint){
+      var hintIdx=window._camilaHints.length;
+      window._camilaHints.push(m.saveHint);
+      saveBtn='<div style="margin-top:5px;"><button onclick="camilaSaveLearn(window._camilaHints['+hintIdx+'])" style="padding:3px 9px;background:transparent;border:1px solid #27AE60;border-radius:5px;color:#27AE60;font-size:11px;cursor:pointer;">💾 Guardar este aprendizaje</button></div>';
+    }
     return '<div style="margin-bottom:10px;display:flex;justify-content:'+(isUser?'flex-end':'flex-start')+'">'
       +'<div style="max-width:85%;background:'+(isUser?'#E8650A':'#1a1a1a')+';border:1px solid '+(isUser?'#E8650A':'#333')+';border-radius:12px;'+(isUser?'border-bottom-right-radius:3px':'border-bottom-left-radius:3px')+';padding:9px 12px;font-size:13px;color:#fff;white-space:pre-wrap;line-height:1.55;">'
       +escH(m.t)+saveBtn
@@ -6034,7 +6053,7 @@ async function camilaEnviar(){
   var btn=document.getElementById('cam-btn');
   if(btn){btn.disabled=true;btn.textContent='⏳ Analizando chat...';}
   try{
-    var raw=await camilaCallAI(CAMILA_SP+camilaBrainGet(),'Analiza este chat de WhatsApp y devuelve el JSON:\n\n'+inp,[]);
+    var raw=await camilaCallAI(buildCamilaSP()+camilaBrainGet(),'Analiza este chat de WhatsApp y devuelve el JSON:\n\n'+inp,[],{jsonMode:true,maxTokens:1500});
     if(!raw)throw new Error('Respuesta vacía');
     var clean=raw.replace(/```json\s*/gi,'').replace(/```\s*/gi,'').trim();
     var parsed;
@@ -6129,7 +6148,7 @@ async function camilaChatEnviar(){
   window._camilaLastReq=Date.now();
   try{
     var history=window._camilaChat.slice(0,-1).map(function(m){return {role:m.r==='user'?'user':'assistant',content:m.t};});
-    var raw=await camilaCallAI(CAMILA_SP_DIRECT+camilaBrainGet(),inp.trim(),history);
+    var raw=await camilaCallAI(buildCamilaSP()+CAMILA_SP_DIRECT_EXT+camilaBrainGet(),inp.trim(),history,{temperature:0.5,maxTokens:1500});
     if(!raw)throw new Error('Respuesta vacía');
     var saveHint='';
     var sm=raw.match(/💾\s*GUARDAR:\s*(.+)/);
