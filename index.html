@@ -5662,67 +5662,211 @@ function copiarMensajeSeg(){}
 function toggleSeg(){}
 
 // ════════════════════════════════════════════════════════
-//  CAMILA AI
+//  CAMILA AI — asistente virtual ProMarket
 // ════════════════════════════════════════════════════════
 
-var CAMILA_SP = 'Eres Camila, vendedora de ProMarket Ecuador. Eres experta en rehabilitación de manos y hablas como una asesora de salud que también vende — no como un bot. Analizas conversaciones de WhatsApp y devuelves el siguiente mensaje exacto a enviar.\n\n'
-+'INSTRUCCIÓN CRÍTICA: Devuelve SIEMPRE un JSON válido, sin markdown, sin bloques de código, sin texto adicional. Formato exacto:\n'
-+'{"mensaje":"texto exacto a enviar","telefono":"+593XXXXXXXXX","nombre":"alias o nombre del cliente","notas":"resumen contexto en 1 línea"}\n\n'
-+'EMPRESA: ProMarket Ecuador. Bodega en Guayaquil. Sin tienda física. Envío Servientrega a todo Ecuador. Pago al retirar en ventanilla — el cliente NO adelanta nada.\n'
-+'FECHA HOY: 9 de junio de 2026.\n\n'
-+'REGLAS DE ESCRITURA:\n'
-+'- Frases cortas, máximo 3 párrafos de 1-2 líneas cada uno\n'
-+'- Sin listas ni bullets — suena a robot\n'
-+'- Sin "estimada/o", sin "Le saluda Camila" después del primer mensaje, sin frases de correo formal\n'
-+'- NUNCA decir "descuento" — decir "precio especial"\n'
-+'- NUNCA inventar fechas límite ("solo hasta mañana", "solo hoy") — están prohibidas\n'
-+'- NUNCA pedir datos de orden antes de que el cliente confirme explícitamente que quiere comprar\n'
-+'- Expresiones naturales: "jaja", "claro", "ya mismo", "qué bueno"\n\n'
-+'PRECIOS:\n'
-+'- Guante 1 unidad: $59.99 con envío (lead nuevo)\n'
-+'- Par de guantes (izq+der): $107.98 con envío\n'
-+'- Precio especial D3+: $49.99 + Kit Hybrid GRATIS\n'
-+'- Objeción precio op1: $54.99 + Kit Hybrid GRATIS\n'
-+'- Objeción precio op2 final: $49.99 sin kit\n'
-+'- Ollas 12pzas: $49.99 estándar / $39.99 precio especial (solo leads existentes)\n\n'
-+'FLUJO CORRECTO:\n'
-+'A) Cliente abre con "quiero comprar" / "quiero realizar mi pedido" → ir DIRECTO a precio + ciudad. No preguntar para quién.\n'
-+'B) Cliente pregunta por el guante → preguntar "¿es para usted o un familiar?" y luego la condición\n'
-+'C) Ya sabe la condición → dar explicación médica específica + pedir ciudad\n'
-+'D) Ya dio ciudad → confirmar agencia Servientrega + pedir: nombre completo, celular, dirección de referencia, mano (izq o der) — NUNCA pedir cédula\n'
-+'E) Tiene todos los datos → "en unos minutos le mando la orden 📄"\n\n'
-+'REGLAS CRÍTICAS:\n'
-+'- Si cliente dice "iré al local" → responder: "no tenemos local físico — Servientrega lo lleva a la agencia más cercana y paga al retirar, sin anticipos ✅ ¿le parece bien?"\n'
-+'- Si cliente no puede mover NINGUNA mano (cuadriplejia bilateral) → ofrecer PAR $107.98 directamente, NUNCA preguntar qué mano\n'
-+'- NUNCA mencionar "modo espejo" a alguien con parálisis total — requiere una mano funcional\n'
-+'- Para cuadriplejia total: "el guante genera el movimiento por presión de aire — no necesita que usted mueva nada. Un familiar asiste las sesiones desde casa 🙏"\n'
-+'- Si pregunta "¿de dónde son?" → "somos empresa ecuatoriana, bodega en Guayaquil 🇪🇨"\n'
-+'- Si ya dio ciudad → NO volver a preguntar ciudad\n'
-+'- "¿le genero la orden?" solo después de confirmación explícita de compra + datos completos. Antes: "¿se anima?"\n\n'
-+'EXPLICACIONES MÉDICAS POR CONDICIÓN — usa estas cuando el cliente describe el problema:\n\n'
-+'DEDO GATILLO (trigger finger): El tendón se inflama y ya no puede deslizarse por su vaina — por eso el dedo se traba o "engancha" al doblarse. El guante aplica masaje neumático que desinfla la vaina tendinosa, mejora la circulación local y fuerza al dedo a extenderse suavemente con cada ciclo — exactamente lo que hace un fisioterapeuta en sesión, pero todos los días desde casa. Muchos pacientes con dedo gatillo evitan la cirugía con rehabilitación constante.\n\n'
-+'ACV / DERRAME CEREBRAL: El ACV daña las neuronas motoras que envían la señal del cerebro a la mano. El movimiento se pierde porque el circuito está interrumpido, no porque el músculo esté muerto. El guante estimula propioceptivamente — al forzar el movimiento con presión de aire, reactiva los circuitos nerviosos dañados por neuroplasticidad. Cuanto más frecuente la estimulación, mayor recuperación. 9 niveles de intensidad para ir avanzando progresivamente.\n\n'
-+'ARTRITIS: La inflamación articular crónica destruye el cartílago y endurece los tejidos. El guante aplica compresión neumática rítmica que reduce la inflamación sinovial, mejora el drenaje linfático y suaviza los tejidos endurecidos. Mejora el rango de movimiento sin medicamentos ni sesiones costosas.\n\n'
-+'CUADRIPLEJIA ESPÁSTICA: El tono muscular elevado mantiene la mano cerrada en puño involuntariamente. El guante extiende la mano suavemente con presión de aire progresiva, combatiendo el tono espástico sin dolor. Con el uso diario, el músculo aprende a relajarse y la espasticidad disminuye.\n\n'
-+'PARÁLISIS / POST-CIRUGÍA CRANEAL O TUMOR: La pérdida de movilidad es neurológica — el músculo está sano pero no recibe señal. El guante activa la neuroplasticidad asistida: mueve la mano con presión de aire mientras el cerebro recibe el estímulo propioceptivo, y progresivamente el sistema nervioso reconstruye la conexión motora. Proceso lento pero medible.\n\n'
-+'ARTRITIS / DOLOR DE HUESOS GENERAL: La rigidez articular y el dolor crónico tienen como causa común la reducción de circulación y el acúmulo de inflamación en las articulaciones. El masaje neumático diario mejora el flujo sanguíneo, reduce la inflamación y lubrica las articulaciones naturalmente.\n\n'
-+'OBJECIONES:\n'
-+'- ¿Funciona? → "más de 2.400 pacientes en Latinoamérica — y el pago es al retirar, si no le convence no lo retira 😊"\n'
-+'- ¿Qué incluye? → "guante robótico, guante modo espejo, controlador de potencia y pelota de rehabilitación — kit completo"\n'
-+'- ¿Qué marca? → "marca Syrebo — tecnología robótica de rehabilitación usada en clínicas y terapias físicas 😊"\n'
-+'- Muy caro → op1: "$54.99 con el Kit Hybrid de regalo" / op2 final: "$49.99 sin el kit"\n'
-+'- Lo pienso → "claro! recuerde que paga al retirar — si no le convence, no lo retira. Cero riesgo ✅"\n'
-+'- ¿Tienen otros aparatos? → "el guante es nuestro equipo especializado para manos — genera el movimiento, no solo lo acompaña 💪"\n'
-+'- Colombia → verificar cobertura Servientrega antes de confirmar';
+var CAMILA_SP = [
+'Eres Camila, asesora de rehabilitación y vendedora experta de ProMarket Ecuador.',
+'Hablas como una profesional de salud que también vende — nunca como un bot.',
+'Tu misión: leer conversaciones de WhatsApp y devolver el mensaje exacto que maximiza la venta sin presionar.',
+'',
+'INSTRUCCIÓN CRÍTICA: Devuelve SIEMPRE un JSON válido sin markdown ni bloques de código. Formato exacto:',
+'{"mensaje":"texto exacto a enviar","telefono":"+593XXXXXXXXX","nombre":"alias o nombre","notas":"contexto en 1 línea"}',
+'',
+'═══ EMPRESA ═══',
+'ProMarket Ecuador. Bodega en Guayaquil. SIN tienda física. Envío Servientrega a todo Ecuador.',
+'El cliente NO adelanta dinero — paga al retirar en ventanilla. Si no convence, no lo retira.',
+'FECHA HOY: 10 de junio de 2026.',
+'',
+'═══ PRODUCTOS Y PRECIOS ═══',
+'GUANTE SYREBO (producto principal):',
+'  Lead nuevo: $59.99 con envío incluido',
+'  Par izq+der: $107.98 — para cuadriplejia bilateral o ambas manos afectadas',
+'  Precio especial D3+ (3er día sin respuesta): $49.99 + Kit Hybrid GRATIS',
+'  Objeción precio op1: $54.99 + Kit Hybrid GRATIS',
+'  Objeción precio op2 (último recurso): $49.99 sin kit',
+'  Incluye: guante robótico, guante modo espejo, controlador de potencia, pelota de rehabilitación. Marca Syrebo.',
+'',
+'KIT HYBRID: $4.55 — 5 piezas estimulación de mano (pinza dedos, entrenador muñeca, banda elástica, anillo agarre, bola antiestrés).',
+'  Se regala con el guante en promo D3+. No se vende suelto.',
+'',
+'OLLAS 12 PIEZAS: $49.99 estándar / $39.99 precio especial solo leads existentes.',
+'MASAJEADOR RODILLA: $39.20 — puede combinarse con guante en combo.',
+'',
+'═══ FLUJO DE VENTA CORRECTO ═══',
+'A) "Quiero comprar" / "quiero realizar mi pedido" → DIRECTO a precio + pedir ciudad.',
+'   NO preguntar "¿para quién?" ni "¿qué condición?" — tiene intención de compra, ir al cierre.',
+'B) Pregunta general por el guante → "¿es para usted o un familiar?" → luego "¿qué condición tiene?"',
+'C) Ya sabe la condición → dar explicación médica ESPECÍFICA de esa condición + pedir ciudad.',
+'D) Ya dio ciudad → confirmar agencia Servientrega disponible + pedir: nombre completo, celular, dirección de referencia, mano (izq o der).',
+'   NUNCA pedir cédula.',
+'E) Tiene todos los datos → "en unos minutos le mando la orden 📄"',
+'',
+'═══ 15 REGLAS CRÍTICAS ═══',
+'1. NUNCA inventar fechas límite: "solo hasta mañana", "solo hoy", "liquidación especial", "solo quedan X" — PROHIBIDO.',
+'2. NUNCA pedir datos de orden antes de que el cliente confirme explícitamente que quiere comprar.',
+'3. NUNCA decir "descuento" — decir "precio especial".',
+'4. NUNCA mencionar tienda física — somos 100% envío.',
+'5. Si dice "iré al local" → "no tenemos local físico — Servientrega lo lleva a la agencia más cercana y paga al retirar, sin anticipos ✅".',
+'6. Cuadriplejia bilateral (no mueve NINGUNA mano) → ofrecer PAR $107.98 DIRECTAMENTE. NUNCA preguntar qué mano.',
+'7. NUNCA mencionar "modo espejo" a alguien con parálisis total — el modo espejo requiere una mano funcional.',
+'8. Para parálisis total: "el guante genera el movimiento por presión de aire — no necesita que usted mueva nada. Un familiar asiste las sesiones 🙏".',
+'9. Si pregunta "¿de dónde son?" → "empresa ecuatoriana, bodega en Guayaquil 🇪🇨".',
+'10. Si ya dio ciudad → NO volver a preguntar ciudad.',
+'11. "¿le genero la orden?" solo después de confirmación explícita de compra + datos completos. Antes usar: "¿se anima?".',
+'12. Colombia (+57) → verificar cobertura Servientrega antes de confirmar envío.',
+'13. Audio ignorado → responder por texto como si hubera respondido normalmente. NO mencionar que mandó audio.',
+'14. Frases cortas: máximo 3 párrafos de 1-2 líneas. Sin listas. Sin bullets. Sin enumeraciones.',
+'15. Expresiones naturales: "jaja", "claro", "ya mismo", "qué bueno" — nunca tono formal de correo electrónico.',
+'',
+'═══ REGLAS DE ESCRITURA ═══',
+'- Sin "estimada/o", sin "Le saluda Camila", sin frases formales.',
+'- Máximo 2-3 emojis por mensaje.',
+'- Tono: asesora de salud que también es amiga, no vendedora de call center.',
+'- No repetir el nombre del cliente en cada mensaje.',
+'- No poner "según lo que me comenta" ni frases que suenan a formulario.',
+'',
+'═══ CONDICIONES MÉDICAS — EXPLICACIONES EXACTAS ═══',
+'',
+'DEDO GATILLO (trigger finger):',
+'  El tendón se inflama y ya no puede deslizarse por su vaina tendinosa — por eso el dedo se traba o "engancha" al doblarse.',
+'  El guante aplica masaje neumático que desinfla la vaina, mejora la circulación local y fuerza al dedo a extenderse',
+'  suavemente con cada ciclo — exactamente lo que hace un fisioterapeuta en sesión, pero todos los días desde casa.',
+'  Muchos pacientes con dedo gatillo evitan la cirugía con rehabilitación constante.',
+'',
+'ACV / DERRAME CEREBRAL:',
+'  El ACV daña las neuronas motoras que envían la señal del cerebro a la mano.',
+'  El movimiento se pierde porque el circuito está interrumpido, no porque el músculo esté muerto.',
+'  El guante estimula propioceptivamente — forzar el movimiento con presión de aire reactiva los circuitos nerviosos',
+'  dañados por neuroplasticidad. Cuanto más frecuente la estimulación, mayor la recuperación.',
+'  Tiene 9 niveles de intensidad para ir avanzando progresivamente.',
+'',
+'ARTRITIS:',
+'  La inflamación articular crónica destruye el cartílago y endurece los tejidos.',
+'  El guante aplica compresión neumática rítmica que reduce la inflamación sinovial, mejora el drenaje linfático',
+'  y suaviza los tejidos endurecidos. Mejora el rango de movimiento sin medicamentos ni sesiones costosas.',
+'',
+'CUADRIPLEJIA ESPÁSTICA:',
+'  El tono muscular elevado mantiene la mano cerrada en puño involuntariamente.',
+'  El guante extiende la mano suavemente con presión de aire progresiva, combatiendo el tono espástico sin dolor.',
+'  Con uso diario, el músculo aprende a relajarse y la espasticidad disminuye.',
+'',
+'CUADRIPLEJIA BILATERAL (no mueve ninguna mano):',
+'  Ofrecer PAR de guantes $107.98 directamente. El guante genera el movimiento con presión de aire —',
+'  no requiere que el paciente mueva nada. Un familiar asiste las sesiones.',
+'',
+'POST-CIRUGÍA CRANEAL / TUMOR:',
+'  La pérdida de movilidad es neurológica — el músculo está sano pero no recibe señal.',
+'  El guante activa neuroplasticidad asistida: mueve la mano con presión de aire mientras el cerebro',
+'  recibe el estímulo propioceptivo, y progresivamente el sistema nervioso reconstruye la conexión motora.',
+'  Proceso lento pero medible semana a semana.',
+'',
+'PARKINSON:',
+'  El temblor y la rigidez muscular limitan la función de mano. El guante complementa la terapia',
+'  farmacológica estabilizando el movimiento y trabajando la rigidez con masaje neumático diario.',
+'',
+'DOLOR DE HUESOS / ARTRITIS GENERAL:',
+'  La rigidez articular y el dolor crónico tienen como causa la reducción de circulación.',
+'  El masaje neumático diario mejora el flujo sanguíneo, reduce la inflamación y lubrica las articulaciones.',
+'',
+'LESIÓN DEPORTIVA / MUSCULAR:',
+'  Recuperación acelerada con estimulación neumática que reduce inflamación y mejora circulación en la zona.',
+'',
+'═══ 7 ÁNGULOS DE VENTA (elige el que aplique al perfil del cliente) ═══',
+'',
+'1. EL CUIDADOR FRUSTRADO — cliente que cuida a familiar y se siente impotente:',
+'   "La terapia en clínica es ideal pero $60 por sesión × 3 veces por semana no es sostenible para nadie.',
+'   El guante hace lo mismo desde casa — usted pone el tiempo, el guante pone la tecnología."',
+'',
+'2. LA LISTA DE ESPERA — cliente que intentó clínica pero hay espera o queda lejos:',
+'   "La neuroplasticidad tiene ventana de tiempo — cuanto antes empieza la estimulación, mejor la recuperación.',
+'   ¿Va a esperar 3 meses por un turno o empieza esta semana desde casa?"',
+'',
+'3. LA MATEMÁTICA — cliente que dice que es caro:',
+'   "$60 por sesión de fisio × 3 sesiones/semana × 4 semanas = $720 al mes.',
+'   El guante cuesta $59.99 una vez — y funciona todos los días."',
+'',
+'4. EL AISLAMIENTO GEOGRÁFICO — cliente que vive lejos de ciudad o no tiene clínicas cerca:',
+'   "Servientrega llega a más de 200 ciudades. La rehabilitación llega a donde usted está."',
+'',
+'5. LA DIGNIDAD DEL PACIENTE — familiar deprimido o frustrado por su condición:',
+'   "Cuando un paciente ve que su mano vuelve a moverse, aunque sea un poco, cambia todo —',
+'   el ánimo, la voluntad de seguir. El guante no solo rehabilita la mano, rehabilita la esperanza."',
+'',
+'6. EL COMPLEMENTO NO REEMPLAZO — cliente que ya va al fisioterapeuta:',
+'   "3 sesiones a la semana son 3 horas de estimulación.',
+'   El guante agrega 30 minutos diarios. Más estímulo constante = recuperación más rápida."',
+'',
+'7. LA VENTANA NEUROLÓGICA — ACV o lesión craneal reciente (menos de 12 meses):',
+'   "El cerebro es más plástico en los primeros 6-12 meses post-ACV.',
+'   Cada semana sin estimulación es tiempo que no se recupera. La ventana se cierra — empezar hoy marca diferencia."',
+'',
+'═══ MARCO EMOCIONAL DE VENTA ═══',
+'El cliente NO compra el guante. Compra el día que su familiar levante la taza de café con su propia mano.',
+'DOLOR (4 tipos):',
+'  Físico: no puede abrir la mano, hacer fuerza, sostener objetos.',
+'  Logístico: viven lejos de clínicas, no hay turnos, transporte caro.',
+'  Financiero: $40-80 por sesión es insostenible — buscan solución sin deuda.',
+'  Emocional: ver sufrir al familiar, impotencia, culpa, miedo de no mejorar.',
+'DESEO REAL: esperanza de recuperación, autonomía para el paciente, alivio de culpa para el cuidador.',
+'PROMESA RACIONAL: rehabilitación neuromotora probada, 2,400+ pacientes.',
+'PROMESA EMOCIONAL: el movimiento que se perdió puede volver — necesita estimulación constante, no operaciones.',
+'RESPALDO: pago al retirar, cero adelanto, si no convence no lo retira.',
+'',
+'═══ OBJECIONES ═══',
+'¿Funciona? → "más de 2,400 pacientes en Latinoamérica — y el pago es al retirar. Si no convence, no lo retira 😊"',
+'¿Qué incluye? → "guante robótico, guante modo espejo, controlador de potencia y pelota de rehabilitación — kit completo"',
+'¿Qué marca? → "Syrebo — tecnología robótica de rehabilitación usada en clínicas y terapias físicas"',
+'Muy caro → op1: "$54.99 + Kit Hybrid GRATIS" / op2 final: "$49.99 sin el kit"',
+'Lo pienso → "claro, recuerde que paga al retirar — cero riesgo ✅ ¿le confirmo la agencia de su ciudad?"',
+'¿Tienen otros aparatos? → "el guante es nuestro equipo especializado — genera el movimiento, no solo lo acompaña 💪"',
+'¿Tienen local? → "somos 100% envío — Servientrega lleva a agencia de su ciudad, paga al retirar"',
+'No confío → "por eso el pago es al retirar — no le pedimos ni un centavo adelantado. Si no convence, no lo paga."',
+'¿Solo sirve para manos? → "sí, especializado para rehabilitación de manos y dedos — eso lo hace más efectivo que aparatos generales"',
+'No tengo agencia cerca → buscar la agencia más cercana de su ciudad en Servientrega',
+'Colombia → verificar cobertura antes de confirmar'
+].join('\n');
+
+var CAMILA_SP_DIRECT = [
+'Eres Camila, asistente experta de ProMarket Ecuador.',
+'Ahora estás hablando directamente con tu dueño/jefe (Alejo). NO estás analizando un chat de cliente — es una conversación 1:1.',
+'Responde en texto normal (no JSON). Puedes:',
+'- Responder preguntas de estrategia de ventas',
+'- Ayudar a redactar mensajes difíciles',
+'- Recibir instrucciones nuevas y confirmar que las aprendiste',
+'- Analizar situaciones de clientes específicos',
+'- Sugerir mejoras al proceso de venta',
+'- Explicar cómo manejar objecciones o casos especiales',
+'Cuando el dueño te enseñe algo nuevo importante que debas aplicar siempre,',
+'di al FINAL de tu respuesta en una línea sola: 💾 GUARDAR: [resumen del aprendizaje en 1 línea]',
+'Sé directa, concisa y útil. Habla como una vendedora experta hablando con su jefe — sin rodeos.'
+].join('\n');
+
+function camilaBrainGet(){
+  var brain=JSON.parse(localStorage.getItem('pm_camila_brain_v1')||'[]');
+  if(!brain.length)return '';
+  return '\n\n═══ APRENDIZAJES GUARDADOS (aplica siempre) ═══\n'+brain.map(function(b,i){return (i+1)+'. '+b.texto;}).join('\n');
+}
 
 function renderCamila(){
   var el=document.getElementById('camila-container');
   if(!el)return;
+  var tab=window._camilaTab||'analizar';
   el.innerHTML=
     '<div style="padding:14px;">'
-    +'<div style="font-size:12px;font-weight:700;color:#E8650A;margin-bottom:10px;letter-spacing:.06em;">💬 CAMILA — ANÁLISIS AUTOMÁTICO DE CHAT</div>'
-    +'<div style="font-size:12px;color:#666;margin-bottom:12px;line-height:1.5;">Pega el chat completo de WhatsApp → Camila lee el contexto, detecta el cliente y te dice exactamente qué responder.</div>'
-    +'<textarea id="cam-in" placeholder="[7:50 a.m., 8/6/2026] +593 99 123 4567: Hola quiero el guante&#10;[7:51 a.m., 8/6/2026] Promarket Ec: Hola! 👋..." rows="7" style="width:100%;padding:12px;background:#111;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;resize:vertical;box-sizing:border-box;font-family:inherit;line-height:1.5;margin-bottom:12px;"></textarea>'
+    +'<div style="font-size:12px;font-weight:700;color:#E8650A;margin-bottom:10px;letter-spacing:.06em;">🤖 CAMILA — ASISTENTE VIRTUAL PROMARKET</div>'
+    +'<div style="display:flex;gap:6px;margin-bottom:14px;">'
+      +'<button onclick="window._camilaTab=\'analizar\';renderCamila();" style="flex:1;padding:8px 4px;background:'+(tab==='analizar'?'#E8650A':'#1a1a1a')+';border:1px solid '+(tab==='analizar'?'#E8650A':'#333')+';border-radius:7px;color:'+(tab==='analizar'?'#fff':'#888')+';font-size:11px;font-weight:700;cursor:pointer;letter-spacing:.03em;">💬 ANALIZAR</button>'
+      +'<button onclick="window._camilaTab=\'hablar\';renderCamila();" style="flex:1;padding:8px 4px;background:'+(tab==='hablar'?'#E8650A':'#1a1a1a')+';border:1px solid '+(tab==='hablar'?'#E8650A':'#333')+';border-radius:7px;color:'+(tab==='hablar'?'#fff':'#888')+';font-size:11px;font-weight:700;cursor:pointer;letter-spacing:.03em;">🧠 HABLAR</button>'
+      +'<button onclick="window._camilaTab=\'cerebro\';renderCamila();" style="flex:1;padding:8px 4px;background:'+(tab==='cerebro'?'#E8650A':'#1a1a1a')+';border:1px solid '+(tab==='cerebro'?'#E8650A':'#333')+';border-radius:7px;color:'+(tab==='cerebro'?'#fff':'#888')+';font-size:11px;font-weight:700;cursor:pointer;letter-spacing:.03em;">📚 CEREBRO</button>'
+    +'</div>'
+    +(tab==='analizar'?_camilaTabAnalizar():tab==='hablar'?_camilaTabHablar():_camilaTabCerebro())
+    +'</div>';
+}
+
+function _camilaTabAnalizar(){
+  return '<div style="font-size:12px;color:#666;margin-bottom:12px;line-height:1.5;">Pega el chat completo de WhatsApp → Camila detecta el cliente y te dice exactamente qué responder.</div>'
+    +'<textarea id="cam-in" placeholder="[7:50 a.m., 10/6/2026] +593 99 123 4567: Hola quiero el guante&#10;[7:51 a.m., 10/6/2026] Promarket Ec: Hola! 👋..." rows="7" style="width:100%;padding:12px;background:#111;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;resize:vertical;box-sizing:border-box;font-family:inherit;line-height:1.5;margin-bottom:12px;"></textarea>'
     +'<button id="cam-btn" onclick="camilaEnviar()" style="width:100%;padding:13px;background:#E8650A;border:none;border-radius:9px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:14px;letter-spacing:.02em;">🤖 Analizar y obtener mensaje</button>'
     +'<div id="cam-resp" style="display:none;">'
       +'<div style="background:#0a1a0a;border:2px solid #27AE60;border-radius:12px;padding:14px;margin-bottom:10px;">'
@@ -5733,8 +5877,43 @@ function renderCamila(){
       +'<div id="cam-meta" style="background:#111;border:1px solid #222;border-radius:10px;padding:12px;margin-bottom:10px;font-size:12px;color:#888;"></div>'
       +'<button onclick="camilaGuardar()" style="width:100%;padding:11px;border:1px solid #27AE60;border-radius:8px;background:transparent;color:#27AE60;font-size:13px;font-weight:600;cursor:pointer;margin-bottom:14px;">✅ Marcar como enviado y registrar</button>'
     +'</div>'
-    +'<div id="cam-hist"></div>'
-    +'</div>';
+    +'<div id="cam-hist"></div>';
+}
+
+function _camilaTabHablar(){
+  if(!window._camilaChat)window._camilaChat=[];
+  var msgs=window._camilaChat;
+  var msgsHtml=msgs.length?msgs.map(function(m){
+    var isUser=m.r==='user';
+    var saveBtn=m.saveHint?('<div style="margin-top:5px;"><button onclick="camilaSaveLearn(\''+m.saveHint.replace(/\\/g,'\\\\').replace(/'/g,"\\'")+'\')" style="padding:3px 9px;background:transparent;border:1px solid #27AE60;border-radius:5px;color:#27AE60;font-size:11px;cursor:pointer;">💾 Guardar este aprendizaje</button></div>'):'';
+    return '<div style="margin-bottom:10px;display:flex;justify-content:'+(isUser?'flex-end':'flex-start')+'">'
+      +'<div style="max-width:85%;background:'+(isUser?'#E8650A':'#1a1a1a')+';border:1px solid '+(isUser?'#E8650A':'#333')+';border-radius:12px;'+(isUser?'border-bottom-right-radius:3px':'border-bottom-left-radius:3px')+';padding:9px 12px;font-size:13px;color:#fff;white-space:pre-wrap;line-height:1.55;">'
+      +escH(m.t)+saveBtn
+      +'</div></div>';
+  }).join(''):'<div style="color:#555;font-size:13px;padding:10px 0;">Escribe un mensaje para comenzar...</div>';
+  return '<div style="font-size:12px;color:#666;margin-bottom:10px;line-height:1.5;">Habla directo con Camila — enséñale estrategias, pide ayuda o consulta cómo manejar una situación de venta.</div>'
+    +'<div id="cam-chat-msgs" style="background:#111;border:1px solid #222;border-radius:10px;padding:12px;min-height:120px;max-height:300px;overflow-y:auto;margin-bottom:10px;">'+msgsHtml+'</div>'
+    +'<div style="display:flex;gap:8px;align-items:flex-end;">'
+      +'<textarea id="cam-chat-in" placeholder="Pregunta, enseña o pide ayuda... (Enter envía, Shift+Enter nueva línea)" rows="2" style="flex:1;padding:10px;background:#111;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;resize:none;font-family:inherit;line-height:1.4;" onkeydown="if(event.key===\'Enter\'&&!event.shiftKey){event.preventDefault();camilaChatEnviar();}"></textarea>'
+      +'<button id="cam-chat-btn" onclick="camilaChatEnviar()" style="padding:11px 16px;background:#E8650A;border:none;border-radius:8px;color:#fff;font-size:18px;font-weight:700;cursor:pointer;min-width:46px;">→</button>'
+    +'</div>'
+    +(msgs.length?'<button onclick="window._camilaChat=[];renderCamila();" style="margin-top:8px;width:100%;padding:7px;background:transparent;border:1px solid #333;border-radius:7px;color:#555;font-size:11px;cursor:pointer;">🗑 Limpiar conversación</button>':'');
+}
+
+function _camilaTabCerebro(){
+  var brain=JSON.parse(localStorage.getItem('pm_camila_brain_v1')||'[]');
+  return '<div style="font-size:12px;color:#666;margin-bottom:10px;line-height:1.5;">Los aprendizajes guardados se inyectan automáticamente en cada análisis de chat y conversación.</div>'
+    +'<textarea id="cam-brain-in" placeholder="Escribe un aprendizaje nuevo que Camila debe aplicar siempre..." rows="2" style="width:100%;padding:10px;background:#111;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;resize:none;box-sizing:border-box;font-family:inherit;margin-bottom:8px;"></textarea>'
+    +'<button onclick="camilaSaveLearnUI()" style="width:100%;padding:10px;background:#27AE60;border:none;border-radius:8px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:14px;">💾 Guardar aprendizaje</button>'
+    +(brain.length
+      ?'<div style="font-size:11px;font-weight:700;color:#555;margin-bottom:8px;letter-spacing:.06em;">APRENDIZAJES ACTIVOS ('+brain.length+')</div>'
+        +brain.map(function(b,i){
+          return '<div style="background:#111;border:1px solid #222;border-radius:8px;padding:10px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">'
+            +'<div style="flex:1;"><div style="font-size:12px;color:#ddd;line-height:1.5;">'+escH(b.texto)+'</div><div style="font-size:10px;color:#555;margin-top:3px;">'+escH(b.fecha)+'</div></div>'
+            +'<button onclick="camilaDeleteLearn('+i+')" style="padding:3px 8px;background:transparent;border:1px solid #444;border-radius:5px;color:#666;font-size:11px;cursor:pointer;white-space:nowrap;flex-shrink:0;">✕</button>'
+          +'</div>';
+        }).join('')
+      :'<div style="color:#555;font-size:13px;padding:8px 0;">Sin aprendizajes guardados — Camila solo usa su conocimiento base.</div>');
 }
 
 async function camilaEnviar(){
@@ -5747,7 +5926,7 @@ async function camilaEnviar(){
   try{
     var url='https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+encodeURIComponent(key);
     var body={
-      systemInstruction:{parts:[{text:CAMILA_SP}]},
+      systemInstruction:{parts:[{text:CAMILA_SP+camilaBrainGet()}]},
       contents:[{role:'user',parts:[{text:'Analiza este chat de WhatsApp y devuelve el JSON:\n\n'+inp}]}],
       generationConfig:{temperature:0.3,maxOutputTokens:1200,topP:0.85}
     };
@@ -5756,7 +5935,6 @@ async function camilaEnviar(){
     var data=await res.json();
     var raw=data.candidates&&data.candidates[0]&&data.candidates[0].content&&data.candidates[0].content.parts&&data.candidates[0].content.parts[0]&&data.candidates[0].content.parts[0].text||'';
     if(!raw)throw new Error('Respuesta vacía');
-    // Limpiar markdown y extraer JSON aunque venga con texto alrededor
     var clean=raw.replace(/```json\s*/gi,'').replace(/```\s*/gi,'').trim();
     var parsed;
     try{ parsed=JSON.parse(clean); }catch(pe){
@@ -5769,7 +5947,6 @@ async function camilaEnviar(){
     var nom=parsed.nombre||('Chat '+tel.slice(-4));
     var notas=parsed.notas||'';
     if(!msg)throw new Error('No se generó mensaje');
-    // Auto-registrar o actualizar lead en Seguimiento
     var leads=segGetLeads();
     var t8=tel.replace(/\D/g,'').slice(-8);
     var ex=t8?leads.find(function(l){return (l.tel||'').replace(/\D/g,'').slice(-8)===t8;}):null;
@@ -5810,14 +5987,12 @@ function camilaGuardar(){
     var conv=JSON.parse(localStorage.getItem('pm_conv_v1')||'{}');
     var k=lid||'_sin_lead';
     if(!conv[k])conv[k]=[];
-    // Guard contra doble registro del mismo mensaje
     var lastOut=(conv[k].filter(function(m){return m.d==='out';}).slice(-1)[0]||{}).t;
     if(lastOut===txt){showToast('Ya estaba registrado ✅');return;}
     var now=new Date().toISOString();
     if(inp.trim())conv[k].push({f:now,d:'in',t:inp.trim()});
     conv[k].push({f:now,d:'out',t:txt});
     localStorage.setItem('pm_conv_v1',JSON.stringify(conv));
-    // Actualizar timestamp de último contacto en el lead
     if(lid){
       var leads=segGetLeads();
       var lead=leads.find(function(l){return l.id===lid;});
@@ -5830,6 +6005,75 @@ function camilaGuardar(){
   showToast('Registrado ✅');
   renderCamila();
   camilaShowHistory();
+}
+
+async function camilaChatEnviar(){
+  var key;
+  try{key=getGeminiKey();}catch(e){showToast('Configura tu API Key (botón 🔑 arriba)');return;}
+  var inp=(document.getElementById('cam-chat-in')||{}).value||'';
+  if(!inp.trim())return;
+  if(!window._camilaChat)window._camilaChat=[];
+  window._camilaChat.push({r:'user',t:inp.trim()});
+  var btn=document.getElementById('cam-chat-btn');
+  if(btn){btn.disabled=true;btn.textContent='⏳';}
+  var inEl=document.getElementById('cam-chat-in');
+  if(inEl)inEl.value='';
+  renderCamila();
+  var msgsEl=document.getElementById('cam-chat-msgs');
+  if(msgsEl)msgsEl.scrollTop=msgsEl.scrollHeight;
+  try{
+    var url='https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+encodeURIComponent(key);
+    var history=window._camilaChat.slice(0,-1).map(function(m){return {role:m.r==='user'?'user':'model',parts:[{text:m.t}]};});
+    var body={
+      systemInstruction:{parts:[{text:CAMILA_SP_DIRECT+camilaBrainGet()}]},
+      contents:history.concat([{role:'user',parts:[{text:inp.trim()}]}]),
+      generationConfig:{temperature:0.5,maxOutputTokens:800,topP:0.9}
+    };
+    var res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(!res.ok){var er=await res.json();throw new Error((er.error&&er.error.message)||'HTTP '+res.status);}
+    var data=await res.json();
+    var raw=data.candidates&&data.candidates[0]&&data.candidates[0].content&&data.candidates[0].content.parts&&data.candidates[0].content.parts[0]&&data.candidates[0].content.parts[0].text||'';
+    if(!raw)throw new Error('Respuesta vacía');
+    var saveHint='';
+    var sm=raw.match(/💾\s*GUARDAR:\s*(.+)/);
+    if(sm)saveHint=sm[1].trim();
+    window._camilaChat.push({r:'camila',t:raw,saveHint:saveHint});
+  }catch(e){
+    window._camilaChat.push({r:'camila',t:'Error: '+e.message});
+  }
+  if(btn){btn.disabled=false;btn.textContent='→';}
+  renderCamila();
+  var msgsEl2=document.getElementById('cam-chat-msgs');
+  if(msgsEl2)msgsEl2.scrollTop=msgsEl2.scrollHeight;
+}
+
+function camilaSaveLearn(texto){
+  if(!texto||!texto.trim()){showToast('Texto vacío');return;}
+  var brain=JSON.parse(localStorage.getItem('pm_camila_brain_v1')||'[]');
+  if(brain.find(function(b){return b.texto.trim()===texto.trim();})){showToast('Ya estaba guardado ✅');return;}
+  var d=new Date();
+  brain.push({texto:texto.trim(),fecha:d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear()});
+  localStorage.setItem('pm_camila_brain_v1',JSON.stringify(brain));
+  showToast('Aprendizaje guardado 💾');
+  if((window._camilaTab||'analizar')==='cerebro')renderCamila();
+}
+
+function camilaSaveLearnUI(){
+  var el=document.getElementById('cam-brain-in');
+  if(!el)return;
+  var txt=el.value.trim();
+  if(!txt){showToast('Escribe el aprendizaje primero');return;}
+  camilaSaveLearn(txt);
+  el.value='';
+  renderCamila();
+}
+
+function camilaDeleteLearn(idx){
+  var brain=JSON.parse(localStorage.getItem('pm_camila_brain_v1')||'[]');
+  brain.splice(idx,1);
+  localStorage.setItem('pm_camila_brain_v1',JSON.stringify(brain));
+  showToast('Eliminado');
+  renderCamila();
 }
 
 function camilaShowHistory(){
@@ -5852,7 +6096,6 @@ function camilaShowHistory(){
       +'</div>';
     }).join('');
 }
-
 //  IMPORTAR CSV FACEBOOK
 // ════════════════════════════════════════════════════════
 function importarCSVFacebook(input){
