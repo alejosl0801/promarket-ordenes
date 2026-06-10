@@ -6,6 +6,7 @@
 <title>Promarket — Órdenes</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" href="icon-192.png">
 <meta name="theme-color" content="#0E0E0E">
@@ -1444,6 +1445,7 @@ var GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini
 var GROQ_URL   = 'https://api.groq.com/openai/v1/chat/completions';
 var GROQ_MODEL       = 'llama-3.3-70b-versatile';
 var GROQ_MODEL_BATCH = 'llama-3.1-8b-instant';
+var GOOGLE_CLIENT_ID = '93222047068-anm321jikj8ke6jdmpi9j2fm3j7gc29q.apps.googleusercontent.com';
 var STORAGE_KEY  = 'pm_ordenes_v2';
 var CATALOG_KEY  = 'pm_catalogo_v1';
 var DRAFT_KEY    = 'pm_draft_v1';
@@ -5921,8 +5923,25 @@ function renderCamila(){
     +'</div>';
 }
 
+function _driveConnectedHtml(){
+  var fid=localStorage.getItem('pm_drive_folder_id')||'';
+  return '<div style="font-size:11px;color:#27AE60;margin-bottom:6px;">✅ Conectado con Google</div>'
+    +'<input id="cam-drive-folder" placeholder="Pega el link de la carpeta Drive (drive.google.com/drive/folders/...)" value="'+escH(fid)+'" style="width:100%;padding:8px;background:#111;border:1px solid #333;border-radius:6px;color:#fff;font-size:12px;box-sizing:border-box;margin-bottom:8px;">'
+    +'<button onclick="driveProcesar()" style="width:100%;padding:10px;background:#E8650A;border:none;border-radius:7px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">▶ Procesar todos los ZIPs de esa carpeta</button>';
+}
+
 function _camilaTabAnalizar(){
-  return '<div style="font-size:12px;color:#666;margin-bottom:10px;line-height:1.5;">Sube 1 o varios chats exportados de WhatsApp (.zip/.txt) → Camila analiza cada uno y te da el mensaje a enviar.</div>'
+  var driveConnected=!!(window._driveToken);
+  return '<div style="font-size:12px;color:#666;margin-bottom:10px;line-height:1.5;">Sube chats desde tu PC o procésalos directo desde Google Drive.</div>'
+    // Google Drive section
+    +'<div style="background:#0d1117;border:1px solid #30363d;border-radius:10px;padding:12px;margin-bottom:10px;">'
+      +'<div style="font-size:12px;font-weight:700;color:#aaa;margin-bottom:8px;">☁️ Google Drive — procesar carpeta entera</div>'
+      +(driveConnected
+        ?_driveConnectedHtml()
+        :'<div style="font-size:11px;color:#666;margin-bottom:8px;">Conecta tu Drive para procesar ZIPs sin descargarlos — Camila los lee directo de la nube.</div>'
+         +'<button onclick="driveConectar()" style="width:100%;padding:10px;background:transparent;border:1.5px solid #4A90E2;border-radius:7px;color:#4A90E2;font-size:13px;font-weight:700;cursor:pointer;">🔗 Conectar Google Drive</button>')
+    +'</div>'
+    +'<div style="text-align:center;font-size:11px;color:#444;margin-bottom:8px;">— o sube desde tu PC —</div>'
     +'<input type="file" id="cam-file-input" accept=".txt,.zip" multiple style="display:none" onchange="camilaCargarArchivo(this)">'
     +'<button onclick="document.getElementById(\'cam-file-input\').click()" style="width:100%;padding:10px;background:#1a1a2e;border:1.5px dashed #4A90E2;border-radius:8px;color:#4A90E2;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:8px;letter-spacing:.02em;">📂 Subir chats (.zip / .txt) — uno o varios a la vez</button>'
     +'<div id="cam-batch-wrap" style="display:none;">'
@@ -6214,6 +6233,106 @@ function camilaBatchReset(){
   var bw=document.getElementById('cam-batch-wrap');
   if(sw)sw.style.display='block';
   if(bw)bw.style.display='none';
+}
+
+// ─── GOOGLE DRIVE ──────────────────────────────────────────────────────────
+function driveConectar(){
+  if(typeof google==='undefined'||!google.accounts){showError('Google no cargó — recarga la app');return;}
+  if(!window._driveTokenClient){
+    window._driveTokenClient=google.accounts.oauth2.initTokenClient({
+      client_id:GOOGLE_CLIENT_ID,
+      scope:'https://www.googleapis.com/auth/drive.readonly',
+      callback:function(resp){
+        if(resp.error){showError('Google error: '+resp.error);return;}
+        window._driveToken=resp.access_token;
+        showToast('✅ Google Drive conectado');
+        renderCamila();
+      }
+    });
+  }
+  window._driveTokenClient.requestAccessToken();
+}
+
+async function driveProcesar(){
+  if(!window._driveToken){showError('Conecta tu Google Drive primero');return;}
+  try{getAIKey();}catch(e){showToast('Configura tu API Key (botón 🔑 arriba)');return;}
+  var inp=document.getElementById('cam-drive-folder');
+  var raw=inp?inp.value.trim():'';
+  if(!raw){showError('Pega el link de la carpeta de Drive');return;}
+  var folderId=raw;
+  var m=raw.match(/folders\/([a-zA-Z0-9_-]+)/);
+  if(m)folderId=m[1];
+  localStorage.setItem('pm_drive_folder_id',folderId);
+  var sw=document.getElementById('cam-single-wrap');
+  var bw=document.getElementById('cam-batch-wrap');
+  var br=document.getElementById('cam-batch-results');
+  var bs=document.getElementById('cam-batch-status');
+  var bb=document.getElementById('cam-batch-bar');
+  if(sw)sw.style.display='none';
+  if(bw)bw.style.display='block';
+  if(br)br.innerHTML='';
+  if(bb){bb.style.width='0%';bb.style.background='#E8650A';}
+  if(bs)bs.textContent='☁️ Leyendo carpeta de Drive...';
+  try{
+    var q=encodeURIComponent("'"+folderId+"' in parents and (name contains '.zip' or name contains '.txt') and trashed=false");
+    var listRes=await fetch('https://www.googleapis.com/drive/v3/files?q='+q+'&fields=files(id,name,size)&pageSize=200',{headers:{'Authorization':'Bearer '+window._driveToken}});
+    if(!listRes.ok){
+      if(listRes.status===401){window._driveToken=null;showError('Sesión Google expirada — reconéctate');if(bw)bw.style.display='none';if(sw)sw.style.display='block';renderCamila();return;}
+      throw new Error('Drive API: HTTP '+listRes.status);
+    }
+    var listData=await listRes.json();
+    var files=listData.files||[];
+    if(!files.length){if(bw)bw.style.display='none';if(sw)sw.style.display='block';showToast('No se encontraron ZIPs ni TXTs en esa carpeta');return;}
+    if(bs)bs.textContent='☁️ '+files.length+' archivos encontrados — iniciando análisis...';
+    var okCount=0;
+    for(var i=0;i<files.length;i++){
+      var df=files[i];
+      if(bs)bs.textContent='⏳ Procesando '+(i+1)+'/'+files.length+' — '+df.name.slice(0,35)+'...';
+      if(bb)bb.style.width=Math.round((i/files.length)*100)+'%';
+      try{
+        var dlRes=await fetch('https://www.googleapis.com/drive/v3/files/'+df.id+'?alt=media',{headers:{'Authorization':'Bearer '+window._driveToken}});
+        if(!dlRes.ok)throw new Error('No se pudo descargar '+df.name);
+        var blob=await dlRes.blob();
+        var file=new File([blob],df.name);
+        var text=await camilaExtraerTexto(file);
+        var raw2=await camilaCallAI(buildCamilaSP()+camilaBrainGet(),'Analiza este chat de WhatsApp y devuelve el JSON:\n\n'+text,[],{jsonMode:true,maxTokens:1200,batchModel:true});
+        if(!raw2)throw new Error('Respuesta vacía');
+        var clean=raw2.replace(/```json\s*/gi,'').replace(/```\s*/gi,'').trim();
+        var parsed;try{parsed=JSON.parse(clean);}catch(pe){var mx=clean.match(/\{[\s\S]*\}/);if(mx){try{parsed=JSON.parse(mx[0]);}catch(pe2){throw new Error('JSON inválido');}}else{throw new Error('JSON inválido');}}
+        var msg=parsed.mensaje||'';var tel=(parsed.telefono||'').replace(/\s/g,'');var nom=parsed.nombre||('Chat '+(i+1));var notas=parsed.notas||'';
+        if(!msg)throw new Error('Sin mensaje');
+        window['_camBatch_'+i]={msg:msg,text:text,tel:tel,nom:nom};
+        if(br)br.insertAdjacentHTML('beforeend',
+          '<div id="cam-batch-card-'+i+'" style="background:#0a1a0a;border:2px solid #27AE60;border-radius:12px;padding:14px;margin-bottom:12px;">'
+            +'<div style="font-size:10px;color:#27AE60;font-weight:700;letter-spacing:.06em;margin-bottom:4px;">'+(i+1)+'. '+escH(df.name.slice(0,40))+'</div>'
+            +'<div style="font-size:11px;color:#888;margin-bottom:8px;">👤 '+escH(nom)+'  📱 '+escH(tel)+(notas?'  📝 '+escH(notas.slice(0,60)):'')+'</div>'
+            +'<div style="font-size:14px;color:#f0f0f0;white-space:pre-wrap;line-height:1.6;margin-bottom:10px;">'+escH(msg)+'</div>'
+            +'<div style="display:flex;gap:8px;">'
+              +'<button onclick="camilaBatchCopy('+i+')" style="flex:1;padding:9px;border:none;border-radius:7px;background:#27AE60;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">📋 Copiar</button>'
+              +'<button onclick="camilaBatchGuardar('+i+')" style="flex:1;padding:9px;border:1px solid #27AE60;border-radius:7px;background:transparent;color:#27AE60;font-size:13px;font-weight:600;cursor:pointer;">✅ Registrar</button>'
+            +'</div>'
+          +'</div>');
+        okCount++;
+      }catch(e2){
+        if(e2.message&&(e2.message.indexOf('429')!==-1||e2.message.toLowerCase().indexOf('cuota')!==-1)){
+          if(bs)bs.textContent='⏸ Límite Groq — esperando 65s para reintentar...';
+          await new Promise(function(r){setTimeout(r,65000);});
+          i--;continue;
+        }
+        if(br)br.insertAdjacentHTML('beforeend','<div style="background:#1a0a0a;border:1px solid #c0392b;border-radius:10px;padding:12px;margin-bottom:10px;"><div style="font-size:11px;color:#c0392b;font-weight:700;margin-bottom:4px;">❌ '+escH(df.name.slice(0,35))+'</div><div style="font-size:12px;color:#888;">'+escH(e2.message)+'</div></div>');
+      }
+      if(i<files.length-1){
+        var left2=files.length-1-i;
+        if(bs)bs.textContent='⏸ Esperando 8s… '+okCount+' listo'+(okCount!==1?'s':'')+', '+left2+' pendiente'+(left2!==1?'s':'')+'';
+        await new Promise(function(r){setTimeout(r,8000);});
+      }
+    }
+    if(bb){bb.style.width='100%';bb.style.background='#27AE60';}
+    if(bs)bs.textContent='✅ ¡Listo! '+okCount+'/'+files.length+' chats analizados desde Drive';
+  }catch(e){
+    if(bw)bw.style.display='none';if(sw)sw.style.display='block';
+    showError('Error Drive: '+e.message);
+  }
 }
 
 async function camilaEnviar(){
