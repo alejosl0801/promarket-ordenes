@@ -1,5 +1,5 @@
 # REGISTRO DE CLIENTES — PROMARKET ECUADOR
-## Última actualización: 8 de junio 2026 — 20:30
+## Última actualización: 9 de junio 2026 — 19:30
 
 ---
 
@@ -23,7 +23,17 @@
 
 ---
 
-## LEADS NUEVOS 8/6 — EN CONVERSACIÓN ACTIVA
+## LEADS NUEVOS 9/6 — EN CONVERSACIÓN ACTIVA
+
+| Alias | Contacto | Producto | Ciudad | Estado / Notas |
+|---|---|---|---|---|
+| Chat 3391 | +593 99 563 3391 | Guante | — | **DEDO GATILLO** — para familiar. Respondió condición. Esperando ciudad. Bot cometió error: preguntó "¿para quién?" cuando ya quería comprar y usó urgencia falsa. Ir directo al cierre cuando dé ciudad. |
+| Chat 1337 | +593 99 916 1337 | Guante | Quito | Hermano operado de **tumor craneal** — pérdida parcial de movilidad post-cirugía. Ciudad confirmada: Quito. Respuesta enviada: estimulación neurológica + agencia Quito. Pendiente respuesta. |
+| Chat 3775 | +593 98 432 3775 | Guante | — | Familiar con **ACV** — no puede abrir/cerrar la mano. Respuesta enviada: mecanismo ACV + pedir ciudad. Pendiente ciudad. |
+
+---
+
+## LEADS 8/6 — EN CONVERSACIÓN ACTIVA
 
 | Alias | Contacto | Producto | Ciudad | Estado / Notas |
 |---|---|---|---|---|
@@ -32,7 +42,6 @@
 | Chat 0433 | +593 99 305 0433 | Guante | — | Familiar con cuadriplejia espástica — esperando ciudad |
 | Chat 8581 | +593 99 343 8581 | Guante | Loja | Sin tienda física explicado. Preguntó por otros aparatos. En conversación |
 | Chat 4148 | +593 99 981 4148 | Guante par | Ambato | Cuadriplejia 95%, no mueve ninguna mano. Quiso ir al local → explicado no hay tienda. Ofrecerle PAR $107.98 |
-| Chat 1337 | +593 99 916 1337 | Guante | — | Para hermano — esperando condición específica y ciudad |
 
 ---
 
@@ -88,4 +97,7 @@
 - **Carmen Sosa:** dar dirección exacta de agencia Ambato — fue y estaba cerrado
 - **Alex Fernando Lara:** confirmar si retiró el 8/6
 - **Chat 4148:** NO preguntar qué mano → ofrecer PAR $107.98 directamente
-- **Precios:** guante $59.99 lead nuevo / $49.99 liquidación D3+
+- **Chat 3391 (dedo gatillo):** cuando dé ciudad → ir directo al cierre, ya tiene intención de compra desde el primer mensaje
+- **Chat 1337 (tumor craneal):** en Quito, tiene agencia Servientrega — pedir datos cuando confirme
+- **Chat 3775 (ACV):** pendiente ciudad — cuando responda ir a confirmar agencia y cerrar
+- **Precios:** guante $59.99 lead nuevo / $49.99 + Kit Hybrid D3+
