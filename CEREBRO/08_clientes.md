@@ -1,5 +1,5 @@
 # REGISTRO DE CLIENTES — PROMARKET ECUADOR
-## Última actualización: 9 de junio 2026 — 19:30
+## Última actualización: 10 de junio 2026 — 08:35
 
 ---
 
@@ -22,6 +22,13 @@
 | #151380 | Jimmy Vera Peñafiel | +593 93 918 4423 | Guante x1 | 7/6/2026 |
 
 ---
+
+## LEADS NUEVOS 10/6 — EN CONVERSACIÓN ACTIVA
+
+| Alias | Contacto | Producto | Ciudad | Estado / Notas |
+|---|---|---|---|---|
+| Chat 2863 | +593 96 254 2863 | Guante izq | — | Para esposa, mano izquierda. Llegó con intención de compra. Bot cometió 3 errores (urgencia falsa ×2, preguntó para quién ×2). Respondió "cómo puedo adquirir". **Pendiente ciudad.** |
+| Chat 4970 | +593 98 220 4970 | Guante | — | Llegó con intención de compra. Vio precio $49.99 en anuncio. Bot generó confusión con "liquidación de $59.99 a $49.99". Cliente: "En el anuncio dice 49.99". **Confirmar $49.99 + pedir ciudad.** |
 
 ## LEADS NUEVOS 9/6 — EN CONVERSACIÓN ACTIVA
 
@@ -100,4 +107,6 @@
 - **Chat 3391 (dedo gatillo):** cuando dé ciudad → ir directo al cierre, ya tiene intención de compra desde el primer mensaje
 - **Chat 1337 (tumor craneal):** en Quito, tiene agencia Servientrega — pedir datos cuando confirme
 - **Chat 3775 (ACV):** pendiente ciudad — cuando responda ir a confirmar agencia y cerrar
-- **Precios:** guante $59.99 lead nuevo / $49.99 + Kit Hybrid D3+
+- **Chat 2863:** mano izquierda para esposa — cuando dé ciudad → precio $59.99 → nombre, cel, dirección
+- **Chat 4970:** vio anuncio $49.99 — confirmar ese precio + pedir ciudad, sin dar explicaciones
+- **Precios:** guante $59.99 lead nuevo / $49.99 anuncio activo / $49.99 + Kit Hybrid D3+
