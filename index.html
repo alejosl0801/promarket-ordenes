@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Promarket — Órdenes</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" href="icon-192.png">
 <meta name="theme-color" content="#0E0E0E">
@@ -5489,11 +5490,19 @@ var CAMILA_SP = 'Eres Camila, asistente de ventas de ProMarket Ecuador. Analizas
 function renderCamila(){
   var el=document.getElementById('camila-container');
   if(!el)return;
+  var p=getActiveProvider();
+  var badge=p?'<span style="font-size:10px;padding:2px 7px;border-radius:4px;background:#0d1a2e;border:1px solid #4A90E2;color:#4A90E2;font-weight:700;margin-left:6px;">⚡ GROQ</span>':'<span style="font-size:10px;color:#555;margin-left:6px;">Sin key</span>';
   el.innerHTML=
     '<div style="padding:14px;">'
-    +'<div style="font-size:12px;font-weight:700;color:#E8650A;margin-bottom:10px;letter-spacing:.06em;">💬 CAMILA — ANÁLISIS AUTOMÁTICO DE CHAT</div>'
-    +'<div style="font-size:12px;color:#666;margin-bottom:12px;line-height:1.5;">Pega el chat completo de WhatsApp → Camila lee el contexto, detecta el cliente y te dice exactamente qué responder.</div>'
-    +'<textarea id="cam-in" placeholder="[7:50 a.m., 8/6/2026] +593 99 123 4567: Hola quiero el guante&#10;[7:51 a.m., 8/6/2026] Promarket Ec: Hola! 👋..." rows="7" style="width:100%;padding:12px;background:#111;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;resize:vertical;box-sizing:border-box;font-family:inherit;line-height:1.5;margin-bottom:12px;"></textarea>'
+    +'<div style="display:flex;align-items:center;margin-bottom:10px;">'
+      +'<span style="font-size:12px;font-weight:700;color:#E8650A;letter-spacing:.06em;">🤖 CAMILA — ASISTENTE VIRTUAL PROMARKET</span>'+badge
+    +'</div>'
+    +'<div style="font-size:12px;color:#666;margin-bottom:10px;line-height:1.5;">Pega el chat o sube el archivo exportado de WhatsApp → Camila te dice exactamente qué responder.</div>'
+    // Upload button
+    +'<input type="file" id="cam-file-input" accept=".txt,.zip" style="display:none" onchange="camilaCargarArchivo(this)">'
+    +'<button onclick="document.getElementById(\'cam-file-input\').click()" style="width:100%;padding:10px;background:#1a1a2e;border:1.5px dashed #4A90E2;border-radius:8px;color:#4A90E2;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:8px;letter-spacing:.02em;">📂 Subir chat exportado (.zip o .txt)</button>'
+    +'<div style="text-align:center;font-size:11px;color:#444;margin-bottom:8px;">— o pega el texto directamente —</div>'
+    +'<textarea id="cam-in" placeholder="[7:50 a.m., 10/6/2026] +593 99 123 4567: Hola quiero el guante&#10;[7:51 a.m., 10/6/2026] Promarket Ec: Hola! 👋..." rows="6" style="width:100%;padding:12px;background:#111;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;resize:vertical;box-sizing:border-box;font-family:inherit;line-height:1.5;margin-bottom:12px;"></textarea>'
     +'<button id="cam-btn" onclick="camilaEnviar()" style="width:100%;padding:13px;background:#E8650A;border:none;border-radius:9px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:14px;letter-spacing:.02em;">🤖 Analizar y obtener mensaje</button>'
     +'<div id="cam-resp" style="display:none;">'
       +'<div style="background:#0a1a0a;border:2px solid #27AE60;border-radius:12px;padding:14px;margin-bottom:10px;">'
@@ -5508,26 +5517,47 @@ function renderCamila(){
     +'</div>';
 }
 
+function camilaCargarArchivo(input){
+  var file=input.files[0];
+  if(!file)return;
+  input.value='';
+  var btn=document.getElementById('cam-btn');
+  var ext=file.name.toLowerCase();
+  if(ext.endsWith('.txt')){
+    var reader=new FileReader();
+    reader.onload=function(e){
+      var ta=document.getElementById('cam-in');
+      if(ta){ta.value=e.target.result;ta.style.borderColor='#4A90E2';}
+      showToast('✅ Chat cargado — '+file.name.slice(0,30));
+    };
+    reader.onerror=function(){showError('No se pudo leer el archivo');};
+    reader.readAsText(file,'UTF-8');
+  } else if(ext.endsWith('.zip')){
+    if(typeof JSZip==='undefined'){showError('Librería ZIP no cargada — recarga la app');return;}
+    JSZip.loadAsync(file).then(function(zip){
+      var txtFile=null;
+      zip.forEach(function(path,f){if(!f.dir&&path.toLowerCase().endsWith('.txt'))txtFile=f;});
+      if(!txtFile){showError('No se encontró .txt dentro del ZIP');return;}
+      txtFile.async('text').then(function(text){
+        var ta=document.getElementById('cam-in');
+        if(ta){ta.value=text;ta.style.borderColor='#4A90E2';}
+        showToast('✅ Chat extraído del ZIP — '+file.name.slice(0,30));
+      });
+    }).catch(function(){showError('Error al abrir el ZIP — ¿está dañado?');});
+  } else {
+    showError('Solo se aceptan archivos .txt o .zip exportados de WhatsApp');
+  }
+}
+
 async function camilaEnviar(){
-  var key;
-  try{ key=getGeminiKey(); }catch(e){ showToast('Configura tu API Key (botón 🔑 arriba)'); return; }
+  try{ getAIKey(); }catch(e){ showToast('Configura tu API Key (botón 🔑 arriba)'); return; }
   var inp=(document.getElementById('cam-in')||{}).value||'';
   if(!inp.trim()){showToast('Pega el chat del cliente primero');return;}
   var btn=document.getElementById('cam-btn');
   if(btn){btn.disabled=true;btn.textContent='⏳ Analizando chat...';}
   try{
-    var url='https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+encodeURIComponent(key);
-    var body={
-      systemInstruction:{parts:[{text:CAMILA_SP}]},
-      contents:[{role:'user',parts:[{text:'Analiza este chat de WhatsApp y devuelve el JSON:\n\n'+inp}]}],
-      generationConfig:{temperature:0.3,maxOutputTokens:400,topP:0.85}
-    };
-    var res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-    if(!res.ok){var er=await res.json();throw new Error((er.error&&er.error.message)||'HTTP '+res.status);}
-    var data=await res.json();
-    var raw=data.candidates&&data.candidates[0]&&data.candidates[0].content&&data.candidates[0].content.parts&&data.candidates[0].content.parts[0]&&data.candidates[0].content.parts[0].text||'';
+    var raw=await camilaCallAI(buildCamilaSP()+camilaBrainGet(),'Analiza este chat de WhatsApp y devuelve el JSON:\n\n'+inp,[],{jsonMode:true,maxTokens:1500});
     if(!raw)throw new Error('Respuesta vacía');
-    // Limpiar markdown si viene con ```json
     var clean=raw.replace(/```json\s*/gi,'').replace(/```\s*/gi,'').trim();
     var parsed;
     try{ parsed=JSON.parse(clean); }catch(pe){ throw new Error('IA no devolvió JSON válido: '+raw.slice(0,80)); }
