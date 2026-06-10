@@ -1,4 +1,4 @@
-const CACHE = 'pm-v29';
+const CACHE = 'pm-v30';
 
 self.addEventListener('install', e => {
   self.skipWaiting();
