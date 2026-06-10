@@ -784,10 +784,21 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 </div>
 
 <div class="modal-bg" id="modal-apikey">
-  <div class="modal-box" style="max-width:440px">
-    <div class="modal-title">🔑 Gemini API Key</div>
-    <p style="color:var(--muted2);font-size:13px;margin-bottom:14px">Obtén tu key gratis en <strong>aistudio.google.com</strong> → "Get API key". Se guarda solo en tu navegador.</p>
-    <input type="text" id="input-apikey" placeholder="AIza..." style="width:100%;margin-bottom:12px;font-family:monospace;font-size:13px">
+  <div class="modal-box" style="max-width:460px">
+    <div class="modal-title">🔑 API Key para Camila IA</div>
+    <div style="display:flex;gap:8px;margin-bottom:16px;">
+      <button id="tab-groq-btn" onclick="apiKeyTab('groq')" class="btn btn-primary" style="flex:1;font-size:13px">⚡ Groq (Gratis · 14,400/día)</button>
+      <button id="tab-gemini-btn" onclick="apiKeyTab('gemini')" class="btn btn-secondary" style="flex:1;font-size:13px">🔵 Gemini (1,500/día)</button>
+    </div>
+    <div id="panel-groq">
+      <p style="color:var(--muted2);font-size:13px;margin-bottom:6px">Obtén tu key gratis en <strong>console.groq.com</strong> → "Create API Key". Límite: 14,400 solicitudes/día (10× más que Gemini).</p>
+      <input type="text" id="input-groq-key" placeholder="gsk_..." style="width:100%;margin-bottom:12px;font-family:monospace;font-size:13px">
+    </div>
+    <div id="panel-gemini" style="display:none">
+      <p style="color:var(--muted2);font-size:13px;margin-bottom:6px">Obtén tu key gratis en <strong>aistudio.google.com</strong> → "Get API key". Límite: 1,500 solicitudes/día.</p>
+      <input type="text" id="input-apikey" placeholder="AIza..." style="width:100%;margin-bottom:12px;font-family:monospace;font-size:13px">
+    </div>
+    <div id="apikey-active-badge" style="font-size:12px;color:var(--muted2);margin-bottom:10px"></div>
     <div class="btn-row">
       <button class="btn btn-primary" onclick="guardarApiKey()">💾 Guardar</button>
       <button class="btn btn-secondary" onclick="cerrarModal('modal-apikey')">Cancelar</button>
@@ -4206,20 +4217,107 @@ function guardarGuiaRapida(){
 }
 
 // ── API KEY MODAL ─────────────────────────────────────────────
+function apiKeyTab(tab){
+  var groqPanel=document.getElementById('panel-groq');
+  var geminiPanel=document.getElementById('panel-gemini');
+  var groqBtn=document.getElementById('tab-groq-btn');
+  var geminiBtn=document.getElementById('tab-gemini-btn');
+  if(tab==='groq'){
+    groqPanel.style.display='';geminiPanel.style.display='none';
+    groqBtn.className='btn btn-primary';geminiBtn.className='btn btn-secondary';
+  } else {
+    groqPanel.style.display='none';geminiPanel.style.display='';
+    groqBtn.className='btn btn-secondary';geminiBtn.className='btn btn-primary';
+  }
+  window._apiKeyTab=tab;
+}
 function abrirModalApiKey(){
-  var k = localStorage.getItem(GEMINI_KEY_STORAGE)||'';
-  document.getElementById('input-apikey').value = k;
+  var groqKey=localStorage.getItem(GROQ_KEY_STORAGE)||'';
+  var geminiKey=localStorage.getItem(GEMINI_KEY_STORAGE)||'';
+  document.getElementById('input-groq-key').value=groqKey;
+  document.getElementById('input-apikey').value=geminiKey;
+  var defaultTab=(groqKey||(!groqKey&&!geminiKey))?'groq':'gemini';
+  apiKeyTab(defaultTab);
+  var badge=document.getElementById('apikey-active-badge');
+  if(badge){
+    var activeProvider=getActiveProvider();
+    badge.textContent=activeProvider?'Proveedor activo: '+activeProvider.toUpperCase():'Sin API Key configurada';
+  }
   document.getElementById('modal-apikey').classList.add('open');
 }
 function guardarApiKey(){
-  var k = document.getElementById('input-apikey').value.trim();
-  if(!k){ showError('Pega tu API Key primero.'); return; }
-  localStorage.setItem(GEMINI_KEY_STORAGE, k);
-  cerrarModal('modal-apikey');
-  document.getElementById('btn-apikey').style.borderColor='var(--green)';
-  document.getElementById('btn-apikey').style.color='var(--green)';
-  document.getElementById('btn-apikey').textContent='✅ API Key';
-  showSuccess('API Key guardada. ¡Listo para usar Gemini!');
+  var tab=window._apiKeyTab||'groq';
+  var k;
+  if(tab==='groq'){
+    k=document.getElementById('input-groq-key').value.trim();
+    if(!k){showError('Pega tu API Key de Groq primero (empieza con gsk_)');return;}
+    localStorage.setItem(GROQ_KEY_STORAGE,k);
+    cerrarModal('modal-apikey');
+    document.getElementById('btn-apikey').style.borderColor='var(--green)';
+    document.getElementById('btn-apikey').style.color='var(--green)';
+    document.getElementById('btn-apikey').textContent='✅ API Key';
+    showSuccess('¡Groq configurado! 14,400 solicitudes/día gratis.');
+  } else {
+    k=document.getElementById('input-apikey').value.trim();
+    if(!k){showError('Pega tu API Key de Gemini primero.');return;}
+    localStorage.setItem(GEMINI_KEY_STORAGE,k);
+    cerrarModal('modal-apikey');
+    document.getElementById('btn-apikey').style.borderColor='var(--green)';
+    document.getElementById('btn-apikey').style.color='var(--green)';
+    document.getElementById('btn-apikey').textContent='✅ API Key';
+    showSuccess('API Key de Gemini guardada.');
+  }
+}
+function getActiveProvider(){
+  if(localStorage.getItem(GROQ_KEY_STORAGE)) return 'groq';
+  if(localStorage.getItem(GEMINI_KEY_STORAGE)) return 'gemini';
+  return null;
+}
+function getAIKey(){
+  var groqKey=localStorage.getItem(GROQ_KEY_STORAGE);
+  if(groqKey) return {provider:'groq',key:groqKey};
+  var geminiKey=localStorage.getItem(GEMINI_KEY_STORAGE);
+  if(geminiKey) return {provider:'gemini',key:geminiKey};
+  throw new Error('Configura tu API Key (botón 🔑 arriba)');
+}
+async function camilaCallAI(systemPrompt, userMsg, history){
+  var ai=getAIKey();
+  if(ai.provider==='groq'){
+    var msgs=[{role:'system',content:systemPrompt}];
+    (history||[]).forEach(function(m){msgs.push({role:m.role,content:m.content});});
+    msgs.push({role:'user',content:userMsg});
+    var res=await fetch(GROQ_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+ai.key},
+      body:JSON.stringify({model:GROQ_MODEL,messages:msgs,temperature:0.3,max_tokens:1200})
+    });
+    if(!res.ok){
+      var er=await res.json();
+      var em=(er.error&&er.error.message)||'HTTP '+res.status;
+      if(res.status===429)em='Cuota de Groq agotada — espera un minuto e intenta de nuevo';
+      throw new Error(em);
+    }
+    var data=await res.json();
+    return (data.choices&&data.choices[0]&&data.choices[0].message&&data.choices[0].message.content)||'';
+  } else {
+    var contents=(history||[]).map(function(m){return {role:m.role==='assistant'?'model':'user',parts:[{text:m.content}]};});
+    contents.push({role:'user',parts:[{text:userMsg}]});
+    var body={
+      systemInstruction:{parts:[{text:systemPrompt}]},
+      contents:contents,
+      generationConfig:{temperature:0.3,maxOutputTokens:1200,topP:0.85}
+    };
+    var url=GEMINI_URL+encodeURIComponent(ai.key);
+    var res2=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(!res2.ok){
+      var er2=await res2.json();
+      var em2=(er2.error&&er2.error.message)||'HTTP '+res2.status;
+      if(res2.status===429)em2='Cuota gratuita de Gemini agotada — espera unos minutos e intenta de nuevo';
+      throw new Error(em2);
+    }
+    var data2=await res2.json();
+    return (data2.candidates&&data2.candidates[0]&&data2.candidates[0].content&&data2.candidates[0].content.parts&&data2.candidates[0].content.parts[0]&&data2.candidates[0].content.parts[0].text)||'';
+  }
 }
 
 // ════════════════════════════════════════════════════════
@@ -5930,23 +6028,13 @@ function _camilaTabCerebro(){
 }
 
 async function camilaEnviar(){
-  var key;
-  try{ key=getGeminiKey(); }catch(e){ showToast('Configura tu API Key (botón 🔑 arriba)'); return; }
+  try{ getAIKey(); }catch(e){ showToast('Configura tu API Key (botón 🔑 arriba)'); return; }
   var inp=(document.getElementById('cam-in')||{}).value||'';
   if(!inp.trim()){showToast('Pega el chat del cliente primero');return;}
   var btn=document.getElementById('cam-btn');
   if(btn){btn.disabled=true;btn.textContent='⏳ Analizando chat...';}
   try{
-    var url='https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+encodeURIComponent(key);
-    var body={
-      systemInstruction:{parts:[{text:CAMILA_SP+camilaBrainGet()}]},
-      contents:[{role:'user',parts:[{text:'Analiza este chat de WhatsApp y devuelve el JSON:\n\n'+inp}]}],
-      generationConfig:{temperature:0.3,maxOutputTokens:1200,topP:0.85}
-    };
-    var res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-    if(!res.ok){var er=await res.json();var em=(er.error&&er.error.message)||'HTTP '+res.status;if(res.status===429)em='Cuota gratuita de Gemini agotada — espera unos minutos e intenta de nuevo';throw new Error(em);}
-    var data=await res.json();
-    var raw=data.candidates&&data.candidates[0]&&data.candidates[0].content&&data.candidates[0].content.parts&&data.candidates[0].content.parts[0]&&data.candidates[0].content.parts[0].text||'';
+    var raw=await camilaCallAI(CAMILA_SP+camilaBrainGet(),'Analiza este chat de WhatsApp y devuelve el JSON:\n\n'+inp,[]);
     if(!raw)throw new Error('Respuesta vacía');
     var clean=raw.replace(/```json\s*/gi,'').replace(/```\s*/gi,'').trim();
     var parsed;
@@ -6021,8 +6109,7 @@ function camilaGuardar(){
 }
 
 async function camilaChatEnviar(){
-  var key;
-  try{key=getGeminiKey();}catch(e){showToast('Configura tu API Key (botón 🔑 arriba)');return;}
+  try{getAIKey();}catch(e){showToast('Configura tu API Key (botón 🔑 arriba)');return;}
   var inp=(document.getElementById('cam-chat-in')||{}).value||'';
   if(!inp.trim())return;
   if(!window._camilaChat)window._camilaChat=[];
@@ -6034,24 +6121,15 @@ async function camilaChatEnviar(){
   renderCamila();
   var msgsEl=document.getElementById('cam-chat-msgs');
   if(msgsEl)msgsEl.scrollTop=msgsEl.scrollHeight;
-  // Throttle: esperar mínimo 4s entre requests para no agotar cuota gratis
+  // Throttle: mínimo 2s entre requests
   var ahora=Date.now();
   var ultimoReq=window._camilaLastReq||0;
-  var espera=Math.max(0,4000-(ahora-ultimoReq));
+  var espera=Math.max(0,2000-(ahora-ultimoReq));
   if(espera>0)await new Promise(function(r){setTimeout(r,espera);});
   window._camilaLastReq=Date.now();
   try{
-    var url='https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+encodeURIComponent(key);
-    var history=window._camilaChat.slice(0,-1).map(function(m){return {role:m.r==='user'?'user':'model',parts:[{text:m.t}]};});
-    var body={
-      systemInstruction:{parts:[{text:CAMILA_SP_DIRECT+camilaBrainGet()}]},
-      contents:history.concat([{role:'user',parts:[{text:inp.trim()}]}]),
-      generationConfig:{temperature:0.5,maxOutputTokens:800,topP:0.9}
-    };
-    var res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-    if(!res.ok){var er=await res.json();throw new Error((er.error&&er.error.message)||'HTTP '+res.status);}
-    var data=await res.json();
-    var raw=data.candidates&&data.candidates[0]&&data.candidates[0].content&&data.candidates[0].content.parts&&data.candidates[0].content.parts[0]&&data.candidates[0].content.parts[0].text||'';
+    var history=window._camilaChat.slice(0,-1).map(function(m){return {role:m.r==='user'?'user':'assistant',content:m.t};});
+    var raw=await camilaCallAI(CAMILA_SP_DIRECT+camilaBrainGet(),inp.trim(),history);
     if(!raw)throw new Error('Respuesta vacía');
     var saveHint='';
     var sm=raw.match(/💾\s*GUARDAR:\s*(.+)/);
