@@ -5966,9 +5966,36 @@ function _camilaTabHablar(){
 
 function _camilaTabCerebro(){
   var brain=JSON.parse(localStorage.getItem('pm_camila_brain_v1')||'[]');
-  return '<div style="font-size:12px;color:#666;margin-bottom:10px;line-height:1.5;">Los aprendizajes guardados se inyectan automáticamente en cada análisis de chat y conversación.</div>'
+  var ghToken=localStorage.getItem('pm_github_token')||'';
+  var ghGist=localStorage.getItem('pm_github_gist_id')||'';
+  var lastSync=localStorage.getItem('pm_brain_last_sync')||'';
+  var syncStatus=lastSync
+    ?'<span style="color:#27AE60;font-size:10px;">✅ Último sync: '+lastSync+'</span>'
+    :'<span style="color:#666;font-size:10px;">Sin sync aún</span>';
+  return '<div style="font-size:12px;color:#666;margin-bottom:10px;line-height:1.5;">Los aprendizajes se inyectan automáticamente en cada análisis. Guárdalos en la nube para no perderlos si cambias de PC.</div>'
+    // Nuevo aprendizaje
     +'<textarea id="cam-brain-in" placeholder="Escribe un aprendizaje nuevo que Camila debe aplicar siempre..." rows="2" style="width:100%;padding:10px;background:#111;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;resize:none;box-sizing:border-box;font-family:inherit;margin-bottom:8px;"></textarea>'
-    +'<button onclick="camilaSaveLearnUI()" style="width:100%;padding:10px;background:#27AE60;border:none;border-radius:8px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:14px;">💾 Guardar aprendizaje</button>'
+    +'<button onclick="camilaSaveLearnUI()" style="width:100%;padding:10px;background:#27AE60;border:none;border-radius:8px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:10px;">💾 Guardar aprendizaje</button>'
+    // Export / Import
+    +'<div style="display:flex;gap:8px;margin-bottom:10px;">'
+      +'<button onclick="camilaBrainExportar()" style="flex:1;padding:9px;background:transparent;border:1px solid #4A90E2;border-radius:7px;color:#4A90E2;font-size:12px;font-weight:700;cursor:pointer;">📥 Exportar JSON</button>'
+      +'<input type="file" id="cam-brain-import-input" accept=".json" style="display:none" onchange="camilaBrainImportar(this)">'
+      +'<button onclick="document.getElementById(\'cam-brain-import-input\').click()" style="flex:1;padding:9px;background:transparent;border:1px solid #4A90E2;border-radius:7px;color:#4A90E2;font-size:12px;font-weight:700;cursor:pointer;">📤 Importar JSON</button>'
+    +'</div>'
+    // GitHub Gist sync
+    +'<div style="background:#0d1117;border:1px solid #30363d;border-radius:10px;padding:12px;margin-bottom:14px;">'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">'
+        +'<span style="font-size:12px;font-weight:700;color:#aaa;">☁️ Nube — GitHub Gist privado</span>'
+        +syncStatus
+      +'</div>'
+      +'<input id="cam-gh-token" type="password" placeholder="GitHub Personal Access Token (ghp_...)" value="'+escH(ghToken)+'" style="width:100%;padding:8px;background:#111;border:1px solid #333;border-radius:6px;color:#fff;font-size:12px;box-sizing:border-box;font-family:inherit;margin-bottom:8px;">'
+      +'<div style="display:flex;gap:8px;">'
+        +'<button onclick="camilaBrainSyncSubir()" style="flex:1;padding:8px;background:#E8650A;border:none;border-radius:7px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;">⬆️ Subir a nube</button>'
+        +'<button onclick="camilaBrainSyncBajar()" style="flex:1;padding:8px;background:transparent;border:1px solid #E8650A;border-radius:7px;color:#E8650A;font-size:12px;font-weight:700;cursor:pointer;">⬇️ Bajar de nube</button>'
+      +'</div>'
+      +(ghGist?'<div style="font-size:10px;color:#555;margin-top:6px;">Gist ID: '+escH(ghGist)+'</div>':'<div style="font-size:10px;color:#555;margin-top:6px;">Primera subida crea el Gist automáticamente.</div>')
+    +'</div>'
+    // Lista de aprendizajes
     +(brain.length
       ?'<div style="font-size:11px;font-weight:700;color:#555;margin-bottom:8px;letter-spacing:.06em;">APRENDIZAJES ACTIVOS ('+brain.length+')</div>'
         +brain.map(function(b,i){
@@ -6156,6 +6183,97 @@ function camilaDeleteLearn(idx){
   localStorage.setItem('pm_camila_brain_v1',JSON.stringify(brain));
   showToast('Eliminado');
   renderCamila();
+}
+
+// ─── EXPORT / IMPORT ───────────────────────────────────────────────────────
+function camilaBrainExportar(){
+  var brain=JSON.parse(localStorage.getItem('pm_camila_brain_v1')||'[]');
+  if(!brain.length){showToast('No hay aprendizajes que exportar');return;}
+  var blob=new Blob([JSON.stringify({version:1,brain:brain},null,2)],{type:'application/json'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  var d=new Date();
+  a.href=url;a.download='camila_brain_'+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()+'.json';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+  showToast('Exportado ✅ — '+brain.length+' aprendizajes');
+}
+
+function camilaBrainImportar(input){
+  var file=input.files[0];input.value='';
+  if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      var data=JSON.parse(e.target.result);
+      var imported=Array.isArray(data)?data:(data.brain||[]);
+      if(!imported.length){showToast('El archivo está vacío');return;}
+      var existing=JSON.parse(localStorage.getItem('pm_camila_brain_v1')||'[]');
+      var added=0;
+      imported.forEach(function(b){
+        if(b&&b.texto&&!existing.find(function(x){return x.texto.trim()===b.texto.trim();})){
+          existing.push(b);added++;
+        }
+      });
+      localStorage.setItem('pm_camila_brain_v1',JSON.stringify(existing));
+      showToast('Importados '+added+' nuevos aprendizajes ✅');
+      renderCamila();
+    }catch(e2){showError('Archivo inválido — ¿es el JSON correcto?');}
+  };
+  reader.readAsText(file,'UTF-8');
+}
+
+// ─── GITHUB GIST SYNC ──────────────────────────────────────────────────────
+function _brainGetToken(){
+  var inp=document.getElementById('cam-gh-token');
+  var t=(inp?inp.value.trim():'')||localStorage.getItem('pm_github_token')||'';
+  if(t)localStorage.setItem('pm_github_token',t);
+  return t;
+}
+
+async function camilaBrainSyncSubir(){
+  var token=_brainGetToken();
+  if(!token){showError('Pega tu GitHub Personal Access Token primero');return;}
+  var brain=JSON.parse(localStorage.getItem('pm_camila_brain_v1')||'[]');
+  if(!brain.length){showToast('No hay aprendizajes que subir');return;}
+  var content=JSON.stringify({version:1,brain:brain},null,2);
+  var gistId=localStorage.getItem('pm_github_gist_id')||'';
+  var url=gistId?'https://api.github.com/gists/'+gistId:'https://api.github.com/gists';
+  var method=gistId?'PATCH':'POST';
+  var body={description:'Camila Brain — ProMarket (auto-sync)',public:false,files:{'camila_brain.json':{content:content}}};
+  try{
+    var res=await fetch(url,{method:method,headers:{'Authorization':'Bearer '+token,'Content-Type':'application/json','Accept':'application/vnd.github+json'},body:JSON.stringify(body)});
+    if(!res.ok){var er=await res.json();throw new Error(er.message||'HTTP '+res.status);}
+    var data=await res.json();
+    if(!gistId)localStorage.setItem('pm_github_gist_id',data.id);
+    var now=new Date();
+    var ts=now.getDate()+'/'+(now.getMonth()+1)+'/'+now.getFullYear()+' '+now.getHours()+':'+(now.getMinutes()<10?'0':'')+now.getMinutes();
+    localStorage.setItem('pm_brain_last_sync',ts);
+    showToast('Subido a nube ✅ — '+brain.length+' aprendizajes guardados');
+    renderCamila();
+  }catch(e){showError('Error al subir: '+e.message);}
+}
+
+async function camilaBrainSyncBajar(){
+  var token=_brainGetToken();
+  if(!token){showError('Pega tu GitHub Personal Access Token primero');return;}
+  var gistId=localStorage.getItem('pm_github_gist_id')||'';
+  if(!gistId){showError('Primero sube al menos una vez para crear el Gist');return;}
+  try{
+    var res=await fetch('https://api.github.com/gists/'+gistId,{headers:{'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json'}});
+    if(!res.ok){var er=await res.json();throw new Error(er.message||'HTTP '+res.status);}
+    var data=await res.json();
+    var fileData=data.files&&data.files['camila_brain.json'];
+    if(!fileData)throw new Error('No se encontró camila_brain.json en el Gist');
+    var parsed=JSON.parse(fileData.content);
+    var imported=Array.isArray(parsed)?parsed:(parsed.brain||[]);
+    if(!imported.length){showToast('El Gist está vacío');return;}
+    localStorage.setItem('pm_camila_brain_v1',JSON.stringify(imported));
+    var now=new Date();
+    var ts=now.getDate()+'/'+(now.getMonth()+1)+'/'+now.getFullYear()+' '+now.getHours()+':'+(now.getMinutes()<10?'0':'')+now.getMinutes();
+    localStorage.setItem('pm_brain_last_sync',ts);
+    showToast('Bajado de nube ✅ — '+imported.length+' aprendizajes restaurados');
+    renderCamila();
+  }catch(e){showError('Error al bajar: '+e.message);}
 }
 
 function camilaShowHistory(){
