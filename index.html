@@ -6077,6 +6077,16 @@ function camilaExtraerTexto(file){
   return Promise.reject(new Error('Formato no soportado: '+file.name));
 }
 
+// Recorta el chat a los últimos N caracteres para no superar el TPM de Groq
+function camilaTruncateChat(text,maxChars){
+  if(!maxChars)maxChars=3000;
+  if(text.length<=maxChars)return text;
+  // Intenta cortar en salto de línea para no partir un mensaje a la mitad
+  var cut=text.slice(-maxChars);
+  var nl=cut.indexOf('\n');
+  return (nl>0&&nl<200)?cut.slice(nl+1):cut;
+}
+
 async function camilaBatchProcesar(files){
   var sw=document.getElementById('cam-single-wrap');
   var bw=document.getElementById('cam-batch-wrap');
@@ -6094,7 +6104,8 @@ async function camilaBatchProcesar(files){
     if(bb)bb.style.width=Math.round((i/files.length)*100)+'%';
     try{
       var text=await camilaExtraerTexto(file);
-      var raw=await camilaCallAI(buildCamilaSP()+camilaBrainGet(),'Analiza este chat de WhatsApp y devuelve el JSON:\n\n'+text,[],{jsonMode:true,maxTokens:1500});
+      var chatSnippet=camilaTruncateChat(text,3000);
+      var raw=await camilaCallAI(buildCamilaSP()+camilaBrainGet(),'Analiza este chat de WhatsApp y devuelve el JSON:\n\n'+chatSnippet,[],{jsonMode:true,maxTokens:800});
       if(!raw)throw new Error('Respuesta vacía');
       var clean=raw.replace(/```json\s*/gi,'').replace(/```\s*/gi,'').trim();
       var parsed;
@@ -6117,16 +6128,53 @@ async function camilaBatchProcesar(files){
         +'</div>');
       okCount++;
     }catch(e){
-      if(br)br.insertAdjacentHTML('beforeend',
-        '<div style="background:#1a0a0a;border:1px solid #c0392b;border-radius:10px;padding:12px;margin-bottom:10px;">'
-          +'<div style="font-size:11px;color:#c0392b;font-weight:700;margin-bottom:4px;">❌ Error — '+escH(file.name.slice(0,35))+'</div>'
-          +'<div style="font-size:12px;color:#888;">'+escH(e.message)+'</div>'
-        +'</div>');
+      // Si es rate limit, espera 65s y reintenta una vez
+      if(e.message&&e.message.toLowerCase().indexOf('429')!==-1||
+         e.message&&e.message.toLowerCase().indexOf('cuota')!==-1||
+         e.message&&e.message.toLowerCase().indexOf('rate')!==-1){
+        if(bs)bs.textContent='⏸ Límite Groq — esperando 65s para reintentar '+file.name.slice(0,25)+'...';
+        await new Promise(function(r){setTimeout(r,65000);});
+        try{
+          var text2=await camilaExtraerTexto(file);
+          var chatSnippet2=camilaTruncateChat(text2,3000);
+          var raw2=await camilaCallAI(buildCamilaSP()+camilaBrainGet(),'Analiza este chat de WhatsApp y devuelve el JSON:\n\n'+chatSnippet2,[],{jsonMode:true,maxTokens:800});
+          if(!raw2)throw new Error('Respuesta vacía');
+          var clean2=raw2.replace(/```json\s*/gi,'').replace(/```\s*/gi,'').trim();
+          var parsed2;
+          try{parsed2=JSON.parse(clean2);}catch(pe){var mx2=clean2.match(/\{[\s\S]*\}/);if(mx2){try{parsed2=JSON.parse(mx2[0]);}catch(pe2){throw new Error('JSON inválido');}}else{throw new Error('JSON inválido');}}
+          var msg2=parsed2.mensaje||'';var tel2=(parsed2.telefono||'').replace(/\s/g,'');var nom2=parsed2.nombre||('Chat '+(i+1));var notas2=parsed2.notas||'';
+          if(!msg2)throw new Error('Sin mensaje');
+          window['_camBatch_'+i]={msg:msg2,text:text2,tel:tel2,nom:nom2};
+          if(br)br.insertAdjacentHTML('beforeend',
+            '<div id="cam-batch-card-'+i+'" style="background:#0a1a0a;border:2px solid #27AE60;border-radius:12px;padding:14px;margin-bottom:12px;">'
+              +'<div style="font-size:10px;color:#27AE60;font-weight:700;letter-spacing:.06em;margin-bottom:4px;">'+(i+1)+'. '+escH(file.name.slice(0,40))+'</div>'
+              +'<div style="font-size:11px;color:#888;margin-bottom:8px;">👤 '+escH(nom2)+'  📱 '+escH(tel2)+(notas2?'  📝 '+escH(notas2.slice(0,60)):'')+'</div>'
+              +'<div style="font-size:14px;color:#f0f0f0;white-space:pre-wrap;line-height:1.6;margin-bottom:10px;">'+escH(msg2)+'</div>'
+              +'<div style="display:flex;gap:8px;">'
+                +'<button onclick="camilaBatchCopy('+i+')" style="flex:1;padding:9px;border:none;border-radius:7px;background:#27AE60;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">📋 Copiar</button>'
+                +'<button onclick="camilaBatchGuardar('+i+')" style="flex:1;padding:9px;border:1px solid #27AE60;border-radius:7px;background:transparent;color:#27AE60;font-size:13px;font-weight:600;cursor:pointer;">✅ Registrar</button>'
+              +'</div>'
+            +'</div>');
+          okCount++;
+        }catch(e2){
+          if(br)br.insertAdjacentHTML('beforeend',
+            '<div style="background:#1a0a0a;border:1px solid #c0392b;border-radius:10px;padding:12px;margin-bottom:10px;">'
+              +'<div style="font-size:11px;color:#c0392b;font-weight:700;margin-bottom:4px;">❌ Error — '+escH(file.name.slice(0,35))+'</div>'
+              +'<div style="font-size:12px;color:#888;">'+escH(e2.message)+'</div>'
+            +'</div>');
+        }
+      } else {
+        if(br)br.insertAdjacentHTML('beforeend',
+          '<div style="background:#1a0a0a;border:1px solid #c0392b;border-radius:10px;padding:12px;margin-bottom:10px;">'
+            +'<div style="font-size:11px;color:#c0392b;font-weight:700;margin-bottom:4px;">❌ Error — '+escH(file.name.slice(0,35))+'</div>'
+            +'<div style="font-size:12px;color:#888;">'+escH(e.message)+'</div>'
+          +'</div>');
+      }
     }
     if(i<files.length-1){
       var left=files.length-1-i;
-      if(bs)bs.textContent='⏸ Esperando 3s (límite Groq)… '+okCount+' listo'+(okCount!==1?'s':'')+', '+left+' pendiente'+(left!==1?'s':'')+'';
-      await new Promise(function(r){setTimeout(r,3000);});
+      if(bs)bs.textContent='⏸ Esperando 8s (límite Groq)… '+okCount+' listo'+(okCount!==1?'s':'')+', '+left+' pendiente'+(left!==1?'s':'')+'';
+      await new Promise(function(r){setTimeout(r,8000);});
     }
   }
   if(bb){bb.style.width='100%';bb.style.background='#27AE60';}
