@@ -5944,7 +5944,7 @@ async function camilaEnviar(){
       generationConfig:{temperature:0.3,maxOutputTokens:1200,topP:0.85}
     };
     var res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-    if(!res.ok){var er=await res.json();throw new Error((er.error&&er.error.message)||'HTTP '+res.status);}
+    if(!res.ok){var er=await res.json();var em=(er.error&&er.error.message)||'HTTP '+res.status;if(res.status===429)em='Cuota gratuita de Gemini agotada — espera unos minutos e intenta de nuevo';throw new Error(em);}
     var data=await res.json();
     var raw=data.candidates&&data.candidates[0]&&data.candidates[0].content&&data.candidates[0].content.parts&&data.candidates[0].content.parts[0]&&data.candidates[0].content.parts[0].text||'';
     if(!raw)throw new Error('Respuesta vacía');
@@ -6034,6 +6034,12 @@ async function camilaChatEnviar(){
   renderCamila();
   var msgsEl=document.getElementById('cam-chat-msgs');
   if(msgsEl)msgsEl.scrollTop=msgsEl.scrollHeight;
+  // Throttle: esperar mínimo 4s entre requests para no agotar cuota gratis
+  var ahora=Date.now();
+  var ultimoReq=window._camilaLastReq||0;
+  var espera=Math.max(0,4000-(ahora-ultimoReq));
+  if(espera>0)await new Promise(function(r){setTimeout(r,espera);});
+  window._camilaLastReq=Date.now();
   try{
     var url='https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+encodeURIComponent(key);
     var history=window._camilaChat.slice(0,-1).map(function(m){return {role:m.r==='user'?'user':'model',parts:[{text:m.t}]};});
