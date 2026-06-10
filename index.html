@@ -784,21 +784,10 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 </div>
 
 <div class="modal-bg" id="modal-apikey">
-  <div class="modal-box" style="max-width:460px">
-    <div class="modal-title">🔑 API Key para Camila IA</div>
-    <div style="display:flex;gap:8px;margin-bottom:16px;">
-      <button id="tab-groq-btn" onclick="apiKeyTab('groq')" class="btn btn-primary" style="flex:1;font-size:13px">⚡ Groq (Gratis · 14,400/día)</button>
-      <button id="tab-gemini-btn" onclick="apiKeyTab('gemini')" class="btn btn-secondary" style="flex:1;font-size:13px">🔵 Gemini (1,500/día)</button>
-    </div>
-    <div id="panel-groq">
-      <p style="color:var(--muted2);font-size:13px;margin-bottom:6px">Obtén tu key gratis en <strong>console.groq.com</strong> → "Create API Key". Límite: 14,400 solicitudes/día (10× más que Gemini).</p>
-      <input type="text" id="input-groq-key" placeholder="gsk_..." style="width:100%;margin-bottom:12px;font-family:monospace;font-size:13px">
-    </div>
-    <div id="panel-gemini" style="display:none">
-      <p style="color:var(--muted2);font-size:13px;margin-bottom:6px">Obtén tu key gratis en <strong>aistudio.google.com</strong> → "Get API key". Límite: 1,500 solicitudes/día.</p>
-      <input type="text" id="input-apikey" placeholder="AIza..." style="width:100%;margin-bottom:12px;font-family:monospace;font-size:13px">
-    </div>
-    <div id="apikey-active-badge" style="font-size:12px;color:var(--muted2);margin-bottom:10px"></div>
+  <div class="modal-box" style="max-width:440px">
+    <div class="modal-title">⚡ Groq API Key</div>
+    <p style="color:var(--muted2);font-size:13px;margin-bottom:6px">Obtén tu key gratis en <strong>console.groq.com</strong> → "API Keys" → "Create API Key". 14,400 solicitudes/día gratis.</p>
+    <input type="text" id="input-groq-key" placeholder="gsk_..." style="width:100%;margin-bottom:12px;font-family:monospace;font-size:13px">
     <div class="btn-row">
       <button class="btn btn-primary" onclick="guardarApiKey()">💾 Guardar</button>
       <button class="btn btn-secondary" onclick="cerrarModal('modal-apikey')">Cancelar</button>
@@ -4220,68 +4209,27 @@ function guardarGuiaRapida(){
 }
 
 // ── API KEY MODAL ─────────────────────────────────────────────
-function apiKeyTab(tab){
-  var groqPanel=document.getElementById('panel-groq');
-  var geminiPanel=document.getElementById('panel-gemini');
-  var groqBtn=document.getElementById('tab-groq-btn');
-  var geminiBtn=document.getElementById('tab-gemini-btn');
-  if(tab==='groq'){
-    groqPanel.style.display='';geminiPanel.style.display='none';
-    groqBtn.className='btn btn-primary';geminiBtn.className='btn btn-secondary';
-  } else {
-    groqPanel.style.display='none';geminiPanel.style.display='';
-    groqBtn.className='btn btn-secondary';geminiBtn.className='btn btn-primary';
-  }
-  window._apiKeyTab=tab;
-}
 function abrirModalApiKey(){
-  var groqKey=localStorage.getItem(GROQ_KEY_STORAGE)||'';
-  var geminiKey=localStorage.getItem(GEMINI_KEY_STORAGE)||'';
-  document.getElementById('input-groq-key').value=groqKey;
-  document.getElementById('input-apikey').value=geminiKey;
-  var defaultTab=(groqKey||(!groqKey&&!geminiKey))?'groq':'gemini';
-  apiKeyTab(defaultTab);
-  var badge=document.getElementById('apikey-active-badge');
-  if(badge){
-    var activeProvider=getActiveProvider();
-    badge.textContent=activeProvider?'Proveedor activo: '+activeProvider.toUpperCase():'Sin API Key configurada';
-  }
+  document.getElementById('input-groq-key').value=localStorage.getItem(GROQ_KEY_STORAGE)||'';
   document.getElementById('modal-apikey').classList.add('open');
 }
 function guardarApiKey(){
-  var tab=window._apiKeyTab||'groq';
-  var k;
-  if(tab==='groq'){
-    k=document.getElementById('input-groq-key').value.trim();
-    if(!k){showError('Pega tu API Key de Groq primero (empieza con gsk_)');return;}
-    localStorage.setItem(GROQ_KEY_STORAGE,k);
-    cerrarModal('modal-apikey');
-    document.getElementById('btn-apikey').style.borderColor='var(--green)';
-    document.getElementById('btn-apikey').style.color='var(--green)';
-    document.getElementById('btn-apikey').textContent='✅ API Key';
-    showSuccess('¡Groq configurado! 14,400 solicitudes/día gratis.');
-  } else {
-    k=document.getElementById('input-apikey').value.trim();
-    if(!k){showError('Pega tu API Key de Gemini primero.');return;}
-    localStorage.setItem(GEMINI_KEY_STORAGE,k);
-    cerrarModal('modal-apikey');
-    document.getElementById('btn-apikey').style.borderColor='var(--green)';
-    document.getElementById('btn-apikey').style.color='var(--green)';
-    document.getElementById('btn-apikey').textContent='✅ API Key';
-    showSuccess('API Key de Gemini guardada.');
-  }
+  var k=document.getElementById('input-groq-key').value.trim();
+  if(!k){showError('Pega tu Groq API Key primero (empieza con gsk_)');return;}
+  localStorage.setItem(GROQ_KEY_STORAGE,k);
+  cerrarModal('modal-apikey');
+  document.getElementById('btn-apikey').style.borderColor='var(--green)';
+  document.getElementById('btn-apikey').style.color='var(--green)';
+  document.getElementById('btn-apikey').textContent='✅ API Key';
+  showSuccess('¡Groq configurado! 14,400 solicitudes/día gratis.');
 }
 function getActiveProvider(){
-  if(localStorage.getItem(GROQ_KEY_STORAGE)) return 'groq';
-  if(localStorage.getItem(GEMINI_KEY_STORAGE)) return 'gemini';
-  return null;
+  return localStorage.getItem(GROQ_KEY_STORAGE)?'groq':null;
 }
 function getAIKey(){
-  var groqKey=localStorage.getItem(GROQ_KEY_STORAGE);
-  if(groqKey) return {provider:'groq',key:groqKey};
-  var geminiKey=localStorage.getItem(GEMINI_KEY_STORAGE);
-  if(geminiKey) return {provider:'gemini',key:geminiKey};
-  throw new Error('Configura tu API Key (botón 🔑 arriba)');
+  var k=localStorage.getItem(GROQ_KEY_STORAGE);
+  if(k) return {provider:'groq',key:k};
+  throw new Error('Configura tu Groq API Key (botón 🔑 arriba)');
 }
 // opts: {temperature:0.3, maxTokens:1200, jsonMode:false}
 async function camilaCallAI(systemPrompt, userMsg, history, opts){
@@ -4289,45 +4237,24 @@ async function camilaCallAI(systemPrompt, userMsg, history, opts){
   var maxTokens=(opts&&opts.maxTokens)?opts.maxTokens:1200;
   var jsonMode=!!(opts&&opts.jsonMode);
   var ai=getAIKey();
-  if(ai.provider==='groq'){
-    var msgs=[{role:'system',content:systemPrompt}];
-    (history||[]).forEach(function(m){msgs.push({role:m.role,content:m.content});});
-    msgs.push({role:'user',content:userMsg});
-    var groqBody={model:GROQ_MODEL,messages:msgs,temperature:temperature,max_tokens:maxTokens};
-    if(jsonMode) groqBody.response_format={type:'json_object'};
-    var res=await fetch(GROQ_URL,{
-      method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+ai.key},
-      body:JSON.stringify(groqBody)
-    });
-    if(!res.ok){
-      var er=await res.json();
-      var em=(er.error&&er.error.message)||'HTTP '+res.status;
-      if(res.status===429)em='Cuota de Groq agotada — espera un minuto e intenta de nuevo';
-      throw new Error(em);
-    }
-    var data=await res.json();
-    return (data.choices&&data.choices[0]&&data.choices[0].message&&data.choices[0].message.content)||'';
-  } else {
-    var contents=(history||[]).map(function(m){return {role:m.role==='assistant'?'model':'user',parts:[{text:m.content}]};});
-    contents.push({role:'user',parts:[{text:userMsg}]});
-    var body={
-      systemInstruction:{parts:[{text:systemPrompt}]},
-      contents:contents,
-      generationConfig:{temperature:temperature,maxOutputTokens:maxTokens,topP:0.85}
-    };
-    if(jsonMode) body.generationConfig.responseMimeType='application/json';
-    var url=GEMINI_URL+encodeURIComponent(ai.key);
-    var res2=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-    if(!res2.ok){
-      var er2=await res2.json();
-      var em2=(er2.error&&er2.error.message)||'HTTP '+res2.status;
-      if(res2.status===429)em2='Cuota gratuita de Gemini agotada — espera unos minutos e intenta de nuevo';
-      throw new Error(em2);
-    }
-    var data2=await res2.json();
-    return (data2.candidates&&data2.candidates[0]&&data2.candidates[0].content&&data2.candidates[0].content.parts&&data2.candidates[0].content.parts[0]&&data2.candidates[0].content.parts[0].text)||'';
+  var msgs=[{role:'system',content:systemPrompt}];
+  (history||[]).forEach(function(m){msgs.push({role:m.role,content:m.content});});
+  msgs.push({role:'user',content:userMsg});
+  var groqBody={model:GROQ_MODEL,messages:msgs,temperature:temperature,max_tokens:maxTokens};
+  if(jsonMode) groqBody.response_format={type:'json_object'};
+  var res=await fetch(GROQ_URL,{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+ai.key},
+    body:JSON.stringify(groqBody)
+  });
+  if(!res.ok){
+    var er=await res.json();
+    var em=(er.error&&er.error.message)||'HTTP '+res.status;
+    if(res.status===429)em='Cuota de Groq agotada — espera un minuto e intenta de nuevo';
+    throw new Error(em);
   }
+  var data=await res.json();
+  return (data.choices&&data.choices[0]&&data.choices[0].message&&data.choices[0].message.content)||'';
 }
 
 // ════════════════════════════════════════════════════════
@@ -4392,7 +4319,7 @@ function saveToCloud(){
   }, 1200);
 }
 // Indicar visualmente si la key ya está guardada
-(function(){ if(localStorage.getItem(GEMINI_KEY_STORAGE)){
+(function(){ if(localStorage.getItem(GROQ_KEY_STORAGE)){
   var b=document.getElementById('btn-apikey');
   b.style.borderColor='var(--green)';b.style.color='var(--green)';b.textContent='✅ API Key';
 }})();
