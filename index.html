@@ -1520,11 +1520,14 @@ function saveCatalog(){ localStorage.setItem(CATALOG_KEY, JSON.stringify(catalog
   localStorage.setItem(FIX_KEY,'1');
 })();
 
-// Seed Kit Hand Grip if not already in catalog
+// Seed / renombrar Kit Hybrid (accesorio estimulación de mano)
 (function(){
   var cat2 = JSON.parse(localStorage.getItem('pm_catalogo_v1')||'[]');
-  if(!cat2.some(function(p){ return p.nombre&&p.nombre.toLowerCase().includes('hand grip'); })){
-    cat2.push({id:'prod_handgrip',nombre:'Kit Hand Grip',ref:'KHG-001',precio:4.55,costo:2.00,fulfillment:0,envio:0,peso:0.3,ico:'🤝',desc:'5 accesorios: pinza, entrenador de muñeca, banda elástica, anillo de agarre y bola antiestrés',activo:1,stock:{S:99,M:99,L:99,XL:99}});
+  var ex = cat2.find(function(p){ var n=(p.nombre||'').toLowerCase(); return n.includes('hybrid')||n.includes('hand grip'); });
+  if(ex){
+    if(!ex.nombre.toLowerCase().includes('hybrid')){ ex.nombre='Kit Hybrid'; localStorage.setItem('pm_catalogo_v1',JSON.stringify(cat2)); }
+  } else {
+    cat2.push({id:'prod_handgrip',nombre:'Kit Hybrid',ref:'KHG-001',precio:4.55,costo:2.00,fulfillment:0,envio:0,peso:0.3,ico:'🤝',desc:'Accesorio de estimulación de mano — 5 piezas: pinza de dedos, entrenador de muñeca, banda elástica, anillo de agarre y bola antiestrés. Se regala con el guante en promo D3.',activo:1,stock:{S:99,M:99,L:99,XL:99}});
     localStorage.setItem('pm_catalogo_v1', JSON.stringify(cat2));
   }
 })();
@@ -5617,7 +5620,7 @@ function segMarkV(id,i){
 function segAbrirCamila(id,tipo){
   var lead=segGetLeads().find(function(l){return l.id===id;});
   if(!lead)return;
-  var desc={OPINION:'pregúntale su opinión sobre el precio (regla D1AM: "¿le pareció bien el precio?")',BENEFICIO:'explícale un beneficio clave (Modo Espejo, uso diario desde casa)',URGENCIA:'crea urgencia real (cierre de pedidos esta semana, envío incluido solo esta temporada)',OFERTA:'ofrécele la oferta especial Kit Hand Grip gratis o precio reducido',TESTIMONIO:'comparte prueba social (2.400+ pacientes, recomendado por fisioterapeutas)',CIERRE:'oferta final — si no responde dejarlo libre amablemente'}[tipo]||'genera el siguiente mensaje de seguimiento';
+  var desc={OPINION:'pregúntale su opinión sobre el precio (regla D1AM: "¿le pareció bien el precio?")',BENEFICIO:'explícale un beneficio clave (Modo Espejo, uso diario desde casa)',URGENCIA:'crea urgencia real (cierre de pedidos esta semana, envío incluido solo esta temporada)',OFERTA:'ofrécele la oferta especial Kit Hybrid gratis o precio reducido',TESTIMONIO:'comparte prueba social (2.400+ pacientes, recomendado por fisioterapeutas)',CIERRE:'oferta final — si no responde dejarlo libre amablemente'}[tipo]||'genera el siguiente mensaje de seguimiento';
   var dias=Math.floor((Date.now()-new Date(lead.fechaInicio).getTime())/86400000);
   var ctx='SEGUIMIENTO DE VENTA — TRIGGER: '+tipo+'\nCliente: '+lead.nombre+' ('+lead.tel+')\nDías en seguimiento: '+dias+'\nTAREA: '+desc+'\n\n[Pega el chat de WhatsApp del cliente aquí si tienes historial, o borra esta línea]';
   switchTab('camila');
@@ -5670,9 +5673,9 @@ var CAMILA_SP = 'Eres Camila, asistente de ventas de ProMarket Ecuador. Analizas
 +'PRODUCTOS Y PRECIOS:\n'
 +'• Guante Robot REF GR-001: $59.99 lead nuevo\n'
 +'• Par de guantes: $107.98\n'
-+'• Objeción precio op1: $54.99 + Kit Hand Grip GRATIS\n'
-+'• Objeción precio op2 (última): $49.19\n'
-+'• Día 3+ sin respuesta: $49.99 + Kit Hand Grip GRATIS\n'
++'• Objeción precio op1: $54.99 + Kit Hybrid GRATIS\n'
++'• Objeción precio op2 (última): $49.99 sin kit\n'
++'• Día 3+ sin respuesta: $49.99 + Kit Hybrid GRATIS\n'
 +'• Ollas 12pzas REF OLL-001: $39.99 (solo leads viejos)\n\n'
 +'FLUJO DE VENTA:\n'
 +'1. Bienvenida → precio + envío gratis + pago al retirar + ¿para quién?\n'
@@ -5687,7 +5690,7 @@ var CAMILA_SP = 'Eres Camila, asistente de ventas de ProMarket Ecuador. Analizas
 +'OBJECIONES:\n'
 +'- ¿Funciona? → 2.400+ pacientes en Latinoamérica. Pago al retirar 😊\n'
 +'- ¿Viene cargador? → Sí completo: guante, cargador, guante espejo, controlador, pelota\n'
-+'- Muy caro → op1: $54.99+KitHandGrip / op2: $49.19\n'
++'- Muy caro → op1: $54.99+KitHybridGRATIS / op2: $49.99sinKit\n'
 +'- Lo pienso → El envío incluido solo esta temporada ¿Le reservo una unidad?\n'
 +'- Colombia (+57) → Sí, Servientrega cubre Colombia, misma operativa';
 
@@ -5725,17 +5728,21 @@ async function camilaEnviar(){
     var body={
       systemInstruction:{parts:[{text:CAMILA_SP}]},
       contents:[{role:'user',parts:[{text:'Analiza este chat de WhatsApp y devuelve el JSON:\n\n'+inp}]}],
-      generationConfig:{temperature:0.3,maxOutputTokens:400,topP:0.85}
+      generationConfig:{temperature:0.3,maxOutputTokens:1200,topP:0.85}
     };
     var res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
     if(!res.ok){var er=await res.json();throw new Error((er.error&&er.error.message)||'HTTP '+res.status);}
     var data=await res.json();
     var raw=data.candidates&&data.candidates[0]&&data.candidates[0].content&&data.candidates[0].content.parts&&data.candidates[0].content.parts[0]&&data.candidates[0].content.parts[0].text||'';
     if(!raw)throw new Error('Respuesta vacía');
-    // Limpiar markdown si viene con ```json
+    // Limpiar markdown y extraer JSON aunque venga con texto alrededor
     var clean=raw.replace(/```json\s*/gi,'').replace(/```\s*/gi,'').trim();
     var parsed;
-    try{ parsed=JSON.parse(clean); }catch(pe){ throw new Error('IA no devolvió JSON válido: '+raw.slice(0,80)); }
+    try{ parsed=JSON.parse(clean); }catch(pe){
+      var m=clean.match(/\{[\s\S]*\}/);
+      if(m){ try{ parsed=JSON.parse(m[0]); }catch(pe2){ throw new Error('Camila no pudo generar respuesta — intenta de nuevo'); } }
+      else { throw new Error('Camila no pudo generar respuesta — intenta de nuevo'); }
+    }
     var msg=parsed.mensaje||'';
     var tel=(parsed.telefono||'').replace(/\s/g,'');
     var nom=parsed.nombre||('Chat '+tel.slice(-4));
@@ -5777,19 +5784,31 @@ function camilaCopy(){
 
 function camilaGuardar(){
   var txt=window._camResp||'',inp=window._camIn||'',lid=window._camLead||'';
-  if(!txt)return;
-  var conv=JSON.parse(localStorage.getItem('pm_conv_v1')||'{}');
-  var k=lid||'_sin_lead';
-  if(!conv[k])conv[k]=[];
-  var now=new Date().toISOString();
-  if(inp.trim())conv[k].push({f:now,d:'in',t:inp.trim()});
-  conv[k].push({f:now,d:'out',t:txt});
-  localStorage.setItem('pm_conv_v1',JSON.stringify(conv));
+  if(!txt){showToast('Nada que registrar');return;}
+  try{
+    var conv=JSON.parse(localStorage.getItem('pm_conv_v1')||'{}');
+    var k=lid||'_sin_lead';
+    if(!conv[k])conv[k]=[];
+    // Guard contra doble registro del mismo mensaje
+    var lastOut=(conv[k].filter(function(m){return m.d==='out';}).slice(-1)[0]||{}).t;
+    if(lastOut===txt){showToast('Ya estaba registrado ✅');return;}
+    var now=new Date().toISOString();
+    if(inp.trim())conv[k].push({f:now,d:'in',t:inp.trim()});
+    conv[k].push({f:now,d:'out',t:txt});
+    localStorage.setItem('pm_conv_v1',JSON.stringify(conv));
+    // Actualizar timestamp de último contacto en el lead
+    if(lid){
+      var leads=segGetLeads();
+      var lead=leads.find(function(l){return l.id===lid;});
+      if(lead){ lead.ultimoContacto=now; segSaveLeads(leads); }
+    }
+  }catch(e){ showToast('Error al guardar: '+e.message); return; }
+  window._camResp='';window._camIn='';window._camLead='';
   var el=document.getElementById('cam-in');if(el)el.value='';
   var rd=document.getElementById('cam-resp');if(rd)rd.style.display='none';
-  window._camResp='';window._camIn='';window._camLead='';
-  showToast('Registrado en Seguimiento ✅');
+  showToast('Registrado ✅');
   renderCamila();
+  camilaShowHistory();
 }
 
 function camilaShowHistory(){
