@@ -15,8 +15,68 @@ Cuando el usuario diga "arranca", debes leer TODOS los archivos del CEREBRO en e
 9. `CEREBRO/09_whatsapp_business.md` — configuración de WhatsApp
 10. `CEREBRO/10_tecnicas_venta.md` — técnicas de cierre
 
-Después de leer todo, responde SOLO con:
-> ✅ CEREBRO cargado. Sesión **[ID DE SESIÓN]** activa — [N] clientes registrados. Listo para operar.
+Después de leer todo, responde con el REPORTE COMPLETO DE ARRANQUE en este formato EXACTO:
+
+---
+
+## ✅ CEREBRO cargado — Sesión [ID] activa — [FECHA HOY]
+
+### 🚨 URGENTES (resolver primero)
+Para cada cliente con reclamo, problema activo o pedido que lleva más de 3 días en agencia sin retirar:
+- **[Nombre] ([número])** — [problema exacto] — ACCIÓN: [qué decirle hoy]
+
+*(Si no hay urgentes: "Sin urgencias")*
+
+---
+
+### 📦 PEDIDOS EN AGENCIA — retiro pendiente
+Para cada orden en agencia:
+> **Orden #[número] — [Nombre] — [ciudad]**
+> En agencia desde [fecha] | Prometió retirar: [fecha o "no indicó"]
+> Acción de hoy: [SÍ tocar / NO tocar — y por qué]
+> Mensaje: "[texto exacto a enviar si corresponde]"
+
+---
+
+### 🚚 EN TRÁNSITO
+Para cada envío en camino:
+> **Orden #[número] — [Nombre] — enviado [fecha]**
+> Estado: En ruta | Acción: [notificar llegada / esperar]
+
+---
+
+### 🔥 LEADS CALIENTES — conversación activa
+Para cada lead en conversación activa (LEADS NUEVOS del 08_clientes.md):
+> **[Alias/número] — [producto] — [ciudad o "sin ciudad"]**
+> Estado: [descripción del último punto de conversación]
+> Mensaje de hoy: "[texto exacto a enviar]"
+
+---
+
+### 📋 SEGUIMIENTO HOY — lista completa
+Para cada cliente con secuencia activa, evalúa según el flujo:
+- Si lleva 1 contacto previo → mensaje D1PM o D2 según hora del último contacto
+- Si lleva 2 contactos previos → mensaje D3
+- Si lleva 3+ contactos previos → /cierre_conversacion
+
+Formato por cliente:
+> **[Alias/número]** — [días desde inicio] — [último contacto]
+> Secuencia: D[N] | Mensaje: "[texto exacto]"
+
+---
+
+### 🗂️ RESUMEN DEL DÍA
+- Total clientes activos: [N]
+- Urgentes: [N]
+- En agencia: [N]
+- En tránsito: [N]
+- Leads calientes: [N]
+- Seguimiento programado hoy: [N]
+- **Primera acción del día:** [cliente más prioritario y mensaje]
+
+---
+
+**Listo para operar. Pega cualquier chat y doy la respuesta exacta.**
 
 ---
 
@@ -42,9 +102,11 @@ Tú respondes:
 
 ### Operación diaria — seguimiento automático
 Cada vez que el usuario diga "arranca" al inicio del día:
-1. Lees `CEREBRO/08_clientes.md`
-2. Evalúas qué clientes necesitan seguimiento HOY según el flujo
-3. Das la lista de clientes a contactar hoy con el mensaje exacto para cada uno
+1. Lees los 10 archivos del CEREBRO completos
+2. Cruzas la fecha de hoy con el estado de cada cliente en `CEREBRO/08_clientes.md`
+3. Generas el REPORTE COMPLETO DE ARRANQUE (ver sección arriba) — sin omitir ningún cliente
+4. Cada cliente del reporte tiene su mensaje exacto listo para copiar y pegar
+5. Los urgentes siempre van primero
 
 ### Cuando el usuario pega un chat
 - Identificas el cliente por su código (A1, B3, etc.) o número
