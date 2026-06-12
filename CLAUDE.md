@@ -49,6 +49,8 @@ Leer TODOS estos archivos completos antes de generar una sola línea del reporte
 | 9 | `CEREBRO/09_whatsapp_business.md` | Configuración WhatsApp y bot | Contradice lo que el bot ya respondió |
 | 10 | `CEREBRO/10_tecnicas_venta.md` | Las 100 técnicas de cierre maestras | Mensajes mecánicos sin técnica → conversión baja |
 | 11 | `CLIENTES/*.md` — **TODOS los archivos, uno por uno** | El historial COMPLETO de cada cliente: cada palabra, cada hora, cada error cometido, cada respuesta pendiente | Pierde el contexto real de la conversación → repite errores ya documentados o ignora preguntas pendientes del cliente |
+| 12 | `VENTAS/aprendizajes.md` | Todos los aprendizajes acumulados de sesiones pasadas | Repite errores ya documentados que costaron ventas reales |
+| 13 | `VENTAS/conversaciones.md` | Historial de sesiones pasadas: qué se prometió, qué errores se cometieron, qué se corrigió | No sabe qué pasó en la sesión anterior → no puede darle continuidad |
 
 **Sobre la carpeta `CLIENTES/`:** es el archivo histórico permanente — un archivo `.md` por cliente con su conversación completa (procesada de los ZIPs de WhatsApp + actualizada en cada sesión). `08_clientes.md` es el ÍNDICE maestro con el estado resumido; `CLIENTES/*.md` es la MEMORIA profunda. El arranque cruza ambos:
 - ¿Hay clientes en `CLIENTES/` que NO están en `08_clientes.md`? → agregarlos al índice — un chat sin indexar es una venta olvidada
@@ -73,6 +75,27 @@ Leer TODOS estos archivos completos antes de generar una sola línea del reporte
 
 ---
 
+### ⚡ FASE 1.5 — DIAGNÓSTICO DE LA SESIÓN ANTERIOR
+
+Antes de analizar el día de hoy, reconstruir qué pasó la última vez:
+
+**Leer el último registro de `VENTAS/conversaciones.md` y responder:**
+- ¿Qué leads prometieron responder hoy o esta semana?
+- ¿Qué pedidos se tenían que verificar con Servientrega?
+- ¿Hubo alguna promesa a un cliente que sigue sin cumplir? ("le mando la guía", "le aviso mañana")
+- ¿Qué errores se cometieron en la última sesión y se comprometió a no repetir?
+
+**Verificar git log para continuidad:**
+- ¿Qué cambió desde el último commit?
+- ¿El estado de 08_clientes.md está al día o hubo interacciones fuera de sesión?
+
+**Si hay una brecha de tiempo grande entre sesiones (más de 2 días):**
+- Asumir que los leads calientes se enfriaron — revisar con ojo crítico
+- Los pedidos en agencia pueden haber vencido — recalcular días con fecha actual
+- Los D de seguimiento avanzan con el tiempo real, no con el tiempo de sesión
+
+---
+
 ### ⚡ FASE 2 — ORIENTACIÓN TEMPORAL (saber QUÉ DÍA es cambia TODOS los mensajes)
 
 Antes de analizar cualquier lead, establecer el contexto de tiempo completo:
@@ -94,7 +117,34 @@ Antes de analizar cualquier lead, establecer el contexto de tiempo completo:
 
 **Regla anti-fechas-falsas:** la urgencia del domingo solo se usa si ES verdad esta semana. NUNCA inventar vencimientos ni "promociones que se abrirán" (Causa #12 — error real del chat 6167). Una urgencia falsa descubierta destruye toda la confianza construida.
 
-**2.3 — Cálculos de días que esta fase deja listos para las siguientes:**
+**2.3 — Perfil de conversión por condición médica (usar en análisis de cada lead):**
+
+| Condición | Urgencia de compra | Ticket natural | Por qué convierte |
+|---|---|---|---|
+| Cuadriplejia total | ⭐⭐⭐⭐⭐ | Par $107.98 | Sin alternativas accesibles — necesidad urgente real |
+| ACV reciente (< 12 meses) | ⭐⭐⭐⭐⭐ | Unidad $59.99 | Ventana de neuroplasticidad abierta — cada día importa |
+| Cuadriplejia espástica | ⭐⭐⭐⭐ | Unidad/par | La espasticidad es limitante diaria — quieren solución |
+| Parálisis parcial post-cirugía | ⭐⭐⭐⭐ | Unidad $59.99 | En proceso de recuperación activo — receptivos |
+| ACV antiguo (> 12 meses) | ⭐⭐⭐ | Unidad $59.99 | Proceso más lento — pero la familia sigue buscando |
+| Artritis / Artrosis | ⭐⭐⭐ | Unidad + masajeador | Cross-sell natural — guante manos + masajeador rodillas |
+| Rigidez / adultos mayores | ⭐⭐ | Unidad $59.99 | Menos urgente — más sensibles al precio |
+
+**Implicación práctica:** Un lead con cuadriplejia tiene más urgencia que uno con rigidez — si coinciden en el calendario, el cuadripléjico va primero.
+
+**2.4 — Inteligencia de timing por cliente (escribir cuando el cliente ESTÁ DESPIERTO):**
+
+Cada lead tiene un patrón de horario revelado en su conversación. Si el cliente escribió la primera vez a las 7:30pm → escribe de noche. Si escribió a las 11am → escribe de mañana. Escribirle en su horario habitual duplica la tasa de respuesta.
+
+| Patrón del cliente | Franja óptima para escribir |
+|---|---|
+| Escribió entre 7am-12pm | Mañana — enviar entre 8-11am |
+| Escribió entre 12pm-5pm | Tarde — enviar entre 2-5pm |
+| Escribió entre 5pm-9pm | Noche — enviar entre 6-8pm |
+| Sin patrón claro | Cualquier hora hábil — preferir 9am o 6pm |
+
+Leer la hora del primer contacto de CADA cliente en su archivo `CLIENTES/` → anotar la franja óptima en el análisis 5.5. Un mensaje enviado a la hora incorrecta puede ser ignorado incluso si el contenido es perfecto.
+
+**2.5 — Cálculos de días que esta fase deja listos para las siguientes:**
 - Para cada pedido en agencia: ¿cuántos días lleva ahí? (día llegada = día 1)
 - Para cada envío en tránsito: ¿cuántos días HÁBILES desde el envío? (sábado y domingo NO cuentan)
 - Para cada lead en secuencia D: ¿cuántos días desde el primer contacto? ¿en qué D debería estar HOY?
@@ -214,24 +264,62 @@ HISTORIA
 5. ¿Qué se le ha dicho ya? → precio dado, kit explicado, agencia buscada...
 6. ¿Qué respondió la última vez? → palabras exactas si las hay
 7. ¿Hubo audio? → audio = inversión emocional alta = señal de compra fuerte
+8. ¿Hubo promesa no cumplida? → "le mando la guía", "le aviso mañana", "ya le busco la dirección"
+   → si hay promesa vencida: cumplirla ES el primer mensaje, no el CTA de venta
 
 ESTADO ACTUAL
-8. ¿Respondió algo alguna vez? → SÍ: retomar desde lo último hablado, D1-D4 PROHIBIDO
+9. ¿Respondió algo alguna vez? → SÍ: retomar desde lo último hablado, D1-D4 PROHIBIDO
                                 → NO: ¿en qué D está hoy según los días transcurridos?
-9. ¿Qué señal domina? →
-   - 🔥 CALIENTE: dio ciudad sin pedírsela, preguntó qué incluye, mandó audio, dijo "quiero mi pedido", preguntó tiempo de entrega
-   - 🟡 TIBIO: respondió pero con dudas, preguntó precio y se quedó pensando, "lo consulto con mi esposo"
-   - 🔵 FUGA: "ya le aviso", "ok gracias", "me animo y le escribo", leyó y no respondió
-   - ⚪ FRÍO: silencio total desde el inicio
-10. ¿Cuál es SU miedo principal? → ¿el dinero? ¿que no funcione para su caso? ¿que sea estafa? ¿decidir solo?
-11. ¿Cuál es SU deseo principal? → ¿que el familiar recupere movimiento? ¿dejar de ver sufrir a alguien? ¿volver a trabajar?
+10. ¿Qué señal domina? →
+    - 🔥 CALIENTE: dio ciudad sin pedírsela, preguntó qué incluye, mandó audio, dijo "quiero mi pedido", preguntó tiempo de entrega
+    - 🟡 TIBIO: respondió pero con dudas, preguntó precio y se quedó pensando, "lo consulto con mi esposo"
+    - 🔵 FUGA: "ya le aviso", "ok gracias", "me animo y le escribo", leyó y no respondió
+    - ⚪ FRÍO: silencio total desde el inicio
+11. ¿Cuál es SU miedo principal? → ¿el dinero? ¿que no funcione para su caso? ¿que sea estafa? ¿decidir solo?
+12. ¿Cuál es SU deseo principal? → ¿que el familiar recupere movimiento? ¿dejar de ver sufrir a alguien? ¿volver a trabajar?
+13. ¿Hay ventana de cierre? → ¿cuántos días más puede estar tibio/caliente antes de enfriarse definitivamente?
+    - Lead caliente > 5 días sin avanzar = ventana cerrándose
+    - Cuidador con familiar en fase aguda de ACV = ventana muy corta (meses críticos)
+    - Lead frío > 10 días sin respuesta = ya casi muerto
+
+PUNTUACIÓN Y PREDICCIÓN
+14. Probabilidad de cierre hoy: [1-10] → 1 = casi imposible / 10 = solo falta confirmar datos
+    Factores que suben el score: condición médica seria, audio enviado, ciudad confirmada, respondió al menos una vez
+    Factores que bajan el score: > 7 días silencio, dijo "lo pienso" más de 2 veces, sin datos médicos conocidos
+15. ¿Qué necesita para subir 2 puntos en el score? → identificar el ÚNICO obstáculo que lo tiene atascado
 
 DECISIÓN
-12. ¿Qué técnica de 10_tecnicas_venta.md aplica? → ver matriz 5.2 — nombrarla exactamente
-13. ¿Cuál es el ÚNICO objetivo del mensaje de hoy? → un mensaje = un solo paso adelante (no vender todo en un mensaje)
-14. ¿Cuál es el mensaje exacto? → corto, empático, UN solo CTA
-15. ¿Por qué ese mensaje y no otro? → justificación de una línea
+16. ¿Qué técnica de 10_tecnicas_venta.md aplica? → ver matriz 5.2 — nombrarla exactamente
+17. ¿Cuál es el ÚNICO objetivo del mensaje de hoy? → un mensaje = un solo paso adelante (no vender todo en un mensaje)
+18. ¿Cuál es el mensaje exacto? → corto, empático, UN solo CTA
+19. ¿Por qué ese mensaje y no otro? → justificación de una línea
+20. ¿Qué necesita el OPERADOR antes de enviarlo? → [AGENCIA], [DIRECCIÓN], [GUÍA], verificar Servientrega, etc.
+
+PREPARACIÓN PARA LA RESPUESTA (pensar 1 turno adelante)
+21. Si responde SÍ / da los datos → qué hacer: [acción exacta]
+22. Si responde con duda / pregunta → qué responder: [mensaje exacto de contingencia]
+23. Si no responde en 24h → qué hacer: [próximo D o cerrar chat]
 ```
+
+#### 5.1.5 — ANÁLISIS CRUZADO DE LEADS (detectar ANTES de analizar cada uno por separado)
+
+Antes de procesar lead por lead, hacer una lectura horizontal de todos los activos:
+
+**Agrupación por condición médica:**
+¿Hay varios leads con ACV? → preparar el mismo argumento de neuroplasticidad (ya tengo el guión listo — no redactar de nuevo)
+¿Varios con artritis? → el combo guante + masajeador es el cross-sell natural para todos
+
+**Agrupación por ciudad:**
+¿Varios leads en la misma ciudad? → buscar la agencia de Servientrega UNA sola vez y aplicarla a todos
+
+**Agrupación por estado de compra:**
+¿Varios en D2+ sin respuesta? → ¿el bot usó el mismo mensaje con todos? → si sí, el mensaje está quemado — usar retiro de atención en vez de insistir con el mismo guión
+
+**Agrupación por perfil de comprador:**
+¿Varios son cuidadores de familiar mayor? → cierre emocional (la cuidadora carga el dolor del enfermo) — no cierre funcional
+¿Varios son el paciente mismo? → cierre funcional (progreso, niveles, autonomía)
+
+Esta lectura cruzada toma 2 minutos y evita preparar 5 mensajes independientes que podrían ser 1 protocolo aplicado a 5 personas.
 
 #### 5.2 — Matriz de selección de técnica (señal + perfil → técnica)
 
@@ -305,13 +393,19 @@ ESTRATEGIA
 > 🧠 **Su miedo:** [el obstáculo real de ESTA persona]
 > 🧠 **Su deseo:** [lo que de verdad quiere lograr]
 > 🧠 **Magic IF:** [una línea: qué necesita escuchar hoy para avanzar]
+> 📊 **Probabilidad de cierre hoy:** [1-10] | **Ventana:** [abierta / cerrándose / crítica — cuántos días quedan]
+> 🤝 **Promesa pendiente:** [si Camila prometió algo que aún no cumplió — cumplirla ES el primer mensaje]
 > 🎯 **Técnica:** [nombre exacto] | **Objetivo del mensaje:** [el único paso que busca]
 >
 > 📩 **Mensaje hoy (listo para copiar y pegar):**
 > "[texto exacto]"
 >
 > ⚡ **Por qué este y no otro:** [1 línea]
-> ⏰ **Cuándo enviarlo:** [franja horaria si aplica — AM/PM/cualquier hora hábil]
+> ⏰ **Cuándo enviarlo:** [franja horaria + por qué esa franja — ej: "escribió a las 7pm → enviar entre 6-8pm"]
+>
+> 🔮 **Si responde SÍ / da los datos:** [qué hacer exactamente — mensaje de confirmación o siguiente paso]
+> 🔮 **Si responde con duda o pregunta:** [qué responder — mensaje de contingencia listo]
+> 🔮 **Si no responde en 24h:** [próximo D, retiro de atención, o cerrar chat]
 
 ---
 
@@ -385,15 +479,84 @@ Generar este reporte después de completar las Fases 1-6. El reporte muestra el 
 ### ⚰️ CHATS CERRADOS ESTA SESIÓN
 [Lista con motivo: muertos post-D4, ollas, Colombia, NO explícito — para que el operador sepa que fueron descartados a propósito, no olvidados]
 
+### 💰 MAPA DE INGRESOS HOY
+Calcular el dinero real en juego en esta sesión:
+
+**Dinero en riesgo (ya vendido, puede perderse):**
+- Pedidos en agencia + reclamos activos → [suma de $$ en riesgo de no retiro]
+
+**Potencial de cierre hoy (leads calientes y tibios):**
+- Por cada caliente y tibio: precio × probabilidad de cierre → [valor esperado]
+- Ejemplo: lead con probabilidad 7/10 × $59.99 = $42 valor esperado
+
+**Total del día:** [dinero en riesgo] + [potencial calientes] + [potencial tibios] = **$[TOTAL]**
+
+Esta cifra hace visible lo que está en juego HOY. Un lead con probabilidad 8/10 y $107.98 en juego vale $86 esperados — más que 3 leads tibios con $59.99. Priorizar en consecuencia.
+
+---
+
+### 🔄 PATRONES CRUZADOS — varios leads con el mismo perfil
+Si hay múltiples leads con la misma condición médica, ciudad, o perfil de comprador:
+
+**Por qué importa:** si el mismo argumento funcionó (o falló) con cliente A, aplicarlo igual con cliente B que tiene el mismo perfil es la decisión correcta. Si el mismo error se repite en dos chats del mismo día, es un patrón que hay que cortar.
+
+**Cómo detectarlo:**
+- ¿Dos o más leads con ACV? → mismo guión médico de neuroplasticidad para ambos
+- ¿Dos leads en la misma ciudad? → misma agencia Servientrega — solo buscarla una vez
+- ¿Dos leads en D2+ sin respuesta? → ¿mismo tono de bienvenida fue el del bot? → error de bot repetido
+- ¿Dos leads que preguntaron "¿de dónde son?"? → patrón de desconfianza activo esa semana
+
+**Formato:**
+> 🔄 **Patrón detectado:** [N] leads con [condición / ciudad / perfil]
+> **Implicación:** [qué se replica de uno al otro + qué error evitar en todos]
+> **Clientes afectados:** [lista]
+
+[Si no hay patrones: "Sin patrones cruzados detectados esta sesión"]
+
+---
+
+### 🎯 VENTANAS DE CIERRE HOY — leads con reloj corriendo
+
+Los leads no esperan para siempre. Algunos tienen una ventana definida por su condición médica, por cuántos días llevan activos, o por el contexto vital. Identificarlas es parte del trabajo terapéutico — no es presión, es realidad clínica:
+
+| Lead | Condición | Días activo | Ventana | Cierra si no actúo en... |
+|---|---|---|---|---|
+| [alias] | [ACV < 12 meses] | [N] | Crítica | [X días] — ventana neuroplasticidad se acorta |
+| [alias] | [Caliente sin avanzar] | [5+] | Cerrándose | [hoy] — lleva N días tibio → próxima fuga es definitiva |
+| [alias] | [D4 hoy] | [4] | Último día | hoy — si silencio al D4, chat muerto |
+
+**Nota:** las ventanas de condición médica son reales (no inventadas para urgencia) — la neuroplasticidad post-ACV es mayor en los primeros 6-12 meses. Mencionarlo con honestidad, no como presión.
+
+[Si no hay ventanas críticas: "Sin cierres urgentes por vencimiento hoy"]
+
+---
+
+### ⚠️ ERROR DEL DÍA — el peor error a NO cometer hoy
+
+Basado en los patrones de la última sesión (`VENTAS/conversaciones.md` + `CEREBRO/06_patrones.md`), identificar el error que tiene más probabilidad de repetirse HOY:
+
+> **Error del día:** [nombre del error — ej: "Preguntar ciudad cuando ya la dijo"]
+> **Por qué hoy en particular:** [razón concreta — ej: "Chat 4409 no ha dado ciudad — hay tentación de pedirla aunque él ya dijo para quién es"]
+> **Señal de alerta:** [cuándo es más probable que ocurra en los mensajes de hoy]
+> **La regla:** [la regla exacta que previene el error]
+
+Este briefing de un solo error (el más probable) es más efectivo que recordar los 13 a la vez.
+
+---
+
 ### 🧠 APRENDIZAJES NUEVOS DETECTADOS
 [Si el cruce de archivos reveló algo nuevo: patrón repetido, error no documentado, inconsistencia entre CEREBRO y realidad]
 [Cada aprendizaje se escribe en el archivo CEREBRO que corresponda en la Fase 8 — el cerebro crece en cada arranque]
 [Si no hay: "Sin novedades — el CEREBRO está al día"]
 
+---
+
 ### 🗂️ RESUMEN EJECUTIVO
 - Total clientes en la nube: [N] archivos | Activos hoy: [N] / 15 cupos de la sesión
 - Urgentes: [N] | Preguntas sin responder: [N] | Promesas vencidas: [N] | En agencia: [N] | En tránsito: [N]
 - Calientes: [N] | Tibios: [N] | En seguimiento D: [N] | Cerrados esta sesión: [N]
+- 💰 **Dinero en riesgo:** $[N] | **Potencial de cierre hoy:** $[N]
+- 🎯 **Ventanas críticas:** [N leads con cierre hoy o nunca]
 - **Plan del día en orden de puntaje:** [lista numerada: 1. cliente — acción / 2. cliente — acción...]
 - **Primera acción AHORA MISMO:** [cliente de mayor puntaje + su mensaje exacto]
 

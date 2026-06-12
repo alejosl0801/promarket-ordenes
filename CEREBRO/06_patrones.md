@@ -1,5 +1,5 @@
 # PATRONES APRENDIDOS — PROMARKET ECUADOR
-## Actualizado: 8 de junio 2026
+## Actualizado: 12 de junio 2026
 
 ---
 
@@ -209,3 +209,56 @@
 - Reactiva ~30% de leads que parecían perdidos
 - NO usar con clientes que nunca respondieron — no tiene efecto
 - Para clientes fríos sin conversación → mensaje directo con producto y precio
+
+---
+
+## INTELIGENCIA GEOGRÁFICA — ciudades y cobertura (actualizado 12/6/2026)
+
+### Ciudades que compraron (historial):
+- **Ambato** — 3 ventas — cobertura excelente, Servientrega bien establecida
+- **Quito** — 1 venta — múltiples agencias disponibles
+- **Puyo** — 1 venta — cobertura disponible
+
+### Ciudades con problema de cobertura:
+- **Portoviejo** — cobertura limitada — cerrar si no hay agencia cercana (caso chat 6167)
+- **Moraspungo** — sin agencia directa — alternativa: Quinsaloma
+- **Colombia (+57)** — SIN COBERTURA — cerrar chat inmediatamente
+
+### Ciudades con leads activos (junio 2026):
+- **Santo Domingo** — Chat 3065 (agencia disponible)
+- **Santa Rosa (El Oro)** — Chat 9622 (agencia disponible)
+- **Calceta (Manabí)** — Chat 5804 (verificar agencia)
+- **Pelileo** — kushita2016 (agencia confirmada)
+
+### Regla de agencia:
+Antes de confirmar "llega a su ciudad", verificar en servientrega.com.ec o Google. No asumir. Si no hay agencia: "¿tiene familiar en ciudad cercana donde pueda llegar el pedido? 💛"
+
+---
+
+## INTELIGENCIA DE TIMING — cuándo escribe cada tipo de cliente
+
+### Patrón detectado en los chats procesados:
+- **Mensajes de mañana (8-12am):** adultos mayores, amas de casa — más tiempo disponible
+- **Mensajes de tarde (12-5pm):** trabajadores en pausa
+- **Mensajes de noche (5-9pm):** hijos/cuidadores después del trabajo — el segmento más grande de compradores de guante
+
+### Implicación operativa:
+Si el cliente inicial escribió de noche → escribirle de noche (no de mañana)
+Si el cliente respondió rápido = revisa WhatsApp con frecuencia = responder en menos de 10 minutos tiene mayor retorno
+
+### Regla de silencio nocturno:
+No enviar mensajes después de las 9pm ni antes de las 8am. Mensaje enviado a las 11pm cuando el cliente está dormido = peor franja para leer mensajes de compra.
+
+---
+
+## PATRÓN D ENVEJECIDO — leads que deberían estar en D3 pero nunca recibieron D1
+
+Detectado en 3 chats del 6/6 (2050, 8035, 3065):
+- Habían dicho "quiero realizar mi pedido" → bot no dio seguimiento → quedaron 6 días sin tocar
+- Nunca recibieron D1, D2, D3 → para el 12/6 "deberían" estar en D4 o muertos
+
+**Manejo correcto para leads envejecidos:**
+1. NO enviar todos los mensajes D atrasados (delata sistema automático)
+2. SI hubo conversación activa (dijo algo): retomar desde lo último hablado
+3. SI nunca respondió pero pasaron 4+ días: enviar el D del día actual ($49.99 activo) con UN solo mensaje
+4. Priorizar respondiendo cualquier pregunta que quedó pendiente PRIMERO

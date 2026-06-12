@@ -1,42 +1,22 @@
 # REGISTRO DE CONVERSACIONES — PROMARKET ECUADOR
-## Última actualización: 6 de junio 2026
+## Última actualización: 12 de junio 2026
+
+---
+
+## ⚠️ NOTA SOBRE MENSAJES HISTÓRICOS
+
+Los mensajes enviados antes del 8/6/2026 mencionan "Alejandro de ProMarket" — ese nombre ya no existe. La vendedora es **Camila**. Algunos mensajes del 6-7/6 también mencionaban porcentajes de descuento ("75%", "60%") — ya corregidos. Los mensajes históricos se conservan para aprendizaje, no como plantillas a reusar.
 
 ---
 
 ## SESIÓN — 5 DE JUNIO 2026
 
-### O1 — +593 99 611 1811 (Ollas) — CLIENTE NUEVO
-- Dudó del precio: "no me parece real"
-- Se le envió video del producto
-- Estado: esperando respuesta
-
-### O2 — Moraspungo — (Ollas) — CLIENTE NUEVO
-- No hay Servientrega en Moraspungo — agencia más cercana: Quinsaloma
-- Estado: esperando respuesta
-
 ### kushita2016 — +593 99 920 0994 (Guante) — 🔥
 - Compra para su mamá — 2 audios enviados
 - Agencia confirmada: Pelileo
 - 5/6 tarde: Promarket respondió audio con info de niveles y edad
-- Se mandaron 5 mensajes seguidos — demasiados
+- Se mandaron 5 mensajes seguidos — demasiados (← ERROR: límite 3 seguidos)
 - NO se le aplicó liquidación — precio normal $59.99
-
-### Wuinston Sicifredo — +593 98 109 9770 (Ollas)
-- Escribió 5/6 noche — esperando respuesta ciudad
-
-### Dr. R. BARROS — +593 98 110 2387 (Ollas)
-- Escribió 5/6 noche — esperando respuesta ciudad
-
-### Gustavo Tuarez — +593 99 615 7785 (Ollas)
-- Escribió 5/6 noche — esperando respuesta ciudad
-
-### TODOS LOS LEADS CONTACTADOS ANOCHE 5/6 DE NOCHE
-Norma, Sery, Mangu, Alvita, Maggi, Ita Vera, Mendez, Bettys, Rosa Torres, Carlota, Cecilia, "tu papa", ivanojeda — todos recibieron mensaje de reactivación
-
-### CERRADOS SIN VENTA
-- Rosa Carranza — dijo "NO GRACIAS"
-- Rose — dijo "POR AHORA NO GRACIAS"
-- Gregorio Barzallo — dijo "Ya no lo necesito"
 
 ---
 
@@ -44,79 +24,107 @@ Norma, Sery, Mangu, Alvita, Maggi, Ita Vera, Mendez, Bettys, Rosa Torres, Carlot
 
 ### DECISIONES ESTRATÉGICAS DEL DÍA
 - Campañas de ollas CERRADAS — presupuesto duplicado para guante
-- Precio liquidación activado: ollas $39.99 / guante $49.99 (solo para leads fríos)
-- kushita2016: precio normal $59.99 — está caliente
+- Precio liquidación activado: guante $49.99 (solo para leads fríos/D2+)
 - Mensaje de bienvenida WhatsApp actualizado (sin porcentaje de descuento)
-- Anuncios de Facebook actualizados — corregido mensaje "75% descuento" y "60% descuento"
+- Anuncios de Facebook actualizados — corregido "75% descuento" y "60% descuento"
 
 ### kushita2016 — +593 99 920 0994 (Guante) — 🔥
-- Mensaje enviado hoy: "buenos días! 😊 mañana vence el envío gratis — ¿le proceso el guante para su mamá?"
+- Mensaje enviado: "buenos días! 😊 mañana vence el envío gratis — ¿le proceso el guante para su mamá?"
 - Estado: esperando respuesta
 
-### Nuevo 1730 — +593 97 987 1730 (Guante) — NUEVO
-- Escribió: "Quiero realizar mi pedido del Guante de Rehabilitación"
-- Preguntó precio y garantía
-- Respuesta enviada: "Hola! 😊 $59.99 con envío incluido 🚚 paga al retirar en Servientrega ✅ 3 meses de garantía contra defectos de fábrica 😊 ¿de qué ciudad nos escribe?"
-- Estado: esperando respuesta ciudad
+### Chat 3065 — +593 99 412 3065 (Guante) — Santo Domingo
+- Preguntó "¿en cuántos pagos se puede hacer?" ← ERROR: pregunta no respondida
+- Bot mandó agencias directamente sin responder la pregunta
+- Corrección documentada: responder pregunta PRIMERO
 
-### Mendez 6692 — +593 98 887 6692 (Ollas) — ACTIVO HOY
-- Escribió hoy 7:25am: preguntó si traen a domicilio, precio adicional y video
-- Respuesta enviada: "Buenos días! 😊 todo llega a su agencia Servientrega más cercana, paga al retirar ✅ Por hoy tenemos las ollas en $39.99 con envío incluido 🚚 ¿de qué ciudad nos escribe?"
-- Estado: esperando respuesta ciudad
+### Chat 2050 — +593 98 591 2050 (Guante)
+- Dijo "quiero realizar mi pedido" — se le pidió ciudad — silencio posterior
+- Lead caliente no rescatado a tiempo
 
-### +593 98 591 2050 (Guante) — NUEVO HOY
-- Escribió 7:16pm: "Quiero realizar mi pedido del Guante de Rehabilitación"
-- Promarket respondió con "60% de descuento" — error corregido en anuncios
-- Estado: esperando respuesta ciudad
+### Chat 8035 — +593 99 727 8035 (Guante)
+- Dijo "quiero realizar mi pedido" — se le pidió ciudad — silencio posterior
+- Lead caliente no rescatado a tiempo
 
-### +593 93 946 6167 (Guante) — HOY ❌ CERRADO
-- Ciudad: Portoviejo
-- Dijo "no me alcanza" — no hay agencia cerca
-- Se le dijo que habría promo adicional esta semana
-- Estado: cerrado por ahora — posible reactivación con liquidación
-
-### +593 96 100 7773 (Guante) — HOY
-- Ciudad: El Oro
-- Dijo "déjeme decirle a la persona que requiere eso"
-- Promarket: "Listo, quedo atenta — estoy segurísima que le será de mucha ayuda"
+### Chat 7773 — +593 96 100 7773 (Guante) — El Oro
+- "Déjeme decirle a la persona que requiere eso" — intermediario consultando
 - Estado: esperando respuesta
 
-### +593 99 727 8035 (Guante) — HOY
-- Escribió 6:27pm — se preguntó ciudad
-- Estado: esperando respuesta ciudad
-
-### +593 99 412 3065 (Guante) — HOY
-- Ciudad: Santo Domingo
-- Preguntó "¿en cuántos pagos?" — Promarket no respondió esa pregunta, mandó agencias directamente — error
-- Respuesta correcta pendiente: "es un solo pago al retirar en Servientrega 😊 no adelanta nada — paga cuando tiene el guante en sus manos ✅ ¿cuál agencia le queda más cerca?"
-- Estado: esperando respuesta agencia
-
-### +593 93 996 4634 (Guante) — HOY
-- Preguntó precio 6:14pm — se respondió
-- Estado: esperando respuesta ciudad
+### Chat 6167 — +593 93 946 6167 (Guante) — Portoviejo ❌
+- Dijo "no me alcanza" + sin agencia disponible cerca
+- ← ERROR: se prometió "esta semana se abrirá una promoción adicional" — nunca hacer esto
+- Cerrado: no hay cobertura, no reactivar salvo que se habilite agencia Portoviejo
 
 ---
 
-## PROMO MASIVA — MAÑANA DOMINGO 7/6
+## SESIÓN — 7 DE JUNIO 2026 (DOMINGO)
 
-### MENSAJE GUANTE ($49.99):
-> Hola! 😊 Alejandro de ProMarket — hoy vencía el envío gratis pero lo extendimos hasta mañana lunes como última oportunidad. El guante bajó de $59.99 a $49.99 y quedan solo 7 unidades 🔥 ¿se anima?
+### Promo masiva enviada (← NOTA: mensajes decían "Alejandro" — ya corregido a Camila)
 
-**A quién:** Norma (+593 98 480 0900), Mangu (+593 99 557 7529), Bettys (+593 98 501 1737), "tu papa" (+593 93 976 3359), ivanojeda (+593 98 946 0509)
+**A leads guante ($49.99):** Norma, Mangu, Bettys, tu papa, ivanojeda
+**A leads ollas ($39.99):** Wuinston, Dr. Barros, Gustavo, Sery, Rosa Torres, Carlota, Alvita, Maggi, Ita Vera, Cecilia
 
-### MENSAJE OLLAS ($39.99):
-> Hola! 😊 Alejandro de ProMarket — hoy vencía el envío gratis pero lo extendimos hasta mañana lunes como última oportunidad. Las ollas bajaron de $49.99 a $39.99 y quedan solo 7 sets 🔥 ¿se anima?
+← ERROR detectado en estos mensajes: "quedan solo 7 unidades 🔥" — escasez inventada. NUNCA más.
+← ERROR: "lo extendimos hasta mañana lunes como última oportunidad" — fecha falsa prolongada. NUNCA más.
 
-**A quién:** Wuinston (+593 98 109 9770), Dr. Barros (+593 98 110 2387), Gustavo (+593 99 615 7785), Sery (+593 97 874 3450), Rosa Torres (+593 98 651 6901), Carlota (+593 99 027 6468), Alvita (+593 93 957 7932), Maggi (+593 96 700 4465), Ita Vera (+593 96 705 3789), Cecilia (+593 98 737 1421)
+### Órdenes generadas hoy:
+- #151381 César Augusto López — guante
+- #151380 Jimmy Vera Peñafiel — guante
 
 ---
 
-## ERRORES DETECTADOS HOY Y CORREGIDOS
+## SESIÓN — 8 DE JUNIO 2026
 
-1. Olvidar "Hola!" en primer mensaje
-2. Preguntar "¿para quién es?" cuando cliente ya dijo "quiero realizar mi pedido"
-3. Usar "¿le genero la orden?" en reactivaciones — usar "¿se anima?"
-4. No verificar fecha real del último contacto antes de dar mensajes
-5. Anuncios FB usaban "75% de descuento" y "60% de descuento" — corregidos
-6. No responder pregunta de cuántos pagos — siempre responder primero la pregunta del cliente
-7. Mensaje de urgencia debe tener enganche claro — "mañana vence el envío gratis"
+### RECLAMO ACTIVO — Blanca Rodríguez #144356
+- Enviaron guante DERECHO siendo pedido IZQUIERDO — error operativo
+- Pendiente de resolver
+
+### Leads nuevos registrados:
+- Chat 6469, 4065, 0433, 8581, 4148, 1337 (todos del 8/6)
+- Chat 0433: cuadriplejia espástica — condición seria
+- Chat 4148: cuadriplejia bilateral — se ofreció PAR $107.98
+
+---
+
+## SESIÓN — 11 DE JUNIO 2026
+
+### Leads nuevos:
+- Chat 9622: guante para esposo — Santa Rosa, El Oro — esperando barrio
+- Chat 5804: quiere realizar pedido — Calceta, Manabí — esperando barrio
+- Chat 4409: guante para papá — sin ciudad ni condición
+
+---
+
+## SESIÓN — 12 DE JUNIO 2026
+
+### Auditoría del repositorio:
+- 51 archivos en CLIENTES/ (35 históricos + 16 nuevos)
+- 6 chats del 6/6 nunca indexados — rescatados y añadidos al índice
+- CLAUDE.md actualizado a versión 4 (arranca con 9 fases + inteligencia por lead)
+- Todos los aprendizajes de las sesiones escritos en CEREBRO correspondiente
+
+### Estado operativo al cierre del 12/6:
+- Reclamo activo: Blanca #144356
+- Vencidos en agencia: Alex #146271, Carmen #146504
+- Último día: Willman #146110
+- Verificar llegada: César #151381, Jimmy #151380
+- Leads calientes: 9622, 5804, 4409, kushita2016
+- Leads recuperados para rescate: 3065, 2050, 8035, 7773, 4634
+
+---
+
+## ERRORES DETECTADOS Y CORREGIDOS (histórico completo)
+
+| Fecha | Error | Corrección |
+|---|---|---|
+| 5/6 | Demasiados mensajes seguidos (5) a kushita2016 | Límite 3 seguidos sin respuesta |
+| 6/6 | Olvidar "Hola!" al inicio | Siempre empezar con saludo |
+| 6/6 | "¿para quién es?" cuando cliente ya dijo "quiero comprar" | Ir directo a precio + ciudad |
+| 6/6 | "¿le genero la orden?" en reactivaciones | Usar "¿se anima?" |
+| 6/6 | Anuncios con "75%/60% de descuento" | Solo precios finales, sin porcentajes |
+| 6/6 | Prometer "promo que se abrirá esta semana" | NUNCA prometer algo que no existe HOY |
+| 7/6 | Mensajes de "Alejandro" en vez de Camila | Solo existe Camila |
+| 7/6 | "Quedan solo 7 unidades" — escasez falsa | NUNCA inventar escasez |
+| 7/6 | Extender plazo: "hasta mañana lunes" — fecha falsa | NUNCA extender fechas ficticias |
+| 8/6 | "¿qué mano?" a cuadripléjico bilateral | PAR directo, sin preguntar mano |
+| 8/6 | Pedir datos antes de confirmación de compra | Solo pedir datos con confirmación explícita |
+| 12/6 | 6 chats sin indexar en 08_clientes.md | Cruce obligatorio CLIENTES/ vs índice en cada arranque |
