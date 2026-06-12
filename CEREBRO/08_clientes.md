@@ -244,6 +244,56 @@
 
 ---
 
+## 🔁 RECUPERADOS DEL ARCHIVO — chats del 6/6 que NO estaban en este índice
+*(Detectados al cruzar CLIENTES/ con este registro el 12/6 — 6 chats procesados de los ZIPs que nunca se indexaron. TRES dijeron "quiero realizar mi pedido" y quedaron botados.)*
+
+### ⭐ Chat 3065 (+593 99 412 3065) — Santo Domingo — PREGUNTA SIN RESPONDER
+- **Producto:** Guante
+- **Contacto inicial:** 6/6/2026 — **6 días**
+- **Estado:** Dijo "quiero realizar mi pedido" + dio ciudad + preguntó **"¿en cuántos pagos?"** y NADIE LE RESPONDIÓ — se le pidió ciudad ignorando su pregunta
+- **Señal:** 🔥 Era caliente — pregunta de pago = duda final antes de comprar
+- **Técnica:** Responder la pregunta ignorada + disculpa implícita + cero riesgo
+- **Mensaje:** "¡Hola! 😊 quedé debiéndole la respuesta: es un solo pago al retirar en Servientrega — no adelanta nada, paga cuando tiene el guante en sus manos ✅ y esta semana lo tengo en $49.99 con envío incluido. ¿le confirmo su agencia en Santo Domingo?"
+- **Por qué:** su última duda fue el pago — responderla reabre la conversación exactamente donde murió
+
+### ⭐ Chat 2050 (+593 98 591 2050) — sin ciudad
+- **Producto:** Guante
+- **Contacto inicial:** 6/6/2026 — **6 días**
+- **Estado:** Dijo "quiero realizar mi pedido" — se le pidió ciudad — nunca respondió
+- **Señal:** 🟡 Era caliente, se enfrió en silencio
+- **Técnica:** Retomar el pedido declarado + precio especial
+- **Mensaje:** "¡Hola! 😊 me quedé esperando para completar su pedido del guante — esta semana lo tengo en $49.99 con envío incluido ✅ ¿de qué ciudad nos escribe?"
+
+### ⭐ Chat 8035 (+593 99 727 8035) — sin ciudad
+- **Producto:** Guante
+- **Contacto inicial:** 6/6/2026 — **6 días**
+- **Estado:** Dijo "quiero realizar mi pedido" — se le pidió ciudad — nunca respondió
+- **Señal:** 🟡 Era caliente, se enfrió en silencio
+- **Técnica:** Retomar el pedido declarado + precio especial
+- **Mensaje:** "¡Hola! 😊 me quedé esperando para completar su pedido del guante — esta semana lo tengo en $49.99 con envío incluido ✅ ¿de qué ciudad nos escribe?"
+
+### Chat 7773 (+593 96 100 7773) — El Oro — intermediario
+- **Producto:** Guante (para otra persona)
+- **Contacto inicial:** 6/6/2026 — **6 días**
+- **Estado:** "Déjeme decirle a la persona que requiere eso" — consultando con el paciente — nunca volvió
+- **Señal:** 🟡 Intermediario — la decisión es de otro
+- **Técnica:** Facilitar la consulta — mensaje listo para reenviar al paciente
+- **Mensaje:** "¡Hola! 😊 ¿qué le dijo la persona del guante? Si le sirve, le paso un resumen cortito que puede reenviarle tal cual: incluye guante robótico + guante espejo + controlador + pelota, $49.99 con envío, y se paga solo al retirar en Servientrega — sin anticipos ✅"
+
+### Chat 4634 (+593 93 996 4634) — sin ciudad
+- **Producto:** Guante
+- **Contacto inicial:** 6/6/2026 — **6 días**
+- **Estado:** Solo preguntó precio — se le dio — nunca respondió nada más
+- **D actual:** Ningún D enviado → regla de salto: UN mensaje único de última oportunidad
+- **Mensaje:** "Hola! cómo le va 😊 noto que aún no me ha dado una respuesta — ¿qué opina sobre el guante?"
+- **Si no responde → CHAT MUERTO**
+
+### Chat 6167 (+593 93 946 6167) — Portoviejo — ❌ CERRADO
+- **Estado:** "Gracias pero no me alcanza" + sin agencia cerca de su sector
+- **Acción:** NO escribir — archivado — posible reactivación solo si se habilita agencia en Portoviejo
+
+---
+
 ## ❌ CERRADOS / EXCLUIDOS
 
 ### Por decisión del cliente
@@ -281,10 +331,12 @@
 
 ## 📊 RESUMEN 12/6/2026
 
+- **Total clientes en la nube:** 51 archivos en `CLIENTES/` (35 de los ZIPs + 16 creados 12/6) — NADIE se borra
 - **Ventas cerradas junio 2026:** 6 pedidos confirmados
 - **Urgentes:** 4 (1 reclamo + 2 vencidos + 1 último día)
 - **En tránsito verificar:** 2 (César, Jimmy — probablemente en agencia)
 - **Leads calientes activos:** 4 (9622, 5804, 4409, kushita2016)
+- **Recuperados del archivo 12/6:** 5 reactivables (3065 ⭐ pregunta sin responder, 2050, 8035, 7773, 4634) + 1 cerrado (6167)
 - **En seguimiento D:** 13 leads activos
 - **Chats muertos / descartados:** ollas + Colombia + >D4 sin respuesta
 
