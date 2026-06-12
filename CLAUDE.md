@@ -40,9 +40,12 @@ Para cada orden en agencia:
 ---
 
 ### 🚚 EN TRÁNSITO
-Para cada envío en camino:
+Para cada envío en camino, calcular días hábiles desde la fecha de envío:
+- **1-2 días hábiles** → esperar
+- **3+ días hábiles** → verificar guía en Servientrega → si aparece "en agencia": avisar al cliente
 > **Orden #[número] — [Nombre] — enviado [fecha]**
-> Días en tránsito: [N] | Acción: [esperar / notificar llegada]
+> Días hábiles en tránsito: [N] | Estado: [esperando / verificar si llegó]
+> Mensaje si llegó: "Su pedido ya está en la agencia listo para retirar! 🎉 Tiene 4 días para retirarlo antes de que generen cargo adicional. Cualquier novedad me escribe 😊"
 
 ---
 
@@ -54,14 +57,27 @@ Para cada lead en conversación activa:
 ---
 
 ### 📋 SEGUIMIENTO HOY — lista completa con mensajes
-Para cada cliente con secuencia pendiente, calcular según días desde el primer contacto:
-- **1 día sin respuesta** → D1AM: "¿le pareció bien el precio del guante o tiene alguna duda que pueda resolver? 😊"
-- **2-3 días sin respuesta** → D3: precio especial $49.99 + urgencia domingo
-- **4-6 días sin respuesta** → liquidación: $49.99 precio especial de hoy
-- **7+ días sin respuesta** → si hubo conversación: /cierre_conversacion / si nunca respondió: liquidación
-Formato:
-> **[Alias/número]** — [días desde inicio] — [último mensaje enviado]
-> Secuencia: D[N] | Mensaje: "[texto exacto]"
+
+**REGLAS ANTES DE CALCULAR:**
+- Leads de OLLAS: ignorar completamente — producto descontinuado — NO escribir
+- Leads de COLOMBIA (+57): NO escribir — no hay cobertura Servientrega
+- Lead con D4 enviado y sin respuesta: CHAT MUERTO — no aparece en seguimiento
+- Lead que respondió algo: NO usar D1-D4 → retomar desde lo último hablado
+
+**SECUENCIA PARA LEADS QUE NO RESPONDIERON NADA:**
+
+| D | Cuándo | Mensaje |
+|---|---|---|
+| D1 | 2h después del primer contacto sin respuesta | "¿le pareció bien el precio o tiene alguna duda que pueda resolver? 😊" |
+| D2 | Día siguiente al D1 | "Hola! 😊 Camila de ProMarket — hoy tengo el guante por $49.99 con envío incluido ✅ ¿se anima?" |
+| D3 | Día siguiente al D2 | "¿le pareció bien la promoción del guante? 😊 aún está disponible para usted" |
+| D4 | Día siguiente al D3 (ÚLTIMO) | "Hola! cómo le va 😊 noto que aún no me ha dado una respuesta — ¿qué opina sobre el guante?" |
+| Muerto | Sin respuesta al D4 | No escribir más — excluir del reporte |
+
+Formato por lead:
+> **[Alias/número]** — contacto inicial: [fecha] — días transcurridos: [N]
+> D enviado hasta ahora: [D1/D2/D3/D4/ninguno] | D de hoy: [D a enviar]
+> Mensaje: "[texto exacto]"
 
 ---
 

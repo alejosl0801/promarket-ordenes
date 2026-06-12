@@ -6,7 +6,7 @@
 ## POR QUÉ SE CIERRAN LAS VENTAS
 
 1. **Respuesta rápida** — en los chats cerrados la respuesta fue más ágil
-2. **Respondió la pregunta de confianza** — "somos de Guayaquil" genera confianza inmediata
+2. **Respondió la pregunta de confianza** — "somos empresa ecuatoriana, centro logístico en Loja" genera confianza inmediata
 3. **Manejó objeción de precio** con comparación y argumento de valor
 4. **Envió evidencia visual** cuando el cliente dudó
 5. **Explicó garantía** ante "¿puedo revisar antes de pagar?"
@@ -58,10 +58,10 @@
 - El cliente no puede responder esa pregunta
 - Regla: cuadriplejia bilateral → ofrecer par directamente + explicar modo asistido
 
-### Causa #9 — Ciudad equivocada en respuesta (NUEVO — aprendido 8/6)
-- En un chat se respondió "estamos en Loja" — INCORRECTO
-- ProMarket tiene bodega en Guayaquil, envía a todo Ecuador
-- Dar información falsa genera desconfianza si el cliente verifica
+### Causa #9 — No responder la pregunta de confianza (aprendido 8/6)
+- Bettys, Norma, Mendez: preguntaron "¿de dónde son?" → Camila ignoró y mandó guión → ventas perdidas
+- La respuesta correcta: "somos empresa ecuatoriana, centro logístico en Loja 🇪🇨 trabajamos con Servientrega y el pago es al retirar"
+- Esta pregunta es desconfianza disfrazada — si no se responde directamente, el cliente asume que hay algo que ocultar
 
 ---
 
@@ -122,13 +122,13 @@
 4. **"Voy a dejar libre su consulta" reactiva ~30% de leads fríos** — activar miedo a perder atención
 5. **Vender valor, no descuento** — "una sesión de fisioterapia cuesta $40, este guante lo hace todos los días por $59.99 en total"
 6. **El par es el upsell natural** — ofrecerlo siempre, especialmente en cuadriplejia bilateral
-7. **Prueba social es el argumento más fuerte** — "2.400 pacientes en Latinoamérica, recomendado por fisioterapeutas"
+7. **Cero riesgo es el argumento más fuerte** — "paga al retirar — si no le convence no lo retira. Cero riesgo real."
 8. **Imagen sola vale más que cualquier explicación** — foto del producto + "¿Ve? 😊"
-9. **Para ollas: "compatible con inducción" es el diferenciador clave**
+9. **Empatía antes de venta** — para condiciones médicas serias, validar primero antes de explicar el producto. El cliente que siente que lo entendieron, compra.
 10. **Cliente que manda 2 audios en 2 días = señal de compra muy fuerte** — ir directo al cierre
 11. **"¿le genero la orden?" solo con confirmación explícita** — antes usar "¿se anima?"
 12. **Género del vendedor es factor marginal** (10-15%) — respuesta rápida y cierre son el 85%
-13. **Para ollas el mercado es 100% femenino** — tono de Camila más efectivo
+13. **El 75% de compradores de guante son mujeres comprando para un familiar** — tono empático y médico es el más efectivo
 14. **El 75% de descuento genera desconfianza** — vender precio justo, no precio regalado
 15. **Cero riesgo es el argumento de cierre más potente** — "si no le convence al recibirlo, no lo retira"
 16. **Cliente cuadripléjico = alto potencial de venta** — tiene necesidad real urgente, necesita explicación correcta del producto

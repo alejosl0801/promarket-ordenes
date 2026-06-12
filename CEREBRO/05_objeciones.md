@@ -9,7 +9,7 @@
 **Regla:** Celebrar la duda, no explicarla. Una explicación larga genera más desconfianza.
 
 ### "¿De dónde son? / ¿Son confiables?"
-> somos empresa ecuatoriana con bodega en Guayaquil 🇪🇨 trabajamos con Servientrega y el pago es al retirar — no adelanta nada 💛
+> somos empresa ecuatoriana — nuestro centro logístico está en Loja 🇪🇨 trabajamos con Servientrega y el pago es al retirar — no adelanta nada 💛
 **Regla:** Esta pregunta es desconfianza disfrazada. Responderla directa y rápido.
 
 ### "Lo pienso / Ya le aviso / Ok gracias"
@@ -17,8 +17,7 @@
 **Regla:** "Ya le aviso" es casi siempre un NO educado. Crear razón para decidir hoy + ofrecer reserva sin compromiso.
 
 ### "Es muy caro"
-OLLAS: > menos de lo que cuesta un juego de aluminio que se oxida en 6 meses 😊 este es acero inoxidable real con tapas de vidrio incluidas
-GUANTE: > una sola sesión de fisioterapia cuesta $30-50 — este guante hace lo mismo en casa todos los días por $59.99 en total 😊
+> una sola sesión de fisioterapia cuesta $30-50 — este guante hace lo mismo en casa todos los días por $59.99 en total 😊 y paga al retirar — no adelanta nada
 
 ### "¿Puedo ver el producto antes?"
 > el pago es al retirar en Servientrega — si al recibir no le convence, no lo retira 😊 cero riesgo
@@ -43,10 +42,10 @@ GUANTE: > una sola sesión de fisioterapia cuesta $30-50 — este guante hace lo
 ## OBJECIONES ESPECÍFICAS — GUANTE
 
 ### "¿Funciona de verdad?"
-> más de 2.400 pacientes activos en Latinoamérica ya lo usan 😊 y es recomendado por fisioterapeutas y neurólogos
+> lo entiendo — es normal desconfiar cuando no lo ha probado 😊 la diferencia es que el pago es al retirar — usted lo recibe primero, y solo paga si le convence. Cero riesgo real. ✅
 
 ### "¿En qué colores viene?"
-> viene en azul con negro, es el color estándar 😊
+> viene en azul, es el color estándar 😊
 
 ### "¿Qué incluye exactamente?"
 > guante principal + guante espejo + controlador de potencia + pelota de rehabilitación + manual 😊

@@ -18,7 +18,7 @@
 ## CONFIANZA Y ORIGEN
 
 ### /confianza
-> somos empresa ecuatoriana con bodega en Guayaquil 🇪🇨
+> somos empresa ecuatoriana — nuestro centro logístico está en Loja 🇪🇨
 > trabajamos con Servientrega y el pago es al retirar — no adelanta nada 😊
 
 ### /sin_tienda_fisica
@@ -31,24 +31,14 @@
 
 ## PRECIO
 
-### /precio_ollas
-> $49.99 precio final con envío incluido 🚚
-> paga solo cuando tiene el set en sus manos ✅
-> ¿de qué ciudad nos escribe?
-
 ### /precio_guante
 > $59.99 precio final con envío incluido 🚚
 > paga al retirar en Servientrega ✅
 > ¿de qué ciudad nos escribe?
 
-### /duda_precio_ollas
-> jaja es que el precio es así de bueno! 😄
-> acero inoxidable real con tapas de vidrio incluidas — la mayoría de sets ni las traen
-> ¿de qué ciudad nos escribe?
-
 ### /duda_precio_guante
 > jaja es que el precio es así de bueno! 😄
-> más de 2.400 pacientes en Latinoamérica ya lo usan — y el pago es al retirar, sin adelantar nada
+> una sola sesión de fisioterapia cuesta $30-50 — este guante hace lo mismo en casa todos los días, por $59.99 en total — y el pago es al retirar, sin adelantar nada 😊
 > ¿de qué ciudad nos escribe?
 
 ---
@@ -56,48 +46,42 @@
 ## PARA QUIÉN ES
 
 ### /guante_para_mama
-> qué bonito que lo haga por ella 💛
-> el guante la va a ayudar mucho — 9 niveles de intensidad para ir a su ritmo, desde casa, sin turnos de clínica
-> ¿de qué ciudad nos escribe?
+> qué bonito que esté buscando opciones para ella 💛
+> ¿me cuenta qué es lo que tiene? así le cuento cómo el guante le ayuda específicamente 😊
 
 ### /guante_para_mi
-> perfecto! es una excelente inversión 💪
-> 9 niveles ajustables — va avanzando a su propio ritmo desde casa
-> ¿de qué ciudad nos escribe?
+> qué bien que esté tomando el control de su recuperación 💪
+> ¿me cuenta qué es lo que tiene en la mano? así le explico cómo funciona para su caso específico 😊
 
 ### /guante_para_familiar_general
-> qué bueno que lo apoya en su recuperación 🙌
-> ¿qué problema tiene en la mano? así le cuento cómo el guante le ayuda específicamente 😊
-> ¿y de qué ciudad nos escribe?
+> qué bueno que lo está apoyando en su proceso 🙌
+> ¿qué problema tiene en la mano o brazo? así le cuento exactamente cómo el guante le puede ayudar 😊
 
 ---
 
 ## CONDICIONES MÉDICAS ESPECÍFICAS
 
 ### /guante_acv
-> para ACV el guante es ideal — estimula el sistema nervioso para recuperar movilidad progresivamente
-> 9 niveles de intensidad, desde casa, sin turnos de clínica 😊
+> el ACV cambia todo de un momento a otro — para el paciente y para toda la familia 🙏
+> lo que es importante saber es que el cerebro tiene capacidad de reorganizarse — se llama neuroplasticidad. El guante trabaja justamente eso: estimula las vías nerviosas de la mano mediante presión de aire, para que el cerebro recupere el control progresivamente. No reemplaza la fisioterapia, pero permite continuar el trabajo en casa, todos los días, sin depender de turnos — que es donde más se avanza.
 > ¿de qué ciudad nos escribe?
 
 ### /guante_artritis
-> para artritis el guante ayuda mucho — el masaje neumático reduce la rigidez y mejora el rango de movimiento
-> sin pastillas, sin sesiones costosas, desde casa 😊
+> la artritis duele — y no solo físicamente. También es muy frustrante no poder hacer cosas que antes no costaban nada 🙏
+> el guante trabaja la articulación desde adentro: el masaje neumático activa la circulación, reduce la inflamación y va recuperando el rango de movimiento de forma gradual. Con uso regular muchos pacientes notan diferencia en semanas. 9 niveles ajustables — empieza suave y va subiendo según tolerancia.
 > ¿de qué ciudad nos escribe?
 
 ### /guante_cuadriplejia_bilateral
 > *(cuadriplejia o parálisis total — NUNCA preguntar qué mano — ofrecer PAR directamente)*
-> entiendo su situación 🙏
-> el guante genera el movimiento por sí solo mediante presión de aire — no requiere que usted mueva nada
-> un familiar puede asistir las sesiones desde casa
-> para su caso lo ideal es el par completo (izquierdo + derecho) para trabajar ambas manos
-> $107.98 con envío gratis — paga al retirar ✅
+> imagino que hay días muy difíciles — para él/ella y para toda la familia 🙏
+> lo bueno del guante es que no requiere que el paciente mueva nada — el dispositivo genera el movimiento por sí solo mediante presión de aire. Un familiar coloca el guante y el equipo hace el trabajo.
+> para este caso lo ideal es el par completo (izquierdo + derecho) para trabajar ambas manos — $107.98 con envío gratis, paga al retirar ✅
 > ¿le genero el pedido?
 
 ### /guante_cuadriplejia_espastica
 > *(para cuadriplejia espástica — el guante abre y extiende la mano combatiendo el tono espástico)*
-> entiendo lo difícil que es su situación 🙏
-> para la espasticidad el guante trabaja muy bien — abre y extiende la mano suavemente con presión de aire, reduciendo el tono muscular progresivamente
-> un familiar puede asistir las sesiones en casa, sin necesidad de clínica
+> entiendo lo difícil que es manejar la espasticidad — el tono muscular elevado limita todo 🙏
+> el guante trabaja justo contra eso: abre y extiende la mano mediante presión de aire, suavemente y de forma controlada, reduciendo el tono espástico progresivamente. Un familiar puede manejar las sesiones desde casa, sin necesidad de clínica.
 > ¿de qué ciudad nos escribe?
 
 ### /guante_sin_otros_aparatos
@@ -122,7 +106,7 @@
 
 ### /agencia
 > *(GUANTE — usar DESPUÉS de confirmar agencia exacta con referencia del cliente)*
-> Ya revisé — la agencia [NOMBRE EXACTO DE AGENCIA] está habilitada ✅ llega en 3 a 4 días hábiles 😊
+> Ya revisé — la agencia [NOMBRE EXACTO DE AGENCIA] está habilitada ✅ llega en 2-3 días hábiles 😊
 > Su kit incluye: guante robótico de rehabilitación, guante modo espejo, dispositivo medidor de potencia y pelota de terapia 💪
 > ¿Me ayuda con sus datos para generarle la orden?
 > 📌 Nombre completo
@@ -130,15 +114,6 @@
 > 📌 Número celular
 > 📌 Dirección de referencia
 > 📌 Guante izquierdo o derecho
-
-### /agencia_ollas
-> *(OLLAS — usar DESPUÉS de confirmar agencia exacta con referencia del cliente)*
-> Ya revisé — la agencia [NOMBRE EXACTO DE AGENCIA] está habilitada ✅ llega en 3 a 4 días hábiles 😊
-> ¿Me ayuda con sus datos para generarle la orden?
-> 📌 Nombre completo
-> 📌 Cédula
-> 📌 Número celular
-> 📌 Dirección de referencia
 
 ### /sin_agencia
 > lo siento! por el momento no tenemos cobertura en [ciudad] 😕
@@ -291,13 +266,6 @@
 
 ### /cierre_conversacion
 > *(SOLO cuando tuvo conversación activa y se enfrió después del D4 — NO para quien nunca respondió)*
-> Hola [nombre]! voy a dejar libre su consulta por ahora — cuando guste aquí estamos 😊
-
-### /cliente_dice_no
-> entendido! cuando guste aquí estamos 😊
-
-### /cierre_conversacion
-> *(SOLO cuando el cliente tuvo conversación activa y se enfrió — NO para quien nunca respondió)*
 > Hola [nombre]! voy a dejar libre su consulta por ahora — cuando guste aquí estamos 😊
 
 ### /cliente_dice_no

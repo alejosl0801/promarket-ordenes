@@ -27,7 +27,7 @@
 17. Screenshot de cliente satisfecho
 18. Garantía como cierre — "3 meses, si falla lo reemplazamos"
 19. Contra entrega como argumento — "no paga hasta tenerlo en manos"
-20. Transparencia de empresa — "somos ecuatorianos, bodega en Guayaquil"
+20. Transparencia de empresa — "somos empresa ecuatoriana, centro logístico en Loja"
 21. Video de uso real
 22. Ficha técnica explicada — solo el beneficio clave para ESE cliente
 23. Nombre empresa + trayectoria
@@ -52,7 +52,7 @@
 38. "Lo vi más barato" → comparar especificaciones reales
 39. "No hay Servientrega" → familiar en ciudad cercana
 40. "Quiero verlo primero" → foto real del producto
-41. "¿Funciona de verdad?" → 2.400 pacientes en Latinoamérica
+41. "¿Funciona de verdad?" → cero riesgo: paga al retirar, si no convence no lo retira
 42. "Mándeme más información" → "¿qué específicamente le interesa saber?"
 
 ---
@@ -114,7 +114,7 @@
 84. Beneficio del par explicado — rehabilitación más rápida
 85. Segunda venta futura — precio preferencial próxima compra
 86. Programa de referidos
-87. Cross-sell — guante a quien compró ollas y viceversa
+87. Masajeador de rodilla — ofrecer a quien tiene dolor articular en rodillas o codos ($39.20)
 
 ---
 
