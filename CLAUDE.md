@@ -4,91 +4,180 @@
 
 ## PASO 1 — AL RECIBIR "arranca"
 
-Lee TODOS los archivos del CEREBRO en este orden ANTES de responder:
+---
 
-1. `CEREBRO/01_empresa.md` — empresa, productos, precios, bodega, Servientrega
-2. `CEREBRO/02_camila.md` — personalidad, tono, reglas de Camila, situaciones especiales
-3. `CEREBRO/03_guiones.md` — mensajes exactos por situación
-4. `CEREBRO/04_flujos.md` — flujos de venta paso a paso
-5. `CEREBRO/05_objeciones.md` — cómo manejar cada objeción
-6. `CEREBRO/06_patrones.md` — patrones de comportamiento de clientes
+### ⚡ FASE 1 — CARGA DEL CEREBRO
+
+Leer TODOS estos archivos en orden antes de generar el reporte. No saltar ninguno. Cada uno construye el contexto para los siguientes:
+
+1. `CEREBRO/01_empresa.md` — precios exactos, bodega Loja, productos, Servientrega
+2. `CEREBRO/02_camila.md` — identidad, tono médico-empático, reglas de comportamiento
+3. `CEREBRO/03_guiones.md` — mensajes exactos por situación (110+ guiones)
+4. `CEREBRO/04_flujos.md` — flujos de venta completos paso a paso
+5. `CEREBRO/05_objeciones.md` — manejo de objeciones con Feel-Felt-Found
+6. `CEREBRO/06_patrones.md` — señales de compra y fuga, perfiles de cliente
 7. `CEREBRO/07_reglas.md` — reglas estrictas del negocio
-8. `CEREBRO/08_clientes.md` — estado actual de TODOS los leads
+8. `CEREBRO/08_clientes.md` — estado actual de TODOS los leads y pedidos
 9. `CEREBRO/09_whatsapp_business.md` — configuración WhatsApp y bot
-10. `CEREBRO/10_tecnicas_venta.md` — técnicas de cierre
+10. `CEREBRO/10_tecnicas_venta.md` — 100 técnicas de cierre maestras
 
-Después de leer todo, genera el **REPORTE COMPLETO DE ARRANQUE**:
+---
+
+### ⚡ FASE 2 — ORIENTACIÓN TEMPORAL
+
+Antes de analizar cualquier lead, establecer el contexto de tiempo:
+
+- **Fecha de hoy:** [leer de `currentDate` en el contexto del sistema]
+- **Día de la semana:** [calcular — importa para urgencia de "envío gratis hasta el domingo"]
+- **¿Hoy es viernes?** → advertir que el domingo es en 2 días — activar urgencia de envío gratis para todos los leads calientes
+- **¿Hoy es sábado?** → "mañana vence el envío gratis" — máxima urgencia
+- **¿Hoy es domingo o lunes?** → no usar argumento de domingo — elegir otro cierre de urgencia
+- **Hora actual:** desconocida hasta que el usuario pegue un chat — asumir horario hábil (8am–9pm Ecuador)
+
+---
+
+### ⚡ FASE 3 — ANÁLISIS CRÍTICO DE PEDIDOS ACTIVOS
+
+Razonar sobre cada pedido antes de avanzar a los leads. No es un listado mecánico — es una evaluación de riesgo real.
+
+#### 🚨 RECLAMOS ACTIVOS
+Para cada reclamo en 08_clientes.md:
+
+> **[Nombre] — Orden #[N]**
+> 🧠 Problema: [descripción exacta del error]
+> Días sin resolver: [N] — ¿tiene dinero o producto en riesgo?
+> ⚡ Urgencia: CRÍTICA si el cliente puede perder dinero o el pedido vence
+> 📩 Acción inmediata: [mensaje exacto — no esperar]
+
+#### 📦 PEDIDOS EN AGENCIA
+Para cada uno, calcular días hábiles desde la llegada a agencia:
+
+**Lógica de decisión:**
+- Día 1-2 → NO tocar (el cliente ya fue avisado)
+- Día 3 → SÍ tocar — recordatorio amable con urgencia
+- Día 4 → SÍ tocar — URGENTE, es el último día sin cargo adicional
+- Día 5+ → VENCIDO — informar que puede haber cargo adicional, aún se puede retirar
+
+> **Orden #[N] — [Nombre] — [ciudad]**
+> 🧠 En agencia desde [fecha] — hoy es día [N] de 4
+> ⚡ Nivel: [BAJA / MEDIA / ALTA / VENCIDA]
+> 📩 Mensaje hoy: "[texto exacto a copiar y pegar — solo si toca tocar]"
+
+#### 🚚 EN TRÁNSITO
+Para cada envío, calcular días hábiles desde la autorización de Servientrega (no contar sábados ni domingos):
+
+**Lógica:**
+- 1-2 días hábiles → en camino, esperar
+- 3+ días hábiles → probablemente llegó a agencia → verificar guía → si en agencia: avisar al cliente HOY
+
+> **Orden #[N] — [Nombre] — enviado [fecha]**
+> 🧠 Días hábiles desde envío: [N] | Estimado: [en tránsito / verificar si llegó]
+> ⚡ Acción: [esperar / verificar guía Servientrega / avisar al cliente]
+> 📩 Mensaje si llegó: "Su pedido ya está en la agencia listo para retirar! 🎉 Tiene 4 días para retirarlo antes de que generen cargo adicional. Cualquier novedad me escribe 😊"
+
+---
+
+### ⚡ FASE 4 — ANÁLISIS ESTRATÉGICO POR LEAD
+
+**Esta es la fase más importante. No producir mensajes mecánicos. Pensar en cada persona.**
+
+Antes de analizar cualquier lead, aplicar el **Magic IF de Stanislavski**:
+> *"Si yo fuera esta persona — con ese familiar enfermo, esa duda, esa situación económica — ¿qué necesitaría escuchar ahora mismo para confiar y decidir?"*
+
+**Para cada lead activo, razonar en este orden:**
+
+```
+1. ¿Quién es? → condición del familiar / para quién es / ciudad / lo que ya sé
+2. ¿Cuántos días desde el primer contacto? → calcular
+3. ¿Respondió algo? → SÍ: retomar desde lo último hablado / NO: aplicar D1-D4
+4. ¿En qué D está? → calcular según días desde primer contacto (ver tabla abajo)
+5. ¿Qué señales detecté? → señal de compra (ciudad dada, preguntó qué incluye, mandó audio)
+                           → señal de fuga ("ya le aviso", "ok gracias", silencio después del precio)
+6. ¿Qué técnica aplica? → elegir según perfil y señal (ver 10_tecnicas_venta.md)
+7. ¿Cuál es el mensaje exacto? → corto, empático, un solo CTA
+8. ¿Por qué ese mensaje y no otro? → una línea de justificación
+```
+
+**REGLAS ABSOLUTAS antes de procesar:**
+- ❌ OLLAS: ignorar completamente — producto descontinuado — NO escribir
+- ❌ COLOMBIA (+57): NO escribir — sin cobertura Servientrega
+- ❌ D4 enviado + sin respuesta: CHAT MUERTO — no aparece en el reporte
+- ❌ Respondió algo → NO usar D1-D4 → retomar desde lo último hablado
+- ❌ Ningún mensaje menciona Guayaquil — siempre Loja
+- ❌ Ningún mensaje usa porcentajes — solo precios finales
+- ❌ Ningún mensaje inventa estadísticas
+- ❌ Nunca pedir datos antes de que el cliente confirme que quiere comprar
+
+**SECUENCIA D1-D4 (solo para leads que no respondieron NADA):**
+
+| D | Cuándo | Mensaje | Precio |
+|---|---|---|---|
+| D1 | 2h después del primer contacto | "¿le pareció bien el precio o tiene alguna duda que pueda resolver? 😊" | $59.99 |
+| D2 | Día siguiente al D1 | "Hola! 😊 Camila de ProMarket — hoy tengo el guante por $49.99 con envío incluido ✅ ¿se anima?" | $49.99 |
+| D3 | Día siguiente al D2 | "¿le pareció bien la promoción del guante? 😊 aún está disponible para usted" | $49.99 |
+| D4 | Día siguiente al D3 — ÚLTIMO | "Hola! cómo le va 😊 noto que aún no me ha dado una respuesta — ¿qué opina sobre el guante?" | — |
+| Muerto | Sin respuesta al D4 | No escribir más — excluir del reporte para siempre | — |
+
+**Formato de análisis por lead (usar esto para cada uno):**
+
+> #### [Alias/número] — [ciudad o "sin ciudad"]
+> 🧠 **Análisis:**
+> - Perfil: [quién es, condición si la hay, qué busca, lo que ya sé]
+> - Días desde contacto: [N] (contacto inicial: [fecha])
+> - ¿Respondió? [SÍ — resumen de última respuesta / NO — silencio total]
+> - D actual: [D1 / D2 / D3 / D4 / Muerto / No aplica — respondió]
+> - Señal: [compra / fuga / neutral / caliente / frío]
+> - Técnica elegida: [nombre exacto de la técnica]
+>
+> 📩 **Mensaje hoy:**
+> "[texto exacto — listo para copiar y pegar]"
+>
+> ⚡ **Por qué este mensaje:** [1 línea de justificación — no más]
+
+---
+
+### ⚡ FASE 5 — REPORTE COMPLETO DE ARRANQUE
+
+Generar este reporte después de completar las Fases 1-4:
 
 ---
 
 ## ✅ CEREBRO cargado — Sesión [ID] activa — [FECHA HOY]
 
-### 🚨 URGENTES (resolver primero)
-Para cada cliente con reclamo, pedido que lleva más de 3 días en agencia, o problema activo:
-- **[Nombre] ([número])** — [problema exacto] — ACCIÓN: [qué decirle hoy]
-*(Si no hay: "Sin urgencias")*
-
----
+### 🚨 URGENTES (resolver PRIMERO — antes de cualquier otra cosa)
+[Reclamos activos + pedidos en agencia día 3-4 + problemas operativos urgentes]
+[Si no hay: "Sin urgencias activas"]
 
 ### 📦 PEDIDOS EN AGENCIA — retiro pendiente
-Para cada orden en agencia:
-> **Orden #[número] — [Nombre] — [ciudad]**
-> En agencia desde [fecha] | Días restantes para retirar: [N] (4 días máximo)
-> Acción de hoy: [SÍ tocar / NO tocar — y por qué]
-> Mensaje: "[texto exacto a copiar y pegar]"
-
----
+[Análisis completo de Fase 3 para cada pedido]
 
 ### 🚚 EN TRÁNSITO
-Para cada envío en camino, calcular días hábiles desde la fecha de envío:
-- **1-2 días hábiles** → esperar
-- **3+ días hábiles** → verificar guía en Servientrega → si aparece "en agencia": avisar al cliente
-> **Orden #[número] — [Nombre] — enviado [fecha]**
-> Días hábiles en tránsito: [N] | Estado: [esperando / verificar si llegó]
-> Mensaje si llegó: "Su pedido ya está en la agencia listo para retirar! 🎉 Tiene 4 días para retirarlo antes de que generen cargo adicional. Cualquier novedad me escribe 😊"
+[Análisis completo de Fase 3 para cada envío]
 
----
+### 🔥 LEADS CALIENTES — análisis estratégico
+[Leads con señales de compra activas o conversación reciente — análisis completo de Fase 4]
 
-### 🔥 LEADS CALIENTES — conversación activa
-Para cada lead en conversación activa:
-> **[Alias/número] — [ciudad o "sin ciudad"] — [último punto de conversación]**
-> Mensaje de hoy: "[texto exacto a copiar y pegar]"
+### 📋 SEGUIMIENTO HOY — análisis estratégico por lead
+[Todos los leads activos en secuencia D1-D4 — análisis completo de Fase 4 para cada uno]
+[Ordenados por urgencia: D4 primero, luego D3, D2, D1]
 
----
-
-### 📋 SEGUIMIENTO HOY — lista completa con mensajes
-
-**REGLAS ANTES DE CALCULAR:**
-- Leads de OLLAS: ignorar completamente — producto descontinuado — NO escribir
-- Leads de COLOMBIA (+57): NO escribir — no hay cobertura Servientrega
-- Lead con D4 enviado y sin respuesta: CHAT MUERTO — no aparece en seguimiento
-- Lead que respondió algo: NO usar D1-D4 → retomar desde lo último hablado
-
-**SECUENCIA PARA LEADS QUE NO RESPONDIERON NADA:**
-
-| D | Cuándo | Mensaje |
-|---|---|---|
-| D1 | 2h después del primer contacto sin respuesta | "¿le pareció bien el precio o tiene alguna duda que pueda resolver? 😊" |
-| D2 | Día siguiente al D1 | "Hola! 😊 Camila de ProMarket — hoy tengo el guante por $49.99 con envío incluido ✅ ¿se anima?" |
-| D3 | Día siguiente al D2 | "¿le pareció bien la promoción del guante? 😊 aún está disponible para usted" |
-| D4 | Día siguiente al D3 (ÚLTIMO) | "Hola! cómo le va 😊 noto que aún no me ha dado una respuesta — ¿qué opina sobre el guante?" |
-| Muerto | Sin respuesta al D4 | No escribir más — excluir del reporte |
-
-Formato por lead:
-> **[Alias/número]** — contacto inicial: [fecha] — días transcurridos: [N]
-> D enviado hasta ahora: [D1/D2/D3/D4/ninguno] | D de hoy: [D a enviar]
-> Mensaje: "[texto exacto]"
-
----
-
-### 🗂️ RESUMEN DEL DÍA
+### 🗂️ RESUMEN EJECUTIVO
 - Total clientes activos: [N]
 - Urgentes: [N] | En agencia: [N] | En tránsito: [N]
-- Leads calientes: [N] | Seguimiento hoy: [N]
-- **Primera acción:** [cliente más urgente + mensaje]
+- Leads calientes: [N] | En seguimiento D: [N] | Chats muertos esta sesión: [N]
+- **Primera acción ahora mismo:** [cliente más urgente + mensaje exacto]
 
 ---
 **Listo para operar. Pega cualquier chat y doy la respuesta exacta.**
+
+---
+
+### ⚡ FASE 6 — COMMIT AUTOMÁTICO DESPUÉS DEL REPORTE
+
+Al finalizar el reporte:
+1. Actualizar `CEREBRO/08_clientes.md` con el estado actual de cada lead según el análisis
+2. Commit: `"Arranque [fecha] — [N] leads analizados — estado actualizado"`
+3. Push a `origin claude/amazing-fermat-5ymOO`
 
 ---
 

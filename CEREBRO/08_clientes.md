@@ -1,84 +1,252 @@
 # REGISTRO DE CLIENTES — PROMARKET ECUADOR
-## Última actualización: 11 de junio 2026 — 20:30
+## Última actualización: 12 de junio 2026 — sesión activa
 
 ---
 
-## PEDIDOS EN AGENCIA — RETIRO PENDIENTE
+## 🚨 URGENTES
 
-| Orden | Cliente | Contacto | Producto | Ciudad | Estado |
-|---|---|---|---|---|---|
-| #146271 | Alex Fernando Lara | +593 97 926 9065 | Guante x2 | Ambato | 📍 En agencia desde 5/6 — prometió retirar 8/6 |
-| #146504 | Carmen Sosa | +593 99 965 2705 | Guante x2 | Ambato | 📍 En agencia desde 5/6 — fue 7/6 pero estaba cerrado. Necesita dirección exacta |
-| #146110 | Willman Zúñiga | +593 99 823 5058 | Ollas x1 | Puyo | 📍 En agencia desde 8/6 — informar llegada |
-| #144356 | Blanca Rodríguez | +593 98 175 4740 | Guante izq. M | Quito | ⚠️ RECLAMO ACTIVO: enviaron guante derecho — pendiente resolución |
-
----
-
-## EN TRÁNSITO
-
-| Orden | Cliente | Contacto | Producto | Fecha envío |
+| Prioridad | Orden/Alias | Cliente | Problema | Estado |
 |---|---|---|---|---|
-| #151381 | César Augusto López | +593 96 833 9428 | Guante x1 | 7/6/2026 |
-| #151380 | Jimmy Vera Peñafiel | +593 93 918 4423 | Guante x1 | 7/6/2026 |
+| 🔴 CRÍTICO | #144356 | Blanca Rodríguez +593 98 175 4740 | RECLAMO: enviaron guante derecho — pidió izquierdo | Sin resolver — seguimiento activo |
+| 🔴 VENCIDO | #146271 | Alex Fernando Lara +593 97 926 9065 | En agencia desde 5/6 — VENCIDO día 7 | Confirmar si retiró o hay cargo |
+| 🔴 VENCIDO | #146504 | Carmen Sosa +593 99 965 2705 | En agencia desde 5/6 — VENCIDO día 7 | Fue el 7/6 y estaba cerrado — necesita dirección exacta |
+| 🟡 HOY | #146110 | Willman Zúñiga +593 99 823 5058 | Ollas — en agencia desde 8/6 — DÍA 4 HOY | ÚLTIMO DÍA — avisar urgente |
 
 ---
 
-## LEADS NUEVOS 11/6 — EN CONVERSACIÓN ACTIVA
+## 📦 PEDIDOS EN AGENCIA — RETIRO PENDIENTE
 
-| Alias | Contacto | Producto | Ciudad | Estado / Notas |
-|---|---|---|---|---|
-| Chat 9622 | +593 93 991 9622 | Guante | Santa Rosa, El Oro | Para esposo — esperando referencia de barrio para buscar agencia exacta |
-| Chat 5804 | +593 98 574 5804 | Guante | Calceta, Manabí | Quiere realizar pedido — esperando referencia de barrio para buscar agencia exacta |
-| Chat 4409 | +593 98 272 4409 | Guante | — | Para papá — esperando ciudad |
+### Orden #144356 — Blanca Rodríguez — Quito
+- **Producto:** Guante izquierdo M
+- **Problema:** Enviaron guante DERECHO — error operativo
+- **Estado:** ⚠️ RECLAMO ACTIVO — pendiente resolución
+- **Acción:** Coordinar con bodega el envío correcto + informar a Blanca
+- **Mensaje:** "Blanca, buenas tardes 🙏 quiero disculparme por el inconveniente con su pedido — ya estamos coordinando el envío del guante correcto. Le aviso en cuanto tengamos la guía lista 😊"
 
-## LEADS NUEVOS 8/6 — EN CONVERSACIÓN ACTIVA
+### Orden #146271 — Alex Fernando Lara — Ambato
+- **Producto:** Guante x2
+- **En agencia desde:** 5/6/2026
+- **Hoy:** 12/6 = día 7 (límite era día 4 = 9/6) → **VENCIDO 3 días**
+- **Estado:** Prometió retirar el 8/6 — sin confirmación
+- **Acción:** Confirmar si ya retiró — si no: informar cargo adicional
+- **Mensaje:** "Alex, buen día 😊 quería saber si ya pudo retirar su pedido en Servientrega — si tiene alguna novedad me avisa para coordinar con ellos 💛"
 
-| Alias | Contacto | Producto | Ciudad | Estado / Notas |
-|---|---|---|---|---|
-| Chat 6469 | +593 96 009 6469 | Guante + Rodilla | — | Interés en combo guante + masajeador rodilla $39.20 |
-| Chat 4065 | +593 96 790 4065 | Guante | — | Para hijo — esperando ciudad |
-| Chat 0433 | +593 99 305 0433 | Guante | — | Familiar con cuadriplejia espástica — esperando ciudad |
-| Chat 8581 | +593 99 343 8581 | Guante | Loja | Sin tienda física explicado. Preguntó por otros aparatos. En conversación |
-| Chat 4148 | +593 99 981 4148 | Guante par | Ambato | Cuadriplejia 95%, no mueve ninguna mano. Quiso ir al local → explicado no hay tienda. Ofrecerle PAR $107.98 |
-| Chat 1337 | +593 99 916 1337 | Guante | — | Para hermano — esperando condición específica y ciudad |
+### Orden #146504 — Carmen Sosa — Ambato
+- **Producto:** Guante x2
+- **En agencia desde:** 5/6/2026
+- **Hoy:** 12/6 = día 7 → **VENCIDO 3 días**
+- **Estado:** Fue el 7/6 y la agencia estaba cerrada — necesita dirección exacta
+- **Acción:** Darle dirección exacta de la agencia Ambato
+- **Mensaje:** "Carmen, buen día 😊 perdone la demora — la agencia Servientrega en Ambato está en [DIRECCIÓN EXACTA AMBATO]. El horario es [HORARIO]. Recuerde llevar su cédula y la orden que le envié 💛"
 
----
-
-## LEADS CON HISTORIAL — SEGUIMIENTO ACTIVO
-
-| Cliente | Contacto | Producto | Inicio | Notas |
-|---|---|---|---|---|
-| kushita2016 | +593 99 920 0994 | Guante | 6/6 | MUY CALIENTE — 2 audios enviados — solo necesita cierre directo |
-| Nuevo 1730 | +593 97 987 1730 | Guante | 6/6 | Secuencia activa |
-| Mendez | +593 98 887 6692 | Guante | 6/6 | No respondió pregunta de confianza — ignorado |
-| Norma Chavarría | +593 98 480 0900 | Guante | 5/6 | Mandó audio — fue ignorado — usar /cierre_conversacion |
-| Chat 3067 | +593 98 153 3067 | Guante | 7/6 | D1AM enviado 7/6 — pendiente D1PM |
-| Chat 2507 (Huachi chico) | +593 96 746 2507 | Guante | 7/6 | D1AM enviado 7/6 — pendiente D1PM |
-| Nuevo 270-7955 | +593 99 270 7955 | Guante | 8/6 | D1AM enviado — pendiente D1PM |
-| Chat 8379 | +593 96 787 8379 | Guante | 8/6 | Pendiente D1AM |
-| Chat 4227 | +593 96 208 4227 | Guante | 8/6 | Pendiente D1AM |
-| Chat 3779 | +593 98 887 3779 | Guante | 8/6 | Pendiente D1AM |
-| Chat 9345 | +593 93 996 9345 | Guante | 8/6 | Pendiente D1AM |
-| Chat 5202 | +593 98 082 5202 | Guante | 8/6 | Pendiente D1AM |
-| Wuinston Sicifredo | +593 98 109 9770 | Ollas | 5/6 | Secuencia activa |
-| Dr. R. Barros | +593 98 110 2387 | Ollas | 5/6 | Secuencia activa |
-| Gustavo Tuarez | +593 99 615 7785 | Ollas | 5/6 | Secuencia activa |
-| Sery | +593 97 874 3450 | Ollas | 5/6 | Secuencia activa |
-| Rosa Torres | +593 98 651 6901 | Ollas | 5/6 | Secuencia activa |
-| Carlota | +593 99 027 6468 | Ollas | 5/6 | Secuencia activa |
-| Mangu | +593 99 557 7529 | Guante | 4/6 | Secuencia activa |
-| Bettys | +593 98 501 1737 | Guante | 4/6 | No respondió pregunta de confianza |
-| tu papa | +593 93 976 3359 | Guante | 4/6 | Secuencia activa |
-| Alvita Suarez | +593 93 957 7932 | Ollas | 4/6 | Secuencia activa |
-| Maggi | +593 96 700 4465 | Ollas | 4/6 | Mandó audio — fue ignorado |
-| Ita Vera | +593 96 705 3789 | Ollas | 4/6 | Secuencia activa |
-| Cecilia Maruri | +593 98 737 1421 | Ollas | 4/6 | Secuencia activa |
-| Chat Colombia | +57 321 4757337 | Guante | 7/6 | Conversación activa — preguntar condición del familiar |
+### Orden #146110 — Willman Zúñiga — Puyo
+- **Producto:** Ollas x1
+- **En agencia desde:** 8/6/2026
+- **Hoy:** 12/6 = **DÍA 4 — ÚLTIMO DÍA**
+- **Estado:** Informar llegada aún pendiente
+- **Acción:** Avisar HOY — es el último día sin cargo
+- **Mensaje:** "Willman, buen día 🙏 su pedido ya está en la agencia Servientrega de Puyo — hoy es el último día para retirarlo sin cargo adicional ✅ Recuerde llevar su cédula 😊"
 
 ---
 
-## CERRADOS — NO COMPRARON
+## 🚚 EN TRÁNSITO → REVISAR SI LLEGÓ
 
+### Orden #151381 — César Augusto López (+593 96 833 9428)
+- **Producto:** Guante x1
+- **Enviado:** 7/6/2026
+- **Días hábiles desde envío:** 9/6 (lun) + 10/6 (mar) + 11/6 (mié) = **3 días hábiles**
+- **Estado estimado:** Probablemente en agencia desde 11/6 o 12/6 — VERIFICAR GUÍA
+- **Acción:** Verificar estado en Servientrega → si dice "en agencia": avisar hoy
+- **Mensaje si llegó:** "César! su pedido ya está en la agencia listo para retirar! 🎉 Tiene 4 días para retirarlo antes de que generen cargo adicional. Cualquier novedad me escribe 😊"
+
+### Orden #151380 — Jimmy Vera Peñafiel (+593 93 918 4423)
+- **Producto:** Guante x1
+- **Enviado:** 7/6/2026
+- **Días hábiles desde envío:** 3 días hábiles — mismo cálculo que César
+- **Estado estimado:** Probablemente en agencia — VERIFICAR GUÍA
+- **Mensaje si llegó:** "Jimmy! su pedido ya está en la agencia listo para retirar! 🎉 Tiene 4 días para retirarlo antes de que generen cargo adicional. Cualquier novedad me escribe 😊"
+
+---
+
+## 🔥 LEADS CALIENTES — CONVERSACIÓN ACTIVA
+
+### Chat 9622 (+593 93 991 9622) — Santa Rosa, El Oro
+- **Producto:** Guante para esposo
+- **Contacto inicial:** 11/6/2026 — **1 día**
+- **Estado:** Esperando referencia de barrio para buscar agencia exacta
+- **D actual:** Conversación activa — NO usar D1-D4
+- **Señal:** Compra inminente (dio ciudad, dijo "para esposo" = familiar con condición)
+- **Técnica:** Foot-in-Door — ya dio ciudad, pedir barrio como micro-compromiso
+- **Mensaje:** "¡Buenos días! 😊 ¿me puede dar una referencia de su barrio o sector en Santa Rosa para buscarle la agencia más cercana?"
+
+### Chat 5804 (+593 98 574 5804) — Calceta, Manabí
+- **Producto:** Guante
+- **Contacto inicial:** 11/6/2026 — **1 día**
+- **Estado:** Quiere realizar pedido — esperando referencia de barrio
+- **D actual:** Conversación activa — NO usar D1-D4
+- **Señal:** Compra inminente — dijo "quiero realizar pedido"
+- **Técnica:** Cierre asumido — ya decidió, solo falta la logística
+- **Mensaje:** "¡Buenos días! 😊 ¿me da una referencia de su barrio o sector en Calceta para confirmarle la agencia exacta?"
+
+### Chat 4409 (+593 98 272 4409) — ciudad desconocida
+- **Producto:** Guante para papá
+- **Contacto inicial:** 11/6/2026 — **1 día**
+- **Estado:** Para papá — esperando ciudad
+- **D actual:** Conversación activa — NO usar D1-D4
+- **Señal:** Familiar con condición — preguntar condición específica para cierre médico
+- **Técnica:** OARS — pregunta abierta para diagnóstico antes de venta
+- **Mensaje:** "¡Buenos días! 😊 ¿qué condición tiene su papá? Así le explico cómo el guante ayuda específicamente en su caso 🙏"
+
+### kushita2016 (+593 99 920 0994) — ciudad: Pelileo (agencia confirmada)
+- **Producto:** Guante para mamá
+- **Contacto inicial:** 6/6/2026 — **6 días**
+- **Estado:** MUY CALIENTE — mandó 2 audios — agencia Pelileo confirmada — mamá con condición real
+- **D actual:** NO aplica — respondió + envió audios → conversación activa
+- **Señal:** Compra INMINENTE — preguntó por edad, niveles, funcionamiento
+- **Técnica:** Cierre directo — no sobre-explicar, no videos, ir directo
+- **Mensaje:** "¡Buen día! 😊 ¿le genero la orden para su mamá? Solo me ayuda con los datos:
+📌 Nombre completo
+📌 Cédula
+📌 Número celular
+📌 Dirección de referencia
+📌 Guante izquierdo o derecho"
+
+---
+
+## 📋 LEADS EN SEGUIMIENTO — SECUENCIA ACTIVA
+
+### Chat 6469 (+593 96 009 6469) — ciudad desconocida
+- **Producto:** Guante + Masajeador rodilla ($39.20)
+- **Contacto inicial:** 8/6/2026 — **4 días**
+- **Estado:** Interés en combo — sin ciudad confirmada
+- **D actual:** D3 (si D1 y D2 enviados) o reenganche si nunca respondió
+- **Técnica:** Cross-sell + cero riesgo — doble valor, doble sin riesgo
+- **Mensaje:** "¡Hola! 😊 el combo guante + masajeador de rodilla sigue disponible — $59.99 + $39.20 con envío incluido ✅ ¿de qué ciudad nos escribe para confirmarle la agencia?"
+
+### Chat 4065 (+593 96 790 4065) — ciudad desconocida
+- **Producto:** Guante para hijo
+- **Contacto inicial:** 8/6/2026 — **4 días**
+- **Estado:** Para hijo — sin ciudad ni condición confirmada
+- **D actual:** D3
+- **Señal:** Familiar con posible condición médica — aprovechar perfil
+- **Técnica:** Reactivación médica — pregunta por el hijo activa empatía
+- **Mensaje:** "¿le pareció bien la promoción del guante? 😊 aún está disponible — ¿cómo está su hijo?"
+
+### Chat 0433 (+593 99 305 0433) — ciudad desconocida
+- **Producto:** Guante — familiar con cuadriplejia espástica
+- **Contacto inicial:** 8/6/2026 — **4 días**
+- **Estado:** Cuadriplejia espástica — condición médica seria — sin ciudad
+- **D actual:** D3
+- **Señal:** Condición médica grave = alta motivación de compra
+- **Técnica:** Magic IF + tono médico — condición espástica tiene respuesta específica
+- **Mensaje:** "¿sigue interesad@ en el guante para su familiar? 😊 Para la espasticidad el guante trabaja exactamente contra el tono muscular elevado — ¿de qué ciudad nos escribe?"
+
+### Chat 8581 (+593 99 343 8581) — Loja
+- **Producto:** Guante
+- **Contacto inicial:** 8/6/2026 — **4 días**
+- **Estado:** Sin tienda física explicado — preguntó por otros aparatos — en conversación
+- **D actual:** Conversación activa — retomar desde lo último
+- **Señal:** Quiere solución completa (pregunta otros aparatos) = alta motivación
+- **Técnica:** Cierre consultivo — honesto sobre lo que tenemos
+- **Mensaje:** "¡Hola! 😊 ¿tuvo alguna otra duda sobre el guante? Para lo que me consultó, el guante es la opción principal que tenemos — cualquier pregunta aquí estoy 💛"
+
+### Chat 4148 (+593 99 981 4148) — Ambato
+- **Producto:** Guante PAR — cuadriplejia 95%, no mueve ninguna mano
+- **Contacto inicial:** 8/6/2026 — **4 días**
+- **Estado:** Quiso ir al local → explicado que no hay tienda → ofrecer PAR $107.98
+- **D actual:** Conversación activa — retomar — NUNCA preguntar qué mano
+- **Señal:** Necesidad real urgente — cuadriplejia bilateral
+- **Técnica:** PAR directo + cero riesgo + modo asistido
+- **Mensaje:** "¡Hola! 😊 ¿pudo conversar con su familia sobre el guante? Para el caso de su familiar, el par ($107.98 con envío) es lo ideal — trabaja las dos manos y un familiar puede asistirlo desde casa. El pago es al retirar en Servientrega — cero riesgo ✅"
+
+### Chat 1337 (+593 99 916 1337) — ciudad desconocida
+- **Producto:** Guante para hermano
+- **Contacto inicial:** 8/6/2026 — **4 días**
+- **Estado:** Para hermano — sin condición específica ni ciudad
+- **D actual:** D3
+- **Señal:** Familiar involucrado — preguntar condición activa empatía
+- **Técnica:** OARS — diagnóstico antes de venta
+- **Mensaje:** "¿le pareció bien la propuesta del guante para su hermano? 😊 ¿qué condición tiene él? Así le explico exactamente cómo ayuda en su caso 🙏"
+
+### Nuevo 270-7955 (+593 99 270 7955)
+- **Producto:** Guante
+- **Contacto inicial:** 8/6/2026 — **4 días**
+- **Estado:** D1AM enviado 8/6 — pendiente seguimiento
+- **D actual:** D3 (D1 el 8/6, D2 el 9/6, D3 hoy)
+- **Técnica:** Recordatorio de precio especial
+- **Mensaje:** "¿le pareció bien la promoción del guante? 😊 aún está disponible para usted"
+
+### Chat 3067 (+593 98 153 3067)
+- **Producto:** Guante
+- **Contacto inicial:** 7/6/2026 — **5 días**
+- **Estado:** D1AM enviado 7/6
+- **D actual:** D4 (último mensaje)
+- **Técnica:** Retiro de atención — activar FOMO
+- **Mensaje:** "Hola! cómo le va 😊 noto que aún no me ha dado una respuesta — ¿qué opina sobre el guante?"
+
+### Chat 2507 / Huachi chico (+593 96 746 2507)
+- **Producto:** Guante
+- **Contacto inicial:** 7/6/2026 — **5 días**
+- **Estado:** D1AM enviado 7/6
+- **D actual:** D4 (último mensaje)
+- **Técnica:** Retiro de atención
+- **Mensaje:** "Hola! cómo le va 😊 noto que aún no me ha dado una respuesta — ¿qué opina sobre el guante?"
+
+### Chat 8379 (+593 96 787 8379)
+- **Producto:** Guante
+- **Contacto inicial:** 8/6/2026 — **4 días**
+- **Estado:** D1 nunca enviado (pendiente D1AM desde 8/6)
+- **D actual:** D4 por días transcurridos — enviar último mensaje
+- **Técnica:** Última oportunidad
+- **Mensaje:** "Hola! cómo le va 😊 noto que aún no me ha dado una respuesta — ¿qué opina sobre el guante?"
+
+### Chat 4227 (+593 96 208 4227)
+- **Producto:** Guante
+- **Contacto inicial:** 8/6/2026 — **4 días**
+- **Estado:** D1 nunca enviado
+- **D actual:** D4 — último mensaje
+- **Mensaje:** "Hola! cómo le va 😊 noto que aún no me ha dado una respuesta — ¿qué opina sobre el guante?"
+
+### Chat 3779 (+593 98 887 3779)
+- **Producto:** Guante
+- **Contacto inicial:** 8/6/2026 — **4 días**
+- **Estado:** D1 nunca enviado
+- **D actual:** D4 — último mensaje
+- **Mensaje:** "Hola! cómo le va 😊 noto que aún no me ha dado una respuesta — ¿qué opina sobre el guante?"
+
+### Chat 9345 (+593 93 996 9345)
+- **Producto:** Guante
+- **Contacto inicial:** 8/6/2026 — **4 días**
+- **Estado:** D1 nunca enviado
+- **D actual:** D4 — último mensaje
+- **Mensaje:** "Hola! cómo le va 😊 noto que aún no me ha dado una respuesta — ¿qué opina sobre el guante?"
+
+### Chat 5202 (+593 98 082 5202)
+- **Producto:** Guante
+- **Contacto inicial:** 8/6/2026 — **4 días**
+- **Estado:** D1 nunca enviado
+- **D actual:** D4 — último mensaje
+- **Mensaje:** "Hola! cómo le va 😊 noto que aún no me ha dado una respuesta — ¿qué opina sobre el guante?"
+
+### Nuevo 1730 (+593 97 987 1730)
+- **Producto:** Guante
+- **Contacto inicial:** 6/6/2026 — **6 días**
+- **Estado:** Secuencia activa — sin respuesta
+- **D actual:** D4 o muerto — si D4 ya enviado → CHAT MUERTO
+- **Acción:** Verificar si D4 fue enviado — si sí: cerrar chat
+
+### Mendez (+593 98 887 6692)
+- **Producto:** Guante
+- **Contacto inicial:** 6/6/2026 — **6 días**
+- **Estado:** No respondió pregunta de confianza — conversación rota
+- **D actual:** D4 o muerto — mismo criterio
+- **Acción:** Si no respondió desde 6/6 → CHAT MUERTO
+
+---
+
+## ❌ CERRADOS / EXCLUIDOS
+
+### Por decisión del cliente
 | Cliente | Contacto | Motivo |
 |---|---|---|
 | Rosa Carranza | +593 96 805 5707 | "NO GRACIAS" |
@@ -86,14 +254,46 @@
 | Gregorio Barzallo | +593 99 758 0200 | "Ya no lo necesito" |
 | ivanojeda | +593 98 946 0509 | Blacklist — esperó 5.5h sin respuesta, nunca compró |
 
+### Por cobertura / producto
+| Cliente | Contacto | Motivo |
+|---|---|---|
+| Chat Colombia | +57 321 4757337 | Sin cobertura Servientrega Colombia — EXCLUIR |
+| Norma Chavarría | +593 98 480 0900 | 7 días sin respuesta — audio ignorado en su día — CHAT MUERTO |
+| Mangu | +593 99 557 7529 | Guante — 8 días desde 4/6 — si D4 enviado: CHAT MUERTO |
+| Bettys | +593 98 501 1737 | Guante — 8 días — no respondió pregunta confianza — CHAT MUERTO |
+| tu papa | +593 93 976 3359 | Guante — 8 días desde 4/6 — verificar si D4 enviado |
+
+### Ollas — producto descontinuado (NO escribir jamás)
+| Cliente | Contacto |
+|---|---|
+| Wuinston Sicifredo | +593 98 109 9770 |
+| Dr. R. Barros | +593 98 110 2387 |
+| Gustavo Tuarez | +593 99 615 7785 |
+| Sery | +593 97 874 3450 |
+| Rosa Torres | +593 98 651 6901 |
+| Carlota | +593 99 027 6468 |
+| Alvita Suarez | +593 93 957 7932 |
+| Maggi | +593 96 700 4465 |
+| Ita Vera | +593 96 705 3789 |
+| Cecilia Maruri | +593 98 737 1421 |
+
 ---
 
-## NOTAS OPERATIVAS
+## 📊 RESUMEN 12/6/2026
 
-- **Todos los leads sin respuesta** → secuencia 10 mensajes automática en app Seguim.
-- **Colombia (+57):** verificar cobertura Servientrega antes de procesar pedido
-- **Blanca Rodríguez:** URGENTE — reclamo guante equivocado — resolver antes de que pierda los 5 días de retiro
-- **Carmen Sosa:** dar dirección exacta de agencia Ambato — fue y estaba cerrado
-- **Alex Fernando Lara:** confirmar si retiró el 8/6
-- **Chat 4148:** NO preguntar qué mano → ofrecer PAR $107.98 directamente
-- **Precios:** guante $59.99 lead nuevo / $49.99 liquidación D3+
+- **Ventas cerradas junio 2026:** 6 pedidos confirmados
+- **Urgentes:** 4 (1 reclamo + 2 vencidos + 1 último día)
+- **En tránsito verificar:** 2 (César, Jimmy — probablemente en agencia)
+- **Leads calientes activos:** 4 (9622, 5804, 4409, kushita2016)
+- **En seguimiento D:** 13 leads activos
+- **Chats muertos / descartados:** ollas + Colombia + >D4 sin respuesta
+
+## 📝 NOTAS OPERATIVAS
+
+- **Blanca Rodríguez:** Coordinar bodega — envío guante correcto — no cerrar hasta resolver
+- **Alex + Carmen:** Verificar si retiraron — si no: informar cargo adicional y dar dirección exacta
+- **César + Jimmy:** Verificar guías en Servientrega HOY — si en agencia: avisar clientes
+- **Willman:** HOY es el último día — avisar urgente
+- **Chat 4148:** NUNCA preguntar qué mano — cuadriplejia bilateral → siempre PAR $107.98
+- **kushita2016:** No sobre-explicar — ir directo al cierre con solicitud de datos
+- **Precios activos:** Leads nuevos $59.99 / Seguimiento D2+ $49.99 / Par $107.98
