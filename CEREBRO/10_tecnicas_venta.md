@@ -1,149 +1,270 @@
-# 100 TÉCNICAS DE VENTA — REFERENCIA RÁPIDA
-## ProMarket Ecuador
+# TÉCNICAS DE VENTA — PROMARKET ECUADOR
+## Actualizado: 12 de junio 2026
 
 ---
 
-## BLOQUE 1: URGENCIA Y ESCASEZ (1-15)
+## LAS 10 TÉCNICAS MAESTRAS (investigadas y aplicadas al guante)
+
+---
+
+### TÉCNICA #1 — EL MAGIC IF (Stanislavski)
+**El principio:** Antes de escribir cualquier mensaje, pregúntate: *"¿Si yo fuera esta persona — con este familiar enfermo, con este historial de frustraciones — qué necesitaría escuchar para poder decir sí?"* No "¿qué le digo?" sino "¿qué siente este cliente ahora mismo?"
+
+**Por qué funciona:** Genera mensajes que el cliente siente escritos para él, no para todos. La presencia se percibe.
+
+**Aplicado al guante:**
+- Cliente con mamá con ACV → no empieces con el precio, empieza con: *"6 meses es un tiempo difícil — para ella y para toda la familia 🙏"*
+- Cliente escéptico → no empieces con argumentos, empieza con: *"es normal desconfiar cuando no lo ha probado 😊"*
+
+---
+
+### TÉCNICA #2 — FEEL, FELT, FOUND (Verbal Judo)
+**El principio:** 3 pasos que desactivan la resistencia antes de responder la objeción:
+1. **Feel** → Valido cómo se siente (no lo contradigo)
+2. **Felt** → Lo conecto con alguien que sintió lo mismo (no está solo)
+3. **Found** → Le cuento qué descubrió esa persona (el puente al sí)
+
+**Por qué funciona:** Cuando alguien se siente entendido, deja de defenderse. La resistencia cae antes del argumento.
+
+**Aplicado al guante — objeción "es muy caro":**
+> *"Lo entiendo perfectamente 🙏 — mucha gente nos dice exactamente eso, sobre todo cuando ya han gastado en fisioterapia y no vieron los resultados que esperaban. Lo que encuentran después es que el guante hace lo mismo que la fisioterapia pero todos los días en casa — y como el pago es al retirar, no adelantan nada. Si llega y no convence, no lo retiran. Eso cambia la ecuación 😊"*
+
+---
+
+### TÉCNICA #3 — NEUROVENTAS: HABLARLE AL CEREBRO REPTILIANO
+**El principio:** El 95% de las decisiones de compra son inconscientes. El cerebro reptiliano solo responde a 6 disparadores: dolor/placer, egocentrismo, contraste, emoción, principio/fin, visibilidad.
+
+**Los 3 disparadores más efectivos para el guante:**
+- **Contraste:** *"una sesión de fisioterapia cuesta $40 — este guante hace lo mismo todos los días por $59.99 en total"*
+- **Egocentrismo:** siempre hablar de "su mamá", "su caso" — nunca genérico
+- **Emoción + visión:** *"imagínese a su mamá pudiendo agarrar una taza de nuevo 💛"*
+
+**Regla:** Nunca listas de características. Siempre transformación específica para ESTE cliente.
+
+---
+
+### TÉCNICA #4 — ESCUCHA DIAGNÓSTICA: PREGUNTAR ANTES DE RECETAR
+**El principio:** El médico no receta sin diagnosticar. El vendedor que receta sin diagnóstico pierde credibilidad. La pregunta correcta revela el dolor exacto y da el argumento de cierre personalizado.
+
+**Las 4 preguntas que más abren conversaciones:**
+1. *"¿Qué movimiento tiene más limitado — los dedos, la muñeca, o toda la mano?"*
+2. *"¿Hace cuánto tiempo lleva con esto?"*
+3. *"¿Ha hecho fisioterapia? ¿Qué resultados tuvo?"*
+4. *"¿Qué es lo que más le afecta en el día a día?"*
+
+**Aplicado:** Cuando cliente dice "es para mi papá con ACV":
+> *"¿me cuenta un poco — cuánto tiempo lleva con el ACV y qué movimiento tiene más afectado en la mano? Así le cuento cómo el guante le ayuda específicamente 😊"*
+
+---
+
+### TÉCNICA #5 — CERO RIESGO REAL: EL ARGUMENTO MÁS POTENTE
+**El principio:** Kahneman demostró que el miedo a perder es 2x más poderoso que el deseo de ganar. Eliminar ese miedo es el argumento de cierre más poderoso. Estudios de ecommerce confirman que la contra entrega elimina el 71% de las objeciones de desconfianza.
+
+**IMPORTANTE — lo que el cero riesgo SÍ es:**
+- No anticipa nada — paga solo al momento de retirar en Servientrega
+- 3 meses de garantía — si llega con defecto, se resuelve de inmediato por WhatsApp
+
+**IMPORTANTE — lo que el cero riesgo NO es:**
+- ❌ "Lo prueba antes de pagar" — Servientrega no permite abrir la caja antes de pagar. Nunca decir esto.
+
+**Script correcto:**
+> *"lo que tiene de diferente es que el pago es contra entrega — paga en Servientrega solo cuando va a retirar, no anticipa nada. Y si llega con cualquier defecto de fábrica, el guante tiene 3 meses de garantía y lo resolvemos de inmediato por WhatsApp. No hay riesgo de perder dinero en el aire 😊"*
+
+---
+
+### TÉCNICA #6 — PRESENCIA TOTAL: EL ACTOR EN ESCENA
+**El principio:** MIT confirma que responder en menos de 5 minutos hace al cliente 21x más probable de convertir vs. esperar 30 minutos. Pero la velocidad sin presencia no sirve. La presencia se transmite en detalles: usaste su nombre, mencionaste algo específico que dijo, tu mensaje demuestra que leíste ESTE chat.
+
+**Las 3 señales de presencia en WhatsApp:**
+1. Usar su nombre si lo sabe
+2. Referirse a algo específico que dijo (*"escuché lo que me contó sobre su esposo"*)
+3. No usar guiones genéricos — cada mensaje demuestra que leyó este chat
+
+**Regla de velocidad:**
+- Menos de 5 min → venta posible
+- 5-30 min → venta probable con buen guión
+- 30+ min → venta difícil, el cliente se enfrió
+
+---
+
+### TÉCNICA #7 — URGENCIA REAL: EL PRINCIPIO DE CIALDINI APLICADO CORRECTAMENTE
+**El principio:** La escasez y urgencia son los disparadores más potentes de Cialdini — pero SOLO funcionan después de que el cliente ya percibe el valor. Antes del valor, la urgencia genera desconfianza. Urgencia inventada destruye credibilidad.
+
+**Urgencias reales válidas:**
+- "Envío gratis hasta el domingo" (cuando aplica)
+- "Si confirma hoy, el pedido sale mañana y llega el jueves" (fecha real)
+
+**Cuándo usarla:** Valor → Diagnóstico → Urgencia. Nunca al revés.
+
+**Script — cliente que dice "lo pienso":**
+> *"Claro, tómese su tiempo 😊 Solo le cuento que el envío gratis lo tenemos hasta el domingo — si confirma antes, llega sin costo adicional. Y el pago es al retirar, no hay ningún compromiso hasta que lo tenga en manos ✅"*
+
+---
+
+### TÉCNICA #8 — STORYTELLING: LA HISTORIA QUE VENDE SIN VENDER
+**El principio:** Las historias liberan oxitocina (hormona de la confianza). Un dato estadístico activa la razón. Una historia activa la emoción — donde se toman las decisiones. Las historias de otros clientes son 22x más memorables que los datos (Stanford).
+
+**Formato:** situación similar → problema → transformación concreta
+
+**Aplicado — cliente con mamá con artritis:**
+> *"tenemos una clienta cuya mamá llevaba 2 años con artritis en las manos — ya no podía escribir ni abrocharse los botones 🙏 Empezó con el guante en nivel 1 y fue subiendo semana a semana. Me contó que a los 3 meses su mamá retomó el tejido. No es magia — es constancia con el estímulo correcto. ¿su mamá también tiene los dedos afectados o más las muñecas?"*
+
+*(Siempre terminar con pregunta diagnóstica para mantener la conversación)*
+
+---
+
+### TÉCNICA #9 — REENCUADRE DE PRECIO: CAMBIAR LA UNIDAD DE COMPARACIÓN
+**El principio:** El precio nunca es caro o barato en términos absolutos — siempre es una comparación. El trabajo es controlar con qué se compara. $59.99 comparado con nada parece caro. $59.99 comparado con lo correcto parece una decisión inteligente. (Dan Ariely, *Predictably Irrational*)
+
+**Las 3 comparaciones más efectivas:**
+1. **vs. fisioterapia:** *"una sola sesión cuesta $40 — este guante hace lo mismo todos los días por $59.99 en total"*
+2. **vs. tiempo perdido:** *"cada mes sin rehabilitación constante es movilidad que se puede ir perdiendo"*
+3. **vs. inacción:** *"la pregunta no es si vale $59.99 — es qué vale intentarlo cuando el pago es al retirar y no hay anticipo"*
+
+---
+
+### TÉCNICA #10 — SEGUIMIENTO ESTRATIFICADO: 4 ÁNGULOS, NO 4 REPETICIONES
+**El principio:** El 80% de las ventas requieren 5+ contactos, pero el 44% de los vendedores se rinden después del primero. El error es repetir el mismo argumento. La lógica correcta: cada seguimiento entra por un ángulo diferente — el cliente que no respondió al precio puede responder a la empatía.
+
+**Secuencia D1-D4 con ángulos distintos:**
+| D | Ángulo | Mensaje |
+|---|---|---|
+| D1 (2h) | Apertura de puerta | "¿le pareció bien el precio o tiene alguna duda? 😊" |
+| D2 (día siguiente) | Precio | "hoy tengo el guante por $49.99 con envío incluido ✅ ¿se anima?" |
+| D3 (siguiente) | Disponibilidad | "¿le pareció bien la promoción? aún está disponible 😊" |
+| D4 (siguiente — ÚLTIMO) | Conexión directa | "noto que aún no me ha dado una respuesta — ¿qué opina sobre el guante? 🙏" |
+
+**Regla:** Si no responde D4 → chat muerto. No escribir más.
+
+---
+
+## LA REGLA DE ORO QUE LAS UNE TODAS
+
+```
+DOLOR (lo que tiene hoy)
+  → VISIÓN (lo que podría recuperar)
+    → PUENTE (el guante como herramienta)
+      → CERO RIESGO (la decisión fácil)
+```
+
+El vendedor que domina esto no vende un guante. Vende la posibilidad de que la mamá vuelva a agarrar una taza. El guante es el medio, no el mensaje.
+
+---
+
+## REFERENCIA RÁPIDA — 100 TÉCNICAS
+
+### BLOQUE 1: URGENCIA Y ESCASEZ (1-15)
 1. Countdown de promoción — "envío gratis hasta el domingo"
-2. Stock limitado visible — "quedan pocas unidades"
+2. Ventana de entrega — "si confirma hoy llega el jueves"
 3. Precio que sube — "nueva importación llega con precio mayor"
 4. Reserva con expiración — "le reservo hasta mañana"
 5. Promoción exclusiva de canal — "solo por WhatsApp"
-6. Última unidad del modelo
-7. Cierre de temporada
-8. Urgencia por demanda — "hoy ya procesé varios pedidos"
-9. Ventana de entrega — "si confirma hoy llega el jueves"
-10. Bundle que se acaba
-11. Precio de lanzamiento
-12. Cierre de cupo diario
-13. Promoción que no se repite
-14. Urgencia por fecha del cliente — "¿es para regalo del domingo?"
-15. Retiro de la oferta — "si espera más no puedo garantizar este precio"
+6. Urgencia por demanda — "hoy ya procesé varios pedidos de su ciudad"
+7. Urgencia por fecha del cliente — "¿es para regalo del domingo?"
+8. Retiro de la oferta — "si espera más no puedo garantizar este precio"
+9. Cierre de temporada
+10. Precio de lanzamiento
+11. Urgencia por el proceso del paciente — "cada semana sin rehabilitación es movilidad que se puede perder"
+12. Urgencia de stock — solo si es verdad
+13. Última unidad del lote actual
+14. Envío del día — "si confirma antes de las 3pm sale hoy"
+15. Urgencia de recuperación — "cuanto antes empiece, mejor pronóstico"
 
----
-
-## BLOQUE 2: CONFIANZA Y CREDIBILIDAD (16-28)
-16. Prueba social con número — "esta semana ya enviamos X pedidos"
+### BLOQUE 2: CONFIANZA Y CREDIBILIDAD (16-28)
+16. Prueba social con número real — "esta semana ya enviamos X pedidos"
 17. Screenshot de cliente satisfecho
-18. Garantía como cierre — "3 meses, si falla lo reemplazamos"
-19. Contra entrega como argumento — "no paga hasta tenerlo en manos"
+18. Garantía como cierre — "3 meses, si falla lo resolvemos de inmediato"
+19. Contra entrega como argumento — "no anticipa nada — paga al retirar"
 20. Transparencia de empresa — "somos empresa ecuatoriana, centro logístico en Loja"
-21. Video de uso real
-22. Ficha técnica explicada — solo el beneficio clave para ESE cliente
-23. Nombre empresa + trayectoria
-24. Proceso transparente — qué pasa después de confirmar
-25. Guía rastreable — "le mando el tracking en tiempo real"
-26. Política de devolución clara
-27. Referencia de conocido
-28. Certificación o aval médico — "recomendado por fisioterapeutas"
+21. Video de uso real del producto
+22. Explicación del beneficio clave para ESE cliente específico
+23. Proceso transparente — "le explico qué pasa después de confirmar"
+24. Guía rastreable — "le mando el número de guía para seguir su pedido en tiempo real"
+25. Garantía de 3 meses explicada en detalle
+26. Experiencia médica — hablar con autoridad de la condición del cliente
+27. Referencia de conocido — "¿conoce a alguien que lo haya usado?"
+28. Aval médico cuando aplica
 
----
-
-## BLOQUE 3: MANEJO DE OBJECIONES (29-42)
-29. "Es muy caro" → dividir en tiempo de uso / comparar con alternativa
+### BLOQUE 3: MANEJO DE OBJECIONES (29-42)
+29. "Es muy caro" → reencuadre vs. fisioterapia
 30. Comparación de valor → fisioterapia $40/sesión vs guante $59.99 total
 31. "Lo pienso" → "¿qué parte le genera duda? a veces lo resuelvo ahora"
-32. "Ya le aviso" → reserva + urgencia real
-33. "No tengo plata" → "paga al retirar, no adelanta nada"
-34. "No conozco la empresa" → empresa ecuatoriana + contraentrega
-35. "¿Es de calidad?" → prueba social + foto real
-36. "¿Y si no me gusta?" → no lo retira, no pierde nada
+32. "Ya le aviso" → urgencia real + reserva sin compromiso
+33. "No tengo plata" → "paga al retirar, no anticipa nada"
+34. "No conozco la empresa" → empresa ecuatoriana + contra entrega + garantía
+35. "¿Es de calidad?" → marca Syrobo + garantía de fábrica + cero riesgo
+36. "¿Y si no me gusta?" → garantía 3 meses, se resuelve de inmediato
 37. "Mi esposo/esposa decide" → preparar resumen fácil de mostrar
-38. "Lo vi más barato" → comparar especificaciones reales
-39. "No hay Servientrega" → familiar en ciudad cercana
-40. "Quiero verlo primero" → foto real del producto
-41. "¿Funciona de verdad?" → cero riesgo: paga al retirar, si no convence no lo retira
+38. "Lo vi más barato" → comparar que incluye el kit completo
+39. "No hay Servientrega cerca" → familiar en ciudad cercana
+40. "Quiero verlo primero" → foto del producto + garantía + cero anticipo
+41. "¿Funciona de verdad?" → cero riesgo: paga al retirar, garantía de fábrica
 42. "Mándeme más información" → "¿qué específicamente le interesa saber?"
 
----
-
-## BLOQUE 4: CIERRE DIRECTO (43-55)
+### BLOQUE 4: CIERRE DIRECTO (43-55)
 43. Cierre directo — "¿le genero la orden ahora?"
-44. Cierre asumido — "me ayuda con su nombre y ciudad"
+44. Cierre asumido — "me ayuda con sus datos y lo proceso"
 45. Cierre de elección — "¿una unidad o el par?"
-46. Cierre de siguiente paso — "solo me faltan sus datos"
+46. Cierre de siguiente paso — "solo me falta confirmar su barrio"
 47. Cierre de pequeño compromiso — "solo dígame su ciudad, sin compromiso"
-48. Cierre de resumen — repetir todo y preguntar "¿le proceso?"
+48. Cierre de resumen — repetir beneficios específicos + "¿le proceso?"
 49. Cierre de pregunta de confirmación — "¿le envío la orden a este número?"
-50. Cierre del detalle menor — "¿agencia norte o sur?"
-51. Cierre de acción inmediata — "si confirma en 10 minutos sale hoy"
-52. Cierre de validación — "sus datos están listos, solo confirme"
-53. Cierre de orden ya lista — "ya tengo su orden preparada"
-54. Cierre de compromiso mínimo — "no paga nada ahora, solo sus datos"
-55. Cierre de facilidad — "en 2 minutos tenemos todo listo"
+50. Cierre del detalle menor — "¿guante izquierdo o derecho?"
+51. Cierre de acción inmediata — "si confirma ahora sale hoy"
+52. Cierre de orden ya preparada — "ya tengo todo listo, solo confirme"
+53. Cierre de compromiso mínimo — "no paga nada ahora, solo sus datos"
+54. Cierre de facilidad — "en 2 minutos tenemos todo listo"
+55. Cierre de beneficio específico — "para la espasticidad de su mamá este es el indicado"
 
----
-
-## BLOQUE 5: PSICOLÓGICAS (56-68)
-56. Reciprocidad — dar algo antes de pedir
-57. Prueba social — "en Ambato ya tenemos X clientes"
-58. Autoridad — "recomendado por fisioterapeutas y neurólogos"
-59. Escasez + autoridad
+### BLOQUE 5: PSICOLÓGICAS (56-68)
+56. Reciprocidad — dar información valiosa antes de pedir compra
+57. Prueba social — "en [ciudad] ya tenemos varios clientes"
+58. Autoridad médica — hablar con propiedad de neuroplasticidad, espasticidad, etc.
+59. Escasez real + autoridad
 60. Anclaje de precio — mencionar precio original antes del actual
-61. Aversión a la pérdida — "si espera el jueves ya no garantizo el envío"
+61. Aversión a la pérdida — "si espera el jueves ya no garantizo el envío gratis"
 62. Compromiso y coherencia — recordar lo que el cliente ya dijo
-63. Efecto manada — "es nuestro producto más vendido"
-64. Personalización — usar el nombre del cliente
-65. Cierre emocional — "imagínese a su mamá recuperando movilidad"
-66. Reencuadre del precio — "$49.99 es menos que una salida a cenar"
-67. Crear identidad — "los clientes que nos compran valoran la calidad"
-68. Cierre del silencio — después del precio, quien habla primero cede
+63. Personalización — usar el nombre del cliente y su condición específica
+64. Cierre emocional — "imagínese a su mamá recuperando ese movimiento 💛"
+65. Reencuadre del precio — "$59.99 es menos de lo que cuesta una semana de fisioterapia"
+66. Magic IF — antes de escribir, ponerse en los zapatos del cliente
+67. Feel, Felt, Found — validar, conectar con otros, revelar la transformación
+68. Cierre del silencio — después del argumento final, esperar la respuesta
 
----
+### BLOQUE 6: SEGUIMIENTO Y RECUPERACIÓN (69-78)
+69. D1 a las 2h — "¿le pareció bien el precio o tiene alguna duda?"
+70. D2 día siguiente con precio especial $49.99
+71. D3 recordatorio de promoción
+72. D4 mensaje final de conexión directa
+73. Seguimiento con testimonio real de cliente similar
+74. Reactivación con ángulo médico — dato útil sobre la condición
+75. Cambio de oferta — si no quiso el par, ofrecer unidad
+76. Cierre de rescate — "¿hubo algo que no le convenciera?"
+77. Seguimiento post-fecha — escribir el día que dijeron que decidirían
+78. Retiro de atención — "voy a dejar libre su consulta, cuando guste aquí estamos"
 
-## BLOQUE 6: SEGUIMIENTO Y RECUPERACIÓN (69-78)
-69. Seguimiento a las 24 horas
-70. Seguimiento con novedad
-71. Seguimiento con video nuevo
-72. Seguimiento con testimonio
-73. Última oportunidad — "hoy vence la promoción"
-74. Reactivación con humor — "¿se nos fue? 😄 todavía le esperamos"
-75. Seguimiento de valor — dato útil sin pedir compra
-76. Cambio de oferta — si no quiso el par, ofrecer una unidad
-77. Cierre de rescate — "¿hubo algo que no le convenciera?"
-78. Seguimiento post-fecha — escribir el día que dijeron que decidirían
-
----
-
-## BLOQUE 7: UPSELL Y VALOR (79-87)
+### BLOQUE 7: UPSELL Y VALOR (79-87)
 79. Upsell de par — "si lleva los dos ahora sale más barato"
-80. Bundle — guante + accesorios
-81. Descuento por volumen — máximo 10%, llamarlo "precio especial"
-82. Regalo por compra mayor
-83. Cierre de regalo para otro — "¿es para usted o para regalar?"
-84. Beneficio del par explicado — rehabilitación más rápida
-85. Segunda venta futura — precio preferencial próxima compra
-86. Programa de referidos
-87. Masajeador de rodilla — ofrecer a quien tiene dolor articular en rodillas o codos ($39.20)
+80. Explicación del par para cuadriplejia — rehabilitación bilateral
+81. Descuento máximo 10% — siempre llamarlo "precio especial"
+82. Beneficio del par explicado — trabajar ambas manos simultáneamente
+83. Upsell de masajeador de rodilla — para quien tiene dolor articular adicional ($39.20)
+84. Segunda venta futura — precio preferencial próxima compra
+85. Cierre del regalo — "¿es para regalarle? un regalo que cambia la calidad de vida"
+86. Upsell emocional — "el par garantiza que no quede ninguna mano sin trabajar"
+87. Combinación guante + masajeador para casos con múltiples articulaciones afectadas
 
----
-
-## BLOQUE 8: SISTEMA Y PROCESO (88-100)
-88. Respuesta en menos de 5 minutos — técnica #1
-89. Respuestas rápidas guardadas en WhatsApp Business
-90. Horario pico identificado
-91. Primer mensaje que responde todo sin abrumar
+### BLOQUE 8: SISTEMA Y PROCESO (88-100)
+88. Respuesta en menos de 5 minutos — técnica #1 de conversión
+89. Respuestas guardadas en WhatsApp Business para velocidad
+90. Horario pico identificado — atender primero en horas de mayor respuesta
+91. Un solo tema por mensaje — no abrumar con información
 92. Foto/video en momento clave — no desde el inicio
 93. Testimonio listo para mandar en segundos
-94. Directorio de agencias memorizado
-95. CRM simple de seguimiento (08_clientes.md)
-96. A/B testing de mensajes
-97. Métricas semanales
-98. Catálogo en WhatsApp Business
-99. Estado de WhatsApp con testimonios y promos
-100. Post-venta como generador de nuevas ventas y referidos
-
----
-
-## LAS 10 MÁS IMPORTANTES PARA ProMarket HOY
-
-1. #88 Respuesta en menos de 5 min
-2. #44 Cierre asumido
-3. #45 Cierre de elección
-4. #31 Cierre del "lo pienso"
-5. #60 Anclaje de precio
-6. #69 Seguimiento 24h personalizado
-7. #20 Transparencia de empresa
-8. #65 Cierre emocional (para guante)
-9. #17 Screenshot de cliente satisfecho
-10. #100 Post-venta activa para referidos
+94. Directorio de agencias Servientrega memorizado por ciudad
+95. Registro actualizado de cada lead en 08_clientes.md
+96. Métricas semanales — punto de caída, tasa de cierre, ciudad que más compra
+97. A/B testing de mensajes — probar dos versiones del mismo script
+98. Catálogo en WhatsApp Business actualizado
+99. Estado de WhatsApp con casos reales y testimonios
+100. Post-venta activa — el cliente que retiró bien es el mejor referido futuro
