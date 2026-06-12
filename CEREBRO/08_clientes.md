@@ -1,5 +1,5 @@
 # REGISTRO DE CLIENTES — PROMARKET ECUADOR
-## Última actualización: 8 de junio 2026 — 20:30
+## Última actualización: 11 de junio 2026 — 20:30
 
 ---
 
@@ -22,6 +22,14 @@
 | #151380 | Jimmy Vera Peñafiel | +593 93 918 4423 | Guante x1 | 7/6/2026 |
 
 ---
+
+## LEADS NUEVOS 11/6 — EN CONVERSACIÓN ACTIVA
+
+| Alias | Contacto | Producto | Ciudad | Estado / Notas |
+|---|---|---|---|---|
+| Chat 9622 | +593 93 991 9622 | Guante | Santa Rosa, El Oro | Para esposo — esperando referencia de barrio para buscar agencia exacta |
+| Chat 5804 | +593 98 574 5804 | Guante | Calceta, Manabí | Quiere realizar pedido — esperando referencia de barrio para buscar agencia exacta |
+| Chat 4409 | +593 98 272 4409 | Guante | — | Para papá — esperando ciudad |
 
 ## LEADS NUEVOS 8/6 — EN CONVERSACIÓN ACTIVA
 
