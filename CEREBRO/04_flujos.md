@@ -1,100 +1,172 @@
 # FLUJOS DE VENTA — PROMARKET ECUADOR
+## Actualizado: 11 de junio 2026
 
 ---
 
-## FLUJO GUANTE
+## FLUJO GUANTE — VENTA NUEVA
 
 ```
 CLIENTE ESCRIBE
       ↓
-Mensaje bienvenida automático → "¿de qué ciudad nos escribe?"
+Bot automático envía bienvenida con precio $59.99
       ↓
-    Si ya dice "quiero realizar mi pedido" → NO preguntar para quién es
-    → ir directo a precio + garantía + ciudad
+¿Ya dijo "quiero realizar mi pedido"?
+  SÍ → precio $59.99 + "¿de qué ciudad nos escribe?" — NO preguntar para quién
+  NO → "¿el guante es para usted o para un familiar?"
       ↓
-    Si no especifica → /inicio_guante → "¿para usted o un familiar?"
+Para usted → cierre funcional (niveles, progreso, desde casa)
+Para familiar → preguntar condición médica → cierre según caso
       ↓
-    Para mamá/abuela → /guante_para_mama (cierre emocional)
-    Para él/ella → /guante_para_mi (cierre funcional)
-    No sabe → dar info general + precio
+Da ciudad → "Déjeme buscar la agencia más cercana 😊
+             ¿me puede dar una referencia de su dirección o barrio en [ciudad]?"
       ↓
-"¿de qué ciudad?"
+Da barrio → buscar agencia exacta → confirmar:
+"Ya busqué — la agencia [NOMBRE EXACTO] está habilitada ✅
+Su kit incluye: guante robótico + guante espejo + controlador de potencia + pelota de rehabilitación 💪
+Llega en 2-3 días hábiles 😊
+¿Me ayuda con sus datos para generarle la orden?
+📌 Nombre completo
+📌 Cédula
+📌 Número celular
+📌 Dirección de referencia
+📌 Guante izquierdo o derecho"
       ↓
-    ¿Hay agencia?
-    SÍ → confirmar agencia + detallar kit completo obligatoriamente + pedir datos
-    NO → /sin_agencia → ofrecer ciudad cercana
+¿Tiene dudas antes de dar datos?
+  ├── ¿Una o el par? → /par_guante
+  ├── Precio irreal → /duda_precio_guante
+  ├── ¿Funciona de verdad? → marca Syrobo + cero riesgo al retirar
+  ├── ¿Puedo revisar antes? → "paga al retirar — si no convence no lo retira ✅"
+  ├── ¿En qué colores? → "solo azul 😊"
+  ├── ¿Qué incluye? → "guante + guante espejo + controlador de potencia + pelota"
+  ├── ¿Qué talla? → "talla estándar ajustable a todo tipo de manos 😊"
+  └── Lo pienso → /lopienso
       ↓
-      ¿Tiene dudas?
-      ├── ¿Una o el par? → /par_guante
-      ├── Precio irreal → /duda_precio_guante
-      ├── ¿Funciona de verdad? → "2.400 pacientes en Latinoamérica, recomendado por fisioterapeutas"
-      ├── ¿Puedo revisar antes? → "paga al retirar — si no convence no lo retira"
-      ├── ¿En qué colores? → "azul con negro, color estándar"
-      ├── ¿Qué incluye? → "guante + guante espejo + controlador + pelota"
-      └── Lo pienso → /lopienso
+Da los 5 datos → confirmar → generar orden → enviar PDF
       ↓
-Da datos → /datos_recibidos
-      ↓
-Genera orden → /orden_lista
-      ↓
-Día siguiente → /empaquetando
-      ↓
-Guía lista → /guia_lista
-      ↓
-Llega agencia → /llego_agencia
-      ↓
-Post-entrega → pedir testimonio
+POST-VENTA (ver flujo abajo)
 ```
 
 ---
 
-## FLUJO ESPECIAL — CLIENTE PREGUNTA "¿DE CUÁL SET ES?" O MUESTRA INTERÉS DESPUÉS DE VER VIDEO
+## FLUJO DE SEGUIMIENTO — LEADS QUE NO RESPONDIERON NADA
 
 ```
-Cliente pregunta sobre el producto (modelo, set, etc.)
+Cliente vio el precio y no respondió NADA
       ↓
-Responder la pregunta brevemente
+D1 — 2 horas después del último mensaje sin respuesta:
+"¿le pareció bien el precio o tiene alguna duda que pueda resolver? 😊"
       ↓
-"¿se anima?" — confirmar interés PRIMERO
+¿Respondió?
+  SÍ → continuar conversación desde donde quedó
+  NO ↓
       ↓
-SÍ → pedir ciudad → agencia → datos → orden
-NO / no responde → esperar, luego seguimiento
+D2 — Al día siguiente (si sigue sin responder):
+"Hola! 😊 Camila de ProMarket — hoy tengo el guante de rehabilitación
+por $49.99 con envío incluido, precio especial de hoy ✅ ¿se anima?"
+      ↓
+¿Respondió?
+  SÍ → continuar conversación
+  NO ↓
+      ↓
+D3 — Día siguiente al D2:
+"¿le pareció bien la promoción del guante? 😊 aún está disponible para usted"
+      ↓
+¿Respondió?
+  SÍ → continuar conversación
+  NO ↓
+      ↓
+D4 — Día siguiente al D3 (ÚLTIMO MENSAJE):
+"Hola! cómo le va 😊 noto que aún no me ha dado una respuesta —
+¿qué opina sobre el guante? estamos para ayudarle 🙏"
+      ↓
+¿Respondió?
+  SÍ → continuar conversación
+  NO → MUERE EL CHAT — no se escribe más
 ```
-NUNCA saltar a pedir ciudad antes de confirmar que quiere comprar
+
+**REGLA:** Este flujo es SOLO para quienes no respondieron nada.
+Para quienes sí respondieron pero se cortó la conversación → retomar desde lo último hablado.
 
 ---
 
-## FLUJO DE SEGUIMIENTO (Alejandro — clientes con historial)
+## FLUJO DE SEGUIMIENTO — LEADS QUE SÍ RESPONDIERON (se cortó la conversación)
 
 ```
-Lead existente
+Cliente respondió pero dejó de escribir en algún punto del flujo
       ↓
-    ¿Cuántos contactos previos?
-    1 contacto → /seguimiento_1dia
-    2 contactos → /seguimiento_3dias
-    3+ contactos → /cierre_conversacion
+¿En qué punto se cortó?
+  ├── Dio precio, no dio ciudad → preguntar ciudad + urgencia del domingo
+  ├── Dio ciudad, no dio barrio → preguntar barrio para buscar agencia
+  ├── Dio barrio, no dio datos → recordar agencia + pedir datos
+  ├── Dijo "lo pienso" → /lopienso + urgencia
+  ├── Mandó audio ignorado → "escuché! 😊 [responder al audio]"
+  └── Dijo "ya le aviso" → esperar 24h → luego D2 con promo $49.99
       ↓
-    ¿Cuánto tiempo sin responder?
-    Mismo día → retomar directo
-    1-2 días → razón concreta para escribir hoy
-    3+ días → ángulo completamente diferente
-    7+ días → /cierre_conversacion
+Responder desde ese punto exacto — NO empezar de cero
 ```
 
 ---
 
-## FLUJO POST-VENTA
+## FLUJO POST-VENTA — PEDIDO CONFIRMADO
 
 ```
-Venta cerrada
+Cliente dio los 5 datos → orden generada → PDF enviado
       ↓
-Día 1 → /empaquetando (mañana siguiente)
+Mismo momento:
+"Estimad@, adjunto su orden de entrega 📄
+El Servientrega le avisa cuando llega — dos días aproximadamente.
+Tiene 4 días para retirarlo o le generan un par de centavos adicionales
+por cada día de demora. Así que no se descuide, porfa 🙏"
       ↓
-Día 2-3 → /guia_lista (cuando Servientrega autoriza)
+Día siguiente (empaquetando):
+"Buen día! su pedido ya está preparado y hoy será enviado a Servientrega 😊
+Tiene 4 días para retirarlo desde que llegue a la agencia 📦"
       ↓
-Día 4-5 → /llego_agencia
+Cuando Servientrega autoriza (guía disponible):
+"Su pedido ya está en tránsito 🚚 aquí su guía de seguimiento: [NÚMERO DE GUÍA]
+Le acompañaremos en todo el proceso 😊"
       ↓
-3 días después de entrega → pedir testimonio
+Cuando llega a la agencia:
+MAÑANA: "Buenos días! su pedido ya llegó a la agencia Servientrega 🎉
+         ¿pudo pasar a retirarlo? recuerde que tiene 4 días 😊"
+NOCHE:  "Buenas noches! solo para recordarle que su pedido sigue en la agencia
+         esperándole 📦 ¿logró pasar hoy?"
       ↓
-Guardar foto en carpeta TESTIMONIOS para usar en ventas futuras
+Repetir mensaje mañana/noche cada día hasta confirmar retiro
+      ↓
+Cliente confirma que retiró → "Un gusto haberle ayudado 🙌 que le vaya muy bien!"
+→ CONVERSACIÓN TERMINADA
 ```
+
+**REGLA POST-VENTA:**
+- NO pedir testimonio
+- NO pedir foto
+- NO preguntar Facebook/Instagram
+- Una vez retirado → conversación cerrada
+
+---
+
+## FLUJO ESPECIAL — CLIENTE PREGUNTA SOBRE EL PRODUCTO SIN INTENCIÓN CLARA
+
+```
+Cliente hace pregunta puntual (color, talla, condición médica, etc.)
+      ↓
+Responder brevemente la pregunta
+      ↓
+"¿se anima a probarlo? paga al retirar ✅"
+      ↓
+SÍ → pedir ciudad → buscar agencia → datos → orden
+NO / no responde → entra al flujo de seguimiento D1 (2h después)
+```
+NUNCA saltar a pedir ciudad antes de confirmar interés
+
+---
+
+## REGLAS GENERALES DE TODOS LOS FLUJOS
+
+- **Camila es la ÚNICA vendedora** — atiende nuevos e historial
+- **NUNCA inventar** — si no sabe algo, verificar antes de responder
+- **Tono médico** — enfocarse en el problema del cliente y la solución terapéutica
+- **Agencia: siempre [NOMBRE EXACTO] entre corchetes** para que el operador lo reemplace
+- **5 datos obligatorios** — nunca generar orden sin todos
+- **Colombia: no trabajamos** — si escribe desde Colombia, no hay cobertura

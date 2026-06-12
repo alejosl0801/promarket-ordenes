@@ -274,14 +274,15 @@ Los 5 datos se piden JUNTOS en UN solo mensaje, SOLO cuando el cliente confirmó
 
 ## PASO 11 — SEGUIMIENTO DE LEADS SIN RESPUESTA
 
-| Tiempo sin respuesta | Acción |
-|---|---|
-| 1 día | D1AM: "¿le pareció bien el precio o tiene alguna duda?" |
-| Mismo día tarde | D1PM: recordatorio suave |
-| 2-3 días | D3: precio especial $49.99 + urgencia domingo |
-| 4-6 días | Liquidación: $49.99 precio de hoy |
-| 7+ días con conversación previa | /cierre_conversacion |
-| 7+ días sin conversación | Liquidación directa |
+**SOLO para quienes no respondieron NADA. Los que sí respondieron → retomar desde lo último hablado.**
+
+| Paso | Cuándo | Acción |
+|---|---|---|
+| D1 | 2 horas después del último mensaje sin respuesta | "¿le pareció bien el precio o tiene alguna duda que pueda resolver? 😊" |
+| D2 | Día siguiente al D1 | Promo $49.99: "hoy tengo el guante por $49.99 con envío incluido ✅ ¿se anima?" |
+| D3 | Día siguiente al D2 | "¿le pareció bien la promoción del guante? 😊 aún está disponible para usted" |
+| D4 | Día siguiente al D3 — ÚLTIMO | "Hola! cómo le va 😊 noto que aún no me ha dado una respuesta — ¿qué opina sobre el guante?" |
+| — | Sin respuesta al D4 | MUERE EL CHAT — no se escribe más |
 
 **Urgencia válida esta semana:** "envío gratis hasta el domingo"
 **Si hoy es sábado:** "mañana vence el envío gratis"

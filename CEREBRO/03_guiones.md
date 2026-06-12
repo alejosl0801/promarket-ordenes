@@ -192,14 +192,42 @@
 
 ## POST-VENTA
 
+### /orden_confirmada
+> *(enviar junto con el PDF de la orden)*
+> Estimad@, adjunto su orden de entrega 📄
+> El Servientrega le avisa cuando llega — dos días aproximadamente. Tiene 4 días para retirarlo o le generan un par de centavos adicionales por cada día de demora. Así que no se descuide, porfa 🙏
+
 ### /empaquetando
-> buen día! su pedido ya está en empaquetado 😊
-> en cuanto Servientrega autorice le mando la guía para que lo siga en tiempo real 📦
+> *(día siguiente a la orden)*
+> Buen día! su pedido ya está preparado y hoy será enviado a Servientrega 😊
+> Tiene 4 días para retirarlo desde que llegue a la agencia 📦
 
 ### /guia_lista
-> aquí está su guía de seguimiento! 📄
-> puede rastrear su pedido en tiempo real
-> cualquier novedad me escribe 😊
+> *(cuando Servientrega autoriza — enviar número de guía)*
+> Su pedido ya está en tránsito 🚚 aquí su guía de seguimiento: [NÚMERO DE GUÍA]
+> Le acompañaremos en todo el proceso 😊
+
+### /llego_agencia_manana
+> *(mañana del día que llega a la agencia)*
+> Buenos días! su pedido ya llegó a la agencia Servientrega 🎉
+> ¿pudo pasar a retirarlo? recuerde que tiene 4 días 😊
+
+### /llego_agencia_noche
+> *(noche del mismo día)*
+> Buenas noches! solo para recordarle que su pedido sigue en la agencia esperándole 📦
+> ¿logró pasar hoy?
+
+### /recordatorio_agencia_manana
+> *(cada mañana siguiente hasta confirmar retiro)*
+> Buenos días! su pedido sigue en la agencia Servientrega 😊 ¿logró pasar ayer?
+
+### /recordatorio_agencia_noche
+> *(cada noche hasta confirmar retiro)*
+> Buenas noches! recordándole que su pedido sigue disponible en la agencia 📦 ¿pudo retirar hoy?
+
+### /retiro_confirmado
+> *(cuando el cliente confirma que retiró)*
+> Un gusto haberle ayudado 🙌 que le vaya muy bien!
 
 ### /llego_agencia
 > su pedido ya está en la agencia listo para retirar! 🎉
@@ -213,13 +241,60 @@
 
 ---
 
-## SEGUIMIENTO — leads que no compraron (Camila)
+## SEGUIMIENTO — leads que NO respondieron nada (Camila)
+*(Solo para quienes no respondieron ningún mensaje. Para quienes sí respondieron → retomar desde lo último hablado)*
 
-### /seguimiento_1dia
-> Hola [nombre]! 😊 Camila de ProMarket — ayer hablamos del guante, ¿tiene alguna duda que pueda resolver?
+### /seguimiento_D1
+> *(2 horas después del último mensaje sin respuesta)*
+> ¿le pareció bien el precio o tiene alguna duda que pueda resolver? 😊
 
-### /seguimiento_3dias
-> Hola [nombre]! 😊 Camila de ProMarket — el guante sigue disponible con envío gratis hasta el domingo, ¿le genero la orden?
+### /seguimiento_D2
+> *(al día siguiente sin respuesta)*
+> Hola! 😊 Camila de ProMarket — hoy tengo el guante de rehabilitación por $49.99 con envío incluido, precio especial de hoy ✅ ¿se anima?
+
+### /seguimiento_D3
+> *(día siguiente al D2)*
+> ¿le pareció bien la promoción del guante? 😊 aún está disponible para usted
+
+### /seguimiento_D4
+> *(día siguiente al D3 — ÚLTIMO MENSAJE)*
+> Hola! cómo le va 😊 noto que aún no me ha dado una respuesta — ¿qué opina sobre el guante? estamos para ayudarle 🙏
+
+*(Si no responde al D4 → NO escribir más — chat muerto)*
+
+---
+
+## SEGUIMIENTO — leads que SÍ respondieron pero se cortó (Camila)
+*(Retomar exactamente desde donde quedó — NO empezar de cero)*
+
+### /retomar_ciudad
+> *(el cliente respondió pero no dio ciudad)*
+> ¿de qué ciudad nos escribe? 😊 así le confirmo la agencia más cercana
+
+### /retomar_barrio
+> *(dio ciudad pero no barrio)*
+> Déjeme buscar la agencia más cercana 😊 ¿me puede dar una referencia de su dirección o barrio en [ciudad]?
+
+### /retomar_datos
+> *(confirmó agencia pero no dio datos)*
+> Hola [nombre]! 😊 ¿seguimos con su pedido? la agencia [NOMBRE] sigue habilitada ✅
+> ¿Me ayuda con sus datos para generarle la orden?
+> 📌 Nombre completo
+> 📌 Cédula
+> 📌 Número celular
+> 📌 Dirección de referencia
+> 📌 Guante izquierdo o derecho
+
+### /retomar_lopienso
+> *(dijo "lo pienso" o "ya le aviso")*
+> Hola [nombre]! 😊 el guante sigue disponible con envío gratis hasta el domingo — ¿le genero la orden?
+
+### /cierre_conversacion
+> *(SOLO cuando tuvo conversación activa y se enfrió después del D4 — NO para quien nunca respondió)*
+> Hola [nombre]! voy a dejar libre su consulta por ahora — cuando guste aquí estamos 😊
+
+### /cliente_dice_no
+> entendido! cuando guste aquí estamos 😊
 
 ### /cierre_conversacion
 > *(SOLO cuando el cliente tuvo conversación activa y se enfrió — NO para quien nunca respondió)*
