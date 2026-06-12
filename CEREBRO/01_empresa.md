@@ -60,7 +60,7 @@
 
 ## PRECIOS VIGENTES (junio 2026)
 - **Guante (1 unidad):** $59.99 precio estándar lead nuevo
-- **Guante liquidación (D3+):** $49.99 — leads que no confirmaron en el primer día, llamarlo "precio especial"
+- **Guante precio especial (D2+):** $49.99 — leads que no confirmaron en el primer día, llamarlo "precio especial" (se activa desde el D2 — corregido 12/6 en auditoría: antes decía "D3+" y contradecía la secuencia D de todos los demás archivos)
 - **Par de guantes (kit izq + der):** $107.98 — 10% de descuento sobre $119.98
 - **Masajeador de Rodillas y Codos 3 en 1:** $39.20 precio final con envío
 

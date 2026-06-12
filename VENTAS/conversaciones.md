@@ -128,3 +128,12 @@ Los mensajes enviados antes del 8/6/2026 mencionan "Alejandro de ProMarket" — 
 | 8/6 | "¿qué mano?" a cuadripléjico bilateral | PAR directo, sin preguntar mano |
 | 8/6 | Pedir datos antes de confirmación de compra | Solo pedir datos con confirmación explícita |
 | 12/6 | 6 chats sin indexar en 08_clientes.md | Cruce obligatorio CLIENTES/ vs índice en cada arranque |
+| 12/6 | Bienvenida automática con "liquidación solo hasta mañana" — fecha falsa PERPETUA | Mensajes automáticos pasan el mismo checklist de verdad |
+| 12/6 | Bienvenida daba $49.99 a leads nuevos (debía ser $59.99) | Escalera de precios: $59.99 nuevo / $49.99 solo D2+ |
+| 12/6 | Mensaje de ausencia prometía "10 minutos" de noche + tuteaba | Sin promesas de tiempo imposibles; siempre "usted" |
+| 12/6 | Catálogo WhatsApp con ollas (descontinuado) | Quitar del catálogo — generaba leads inatendibles |
+| 12/6 | 3 técnicas de venta (#73, #93, #99) usaban testimonios — prohibidos | Reescritas con foto real / dato médico |
+| 12/6 | 01_empresa decía "$49.99 D3+" contradiciendo "D2+" del resto | Unificado: D2+ |
+| 12/6 | Cálculo de días en agencia errado (Alex/Carmen día 7 → real 8; Willman día 4 → real 5 VENCIDO) | Día llegada = día 1, conteo siempre visible |
+| 12/6 | Reglas D1AM/D1PM fantasma de sistema viejo en CLAUDE.md | Eliminadas — solo existe D1-D4 |
+| 12/6 | Scoring dinámico sin tope (podía dar 15 o -5) | Tope 10, piso 0, señales caducan a los 7 días |

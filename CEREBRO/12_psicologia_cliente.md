@@ -201,6 +201,11 @@ Empezar con score base de 3. Sumar o restar con cada evento.
 | Respuestas de una sola palabra | -2 |
 | Tiene alternativa activa (fisioterapia pagada, otro producto) | -3 |
 
+### Reglas del cálculo:
+- **Tope 10, piso 0** — si la suma da más de 10, el score es 10; si da negativo, es 0 (y probablemente chat muerto)
+- Las señales caducan: una señal positiva de hace más de 7 días sin actividad nueva pierde la mitad de su valor (el audio de la semana pasada ya no pesa lo mismo)
+- El score se recalcula en CADA interacción — no es fijo
+
 ### Uso del score:
 - 9-10: CERRAR YA — esta conversación no puede esperar. El cliente ya decidió.
 - 7-8: Un mensaje más con el cierre correcto = venta

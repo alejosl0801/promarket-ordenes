@@ -3,12 +3,17 @@
 ---
 
 ## MENSAJE DE BIENVENIDA AUTOMÁTICO
-### Actualizado 6 de junio 2026 — campaña liquidación guante
+### Corregido 12 de junio 2026 — auditoría
 
-> Hola! 👋 qué gusto saludarte 😊
-> liquidación especial solo hasta mañana — el guante robótico de rehabilitación baja de $59.99 a $49.99 con envío gratis 🚚
-> pago únicamente al retirar ✅
+> Hola! 👋 qué gusto saludarle 😊
+> el guante robótico de rehabilitación está en $59.99 con envío incluido 🚚
+> y el pago es únicamente al retirar — no adelanta nada ✅
 > ¿de qué ciudad nos escribe?
+
+**⚠️ ERRORES CORREGIDOS de la versión anterior (6/6):**
+- ❌ "liquidación especial solo hasta mañana" — fecha falsa PERMANENTE: el mensaje automático corre todos los días, así que "hasta mañana" era mentira perpetua (viola regla anti-fechas-falsas)
+- ❌ Daba $49.99 a leads NUEVOS — el precio de lead nuevo es $59.99; el $49.99 es SOLO para D2+ que no confirmó el primer día. Regalar el precio especial de entrada quema la escalera de precios
+- ❌ Tuteaba ("saludarte") — Camila trata de "usted" SIEMPRE
 
 **Flujo después del mensaje de bienvenida:**
 1. Cliente responde ciudad
@@ -28,11 +33,15 @@
 ---
 
 ## MENSAJE DE AUSENCIA
-### Se activa fuera del horario de atención
+### Se activa fuera del horario de atención — corregido 12/6 (auditoría)
 
-> buenas noches! 🌙 recibimos tu mensaje
-> te respondemos en cuanto abramos — menos de 10 minutos de espera
-> tu consulta quedó guardada, no te preocupes 😊
+> buenas noches! 🌙 recibimos su mensaje
+> le respondemos apenas abramos, a primera hora 😊
+> su consulta quedó guardada, no se preocupe 💛
+
+**⚠️ ERRORES CORREGIDOS de la versión anterior:**
+- ❌ "menos de 10 minutos de espera" — promesa falsa: el mensaje se activa de NOCHE cuando no hay nadie; el cliente esperaba 10 minutos y la respuesta llegaba horas después (promesa incumplida automática)
+- ❌ Tuteaba ("tu mensaje", "no te preocupes") — siempre "usted"
 
 ---
 
@@ -89,9 +98,11 @@ Configurar en WhatsApp Business → Catálogo:
 - Descripción: Rehabilitación neuromuscular en casa. 9 niveles. Incluye guante espejo, controlador y pelota.
 
 **Producto 2:**
-- Nombre: Set de Ollas Inoxidable 12 Piezas
-- Precio: $49.99
-- Descripción: 6 utensilios + 6 tapas de vidrio templado. Compatible con inducción, gas, eléctrica y vitrocerámica.
+- Nombre: Masajeador de Rodillas y Codos 3 en 1
+- Precio: $39.20
+- Descripción: Calor + vibración + masaje neumático para rodillas, codos y hombros. Inalámbrico y recargable. Incluye parches terapéuticos.
+
+**⚠️ CORREGIDO 12/6 (auditoría):** el catálogo tenía las OLLAS ($49.99) — producto DESCONTINUADO desde el 6/6. Tener un producto descontinuado en el catálogo genera leads que no se pueden atender (la regla es NO captar leads de ollas). Eliminarlo del catálogo de WhatsApp Business YA. Los atajos `/io`, `/po`, `/dpo` (ollas) también quedan obsoletos — no usarlos.
 
 ---
 

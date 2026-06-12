@@ -268,6 +268,29 @@ Un "estamos revisando" sin fecha es gasolina al fuego. Cliente con reclamo + din
 
 ---
 
+## MENSAJES AUTOMÁTICOS — MISMO ESTÁNDAR DE VERDAD (regla nueva — auditoría 12/6)
+
+Los mensajes AUTOMÁTICOS (bienvenida, ausencia, catálogo) pasan el MISMO checklist de verdad que los mensajes humanos. Detectado en auditoría:
+- La bienvenida decía "liquidación solo hasta mañana" — al ser automática, esa fecha falsa se repetía TODOS los días = mentira perpetua a cada lead nuevo
+- La bienvenida regalaba el $49.99 a leads nuevos — quemaba la escalera de precios ($59.99 nuevo → $49.99 D2+)
+- El mensaje de ausencia prometía "menos de 10 minutos" activándose DE NOCHE — promesa incumplida automática
+- El catálogo tenía ollas (descontinuado) — generaba leads imposibles de atender
+
+**Regla:** cada vez que se cambie un mensaje automático o el catálogo, verificar: ¿sigue siendo verdad si se repite mañana, pasado y en un mes? Lo automático no caduca solo — hay que revisarlo en cada cambio de campaña.
+
+**Regla de tono:** los mensajes automáticos también tratan de "usted" — el bot es Camila, no otro personaje.
+
+---
+
+## CÁLCULO DE DÍAS EN AGENCIA — SIN ERRORES (regla reforzada — auditoría 12/6)
+
+- **Día de llegada = día 1** (no día 0)
+- Mostrar SIEMPRE el conteo visible: "5/6=día 1: 5,6,7,8,9,10,11,12 → 12/6=día 8"
+- El límite sin cargo es el día 4 — del día 5 en adelante está VENCIDO
+- Error detectado en auditoría: pedidos marcados "día 7" cuando eran día 8, y "día 4 último día" cuando ya era día 5 vencido — un cálculo mal hecho genera el mensaje EQUIVOCADO (urgencia cuando toca honestidad, o al revés)
+
+---
+
 ## CAPTURA DE DATOS DE MARKETING
 
 Al cerrar cada venta preguntar:

@@ -8,9 +8,9 @@
 | Prioridad | Orden/Alias | Cliente | Problema | Estado |
 |---|---|---|---|---|
 | 🔴 CRÍTICO | #144356 | Blanca Rodríguez +593 98 175 4740 | RECLAMO: enviaron guante derecho — pidió izquierdo | Sin resolver — seguimiento activo |
-| 🔴 VENCIDO | #146271 | Alex Fernando Lara +593 97 926 9065 | En agencia desde 5/6 — VENCIDO día 7 | Confirmar si retiró o hay cargo |
-| 🔴 VENCIDO | #146504 | Carmen Sosa +593 99 965 2705 | En agencia desde 5/6 — VENCIDO día 7 | Fue el 7/6 y estaba cerrado — necesita dirección exacta |
-| 🟡 HOY | #146110 | Willman Zúñiga +593 99 823 5058 | Ollas — en agencia desde 8/6 — DÍA 4 HOY | ÚLTIMO DÍA — avisar urgente |
+| 🔴 VENCIDO | #146271 | Alex Fernando Lara +593 97 926 9065 | En agencia desde 5/6 — VENCIDO día 8 (5/6=día 1 → 12/6=día 8) | Confirmar si retiró o hay cargo |
+| 🔴 VENCIDO | #146504 | Carmen Sosa +593 99 965 2705 | En agencia desde 5/6 — VENCIDO día 8 — fue el 7/6 y estaba cerrado | Necesita dirección exacta YA — el problema de ella va primero |
+| 🔴 VENCIDO | #146110 | Willman Zúñiga +593 99 823 5058 | Ollas — en agencia desde 8/6 — VENCIDO día 5 (8/6=día 1 → 12/6=día 5) | Avisar con honestidad: puede haber cargo de centavos por día — aún puede retirar |
 
 ---
 
@@ -26,7 +26,7 @@
 ### Orden #146271 — Alex Fernando Lara — Ambato
 - **Producto:** Guante x2
 - **En agencia desde:** 5/6/2026
-- **Hoy:** 12/6 = día 7 (límite era día 4 = 9/6) → **VENCIDO 3 días**
+- **Hoy:** 12/6 = día 8 (5/6=día 1: 5,6,7,8,9,10,11,12 — límite era día 4 = 8/6) → **VENCIDO 4 días**
 - **Estado:** Prometió retirar el 8/6 — sin confirmación
 - **Acción:** Confirmar si ya retiró — si no: informar cargo adicional
 - **Mensaje:** "Alex, buen día 😊 quería saber si ya pudo retirar su pedido en Servientrega — si tiene alguna novedad me avisa para coordinar con ellos 💛"
@@ -34,18 +34,18 @@
 ### Orden #146504 — Carmen Sosa — Ambato
 - **Producto:** Guante x2
 - **En agencia desde:** 5/6/2026
-- **Hoy:** 12/6 = día 7 → **VENCIDO 3 días**
-- **Estado:** Fue el 7/6 y la agencia estaba cerrada — necesita dirección exacta
+- **Hoy:** 12/6 = día 8 (5/6=día 1 — límite era día 4 = 8/6) → **VENCIDO 4 días**
+- **Estado:** Fue el 7/6 y la agencia estaba cerrada — necesita dirección exacta (la culpa del vencimiento NO es de ella — resolver su problema primero, sin tono de urgencia)
 - **Acción:** Darle dirección exacta de la agencia Ambato
 - **Mensaje:** "Carmen, buen día 😊 perdone la demora — la agencia Servientrega en Ambato está en [DIRECCIÓN EXACTA AMBATO]. El horario es [HORARIO]. Recuerde llevar su cédula y la orden que le envié 💛"
 
 ### Orden #146110 — Willman Zúñiga — Puyo
 - **Producto:** Ollas x1
 - **En agencia desde:** 8/6/2026
-- **Hoy:** 12/6 = **DÍA 4 — ÚLTIMO DÍA**
-- **Estado:** Informar llegada aún pendiente
-- **Acción:** Avisar HOY — es el último día sin cargo
-- **Mensaje:** "Willman, buen día 🙏 su pedido ya está en la agencia Servientrega de Puyo — hoy es el último día para retirarlo sin cargo adicional ✅ Recuerde llevar su cédula 😊"
+- **Hoy:** 12/6 = **día 5 (8/6=día 1: 8,9,10,11,12) → VENCIDO 1 día**
+- **Estado:** Informar llegada aún pendiente — el cliente NO sabe que su pedido llegó (error nuestro: nunca se le avisó)
+- **Acción:** Avisar HOY con honestidad — venció ayer, puede haber cargo de centavos
+- **Mensaje:** "Willman, buen día 🙏 su pedido ya está en la agencia Servientrega de Puyo listo para retirar. Le aviso que puede haber un cargo de unos centavos por día de demora, pero lo puede retirar sin problema ✅ Recuerde llevar su cédula 😊"
 
 ---
 

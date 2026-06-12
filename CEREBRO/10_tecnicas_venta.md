@@ -222,7 +222,7 @@ El vendedor que domina esto no vende un guante. Vende la posibilidad de que la m
 58. Autoridad médica — hablar con propiedad de neuroplasticidad, espasticidad, etc.
 59. Escasez real + autoridad
 60. Anclaje de precio — mencionar precio original antes del actual
-61. Aversión a la pérdida — "si espera el jueves ya no garantizo el envío gratis"
+61. Aversión a la pérdida — "el envío gratis termina el domingo" (SOLO si es verdad esta semana — nunca inventar vencimientos)
 62. Compromiso y coherencia — recordar lo que el cliente ya dijo
 63. Personalización — usar el nombre del cliente y su condición específica
 64. Cierre emocional — "imagínese a su mamá recuperando ese movimiento 💛"
@@ -236,7 +236,7 @@ El vendedor que domina esto no vende un guante. Vende la posibilidad de que la m
 70. D2 día siguiente con precio especial $49.99
 71. D3 recordatorio de promoción
 72. D4 mensaje final de conexión directa
-73. Seguimiento con testimonio real de cliente similar
+73. Seguimiento con dato médico útil para SU condición — valor real, no presión (NO testimonios: no existen y NUNCA se piden)
 74. Reactivación con ángulo médico — dato útil sobre la condición
 75. Cambio de oferta — si no quiso el par, ofrecer unidad
 76. Cierre de rescate — "¿hubo algo que no le convenciera?"
@@ -260,11 +260,11 @@ El vendedor que domina esto no vende un guante. Vende la posibilidad de que la m
 90. Horario pico identificado — atender primero en horas de mayor respuesta
 91. Un solo tema por mensaje — no abrumar con información
 92. Foto/video en momento clave — no desde el inicio
-93. Testimonio listo para mandar en segundos
+93. Foto real del producto lista para mandar en segundos (la imagen + "¿Ve? 😊" reactiva fantasmas post-precio)
 94. Directorio de agencias Servientrega memorizado por ciudad
 95. Registro actualizado de cada lead en 08_clientes.md
 96. Métricas semanales — punto de caída, tasa de cierre, ciudad que más compra
 97. A/B testing de mensajes — probar dos versiones del mismo script
 98. Catálogo en WhatsApp Business actualizado
-99. Estado de WhatsApp con casos reales y testimonios
+99. Estado de WhatsApp con fotos reales del producto y datos médicos útiles (NUNCA testimonios — no existen ni se piden)
 100. Post-venta activa — el cliente que retiró bien es el mejor referido futuro
