@@ -120,6 +120,14 @@ Cuando alguien se siente entendido, baja la guardia. La resistencia cae antes de
 
 ---
 
+### "¿En cuántos pagos se puede hacer? / ¿Hay crédito o cuotas?"
+**⚠️ NUNCA ignorar esta pregunta — es la última duda antes de comprar (caso Chat 3065: se ignoró y murió una venta caliente):**
+> es un solo pago al retirar en Servientrega 😊
+> no adelanta nada — paga cuando tiene el guante en sus manos ✅
+> *(Si el monto es el problema real → puente a "No tengo plata ahora": puede confirmar hoy y pagar en 3-4 días cuando llegue)*
+
+---
+
 ## OBJECIONES DE PROCESO
 
 ### "¿Puedo ver el producto antes de pagar?"

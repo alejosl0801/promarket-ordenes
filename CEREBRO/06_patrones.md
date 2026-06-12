@@ -63,6 +63,29 @@
 - La respuesta correcta: "somos empresa ecuatoriana, centro logístico en Loja 🇪🇨 trabajamos con Servientrega y el pago es al retirar"
 - Esta pregunta es desconfianza disfrazada — si no se responde directamente, el cliente asume que hay algo que ocultar
 
+### Causa #10 — Pregunta del cliente IGNORADA por seguir el flujo (NUEVO — aprendido 12/6)
+- Chat 3065 (Santo Domingo): dijo "quiero realizar mi pedido" + preguntó **"¿en cuántos pagos se puede hacer?"** → el bot respondió "¿desde qué ciudad nos escribe?" ignorando la pregunta → cliente caliente perdido
+- La pregunta de pagos era la ÚLTIMA duda antes de comprar — respondida correctamente era venta cerrada
+- **Regla:** responder SU pregunta SIEMPRE antes de hacer la siguiente pregunta del flujo
+- Respuesta correcta a "¿en cuántos pagos?": "es un solo pago al retirar en Servientrega 😊 no adelanta nada — paga cuando tiene el guante en sus manos ✅"
+
+### Causa #11 — Mencionar porcentajes de descuento en la bienvenida (detectado en chats ZIP 6/6)
+- El bot de bienvenida decía "75% de descuento" y los mensajes humanos "60% de descuento hasta mañana domingo"
+- 6 chats del 6/6 recibieron estos mensajes — varios no avanzaron después del precio
+- Porcentaje alto = "¿por qué tan barato? ¿será estafa?" — el descuento que debía generar deseo generó desconfianza
+- Ya corregido en anuncios — vigilar que NINGÚN mensaje nuevo mencione porcentajes
+
+### Causa #12 — Promesas falsas y disculpas que delatan desorden (chat 6167 — 6/6)
+- "Esta semana tengo entendido se abrirá una promoción adicional 🫣" → promesa inventada que no se podía cumplir
+- "Mil disculpas se me fue mal 😅" → disculpa que transmite desorden interno
+- Si el cliente dice "no me alcanza" la respuesta es cero riesgo + precio especial real — no inventar promociones futuras
+
+### Causa #13 — Chats procesados que nunca entraron al índice (operativo — aprendido 12/6)
+- 6 chats de los ZIPs del 6/6 quedaron en CLIENTES/ sin registrarse en 08_clientes.md
+- TRES habían dicho "quiero realizar mi pedido" (2050, 8035, 3065) — quedaron botados 6 días
+- Un chat sin indexar es una venta caliente muriéndose en silencio
+- **Regla:** cada arranque cruza CLIENTES/ contra el índice — ningún archivo huérfano
+
 ---
 
 ## PATRONES DE COMPORTAMIENTO DEL CLIENTE
@@ -103,7 +126,7 @@
 
 ---
 
-## DATOS DEL NEGOCIO (actualizado 8/6/2026)
+## DATOS DEL NEGOCIO (actualizado 12/6/2026)
 
 - **Ventas cerradas junio 2026:** 6 pedidos confirmados
 - **Órdenes activas:** #151381 (César), #151380 (Jimmy), #146271 (Alex x2), #146504 (Carmen x2), #146110 (Willman)
@@ -111,6 +134,17 @@
 - **Producto que más cierra:** Guante (5 pedidos) vs Ollas (1 pedido)
 - **Ciudades que compraron:** Ambato (3), Quito (1), Puyo (1)
 - **Error operativo registrado:** orden #144356 — enviaron guante derecho siendo pedido izquierdo
+- **Archivo en la nube:** 51 clientes con historial individual en `CLIENTES/` (35 de los ZIPs + 16 creados 12/6) — el índice es `08_clientes.md`
+
+---
+
+## PATRÓN INTERMEDIARIO — "déjeme decirle a la persona" (chat 7773 — 6/6)
+
+- El que escribe NO es el paciente ni el decisor final — es el puente
+- Presionarlo a él no funciona: la decisión es de otro
+- **Manejo correcto:** facilitarle el trabajo — darle un resumen corto y reenviable (kit + precio + pago al retirar) que pueda mandar tal cual a la persona
+- Hacer seguimiento preguntando "¿qué le dijo?" — mantiene viva la conversación sin presionar
+- Mismo patrón que "mi esposo decide" — el mensaje se diseña para el TERCERO que va a leerlo
 
 ---
 

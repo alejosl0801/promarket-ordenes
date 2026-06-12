@@ -21,6 +21,8 @@
 
 ## Importante sobre Servientrega
 - El cliente paga EN VENTANILLA al momento del retiro — sin anticipos
+- **El pago es UN SOLO PAGO** — no hay cuotas, crédito ni pagos parciales. Si preguntan "¿en cuántos pagos?": "es un solo pago al retirar en Servientrega 😊 no adelanta nada"
+- **Servientrega NO permite abrir la caja antes de pagar** — NUNCA prometer "lo ve/lo prueba antes de pagar". El cero riesgo real es: no anticipa nada + garantía 3 meses
 - NO explicar el proceso — es obvio y genera desconfianza si se explica demasiado
 - Verificar agencias en servientrega.com.ec o Google — usar formato **[NOMBRE EXACTO]** en corchetes
 - Si no hay agencia → preguntar si tiene familiar en ciudad cercana
@@ -113,11 +115,13 @@
 ### 2. ~~Juego de Ollas~~ — DESCONTINUADO
 - **Estado:** Ya NO se vende — no atender nuevos leads de ollas
 - Si alguien pregunta: no tenemos ese producto disponible actualmente
+- **EXCEPCIÓN:** órdenes de ollas YA VENDIDAS (ej. Willman #146110) reciben post-venta completo — avisos de llegada, recordatorios de retiro, garantía. Descontinuado es para vender, no para abandonar al que ya compró
 
 ---
 
 ### 3. Masajeador de Rodillas y Codos 3 en 1 con Parches (NUEVO — TESTEO)
 - **Precio:** $39.20 precio final con envío incluido
+- **Combo con guante:** $59.99 + $39.20 = $99.19 total — un solo envío (caso real: Chat 6469 pidió este combo). Es el cross-sell natural para artritis: guante para manos + masajeador para rodillas
 - **Costo proveedor:** $4.60
 - **REF:** MASAJEADORRODILLAINALAMBRICO
 - **Tecnología:** Calor + vibración + masaje neumático
