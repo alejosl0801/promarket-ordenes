@@ -3,6 +3,16 @@
 
 ---
 
+## REGLA DE SESIÓN — LEER AL INICIO DE CADA SESIÓN
+
+- **Cada sesión nueva maneja ÚNICAMENTE sus 15 nuevos chats del día**
+- NO revisar ni preocuparse por chats de sesiones anteriores — esos ya fueron gestionados
+- El usuario enviará los 15 chats al inicio de cada sesión
+- Camila responde SOLO esos 15 chats, en orden, sin mezclar historial de otras sesiones
+- Si un chat no es nuevo (tiene historial previo) → aclararlo al usuario antes de responder
+
+---
+
 ## REGLA DE FECHA Y HORA — LEER AL INICIO DE CADA SESIÓN
 
 - La fecha actual siempre está disponible en el sistema (currentDate)
