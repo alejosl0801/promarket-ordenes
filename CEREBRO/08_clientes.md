@@ -3,35 +3,38 @@
 
 ---
 
-## SESIÓN 12/6 — 15 CHATS (A15–A30)
+## SESIÓN 12/6 — 16 CHATS (A15–A31)
+### Estado al cierre de sesión: reactivación enviada a todos — esperando respuestas
 
-| Alias | Producto | Ciudad | Estado | Prioridad |
-|---|---|---|---|---|
-| A15 | Guante (para él) | Milagro — Av. 17 sep | Agencia confirmada — datos pedidos — sin respuesta 5 días | 🔥 CERRAR |
-| A16 | Guante (para hijo) | Tabacundo | Agencia confirmada — "ya aviso a esposo" — sin respuesta 4 días | 🌡️ TIBIO |
-| A17 | Guante (para él) | — | Dijo "Para mí" — BOT NUNCA RESPONDIÓ — 3 días esperando | 🔥 URGENTE |
-| A18 | Guante izq (para hermano, tumor craneal) | Machachi | Agencia confirmada — datos pedidos — sin respuesta 3 días | 🔥 CERRAR |
-| A19 | Guante | — | Preguntó "de dónde son" + pago — bot ignoró ambas preguntas | ❄️ RECUPERAR |
-| A20 | Guante izq (para él) | — | Bot duplicó mensaje genérico — cliente YA dijo izq, para él | 🔥 CORREGIR YA |
-| A21 | Guante | Guayaquil | Bot dijo "envío gratis" pero no cerró el ciclo ni pidió sector | 🌡️ TIBIO |
-| A22 | Guante (para familiar, dedo gatillo) | — | Bot explicó bien — solo falta ciudad | 🌡️ TIBIO |
-| A23 | Guante | — | Llegó con "quiero realizar mi pedido" — bot preguntó "¿para quién?" | ❄️ FRÍO |
-| A24 | Guante izq (para esposa) | Quito | Solo falta sector de Quito — muy cerca del cierre | 🔥 CERRAR |
-| A25 | Guante | — | Bot preguntó "¿para quién?" cuando ya quería comprar | ❄️ FRÍO |
-| A26 | Guante | — | Igual que A25 | ❄️ FRÍO |
-| A27 | Guante (para familiar) | — | Bot asumió "hijo" cuando cliente dijo "familiar" | ❄️ FRÍO |
-| A28 | Guante | ¿Naranjal? | Bot asumió ciudad Naranjal sin que cliente la diera | ❄️ FRÍO |
-| A29 | Guante (para hijo, accidente codo, 2 dedos) | — | Conversación excelente — solo falta ciudad | 🔥 CALIENTE |
-| A30 | Guante (para él, fractura cervical) | Chone | Precio $49.99 ya dado — "ya les avisaré" — señal de fuga | 🌡️ TIBIO |
+| Alias | Producto | Ciudad | Estado al 12/6 |
+|---|---|---|---|
+| A15 | Guante (para él) | Milagro | ✉️ Reactivación enviada — agencia confirmada, datos pendientes |
+| A16 | Guante (para hijo) | Tabacundo | ✉️ Reactivación enviada — agencia confirmada, decisión con esposo |
+| A17 | Guante (para él) | — | ✉️ Reactivación enviada — bot nunca había respondido — pendiente ciudad |
+| A18 | Guante izq (para hermano, tumor craneal) | Machachi | ✉️ Reactivación enviada — agencia confirmada, datos pendientes |
+| A19 | Guante | — | ✉️ Reactivación enviada — pregunta de confianza respondida — pendiente ciudad |
+| A20 | Guante izq (para él) | — | ✉️ Reactivación enviada corregida — pendiente ciudad |
+| A21 | Guante | Guayaquil | ✉️ Reactivación enviada — pendiente sector |
+| A22 | Guante (para familiar, dedo gatillo) | — | ✉️ Reactivación enviada — pendiente ciudad |
+| A23 | Guante | — | ✉️ Reactivación enviada — pendiente ciudad |
+| A24 | Guante izq (para esposa) | Quito | ✉️ Reactivación enviada — pendiente sector Quito |
+| A25 | Guante | — | ✉️ Reactivación enviada — pendiente ciudad |
+| A26 | Guante | — | ✉️ Reactivación enviada — pendiente ciudad |
+| A27 | Guante (para familiar) | — | ✉️ Reactivación enviada — pendiente condición y ciudad |
+| A28 | Guante | ¿? (bot asumió Naranjal — incorrecto) | ✉️ Reactivación enviada — pendiente ciudad real |
+| A29 | Guante (para hijo, accidente codo) | — | ✉️ Reactivación enviada — conversación muy caliente — pendiente ciudad |
+| A30 | Guante (para él, fractura cervical) | Chone | ✉️ Reactivación enviada — precio $49.99 dado — señal de fuga |
+| A31 | Guante (para hermano, sin movilidad en mano) | — | ⚡ ACTIVO HOY — respondió 2:48pm — pendiente: qué mano + ciudad |
 
-### Errores sistémicos del bot detectados en esta sesión:
-- ❌ "Liquidación hasta mañana" — urgencia falsa usada 7, 8, 9, 10 junio — ya "venció" — daña credibilidad
-- ❌ Solicita "cédula" — no está en guión estándar de Camila
-- ❌ Pregunta "¿para quién?" a clientes que ya dijeron "quiero realizar mi pedido" (A17, A23, A24, A25, A26, A27, A28)
-- ❌ No respondió pregunta de confianza "de dónde son" en A19 y A29
-- ❌ Asumió que familiar = "hijo" en A27
-- ❌ Asumió ciudad Naranjal para A28 sin dato del cliente
-- ❌ Bot dejó a A17 esperando respuesta durante 3 días
+### Notas para próxima sesión que maneje respuestas de estos chats:
+- A15, A18: si responden → pedir datos directamente (nombre / celular / dirección)
+- A17, A20, A21, A22, A23, A24, A25, A26, A27, A28, A29: si responden SÍ → pedir ciudad
+- A16: si responden → confirmar y pedir datos
+- A29: conversación médica excelente — si responde → muy alta probabilidad de cierre
+- A30: señal de fuga — si responde → ir directo a cierre con precio $49.99
+- A31: última respuesta fue "La mano no puede mover" — siguiente paso: preguntar qué mano (izq/der) + ciudad
+- **NO pedir cédula en ningún chat**
+- **Datos a pedir:** Nombre completo / Celular / Dirección de referencia
 
 ---
 
