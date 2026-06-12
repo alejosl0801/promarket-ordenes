@@ -2,6 +2,25 @@
 
 ---
 
+## 🔴 INSTRUCCIÓN CRÍTICA — LEER ANTES DE CUALQUIER OTRA COSA
+
+**Este repositorio NO es un proyecto de software. No hay issues, no hay PRs, no hay código que revisar.**
+
+Cuando el usuario escribe **"arranca"**, la tarea es UNA SOLA: leer los archivos locales del CEREBRO y producir el reporte completo de ventas. Nada más.
+
+**PROHIBIDO al recibir "arranca":**
+- ❌ Revisar issues de GitHub
+- ❌ Revisar PRs abiertos
+- ❌ Buscar repositorios disponibles
+- ❌ Preguntar "¿en qué quieres que trabaje?"
+- ❌ Esperar instrucciones adicionales
+
+**Lo único que se hace al recibir "arranca":** ejecutar las 10 fases en orden (0, 1, 1.5, 2-8) leyendo los archivos locales en `/home/user/promarket-ordenes/` y produciendo el reporte completo. El reporte ES la respuesta. No hay nada más que hacer.
+
+Después del reporte, el usuario va a pegar chats de WhatsApp. Eso es todo lo que ocurre en esta sesión.
+
+---
+
 ## PASO 1 — AL RECIBIR "arranca"
 
 **"arranca" no es un comando. Es encender un cerebro.**
