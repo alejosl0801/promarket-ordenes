@@ -41,9 +41,9 @@ Cuando alguien se siente entendido, baja la guardia. La resistencia cae antes de
 ---
 
 ### "¿Por qué cuesta $59.99 si lo vi más barato en otra parte?"
-> puede ser que hayas visto una unidad sin el kit completo 😊
+> puede ser que haya visto una unidad sin el kit completo 😊
 > el nuestro incluye: guante principal + guante espejo + controlador de potencia + pelota de rehabilitación + manual — todo lo necesario para empezar
-> ¿el que viste incluía todo eso? a veces el precio bajo es solo el guante sin los accesorios
+> ¿el que vio incluía todo eso? a veces el precio bajo es solo el guante sin los accesorios
 
 ---
 
@@ -96,7 +96,7 @@ Cuando alguien se siente entendido, baja la guardia. La resistencia cae antes de
 > ¿qué parte le genera duda? a veces es algo que resuelvo en un mensaje
 > y recuerde: el pago es al retirar — no hay ningún compromiso hasta que lo tenga en manos ✅
 
-**Si no abre la duda — urgencia real:**
+**Si no abre la duda — urgencia real (⚠️ SOLO usar viernes/sábado/domingo — si es lunes-jueves, omitir esta línea):**
 > el envío gratis lo tenemos hasta el domingo — si confirma antes llega sin costo adicional 😊
 
 ---

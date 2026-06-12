@@ -239,6 +239,7 @@
 
 ### /cierre_urgencia
 *(cuando ya hay valor percibido — urgencia real al final)*
+⚠️ SOLO usar viernes, sábado o domingo — si hoy es lunes-jueves, usar /cierre_directo
 > el envío gratis lo tenemos hasta el domingo — si confirma hoy llega a tiempo ✅ ¿le proceso?
 
 ### /cierre_consultivo
@@ -280,6 +281,7 @@
 
 ### /lopienso_urgencia
 *(variante con urgencia — usar cuando hay urgencia real que comunicar)*
+⚠️ SOLO usar viernes, sábado o domingo — si hoy es lunes-jueves, usar /lopienso sin urgencia de domingo
 > claro! 😊 solo le cuento que el envío gratis lo tenemos hasta el domingo — si confirma antes, llega sin costo adicional
 > y el pago es al retirar, no hay ningún compromiso hasta que lo tenga en manos ✅
 
@@ -407,6 +409,7 @@
 
 ### /retomar_lopienso
 *(dijo "lo pienso" o "ya le aviso")*
+⚠️ SOLO usar viernes, sábado o domingo — si hoy es lunes-jueves, reemplazar "hasta el domingo" con "¿qué le generó duda?" + cero riesgo
 > Hola [nombre]! 😊 el guante sigue disponible con envío gratis hasta el domingo — ¿le genero la orden?
 
 ### /retomar_medico
@@ -428,10 +431,12 @@
 > Hola! 😊 Camila de ProMarket — hoy tengo el guante de rehabilitación por $49.99 con envío incluido, precio especial de hoy ✅ ¿se anima?
 
 ### /urgencia_domingo_guante
+⚠️ SOLO usar viernes, sábado o domingo — si hoy es lunes-jueves, este guión NO aplica
 > Hola [nombre]! 😊 el guante sigue disponible con envío gratis hasta el domingo — ¿le interesa? 🙌
 
 ### /reactivacion_medica
-*(lead frío — reactivar con ángulo médico, no con precio)*
+*(lead frío con ACV — reactivar con ángulo médico, no con precio)*
+⚠️ SOLO para leads con ACV confirmado — NUNCA para artritis, rigidez u otras condiciones
 > Hola [nombre]! 😊 le comparto algo — la ventana de mayor neuroplasticidad después de un ACV es los primeros 12 meses. Si [su familiar] está en ese período, este es el momento ideal para empezar estimulación constante. ¿Sigue interesad@?
 
 ### /reactivacion_urgencia_proceso

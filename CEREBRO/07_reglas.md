@@ -57,7 +57,8 @@ Un "estamos revisando" sin fecha es gasolina al fuego. Cliente con reclamo + din
 ## REGLA DE HORARIO DE CONTACTO
 
 - **No escribir antes de las 8:00 a.m. ni después de las 9:00 p.m.** (hora Ecuador)
-- D1AM: entre 8:00-10:00 a.m. / D1PM: entre 3:00-5:00 p.m.
+- D1: enviar 2 horas después del último mensaje de Camila sin respuesta — si las 2h caen de noche, enviar al día siguiente 8-9am
+- D2, D3, D4: un mensaje por día, en la franja horaria habitual del cliente (mañana/tarde/noche según su patrón)
 - Mínimo 24 horas entre mensajes de seguimiento al mismo lead
 - La hora "actual" del sistema se toma del timestamp del último chat pegado por el operador
 
@@ -76,12 +77,12 @@ Un "estamos revisando" sin fecha es gasolina al fuego. Cliente con reclamo + din
 - 5-30 min → venta probable con buen guión
 - 30+ min → venta difícil, cliente se enfrió
 
-### Silencio del cliente — Secuencia 10 mensajes (ver app Seguim.)
-- Todo lead que no responde entra automáticamente a la secuencia de 10 mensajes en la app
-- Los 10 mensajes corren durante los días que dure la fase de venta (sin límite fijo)
-- Marcar cada mensaje como enviado en la app para mantener el registro
-- 3+ mensajes ignorados consecutivos → esperar, no marcar como perdido aún
-- Solo cerrar el lead si el cliente dijo NO explícitamente
+### Silencio del cliente — Secuencia D1-D4
+- Todo lead que no responde entra a la secuencia D1 → D2 → D3 → D4 (ver CLAUDE.md Fase 5.3)
+- D4 es el ÚLTIMO mensaje — si no responde, chat MUERTO, no se escribe más
+- Mínimo 24 horas entre mensajes de la secuencia
+- Si el cliente dijo NO explícitamente → responder "entendido, cuando guste aquí estamos 😊" y cerrar de inmediato
+- Si respondió ALGO en algún punto → ya no aplica la secuencia D — retomar desde lo último hablado
 
 ### Cuándo NO escribir
 - Si mandaste 3+ mensajes seguidos sin respuesta — esperar

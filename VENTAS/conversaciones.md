@@ -137,3 +137,7 @@ Los mensajes enviados antes del 8/6/2026 mencionan "Alejandro de ProMarket" — 
 | 12/6 | Cálculo de días en agencia errado (Alex/Carmen día 7 → real 8; Willman día 4 → real 5 VENCIDO) | Día llegada = día 1, conteo siempre visible |
 | 12/6 | Reglas D1AM/D1PM fantasma de sistema viejo en CLAUDE.md | Eliminadas — solo existe D1-D4 |
 | 12/6 | Scoring dinámico sin tope (podía dar 15 o -5) | Tope 10, piso 0, señales caducan a los 7 días |
+| 12/6 | 4 guiones con "hasta el domingo" sin advertencia condicional (03_guiones.md) | ⚠️ en cada guión: SOLO usar viernes/sábado/domingo |
+| 12/6 | 05_objeciones.md tuteaba al cliente: "hayas visto" / "el que viste" | Corregido a "haya visto" / "el que vio" — siempre "usted" |
+| 12/6 | 07_reglas.md seguía mencionando D1AM/D1PM (eliminadas en CLAUDE.md pero olvidadas aquí) | Eliminadas también de 07_reglas.md — definición correcta de D1 |
+| 12/6 | 07_reglas.md mencionaba "secuencia de 10 mensajes" contradiciéndose con D1-D4 | Reemplazado con descripción correcta de la secuencia D1-D4 |
