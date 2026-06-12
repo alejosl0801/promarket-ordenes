@@ -58,29 +58,10 @@ GUANTE: > una sola sesión de fisioterapia cuesta $30-50 — este guante hace lo
 > una unidad sirve para la mano que necesita rehabilitación 😊 si quiere trabajar ambas manos le hago precio especial por el par
 
 ### "¿Tiene tallas?"
-> sí, tenemos S, M, L y XL 😊 ¿cuál necesita?
+> es talla estándar ajustable a todo tipo de manos 😊
 
 ### "¿Tiene izquierdo y derecho?"
 > sí, se vende por unidad — ¿cuál necesita? 😊
-
----
-
-## OBJECIONES ESPECÍFICAS — OLLAS
-
-### "¿Funciona para inducción?"
-> sí! compatible con inducción, gas, eléctrica y vitrocerámica 😊
-
-### "¿Qué incluye exactamente?"
-> 6 utensilios de acero inoxidable (ollas, cacerolas y sartenes) + 6 tapas de vidrio templado incluidas 😊
-
-### "¿Se puede cambiar alguna pieza del set?"
-> el set viene fijo de fábrica 😊 pero cubre todas las necesidades de la cocina
-
-### "¿Es antiadherente?"
-> sí! superficie antiadherente — cocina con menos aceite y se limpia fácil 😊
-
-### "¿Es apto para lavavajillas?"
-> sí! totalmente apto para lavavajillas 😊
 
 ---
 

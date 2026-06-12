@@ -2,41 +2,6 @@
 
 ---
 
-## FLUJO OLLAS
-
-```
-CLIENTE ESCRIBE
-      ↓
-/inicio_ollas → "¿de qué ciudad?"
-      ↓
-Da ciudad → buscar agencia en servientrega.com.ec
-      ↓
-    ¿Hay agencia?
-    SÍ → /agencia → pide datos
-    NO → /sin_agencia → ofrecer ciudad cercana
-      ↓
-      ¿Tiene dudas?
-      ├── Precio irreal → /duda_precio_ollas
-      ├── Es muy caro → comparar con mercado (acero real vs aluminio)
-      ├── Lo pienso → /lopienso
-      ├── ¿Funciona inducción? → "sí, compatible con todos los tipos de cocina"
-      └── ¿Qué incluye? → "6 utensilios + 6 tapas de vidrio incluidas"
-      ↓
-Da datos → /datos_recibidos
-      ↓
-Genera orden → /orden_lista
-      ↓
-Día siguiente → /empaquetando
-      ↓
-Guía lista → /guia_lista
-      ↓
-Llega agencia → /llego_agencia
-      ↓
-Post-entrega (3 días después) → pedir testimonio
-```
-
----
-
 ## FLUJO GUANTE
 
 ```

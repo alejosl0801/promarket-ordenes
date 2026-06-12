@@ -5,10 +5,6 @@
 
 ## INICIO DE CONVERSACIÓN
 
-### /inicio_ollas
-> Hola! qué bueno 😊 tenemos el set de 12 piezas en acero inoxidable a $49.99 con envío incluido
-> ¿de qué ciudad nos escribe?
-
 ### /inicio_guante
 > Hola! 😊 ¿el guante es para usted o para un familiar?
 
@@ -112,7 +108,7 @@
 
 ### /guante_marca
 > *(cuando el cliente pregunta qué marca es)*
-> es de marca Syrebo — tecnología de rehabilitación robótica ampliamente usada en clínicas y terapias físicas 😊
+> es de marca Cirovo — tecnología de rehabilitación robótica 😊
 
 ---
 

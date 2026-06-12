@@ -41,7 +41,7 @@
 - ❌ "Tenga un excelente día estimada/o"
 - ❌ "Ya reviso" — si no puede revisar nada en ese momento
 - ❌ "Cliente que ya nos conoce" — a alguien que nunca compró
-- ❌ "¿Es para regalar?" — para ollas (no es producto de regalo típico)
+- ❌ "¿Es para regalar?" — no aplica para ningún producto actual
 - ❌ Ofrecer videos sin tenerlos listos para mandar
 - ❌ Explicar que Servientrega no entrega sin pago — es obvio
 - ❌ Bullet points y listas largas
@@ -118,7 +118,7 @@
 3. Script: "claro! cuando guste estamos 😊 recuerde que el pago es al retirar — si al recibir no le convence, no lo retira. Cero riesgo ✅"
 
 ### Cliente pregunta "¿qué marca es?"
-- "es de marca Syrebo, tecnología de rehabilitación robótica ampliamente usada en clínicas y terapias físicas 😊"
+- "es de marca Cirovo — tecnología de rehabilitación robótica 😊"
 
 ### Cliente pregunta por otros aparatos / dispositivos
 1. Responder honestamente

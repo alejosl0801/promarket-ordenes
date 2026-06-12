@@ -174,20 +174,17 @@
 ## SOBRE LOS PRODUCTOS
 
 ### Guante
-- Tallas: S, M, L, XL — solo mencionar si preguntan
-- Mano: izquierda o derecha — solo mencionar si preguntan
-- Color: azul con negro (único)
-- Kit fijo: guante + guante espejo + controlador + pelota + manual
+- **Talla:** Estándar ajustable — NO hay S/M/L/XL
+- **Mano:** Izquierda o derecha — solo preguntar si no lo dijeron
+- **Color:** Azul (único)
+- **Marca:** Cirovo
+- **Kit:** guante + guante espejo + controlador de potencia + pelota de rehabilitación + manual
 - Pregunta clave: "¿para usted o un familiar?" — define el tipo de cierre
 - Para mamá/abuela → cierre emocional
 - Para él/ella → cierre funcional
 
-### Ollas
-- Kit fijo: no se pueden sustituir piezas
-- Compatible con inducción — argumento diferenciador clave
-- Tapas incluidas — otros las venden aparte
-- Pregunta clave: "¿de qué ciudad?" — directo al proceso
-- NO preguntar "¿es para regalo?" — no es producto de regalo típico
+### Ollas — DESCONTINUADO
+- Ya no se vende — no atender leads de ollas
 
 ---
 

@@ -48,17 +48,15 @@
 
 ---
 
-## ESTADO ACTUAL DE CAMPAÑAS (actualizado 8 junio 2026)
+## ESTADO ACTUAL DE CAMPAÑAS (actualizado 11 junio 2026)
 - **Guante:** ACTIVO — campaña principal con presupuesto activo
-  - "02/06/26-CBO-GUANTE-TEST WHATSAPP" — activa
-  - "02/06/26-CBO-GUANTE-TEST WHATSAPP - Copia" — activa
-- **Ollas:** PAUSADO — campañas cerradas. Solo cerrar ventas pendientes en chats existentes, NO captar nuevos leads de ollas.
+- **Ollas:** DESCONTINUADO — ya no se vende, NO captar ni atender leads de ollas
+- **Masajeador de Rodillas:** TESTEO activo
 
 ## PRECIOS VIGENTES (junio 2026)
 - **Guante (1 unidad):** $59.99 precio estándar lead nuevo
-- **Guante liquidación (D3+):** $49.99 — leads que no compraron, llamarlo "precio especial"
-- **Par de guantes:** $107.98 — siempre ofrecer como upsell
-- **Ollas:** $49.99 estándar / $39.99 liquidación
+- **Guante liquidación (D3+):** $49.99 — leads que no confirmaron en el primer día, llamarlo "precio especial"
+- **Par de guantes (kit izq + der):** $107.98 — 10% de descuento sobre $119.98
 - **Masajeador de Rodillas y Codos 3 en 1:** $39.20 precio final con envío
 
 ---
@@ -66,15 +64,15 @@
 ## PRODUCTOS
 
 ### 1. Guante Robot de Rehabilitación (REF: GR-001)
-- **Precio:** $59.99 por unidad / $107.98 el par
-- **Color:** Azul con negro (único)
-- **Tallas:** S, M, L, XL — solo mencionar si preguntan
+- **Precio:** $59.99 por unidad / $107.98 el par (kit izq + der)
+- **Color:** Azul (único color disponible)
+- **Talla:** Estándar ajustable a todo tipo de manos — NO hay tallas S/M/L/XL
 - **Mano:** Izquierda o derecha — se vende por unidad — solo preguntar si no lo dijeron
 - **Tecnología:** Neumática — presión de aire controlada electrónicamente mediante dispositivo medidor de potencia
-- **Niveles:** 9 intensidades ajustables
+- **Niveles:** 9 intensidades ajustables (del 1 al 9)
 - **Modos:** Automático / Modo Espejo
 - **Incluye:** Guante principal + guante espejo + controlador de potencia + pelota de rehabilitación + manual
-- **Marca:** Syrebo — tecnología de rehabilitación robótica, usada en clínicas y terapias físicas
+- **Marca:** Cirovo — tecnología de rehabilitación robótica
 
 **Para quién sirve:**
 - Derrame cerebral (ACV)
@@ -95,13 +93,12 @@
 - NUNCA mencionar "modo espejo" para este caso — modo espejo requiere una mano funcional
 
 **Argumentos de venta top:**
-- Más de 2.400 pacientes activos en Latinoamérica
-- Recomendado por fisioterapeutas y neurólogos
 - Una sola inversión vs $30-50 por cada sesión de fisioterapia
 - A toda hora, sin salir de casa, sin turnos
 - 9 niveles — el mismo equipo acompaña todo el proceso
 - Un familiar puede asistir desde casa
 - Paga al retirar — cero riesgo
+- ⚠️ NO usar "2.400 pacientes en Latinoamérica" — dato irrelevante que no aporta en el chat
 
 **Cierre según para quién:**
 - Para mamá/abuela → cierre emocional (recuperar movilidad, calidad de vida)
@@ -110,22 +107,9 @@
 
 ---
 
-### 2. Juego de Ollas Inoxidable 12 Piezas (REF: OLL-001)
-- **Precio:** $49.99
-- **Composición:** 6 utensilios (ollas, cacerolas, sartenes) + 6 tapas de vidrio templado
-- **Material:** Acero inoxidable de alta calidad
-- **Base:** Doble fondo engrosado — calor uniforme
-- **Superficie:** Antiadherente
-- **Compatibilidad:** Inducción, gas, eléctrica y vitrocerámica
-- **Limpieza:** Apto para lavavajillas
-- **Kit fijo:** No se pueden sustituir piezas
-
-**Argumentos de venta:**
-- Acero inoxidable real vs aluminio o acero de baja calidad
-- Compatible con inducción (la mayoría de sets económicos NO lo son)
-- Tapas de vidrio incluidas (otros las venden por separado)
-- 12 piezas completas (otros sets son parciales)
-- Antiadherente — menos aceite, más fácil de limpiar
+### 2. ~~Juego de Ollas~~ — DESCONTINUADO
+- **Estado:** Ya NO se vende — no atender nuevos leads de ollas
+- Si alguien pregunta: no tenemos ese producto disponible actualmente
 
 ---
 
