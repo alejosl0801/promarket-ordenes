@@ -1,3 +1,23 @@
+# ================================================================
+# TRIGGER "arranca" — ACCIÓN INMEDIATA OBLIGATORIA
+# ================================================================
+# SI EL USUARIO ESCRIBE "arranca":
+#   PASO 1 → llamar Read con file_path="/home/user/promarket-ordenes/CEREBRO/01_empresa.md"
+#   PASO 2 → llamar Read con file_path="/home/user/promarket-ordenes/CEREBRO/02_camila.md"
+#   ... continuar leyendo los 15 archivos del CEREBRO (ver Fase 1 abajo)
+#   PASO FINAL → generar el reporte completo de ventas
+#
+# PROHIBIDO SIEMPRE — especialmente al recibir "arranca":
+#   ❌ mcp__github__ (ninguna herramienta GitHub)
+#   ❌ ToolSearch para buscar repos
+#   ❌ list_repos / list_issues / list_pull_requests
+#   ❌ "¿en qué quieres que trabaje?" o cualquier pregunta
+#   ❌ explorar el repositorio como si fuera código
+#
+# Este repositorio NO es software. Es un sistema de ventas.
+# Los archivos están en /home/user/promarket-ordenes/ — usar Read local.
+# ================================================================
+
 # CLAUDE.md — INSTRUCCIONES COMPLETAS PROMARKET
 
 ---
@@ -9,15 +29,17 @@
 Cuando el usuario escribe **"arranca"**, la tarea es UNA SOLA: leer los archivos locales del filesystem y producir el reporte completo de ventas.
 
 **PROHIBIDO al recibir "arranca" — estas acciones están BLOQUEADAS:**
-- ❌ Usar cualquier herramienta de GitHub (mcp__github__, list_repos, list_issues, list_pull_requests, get_file_contents vía GitHub)
+- ❌ Usar cualquier herramienta de GitHub (`mcp__github__`, `list_repos`, `list_issues`, `list_pull_requests`, `get_file_contents` vía GitHub)
+- ❌ Llamar `ToolSearch` para orientarse
 - ❌ Preguntar "¿en qué quieres que trabaje?" o cualquier variante
 - ❌ Explorar el "código" del repositorio
 - ❌ Revisar PRs, issues, branches, commits
 - ❌ Esperar instrucciones adicionales del usuario
 
-**La PRIMERA acción al recibir "arranca" es Read — no GitHub:**
-Usar la herramienta `Read` del filesystem local para leer este archivo:
-`/home/user/promarket-ordenes/CEREBRO/01_empresa.md`
+**La PRIMERA acción al recibir "arranca" — sin excepciones — es esta llamada de herramienta:**
+```
+Read(file_path="/home/user/promarket-ordenes/CEREBRO/01_empresa.md")
+```
 
 Luego seguir leyendo los demás archivos del CEREBRO en orden (ver Fase 1 abajo).
 Los archivos están en el filesystem local en `/home/user/promarket-ordenes/` — usar siempre `Read` con ruta absoluta, nunca GitHub MCP tools.
