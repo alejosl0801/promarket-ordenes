@@ -118,20 +118,30 @@
 
 ## AGENCIA Y DATOS
 
+### /buscar_agencia
+> *(PRIMER PASO cuando el cliente da su ciudad — SIEMPRE antes de nombrar la agencia)*
+> Déjeme buscar la agencia Servientrega más cercana a usted 😊 ¿me puede dar una referencia de su dirección o barrio en [ciudad]?
+> *(Una vez que dé la referencia → buscar agencia exacta → usar /agencia o /agencia_ollas)*
+> ⚠️ NUNCA decir "ya revisé" antes de haber pedido la referencia — en ciudades grandes hay varias agencias y hay que ubicar la más cercana. Solo cuando hay UNA sola agencia en esa ciudad se puede nombrar directamente.
+
 ### /agencia
-> *(GUANTE — incluye descripción del kit)*
-> ya revisé — tiene agencia Servientrega habilitada en su sector ✅
-> su kit incluye: guante robótico de rehabilitación (izq o der), guante modo espejo, dispositivo medidor de potencia y pelota de terapia 😊
-> me ayuda con sus datos para generarle la orden?
+> *(GUANTE — usar DESPUÉS de confirmar agencia exacta con referencia del cliente)*
+> Ya revisé — la agencia [NOMBRE EXACTO DE AGENCIA] está habilitada ✅ llega en 3 a 4 días hábiles 😊
+> Su kit incluye: guante robótico de rehabilitación, guante modo espejo, dispositivo medidor de potencia y pelota de terapia 💪
+> ¿Me ayuda con sus datos para generarle la orden?
 > 📌 Nombre completo
-> 📌 Celular
+> 📌 Cédula
+> 📌 Número celular
 > 📌 Dirección de referencia
+> 📌 Guante izquierdo o derecho
 
 ### /agencia_ollas
-> ya revisé — tiene agencia Servientrega habilitada en su sector ✅
-> me ayuda con sus datos para generarle la orden?
+> *(OLLAS — usar DESPUÉS de confirmar agencia exacta con referencia del cliente)*
+> Ya revisé — la agencia [NOMBRE EXACTO DE AGENCIA] está habilitada ✅ llega en 3 a 4 días hábiles 😊
+> ¿Me ayuda con sus datos para generarle la orden?
 > 📌 Nombre completo
-> 📌 Celular
+> 📌 Cédula
+> 📌 Número celular
 > 📌 Dirección de referencia
 
 ### /sin_agencia
