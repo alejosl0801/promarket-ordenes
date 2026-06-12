@@ -47,21 +47,27 @@ Sin urgentes activos — todos resueltos el 12/6/2026.
 ## 📋 LEADS EN SEGUIMIENTO — SECUENCIA ACTIVA
 
 ### Chat 6469 (+593 96 009 6469) — ciudad desconocida
-- **Producto:** Guante + Masajeador rodilla ($39.20)
-- **Contacto inicial:** 8/6/2026 — **4 días**
-- **Estado:** Interés en combo — sin ciudad confirmada
-- **D actual:** D3 (si D1 y D2 enviados) o reenganche si nunca respondió
-- **Técnica:** Cross-sell + cero riesgo — doble valor, doble sin riesgo
-- **Mensaje:** "¡Hola! 😊 el combo guante + masajeador de rodilla sigue disponible — $59.99 + $39.20 con envío incluido ✅ ¿de qué ciudad nos escribe para confirmarle la agencia?"
+- **Producto:** Guante + Masajeador rodilla ($39.20) — quiere COMBO
+- **Último mensaje cliente:** [3:16 p.m., 8/6/2026] — preguntó por rodilleras y exoesqueleto
+- **Último mensaje Promarket:** [11:47 a.m., 12/6/2026] bot genérico
+- **Patrón horario:** escribe entre 12pm-4pm
+- **Señal:** MUY CALIENTE — dijo "quiero realizar mi pedido" 3 veces + esperó respuesta sobre logística y rodillas = nunca se respondieron esas preguntas
+- **Estado:** Bot enviado hoy. Enviar mensaje personalizado hoy tarde (diferente al bot — responde sus preguntas reales)
+- **Mensaje hoy:** "Hola! 😊 somos de Ecuador — le enviamos a la agencia Servientrega más cercana a su ciudad, usted retira ahí y paga al momento del retiro ✅ Para rodillas tenemos el masajeador 3 en 1 (calor + vibración + masaje, $39.20 con envío). Exoesqueleto no tenemos, pero es nuestra mejor opción para rodilla 😊 Si lleva el combo guante + masajeador le hago precio especial 🎁 ¿de qué ciudad nos escribe?"
+- **Si responde:** confirmar agencia → ofrecer combo $59.99 + $39.20 → pedir 5 datos
+- **Si no responde en 24h (13/6 ~3pm):** CHAT MUERTO
 
-### Chat 4065 (+593 96 790 4065) — ciudad desconocida
+### Chat 4065 (+593 96 790 4065) — Tabacundo
 - **Producto:** Guante para hijo
-- **Contacto inicial:** 8/6/2026 — **4 días**
-- **Estado:** Para hijo — sin ciudad ni condición confirmada
-- **D actual:** D3
-- **Señal:** Familiar con posible condición médica — aprovechar perfil
-- **Técnica:** Reactivación médica — pregunta por el hijo activa empatía
-- **Mensaje:** "¿le pareció bien la promoción del guante? 😊 aún está disponible — ¿cómo está su hijo?"
+- **Último mensaje cliente:** [6:23 p.m., 8/6/2026] — "ya le aviso a mi esposo a lo que llegue del trabajo"
+- **Último mensaje Promarket:** [6:35 p.m., 8/6/2026] — "Listo, a la orden"
+- **Patrón horario:** escribe entre 5-7pm → enviar HOY entre 5-7pm
+- **Estado:** Ciudad ✅ Tabacundo | Agencia ✅ | Pagos respondidos ✅ | ESPOSO DECIDE — intermediaria esperando aprobación del marido
+- **⚠️ Nota:** Promarket asumió "izquierdo" en el kit sin preguntar — cuando ella confirme, preguntar qué mano ANTES de generar la orden
+- **Mensaje hoy (5-7pm):** "Hola! 😊 ¿pudo hablar con su esposo sobre el guante para su hijo? Si le sirve le paso un mensajito cortito que puede mostrarle: guante robótico + kit completo, $59.99 con envío, se paga al retirar en la agencia de Tabacundo — sin anticipo ✅"
+- **Si responde SÍ:** pedir 5 datos — preguntar "¿qué mano necesita el guante?" PRIMERO
+- **Si responde "lo está pensando":** resumen reenviable al esposo
+- **Si no responde en 24h (13/6 ~6pm):** CHAT MUERTO
 
 ### Chat 0433 (+593 99 305 0433) — ciudad desconocida
 - **Producto:** Guante — familiar con cuadriplejia espástica
