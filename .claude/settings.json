@@ -1,12 +1,21 @@
 {
   "hooks": {
-    "UserPromptSubmit": [
+    "SessionStart": [
       {
-        "matcher": "arranca",
         "hooks": [
           {
             "type": "command",
-            "command": "/home/user/promarket-ordenes/.claude/arranca_hook.sh \"$CLAUDE_USER_PROMPT\""
+            "command": "echo 'CONTEXTO ProMarket: Este repo es un sistema de ventas, NO un proyecto de software. Si el usuario escribe \"arranca\": llamar Read(\"/home/user/promarket-ordenes/CEREBRO/01_empresa.md\") como PRIMERA acción. NUNCA usar mcp__github__ ni ToolSearch para explorar el repo.'"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash /home/user/promarket-ordenes/.claude/arranca_hook.sh"
           }
         ]
       }
