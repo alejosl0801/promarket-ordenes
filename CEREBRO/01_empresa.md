@@ -3,10 +3,10 @@
 
 ## Datos básicos
 - **Nombre:** ProMarket Ecuador
-- **Ubicación:** Guayaquil, Ecuador (solo bodegas, sin tienda física — NUNCA hay local para visitar)
+- **Centro logístico:** Loja, Ecuador (sin tienda física — NUNCA hay local para visitar)
 - **Canal de venta:** WhatsApp únicamente
 - **Plataforma ecommerce:** Rocket.ec
-- **Envío:** Servientrega (toda la red nacional Ecuador + Colombia)
+- **Envío:** Servientrega (toda la red nacional Ecuador — NO Colombia)
 - **Pago:** Contra entrega — el cliente paga en ventanilla al retirar
 
 ## Proceso de envío
@@ -15,17 +15,19 @@
 3. Se empaqueta el producto
 4. Servientrega autoriza el envío (siguiente día hábil aprox)
 5. Se descarga guía de Servientrega y se envía al cliente
-6. Producto llega en 3-4 días hábiles
+6. Producto llega en 2-3 días hábiles (desde la autorización — total con empaquetado: 3-4 días)
 7. Cliente paga en ventanilla y retira
-8. Cliente tiene 5 días para retirar — después se devuelve
+8. Cliente tiene **4 días** para retirar — después generan cargo adicional por día de demora
 
 ## Importante sobre Servientrega
-- El cliente paga EN VENTANILLA al momento del retiro
+- El cliente paga EN VENTANILLA al momento del retiro — sin anticipos
 - NO explicar el proceso — es obvio y genera desconfianza si se explica demasiado
-- Verificar agencias en servientrega.com.ec o Google
+- Verificar agencias en servientrega.com.ec o Google — usar formato **[NOMBRE EXACTO]** en corchetes
 - Si no hay agencia → preguntar si tiene familiar en ciudad cercana
-- Tiempo de entrega: 3-4 días hábiles
-- Tiempo para retirar: 5 días máximo desde llegada
+- Tiempo tránsito: 2-3 días hábiles (desde autorización)
+- Tiempo total (empaquetado + tránsito): 3-4 días
+- Tiempo para retirar: **4 días** — después generan cargo adicional por día de demora
+- **Colombia: NO trabajamos** — Servientrega Colombia no está disponible para ProMarket
 
 ## NO HAY TIENDA FÍSICA — REGLA CRÍTICA
 - Cuando el cliente dice "iré al local" o "voy personalmente" → aclarar inmediatamente que no hay local
@@ -33,9 +35,10 @@
 - Respuesta: "no tenemos local físico, trabajamos únicamente con envíos. Retira en Servientrega y paga ahí mismo, sin anticipos ✅"
 
 ## Descuentos
-- Máximo 10%
-- NUNCA llamarlo "descuento" — decir "precio especial"
-- Par de guantes ya tiene descuento aplicado ($107.98)
+- Máximo 10% — llamarlo siempre "precio especial", nunca "descuento"
+- Si el cliente insiste y pide más → se puede ofrecer hasta 2% adicional (tope total 12%)
+- Par de guantes ya tiene el 10% aplicado ($107.98)
+- NUNCA mencionar porcentajes al cliente — solo dar el precio final
 
 ## Garantía
 - 3 meses contra defectos de fábrica
@@ -72,7 +75,7 @@
 - **Niveles:** 9 intensidades ajustables (del 1 al 9)
 - **Modos:** Automático / Modo Espejo
 - **Incluye:** Guante principal + guante espejo + controlador de potencia + pelota de rehabilitación + manual
-- **Marca:** Cirovo — tecnología de rehabilitación robótica
+- **Marca:** Syrobo — tecnología de rehabilitación robótica
 
 **Para quién sirve:**
 - Derrame cerebral (ACV)

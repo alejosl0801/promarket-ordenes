@@ -108,7 +108,7 @@
 
 ### /guante_marca
 > *(cuando el cliente pregunta qué marca es)*
-> es de marca Cirovo — tecnología de rehabilitación robótica 😊
+> es de marca Syrobo — tecnología de rehabilitación robótica 😊
 
 ---
 
@@ -203,8 +203,8 @@
 
 ### /llego_agencia
 > su pedido ya está en la agencia listo para retirar! 🎉
-> recuerde presentar la orden al momento del retiro
-> espero le sea muy útil 💛
+> recuerde presentar su orden al retirar — tiene 4 días antes de que generen cargo adicional
+> Un gusto haberle ayudado 🙌
 
 ### /agencia_cerrada
 > *(cuando el cliente fue y la agencia estaba cerrada)*
@@ -213,23 +213,13 @@
 
 ---
 
-## SEGUIMIENTO — Alejandro (clientes con historial)
-## IMPORTANTE: Alejandro usa 😊 🙌 — NUNCA 💛
-
-### /seguimiento_recordar
-> Hola [nombre]! el [producto] que vimos sigue disponible — envío gratis hasta el domingo, ¿[acción específica]? 😊
-
-### /seguimiento_generico
-> Hola! 😊 Alejandro de ProMarket — envío gratis hasta el domingo, ¿le interesa el [producto]? 🙌
+## SEGUIMIENTO — leads que no compraron (Camila)
 
 ### /seguimiento_1dia
-> Hola [nombre]! 😊 Alejandro de ProMarket — ayer hablamos del [producto], ¿tiene alguna duda que pueda resolver?
+> Hola [nombre]! 😊 Camila de ProMarket — ayer hablamos del guante, ¿tiene alguna duda que pueda resolver?
 
 ### /seguimiento_3dias
-> Hola [nombre]! 😊 Alejandro de ProMarket — el [producto] sigue disponible con envío gratis hasta el domingo, ¿le genero la orden?
-
-### /seguimiento_precio_especial
-> Hola [nombre]! 😊 Alejandro de ProMarket — tengo un precio especial para usted, ¿le interesa?
+> Hola [nombre]! 😊 Camila de ProMarket — el guante sigue disponible con envío gratis hasta el domingo, ¿le genero la orden?
 
 ### /cierre_conversacion
 > *(SOLO cuando el cliente tuvo conversación activa y se enfrió — NO para quien nunca respondió)*
@@ -240,32 +230,14 @@
 
 ---
 
-## LIQUIDACIÓN — PILOTO RECUPERACIÓN DE LEADS
-
-### /liquidacion_ollas
-> Hola! 😊 Alejandro de ProMarket — hoy liquidamos el set de ollas inoxidable 12 piezas por $39.99 con envío incluido, solo por hoy ✅ ¿se anima?
+## LIQUIDACIÓN — RECUPERACIÓN DE LEADS
 
 ### /liquidacion_guante
-> Hola! 😊 Alejandro de ProMarket — hoy tengo el guante de rehabilitación por $49.99 con envío incluido, precio especial de hoy ✅ ¿se anima?
+> Hola! 😊 Camila de ProMarket — hoy tengo el guante de rehabilitación por $49.99 con envío incluido, precio especial de hoy ✅ ¿se anima?
 
 ---
 
 ## URGENCIA FIN DE SEMANA
 
-### /urgencia_domingo_ollas
-> Hola! 😊 Alejandro de ProMarket — el set de ollas sigue en $49.99 con envío gratis hasta el domingo, ¿le genero la orden?
-
 ### /urgencia_domingo_guante
-> Hola! 😊 Alejandro de ProMarket — el guante sigue disponible con envío gratis hasta el domingo, ¿le interesa? 🙌
-
----
-
-## CIERRE DE VENTA
-
-### /captura_origen
-> una última cosa — ¿nos encontró por Facebook o Instagram? 😊
-
-### /pedir_testimonio
-> Hola [nombre]! 😊 Camila de ProMarket — su pedido llegó, espero le esté siendo muy útil 💛
-> ¿Le puedo pedir un favor? Una fotito con el producto nos ayuda muchísimo 🙏
-> A cambio en su próxima compra le doy un precio especial 😊
+> Hola [nombre]! 😊 Camila de ProMarket — el guante sigue disponible con envío gratis hasta el domingo, ¿le interesa? 🙌
