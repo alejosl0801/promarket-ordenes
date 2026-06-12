@@ -5,14 +5,7 @@
 
 ## 🚨 URGENTES
 
-### ⭐⭐ Chat 2050 (+593 98 591 2050) — RESPONDER AHORA
-- **Producto:** Guante
-- **Último mensaje cliente:** [11:17 a.m., 12/6/2026] — "Ya seria para el lunes me quede sin dinero"
-- **Estado:** Objeción de dinero momentáneo — INTENCIÓN DE COMPRA CLARA — sin respuesta de Promarket desde las 11:17am (lleva horas sin respuesta)
-- **Señal:** Peldaño 1 (respondió) — ya mostró interés antes — solo necesita saber que puede confirmar HOY y pagar el lunes al retirar
-- **Mensaje URGENTE:** "Hola! 😊 no hay problema — puede confirmar su pedido hoy y retirarlo el lunes ✅ el pago es directamente al retirar en Servientrega, no adelanta nada ahora. ¿de qué ciudad nos escribe?"
-- **Si responde ciudad:** buscar agencia → pedir 5 datos → generar orden para retiro lunes
-- **Si no responde en 24h (13/6):** D2 a $49.99
+Sin urgentes — 2050 respondido a las ~5pm 12/6.
 
 ---
 
@@ -32,6 +25,14 @@
 
 ## 🔥 LEADS CALIENTES — CONVERSACIÓN ACTIVA
 
+### Chat 2050 (+593 98 591 2050) — ciudad desconocida
+- **Producto:** Guante
+- **Último mensaje cliente:** [11:17 a.m., 12/6/2026] — "Ya seria para el lunes me quede sin dinero" → INTENCIÓN clara, dinero disponible el lunes
+- **Último mensaje Promarket:** [~5:00 p.m., 12/6/2026] — respondido con "puede confirmar hoy, paga el lunes al retirar" + pidió ciudad
+- **Patrón:** escribió 11am → puede responder esta tarde/noche
+- **Estado:** Esperando ciudad → si responde: buscar agencia → pedir 5 datos → orden para retiro lunes
+- **Si no responde en 24h (13/6 ~5pm):** D2 a $49.99
+
 ### Chat 5804 (+593 98 574 5804) — Calceta, Manabí
 - **Producto:** Guante
 - **Último mensaje Promarket:** [8:04 p.m., 11/6/2026] — pidió barrio
@@ -42,9 +43,9 @@
 
 ### Chat 4409 (+593 98 272 4409) — Santo Domingo
 - **Último mensaje cliente:** [6:10 a.m., 12/6/2026] — respondió con ciudad = Santo Domingo
-- **Sin respuesta de Promarket** — llevan ~11h esperando respuesta → enviar AHORA
-- **Mensaje:** "Hola! 😊 ¿me da una referencia de su barrio en Santo Domingo para confirmarle la agencia exacta?"
-- **Si responde:** buscar agencia Santo Domingo → confirmar → pedir 5 datos
+- **Último mensaje Promarket:** [~5:00 p.m., 12/6/2026] — pidió barrio
+- **Estado:** Esperando barrio → si responde: buscar agencia Santo Domingo → pedir 5 datos
+- **Si no responde en 24h (13/6 ~5pm):** D2 a $49.99
 
 ### ~~kushita2016 (+593 99 920 0994)~~ — ✅ CERRADO 12/6/2026
 - No siguió adelante — conversación finalizada
@@ -56,13 +57,10 @@
 ### Chat 6469 (+593 96 009 6469) — ciudad desconocida
 - **Producto:** Guante + Masajeador rodilla ($39.20) — quiere COMBO
 - **Último mensaje cliente:** [3:16 p.m., 8/6/2026] — preguntó por rodilleras y exoesqueleto
-- **Último mensaje Promarket:** [11:47 a.m., 12/6/2026] bot genérico
-- **Patrón horario:** escribe entre 12pm-4pm
-- **Señal:** MUY CALIENTE — dijo "quiero realizar mi pedido" 3 veces + esperó respuesta sobre logística y rodillas = nunca se respondieron esas preguntas
-- **Estado:** Bot enviado hoy. Enviar mensaje personalizado hoy tarde (diferente al bot — responde sus preguntas reales)
-- **Mensaje hoy:** "Hola! 😊 somos de Ecuador — le enviamos a la agencia Servientrega más cercana a su ciudad, usted retira ahí y paga al momento del retiro ✅ Para rodillas tenemos el masajeador 3 en 1 (calor + vibración + masaje, $39.20 con envío). Exoesqueleto no tenemos, pero es nuestra mejor opción para rodilla 😊 Si lleva el combo guante + masajeador le hago precio especial 🎁 ¿de qué ciudad nos escribe?"
-- **Si responde:** confirmar agencia → ofrecer combo $59.99 + $39.20 → pedir 5 datos
-- **Si no responde en 24h (13/6 ~3pm):** CHAT MUERTO
+- **Último mensaje Promarket:** [~5:00 p.m., 12/6/2026] — respondió país/logística + masajeador + combo + pidió ciudad
+- **Patrón horario:** escribe entre 12pm-4pm — puede que ya no responda hoy
+- **Estado:** Esperando ciudad → si responde: confirmar agencia → ofrecer combo $59.99 + $39.20 → pedir 5 datos
+- **Si no responde en 24h (13/6 ~5pm):** CHAT MUERTO (ya es D4 efectivo)
 
 ### Chat 4065 (+593 96 790 4065) — Tabacundo
 - **Producto:** Guante para hijo
@@ -149,27 +147,26 @@
 ## 🔁 RECUPERADOS DEL ARCHIVO — chats del 6/6 que NO estaban en este índice
 *(Detectados al cruzar CLIENTES/ con este registro el 12/6 — 6 chats procesados de los ZIPs que nunca se indexaron. TRES dijeron "quiero realizar mi pedido" y quedaron botados.)*
 
-### ⭐ Chat 3065 (+593 99 412 3065) — Santo Domingo — RESCATE PENDIENTE
-- **Último mensaje Promarket:** [11:10 a.m., 12/6/2026] bot genérico (liquidación hasta mañana)
-- **Pregunta de pagos sin responder desde:** [6:22 p.m., 6/6/2026] — 6 días
-- **Enviar HOY 12/6 tarde** (después de las 5pm — no bombardear el mismo mensaje dos veces el mismo día sin pausa)
+### ⭐ Chat 3065 (+593 99 412 3065) — Santo Domingo — RESCATE PENDIENTE ESTA NOCHE
+- **Bot enviado hoy:** [11:10 a.m., 12/6/2026] — ⚠️ ERROR: dijo "liquidación hasta mañana" (fecha falsa perpetua del bot)
+- **Pregunta de pagos sin responder desde:** [6:22 p.m., 6/6/2026] — 6 días (el bot NO la contestó)
+- **Rescate pendiente:** enviar HOY ~6-8pm (distinto al bot, responde la pregunta real)
 - **Mensaje rescate:** "Hola! 😊 quedé debiéndole la respuesta: es un solo pago al retirar en Servientrega — no adelanta nada, paga cuando tiene el guante en sus manos ✅ Esta semana a $49.99 con envío. ¿le confirmo su agencia en Santo Domingo?"
 - **Si responde:** confirmar agencia Santo Domingo → pedir 5 datos
-- **Si no responde en 24h (13/6 11am):** último intento — si silencio → MUERTO
+- **Si no responde en 24h (13/6 ~7pm):** CHAT MUERTO
 
 ### Chat 8035 (+593 99 727 8035) — sin ciudad
-- **Último mensaje Promarket:** [11:12 a.m., 12/6/2026] bot genérico
 - **Dijo "quiero realizar mi pedido" en:** [6:27 p.m., 6/6/2026]
-- **Enviar HOY 12/6 tarde** (misma lógica — dejar pasar unas horas del bot)
-- **Mensaje rescate:** "Hola! 😊 me quedé esperando para completar su pedido — esta semana a $49.99 con envío incluido ✅ ¿de qué ciudad nos escribe?"
-- **Si no responde en 24h (13/6):** CHAT MUERTO (ya tiene D4 de facto)
+- **Último mensaje Promarket:** [~5:00 p.m., 12/6/2026] — rescate enviado, pidió ciudad
+- **Estado:** Esperando ciudad → si responde: buscar agencia → pedir 5 datos
+- **Si no responde en 24h (13/6 ~5pm):** CHAT MUERTO
 
 ### Chat 7773 (+593 96 100 7773) — El Oro — intermediario
-- **Último mensaje Promarket:** [11:13 a.m., 12/6/2026] bot genérico
-- **Dijo "déjeme decirle" en:** [6:58 p.m., 6/6/2026]
-- **Enviar HOY 12/6 tarde**
+- **Dijo "déjeme decirle":** [6:58 p.m., 6/6/2026]
+- **Bot hoy:** [11:13 a.m., 12/6/2026] — ⚠️ ERROR: dijo "liquidación hasta mañana" (fecha falsa) — y mensajes previos decían "Alejandro" 
+- **"¿qué le dijo?" → enviar HOY ~6-8pm** (distinto al bot, mensaje de intermediario)
 - **Mensaje:** "Hola! 😊 ¿qué le dijo la persona del guante? Si le sirve le paso un resumen que puede reenviarle: $49.99 con envío, pago al retirar ✅"
-- **Si no responde en 24h (13/6):** CHAT MUERTO
+- **Si no responde en 24h (13/6 ~7pm):** CHAT MUERTO
 
 ### Chat 4634 (+593 93 996 4634) — sin ciudad
 - **Último mensaje Promarket:** [11:17 a.m., 12/6/2026] D4 enviado
