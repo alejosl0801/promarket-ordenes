@@ -5,66 +5,21 @@
 
 ## 🚨 URGENTES
 
-| Prioridad | Orden/Alias | Cliente | Problema | Estado |
-|---|---|---|---|---|
-| 🔴 CRÍTICO | #144356 | Blanca Rodríguez +593 98 175 4740 | RECLAMO: enviaron guante derecho — pidió izquierdo | Sin resolver — seguimiento activo |
-| 🔴 VENCIDO | #146271 | Alex Fernando Lara +593 97 926 9065 | En agencia desde 5/6 — VENCIDO día 8 (5/6=día 1 → 12/6=día 8) | Confirmar si retiró o hay cargo |
-| 🔴 VENCIDO | #146504 | Carmen Sosa +593 99 965 2705 | En agencia desde 5/6 — VENCIDO día 8 — fue el 7/6 y estaba cerrado | Necesita dirección exacta YA — el problema de ella va primero |
-| 🔴 VENCIDO | #146110 | Willman Zúñiga +593 99 823 5058 | Ollas — en agencia desde 8/6 — VENCIDO día 5 (8/6=día 1 → 12/6=día 5) | Avisar con honestidad: puede haber cargo de centavos por día — aún puede retirar |
+Sin urgentes activos — todos resueltos el 12/6/2026.
 
 ---
 
-## 📦 PEDIDOS EN AGENCIA — RETIRO PENDIENTE
+## 📦 PEDIDOS EN AGENCIA / TRÁNSITO
 
-### Orden #144356 — Blanca Rodríguez — Quito
-- **Producto:** Guante izquierdo M
-- **Problema:** Enviaron guante DERECHO — error operativo
-- **Estado:** ⚠️ RECLAMO ACTIVO — pendiente resolución
-- **Acción:** Coordinar con bodega el envío correcto + informar a Blanca
-- **Mensaje:** "Blanca, buenas tardes 🙏 quiero disculparme por el inconveniente con su pedido — ya estamos coordinando el envío del guante correcto. Le aviso en cuanto tengamos la guía lista 😊"
-
-### Orden #146271 — Alex Fernando Lara — Ambato
-- **Producto:** Guante x2
-- **En agencia desde:** 5/6/2026
-- **Hoy:** 12/6 = día 8 (5/6=día 1: 5,6,7,8,9,10,11,12 — límite era día 4 = 8/6) → **VENCIDO 4 días**
-- **Estado:** Prometió retirar el 8/6 — sin confirmación
-- **Acción:** Confirmar si ya retiró — si no: informar cargo adicional
-- **Mensaje:** "Alex, buen día 😊 quería saber si ya pudo retirar su pedido en Servientrega — si tiene alguna novedad me avisa para coordinar con ellos 💛"
-
-### Orden #146504 — Carmen Sosa — Ambato
-- **Producto:** Guante x2
-- **En agencia desde:** 5/6/2026
-- **Hoy:** 12/6 = día 8 (5/6=día 1 — límite era día 4 = 8/6) → **VENCIDO 4 días**
-- **Estado:** Fue el 7/6 y la agencia estaba cerrada — necesita dirección exacta (la culpa del vencimiento NO es de ella — resolver su problema primero, sin tono de urgencia)
-- **Acción:** Darle dirección exacta de la agencia Ambato
-- **Mensaje:** "Carmen, buen día 😊 perdone la demora — la agencia Servientrega en Ambato está en [DIRECCIÓN EXACTA AMBATO]. El horario es [HORARIO]. Recuerde llevar su cédula y la orden que le envié 💛"
-
-### Orden #146110 — Willman Zúñiga — Puyo
-- **Producto:** Ollas x1
-- **En agencia desde:** 8/6/2026
-- **Hoy:** 12/6 = **día 5 (8/6=día 1: 8,9,10,11,12) → VENCIDO 1 día**
-- **Estado:** Informar llegada aún pendiente — el cliente NO sabe que su pedido llegó (error nuestro: nunca se le avisó)
-- **Acción:** Avisar HOY con honestidad — venció ayer, puede haber cargo de centavos
-- **Mensaje:** "Willman, buen día 🙏 su pedido ya está en la agencia Servientrega de Puyo listo para retirar. Le aviso que puede haber un cargo de unos centavos por día de demora, pero lo puede retirar sin problema ✅ Recuerde llevar su cédula 😊"
-
----
-
-## 🚚 EN TRÁNSITO → REVISAR SI LLEGÓ
-
-### Orden #151381 — César Augusto López (+593 96 833 9428)
-- **Producto:** Guante x1
-- **Enviado:** 7/6/2026
-- **Días hábiles desde envío:** 9/6 (lun) + 10/6 (mar) + 11/6 (mié) = **3 días hábiles**
-- **Estado estimado:** Probablemente en agencia desde 11/6 o 12/6 — VERIFICAR GUÍA
-- **Acción:** Verificar estado en Servientrega → si dice "en agencia": avisar hoy
-- **Mensaje si llegó:** "César! su pedido ya está en la agencia listo para retirar! 🎉 Tiene 4 días para retirarlo antes de que generen cargo adicional. Cualquier novedad me escribe 😊"
-
-### Orden #151380 — Jimmy Vera Peñafiel (+593 93 918 4423)
-- **Producto:** Guante x1
-- **Enviado:** 7/6/2026
-- **Días hábiles desde envío:** 3 días hábiles — mismo cálculo que César
-- **Estado estimado:** Probablemente en agencia — VERIFICAR GUÍA
-- **Mensaje si llegó:** "Jimmy! su pedido ya está en la agencia listo para retirar! 🎉 Tiene 4 días para retirarlo antes de que generen cargo adicional. Cualquier novedad me escribe 😊"
+### ✅ CERRADOS 12/6/2026 — pedidos retirados confirmados
+| Orden | Cliente | Producto | Cierre |
+|---|---|---|---|
+| #144356 | Blanca Rodríguez +593 98 175 4740 | Guante izq (reclamo resuelto) | Retirado 12/6 |
+| #146271 | Alex Fernando Lara +593 97 926 9065 | Guante x2 | Retirado 12/6 |
+| #146504 | Carmen Sosa +593 99 965 2705 | Guante x2 | Retirado 12/6 |
+| #146110 | Willman Zúñiga +593 99 823 5058 | Ollas x1 | Retirado 12/6 |
+| #151381 | César Augusto López +593 96 833 9428 | Guante x1 | Retirado 12/6 |
+| #151380 | Jimmy Vera Peñafiel +593 93 918 4423 | Guante x1 | Retirado 12/6 |
 
 ---
 
@@ -97,19 +52,8 @@
 - **Técnica:** OARS — pregunta abierta para diagnóstico antes de venta
 - **Mensaje:** "¡Buenos días! 😊 ¿qué condición tiene su papá? Así le explico cómo el guante ayuda específicamente en su caso 🙏"
 
-### kushita2016 (+593 99 920 0994) — ciudad: Pelileo (agencia confirmada)
-- **Producto:** Guante para mamá
-- **Contacto inicial:** 6/6/2026 — **6 días**
-- **Estado:** MUY CALIENTE — mandó 2 audios — agencia Pelileo confirmada — mamá con condición real
-- **D actual:** NO aplica — respondió + envió audios → conversación activa
-- **Señal:** Compra INMINENTE — preguntó por edad, niveles, funcionamiento
-- **Técnica:** Cierre directo — no sobre-explicar, no videos, ir directo
-- **Mensaje:** "¡Buen día! 😊 ¿le genero la orden para su mamá? Solo me ayuda con los datos:
-📌 Nombre completo
-📌 Cédula
-📌 Número celular
-📌 Dirección de referencia
-📌 Guante izquierdo o derecho"
+### ~~kushita2016 (+593 99 920 0994)~~ — ✅ CERRADO 12/6/2026
+- No siguió adelante — conversación finalizada
 
 ---
 
@@ -329,23 +273,18 @@
 
 ---
 
-## 📊 RESUMEN 12/6/2026
+## 📊 RESUMEN 12/6/2026 — actualizado tarde
 
-- **Total clientes en la nube:** 51 archivos en `CLIENTES/` (35 de los ZIPs + 16 creados 12/6) — NADIE se borra
-- **Ventas cerradas junio 2026:** 6 pedidos confirmados
-- **Urgentes:** 4 (1 reclamo + 2 vencidos + 1 último día)
-- **En tránsito verificar:** 2 (César, Jimmy — probablemente en agencia)
-- **Leads calientes activos:** 4 (9622, 5804, 4409, kushita2016)
-- **Recuperados del archivo 12/6:** 5 reactivables (3065 ⭐ pregunta sin responder, 2050, 8035, 7773, 4634) + 1 cerrado (6167)
-- **En seguimiento D:** 13 leads activos
-- **Chats muertos / descartados:** ollas + Colombia + >D4 sin respuesta
+- **Total clientes en la nube:** 51 archivos en `CLIENTES/` — NADIE se borra
+- **Ventas cerradas junio 2026:** 6 pedidos retirados confirmados (Blanca, Alex, Carmen, Willman, César, Jimmy)
+- **Urgentes activos:** 0
+- **Leads calientes activos:** 3 (9622, 5804, 4409)
+- **Recuperados pendientes:** 4 (3065 ⭐, 2050, 8035, 7773) + 1 D4 (4634)
+- **En seguimiento D:** 16 leads activos
+- **Chats muertos / descartados:** ollas + Colombia + >D4 sin respuesta + kushita2016 cerrado
 
 ## 📝 NOTAS OPERATIVAS
 
-- **Blanca Rodríguez:** Coordinar bodega — envío guante correcto — no cerrar hasta resolver
-- **Alex + Carmen:** Verificar si retiraron — si no: informar cargo adicional y dar dirección exacta
-- **César + Jimmy:** Verificar guías en Servientrega HOY — si en agencia: avisar clientes
-- **Willman:** HOY es el último día — avisar urgente
 - **Chat 4148:** NUNCA preguntar qué mano — cuadriplejia bilateral → siempre PAR $107.98
-- **kushita2016:** No sobre-explicar — ir directo al cierre con solicitud de datos
+- **Chat 3065:** URGENTE — tiene pregunta sin responder desde 6/6 (pagos)
 - **Precios activos:** Leads nuevos $59.99 / Seguimiento D2+ $49.99 / Par $107.98
