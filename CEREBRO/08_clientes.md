@@ -5,7 +5,14 @@
 
 ## 🚨 URGENTES
 
-Sin urgentes activos — todos resueltos el 12/6/2026.
+### ⭐⭐ Chat 2050 (+593 98 591 2050) — RESPONDER AHORA
+- **Producto:** Guante
+- **Último mensaje cliente:** [11:17 a.m., 12/6/2026] — "Ya seria para el lunes me quede sin dinero"
+- **Estado:** Objeción de dinero momentáneo — INTENCIÓN DE COMPRA CLARA — sin respuesta de Promarket desde las 11:17am (lleva horas sin respuesta)
+- **Señal:** Peldaño 1 (respondió) — ya mostró interés antes — solo necesita saber que puede confirmar HOY y pagar el lunes al retirar
+- **Mensaje URGENTE:** "Hola! 😊 no hay problema — puede confirmar su pedido hoy y retirarlo el lunes ✅ el pago es directamente al retirar en Servientrega, no adelanta nada ahora. ¿de qué ciudad nos escribe?"
+- **Si responde ciudad:** buscar agencia → pedir 5 datos → generar orden para retiro lunes
+- **Si no responde en 24h (13/6):** D2 a $49.99
 
 ---
 
@@ -70,48 +77,40 @@ Sin urgentes activos — todos resueltos el 12/6/2026.
 - **Si no responde en 24h (13/6 ~6pm):** CHAT MUERTO
 
 ### Chat 0433 (+593 99 305 0433) — ciudad desconocida
-- **Producto:** Guante — familiar con cuadriplejia espástica
-- **Contacto inicial:** 8/6/2026 — **4 días**
-- **Estado:** Cuadriplejia espástica — condición médica seria — sin ciudad
-- **D actual:** D3
-- **Señal:** Condición médica grave = alta motivación de compra
-- **Técnica:** Magic IF + tono médico — condición espástica tiene respuesta específica
-- **Mensaje:** "¿sigue interesad@ en el guante para su familiar? 😊 Para la espasticidad el guante trabaja exactamente contra el tono muscular elevado — ¿de qué ciudad nos escribe?"
+- **Producto:** Guante — familiar con CUADRIPLEJIA ESPÁSTICA confirmada
+- **Último mensaje cliente:** [5:12 p.m., 8/6/2026] — dio condición médica
+- **Último mensaje Promarket:** [11:51 a.m., 12/6/2026] bot genérico
+- **Patrón horario:** escribe ~5pm → enviar HOY 12/6 entre 5-6pm
+- **Estado:** Condición grave revelada — Promarket respondió bien con explicación médica — preguntó ciudad — NO respondió. Bot enviado hoy. D1 atrasado (debió ser ~7:57pm 8/6).
+- **Mensaje hoy ~5pm:** "¿le pareció bien el precio? 😊 ¿de qué ciudad nos escribe para confirmarle la agencia del guante para su familiar?"
+- **Si no responde en 24h (13/6 ~5pm):** D2 con $49.99
 
-### Chat 8581 (+593 99 343 8581) — Loja
+### ~~Chat 8581 (+593 99 343 8581)~~ — ✅ CERRADO 12/6/2026 por operador
+
+### ~~Chat 4148 (+593 99 981 4148)~~ — ✅ CERRADO 12/6/2026 por operador
+
+### Chat 1337 (+593 99 916 1337) — Machachi (Pichincha)
+- **Producto:** Guante IZQUIERDO — hermano con tumor cerebral, pérdida de movilidad
+- **Último mensaje cliente:** [12:07 p.m., 9/6/2026] — "Perdón es Machachi"
+- **Último mensaje Promarket:** [12:16 p.m., 9/6/2026] — pidió 4 datos (agencia Machachi confirmada ✅)
+- **Patrón horario:** escribe 8-9pm y 11am-12pm → enviar HOY 12/6 ~8pm
+- **Estado:** Ciudad ✅ Machachi | Agencia ✅ MACHACHI_CENTRO LOGISTICO | Mano ✅ IZQUIERDO | Pidió datos → silencio 3 días
+- **Mensaje hoy ~8pm:** "Hola! 😊 ¿sigue con ánimos del guante para su hermano? La agencia en Machachi sigue habilitada ✅ Solo me ayuda con los datos y le genero la orden:
+📌 Nombre completo
+📌 Cédula
+📌 Número celular
+📌 Dirección de referencia
+(el guante izquierdo ya quedó anotado 😊)"
+- **Si no responde en 24h (13/6 ~8pm):** CHAT MUERTO
+
+### Chat 270-7955 (+593 99 270 7955)
 - **Producto:** Guante
-- **Contacto inicial:** 8/6/2026 — **4 días**
-- **Estado:** Sin tienda física explicado — preguntó por otros aparatos — en conversación
-- **D actual:** Conversación activa — retomar desde lo último
-- **Señal:** Quiere solución completa (pregunta otros aparatos) = alta motivación
-- **Técnica:** Cierre consultivo — honesto sobre lo que tenemos
-- **Mensaje:** "¡Hola! 😊 ¿tuvo alguna otra duda sobre el guante? Para lo que me consultó, el guante es la opción principal que tenemos — cualquier pregunta aquí estoy 💛"
-
-### Chat 4148 (+593 99 981 4148) — Ambato
-- **Producto:** Guante PAR — cuadriplejia 95%, no mueve ninguna mano
-- **Contacto inicial:** 8/6/2026 — **4 días**
-- **Estado:** Quiso ir al local → explicado que no hay tienda → ofrecer PAR $107.98
-- **D actual:** Conversación activa — retomar — NUNCA preguntar qué mano
-- **Señal:** Necesidad real urgente — cuadriplejia bilateral
-- **Técnica:** PAR directo + cero riesgo + modo asistido
-- **Mensaje:** "¡Hola! 😊 ¿pudo conversar con su familia sobre el guante? Para el caso de su familiar, el par ($107.98 con envío) es lo ideal — trabaja las dos manos y un familiar puede asistirlo desde casa. El pago es al retirar en Servientrega — cero riesgo ✅"
-
-### Chat 1337 (+593 99 916 1337) — ciudad desconocida
-- **Producto:** Guante para hermano
-- **Contacto inicial:** 8/6/2026 — **4 días**
-- **Estado:** Para hermano — sin condición específica ni ciudad
-- **D actual:** D3
-- **Señal:** Familiar involucrado — preguntar condición activa empatía
-- **Técnica:** OARS — diagnóstico antes de venta
-- **Mensaje:** "¿le pareció bien la propuesta del guante para su hermano? 😊 ¿qué condición tiene él? Así le explico exactamente cómo ayuda en su caso 🙏"
-
-### Nuevo 270-7955 (+593 99 270 7955)
-- **Producto:** Guante
-- **Contacto inicial:** 8/6/2026 — **4 días**
-- **Estado:** D1AM enviado 8/6 — pendiente seguimiento
-- **D actual:** D3 (D1 el 8/6, D2 el 9/6, D3 hoy)
-- **Técnica:** Recordatorio de precio especial
-- **Mensaje:** "¿le pareció bien la promoción del guante? 😊 aún está disponible para usted"
+- **Último mensaje cliente:** [8:33 p.m., 7/6/2026] — "quiero realizar mi pedido" (nunca respondió nada más)
+- **Último mensaje Promarket:** [2:27 p.m., 9/6/2026] bot genérico
+- **Patrón horario:** escribe ~8-9pm → enviar HOY 12/6 ~8pm
+- **Estado:** D4 pendiente (D1=8/6 8:26am, bot=9/6 2:27pm, D3/D4=hoy)
+- **Mensaje hoy ~8pm:** "Hola! cómo le va 😊 noto que aún no me ha dado una respuesta — ¿qué opina sobre el guante?"
+- **Si no responde → CHAT MUERTO**
 
 ### Chat 3067 (+593 98 153 3067) — Chone, mamá
 - **Último mensaje Promarket:** [11:14 a.m., 12/6/2026] D4 enviado
@@ -142,19 +141,8 @@ Sin urgentes activos — todos resueltos el 12/6/2026.
 - **D4 enviar:** mañana 13/6 mañana
 - **Mensaje D4:** "Hola! cómo le va 😊 noto que aún no me ha dado una respuesta — ¿qué opina sobre el guante?"
 
-### Nuevo 1730 (+593 97 987 1730)
-- **Producto:** Guante
-- **Contacto inicial:** 6/6/2026 — **6 días**
-- **Estado:** Secuencia activa — sin respuesta
-- **D actual:** D4 o muerto — si D4 ya enviado → CHAT MUERTO
-- **Acción:** Verificar si D4 fue enviado — si sí: cerrar chat
-
-### Mendez (+593 98 887 6692)
-- **Producto:** Guante
-- **Contacto inicial:** 6/6/2026 — **6 días**
-- **Estado:** No respondió pregunta de confianza — conversación rota
-- **D actual:** D4 o muerto — mismo criterio
-- **Acción:** Si no respondió desde 6/6 → CHAT MUERTO
+### ~~Nuevo 1730 (+593 97 987 1730)~~ — ✅ CHAT MUERTO (D4 enviado, sin respuesta)
+- Contacto inicial 6/6/2026 — solo mensajes de Promarket, nunca respondió nada — bot D4 enviado 12/6
 
 ---
 
@@ -204,6 +192,8 @@ Sin urgentes activos — todos resueltos el 12/6/2026.
 | ivanojeda | +593 98 946 0509 | Blacklist — esperó 5.5h sin respuesta, nunca compró |
 | Chat 9622 | +593 93 991 9622 | "Ya no gracias" — 11/6/2026 9:31pm — después de que se le pidieron los 5 datos |
 | Chat 8379 | +593 96 787 8379 | Descartado por operador 12/6/2026 |
+| Mendez / Chat 6692 | +593 98 887 6692 | Cerrado por operador 12/6/2026 — no respondió desde 6/6 |
+| Chat 1730 | +593 97 987 1730 | Chat muerto — D4 enviado 12/6, nunca respondió nada |
 
 ### Por cobertura / producto
 | Cliente | Contacto | Motivo |
@@ -230,15 +220,16 @@ Sin urgentes activos — todos resueltos el 12/6/2026.
 
 ---
 
-## 📊 RESUMEN 12/6/2026 — actualizado tarde
+## 📊 RESUMEN 12/6/2026 — actualizado noche
 
 - **Total clientes en la nube:** 51 archivos en `CLIENTES/` — NADIE se borra
 - **Ventas cerradas junio 2026:** 6 pedidos retirados confirmados (Blanca, Alex, Carmen, Willman, César, Jimmy)
-- **Urgentes activos:** 0
-- **Leads calientes activos:** 3 (9622, 5804, 4409)
-- **Recuperados pendientes:** 4 (3065 ⭐, 2050, 8035, 7773) + 1 D4 (4634)
-- **En seguimiento D:** 16 leads activos
-- **Chats muertos / descartados:** ollas + Colombia + >D4 sin respuesta + kushita2016 cerrado
+- **🚨 URGENTES:** 1 (Chat 2050 — responder AHORA)
+- **Leads calientes activos:** 2 (5804, 4409)
+- **Recuperados pendientes:** 3 (3065 ⭐, 8035, 7773) + 1 D4 (4634)
+- **En seguimiento D:** 7 leads con mensajes pendientes hoy o mañana
+- **Cerrados esta sesión:** 6692 (operador), 1730 (D4 sin respuesta), kushita2016
+- **Chats muertos / descartados:** ollas + Colombia + >D4 sin respuesta
 
 ## 📝 NOTAS OPERATIVAS
 
