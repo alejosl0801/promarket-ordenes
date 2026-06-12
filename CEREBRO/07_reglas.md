@@ -114,11 +114,12 @@
 
 ## SOBRE CIERRES EN MENSAJES DE REACTIVACIÓN
 
-- ❌ "¿le genero la orden?" — muy apresurado para leads que nunca compraron, suena invasivo
-- ✅ "¿se anima?" — invita sin presionar, tono natural
-- ✅ "¿le interesa?" — también válido
-- ✅ "¿le proceso?" — solo si ya hubo conversación activa y el cliente mostró intención
-- **Regla:** "¿le genero la orden?" solo cuando el cliente ya dijo explícitamente que quiere comprar o cuando ya dio sus datos
+- ❌ "¿le genero la orden?" — muy apresurado, suena invasivo
+- ❌ "¿se anima?" — válido pero hay una mejor opción
+- ✅ **"¿Si le interesa el dispositivo?"** — frase preferida, invita sin presionar
+- ✅ "¿seguimos?" — cuando ya hubo conversación activa y el cliente estaba cerca
+- ✅ "¿le proceso?" — solo si el cliente ya confirmó que quiere comprar
+- **Regla:** "¿le genero la orden?" solo cuando el cliente ya dijo explícitamente que quiere comprar o ya dio sus datos
 
 ---
 
@@ -132,13 +133,45 @@
 
 ---
 
+## REGLA DE REACTIVACIÓN DESPUÉS DE 24+ HORAS
+
+**El objetivo del primer mensaje de reactivación es UNO SOLO: conseguir que el cliente diga "sí" o "me interesa". Nada más.**
+
+- ❌ NO preguntar ciudad a un lead frío — requiere esfuerzo, lo ignoran
+- ❌ NO preguntar datos a un lead frío — mismo error
+- ❌ NO construir frases incoherentes intentando meter contexto médico — suenan a robot
+- ✅ Formato limpio: "Hola! 😊 Camila de ProMarket — [contexto brevísimo + urgencia]. ¿Si le interesa el dispositivo?"
+- Solo después de que el cliente responde SÍ → preguntar ciudad, datos, etc.
+- El saludo + identificación es OBLIGATORIO cuando pasaron 24h+ — el cliente no recuerda quién eres
+
+### Urgencia según día:
+- **Lunes a viernes:** "envío gratis hasta el domingo"
+- **Sábado:** "mañana vence el envío gratis"
+- **Domingo:** no usar urgencia de envío — es el último día, usar otra estrategia
+- NUNCA usar "hasta mañana" en viernes — el domingo no es mañana
+
+### Frase de cierre preferida en reactivación:
+**"¿Si le interesa el dispositivo?"**
+
+---
+
+## SOBRE EL ARGUMENTO "CERO RIESGO"
+
+- ✅ Usar SOLO cuando el cliente duda del producto o pregunta "¿y si no me convence?"
+- ✅ Usar ante señales de fuga por miedo al engaño: "¿es seguro?", "¿cómo sé que llega?"
+- ❌ NO usar como reactivación genérica — suena sospechoso, planta duda donde no había
+- ❌ NO usar con cliente que ya mostró intención de compra — "si no le convence no lo retira" sugiere que puede no convencer
+- Ejemplo correcto: cliente dice "no sé si funciona" → ahí sí usar cero riesgo
+- Ejemplo incorrecto: cliente dijo "ya aviso a mi esposo" → usar urgencia real, no cero riesgo
+
+---
+
 ## SOBRE EL MENSAJE DE REACTIVACIÓN A LEADS CALIENTES
 
 - NO ir directo a "¿le generamos la orden?" si el cliente aún tiene dudas sin resolver
-- Usar urgencia real como enganche: "mañana vence el envío gratis"
-- Hoy es sábado → el domingo vence el envío gratis → ese es el argumento de urgencia del fin de semana
-- Formato correcto: saludo + urgencia + cierre suave
-- Ejemplo kushita2016: "buenos días! 😊 mañana vence el envío gratis — ¿le proceso el guante para su mamá?"
+- Usar urgencia real como enganche según el día (ver REGLA DE REACTIVACIÓN)
+- Formato correcto: saludo + identificación + contexto breve + urgencia + cierre suave
+- Ejemplo: "Hola! 😊 Camila de ProMarket — el guante para su mamá sigue disponible con envío gratis hasta el domingo 🚚 ¿Si le interesa el dispositivo?"
 
 ---
 
