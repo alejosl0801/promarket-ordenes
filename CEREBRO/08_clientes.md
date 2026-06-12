@@ -25,32 +25,19 @@ Sin urgentes activos — todos resueltos el 12/6/2026.
 
 ## 🔥 LEADS CALIENTES — CONVERSACIÓN ACTIVA
 
-### Chat 9622 (+593 93 991 9622) — Santa Rosa, El Oro
-- **Producto:** Guante para esposo
-- **Contacto inicial:** 11/6/2026 — **1 día**
-- **Estado:** Esperando referencia de barrio para buscar agencia exacta
-- **D actual:** Conversación activa — NO usar D1-D4
-- **Señal:** Compra inminente (dio ciudad, dijo "para esposo" = familiar con condición)
-- **Técnica:** Foot-in-Door — ya dio ciudad, pedir barrio como micro-compromiso
-- **Mensaje:** "¡Buenos días! 😊 ¿me puede dar una referencia de su barrio o sector en Santa Rosa para buscarle la agencia más cercana?"
-
 ### Chat 5804 (+593 98 574 5804) — Calceta, Manabí
 - **Producto:** Guante
-- **Contacto inicial:** 11/6/2026 — **1 día**
-- **Estado:** Quiere realizar pedido — esperando referencia de barrio
-- **D actual:** Conversación activa — NO usar D1-D4
-- **Señal:** Compra inminente — dijo "quiero realizar pedido"
-- **Técnica:** Cierre asumido — ya decidió, solo falta la logística
-- **Mensaje:** "¡Buenos días! 😊 ¿me da una referencia de su barrio o sector en Calceta para confirmarle la agencia exacta?"
+- **Contacto inicial:** 11/6/2026 — 1 día
+- **Estado:** Dio ciudad (Calceta) → Promarket pidió barrio → SIN respuesta desde 11/6 8:04pm
+- **D actual:** D1 pendiente
+- **Mensaje:** "¿le pareció bien el precio o tiene alguna duda? 😊 ¿me da su referencia de barrio en Calceta para confirmarle la agencia?"
 
-### Chat 4409 (+593 98 272 4409) — ciudad desconocida
+### Chat 4409 (+593 98 272 4409) — Santo Domingo
 - **Producto:** Guante para papá
-- **Contacto inicial:** 11/6/2026 — **1 día**
-- **Estado:** Para papá — esperando ciudad
-- **D actual:** Conversación activa — NO usar D1-D4
-- **Señal:** Familiar con condición — preguntar condición específica para cierre médico
-- **Técnica:** OARS — pregunta abierta para diagnóstico antes de venta
-- **Mensaje:** "¡Buenos días! 😊 ¿qué condición tiene su papá? Así le explico cómo el guante ayuda específicamente en su caso 🙏"
+- **Contacto inicial:** 11/6/2026 — 1 día
+- **Estado:** ✅ Ciudad confirmada = Santo Domingo (12/6 6:10am) — falta barrio y condición del papá
+- **D actual:** Conversación activa — retomar
+- **Mensaje:** "Buenos días! 😊 ¿me da una referencia de su barrio en Santo Domingo para confirmarle la agencia exacta?"
 
 ### ~~kushita2016 (+593 99 920 0994)~~ — ✅ CERRADO 12/6/2026
 - No siguió adelante — conversación finalizada
@@ -120,57 +107,40 @@ Sin urgentes activos — todos resueltos el 12/6/2026.
 - **Técnica:** Recordatorio de precio especial
 - **Mensaje:** "¿le pareció bien la promoción del guante? 😊 aún está disponible para usted"
 
-### Chat 3067 (+593 98 153 3067)
+### Chat 3067 (+593 98 153 3067) — Chone, mamá
 - **Producto:** Guante
-- **Contacto inicial:** 7/6/2026 — **5 días**
-- **Estado:** D1AM enviado 7/6
-- **D actual:** D4 (último mensaje)
-- **Técnica:** Retiro de atención — activar FOMO
-- **Mensaje:** "Hola! cómo le va 😊 noto que aún no me ha dado una respuesta — ¿qué opina sobre el guante?"
+- **Contacto inicial:** 7/6/2026
+- **Estado:** D4 ENVIADO 12/6 — si no responde hoy = CHAT MUERTO
+- **Nota:** Cliente estaba interesado (preguntó por cargador y video). Promarket cometió 2 errores: pidió "agencia" en vez de "mano" en los datos + usó "recomendado por fisioterapeutas" (no verificado). Puede haber frenado al cliente.
 
-### Chat 2507 / Huachi chico (+593 96 746 2507)
+### Chat 2507 (+593 96 746 2507)
 - **Producto:** Guante
-- **Contacto inicial:** 7/6/2026 — **5 días**
-- **Estado:** D1AM enviado 7/6
-- **D actual:** D4 (último mensaje)
-- **Técnica:** Retiro de atención
-- **Mensaje:** "Hola! cómo le va 😊 noto que aún no me ha dado una respuesta — ¿qué opina sobre el guante?"
-
-### Chat 8379 (+593 96 787 8379)
-- **Producto:** Guante
-- **Contacto inicial:** 8/6/2026 — **4 días**
-- **Estado:** D1 nunca enviado (pendiente D1AM desde 8/6)
-- **D actual:** D4 por días transcurridos — enviar último mensaje
-- **Técnica:** Última oportunidad
-- **Mensaje:** "Hola! cómo le va 😊 noto que aún no me ha dado una respuesta — ¿qué opina sobre el guante?"
+- **Contacto inicial:** 7/6/2026
+- **Estado:** D4 ENVIADO 12/6 — si no responde hoy = CHAT MUERTO
 
 ### Chat 4227 (+593 96 208 4227)
 - **Producto:** Guante
-- **Contacto inicial:** 8/6/2026 — **4 días**
-- **Estado:** D1 nunca enviado
-- **D actual:** D4 — último mensaje
-- **Mensaje:** "Hola! cómo le va 😊 noto que aún no me ha dado una respuesta — ¿qué opina sobre el guante?"
+- **Contacto inicial:** 7/6/2026 — solo preguntó precio
+- **Estado:** Bot genérico enviado 12/6 — D4 pendiente hoy
+- **Mensaje D4:** "Hola! cómo le va 😊 noto que aún no me ha dado una respuesta — ¿qué opina sobre el guante?"
 
 ### Chat 3779 (+593 98 887 3779)
 - **Producto:** Guante
-- **Contacto inicial:** 8/6/2026 — **4 días**
-- **Estado:** D1 nunca enviado
-- **D actual:** D4 — último mensaje
-- **Mensaje:** "Hola! cómo le va 😊 noto que aún no me ha dado una respuesta — ¿qué opina sobre el guante?"
+- **Contacto inicial:** 7/6/2026
+- **Estado:** Bot genérico enviado 12/6 — D4 pendiente hoy
+- **Mensaje D4:** "Hola! cómo le va 😊 noto que aún no me ha dado una respuesta — ¿qué opina sobre el guante?"
 
 ### Chat 9345 (+593 93 996 9345)
 - **Producto:** Guante
-- **Contacto inicial:** 8/6/2026 — **4 días**
-- **Estado:** D1 nunca enviado
-- **D actual:** D4 — último mensaje
-- **Mensaje:** "Hola! cómo le va 😊 noto que aún no me ha dado una respuesta — ¿qué opina sobre el guante?"
+- **Contacto inicial:** 7/6/2026
+- **Estado:** Bot genérico enviado 12/6 — D4 pendiente hoy
+- **Mensaje D4:** "Hola! cómo le va 😊 noto que aún no me ha dado una respuesta — ¿qué opina sobre el guante?"
 
 ### Chat 5202 (+593 98 082 5202)
 - **Producto:** Guante
-- **Contacto inicial:** 8/6/2026 — **4 días**
-- **Estado:** D1 nunca enviado
-- **D actual:** D4 — último mensaje
-- **Mensaje:** "Hola! cómo le va 😊 noto que aún no me ha dado una respuesta — ¿qué opina sobre el guante?"
+- **Contacto inicial:** 7/6/2026 — bot duplicó bienvenida (error menor)
+- **Estado:** Bot genérico enviado 12/6 — D4 pendiente hoy
+- **Mensaje D4:** "Hola! cómo le va 😊 noto que aún no me ha dado una respuesta — ¿qué opina sobre el guante?"
 
 ### Nuevo 1730 (+593 97 987 1730)
 - **Producto:** Guante
@@ -191,46 +161,31 @@ Sin urgentes activos — todos resueltos el 12/6/2026.
 ## 🔁 RECUPERADOS DEL ARCHIVO — chats del 6/6 que NO estaban en este índice
 *(Detectados al cruzar CLIENTES/ con este registro el 12/6 — 6 chats procesados de los ZIPs que nunca se indexaron. TRES dijeron "quiero realizar mi pedido" y quedaron botados.)*
 
-### ⭐ Chat 3065 (+593 99 412 3065) — Santo Domingo — PREGUNTA SIN RESPONDER
+### ⭐ Chat 3065 (+593 99 412 3065) — Santo Domingo — RESCATE PENDIENTE
 - **Producto:** Guante
-- **Contacto inicial:** 6/6/2026 — **6 días**
-- **Estado:** Dijo "quiero realizar mi pedido" + dio ciudad + preguntó **"¿en cuántos pagos?"** y NADIE LE RESPONDIÓ — se le pidió ciudad ignorando su pregunta
-- **Señal:** 🔥 Era caliente — pregunta de pago = duda final antes de comprar
-- **Técnica:** Responder la pregunta ignorada + disculpa implícita + cero riesgo
-- **Mensaje:** "¡Hola! 😊 quedé debiéndole la respuesta: es un solo pago al retirar en Servientrega — no adelanta nada, paga cuando tiene el guante en sus manos ✅ y esta semana lo tengo en $49.99 con envío incluido. ¿le confirmo su agencia en Santo Domingo?"
-- **Por qué:** su última duda fue el pago — responderla reabre la conversación exactamente donde murió
+- **Contacto inicial:** 6/6/2026 — 6 días
+- **Estado:** Bot genérico enviado 12/6 11:10am ("liquidación hasta mañana"). La pregunta de pagos SIGUE sin respuesta. El mensaje de rescate específico NO fue enviado.
+- **Acción:** Enviar HOY el rescate (responder la pregunta ignorada)
+- **Mensaje:** "Hola! 😊 quedé debiéndole la respuesta: es un solo pago al retirar en Servientrega — no adelanta nada, paga cuando tiene el guante en sus manos ✅ Esta semana a $49.99 con envío. ¿le confirmo su agencia en Santo Domingo?"
 
-### ⭐ Chat 2050 (+593 98 591 2050) — sin ciudad
+### Chat 8035 (+593 99 727 8035) — sin ciudad
 - **Producto:** Guante
-- **Contacto inicial:** 6/6/2026 — **6 días**
-- **Estado:** Dijo "quiero realizar mi pedido" — se le pidió ciudad — nunca respondió
-- **Señal:** 🟡 Era caliente, se enfrió en silencio
-- **Técnica:** Retomar el pedido declarado + precio especial
-- **Mensaje:** "¡Hola! 😊 me quedé esperando para completar su pedido del guante — esta semana lo tengo en $49.99 con envío incluido ✅ ¿de qué ciudad nos escribe?"
-
-### ⭐ Chat 8035 (+593 99 727 8035) — sin ciudad
-- **Producto:** Guante
-- **Contacto inicial:** 6/6/2026 — **6 días**
-- **Estado:** Dijo "quiero realizar mi pedido" — se le pidió ciudad — nunca respondió
-- **Señal:** 🟡 Era caliente, se enfrió en silencio
-- **Técnica:** Retomar el pedido declarado + precio especial
-- **Mensaje:** "¡Hola! 😊 me quedé esperando para completar su pedido del guante — esta semana lo tengo en $49.99 con envío incluido ✅ ¿de qué ciudad nos escribe?"
+- **Contacto inicial:** 6/6/2026 — 6 días
+- **Estado:** Dijo "quiero realizar mi pedido" → bot respondió mal (75% descuento). Bot genérico enviado 12/6. Rescate no enviado.
+- **Acción:** Enviar rescate hoy
+- **Mensaje:** "Hola! 😊 me quedé esperando para completar su pedido — esta semana a $49.99 con envío incluido ✅ ¿de qué ciudad nos escribe?"
 
 ### Chat 7773 (+593 96 100 7773) — El Oro — intermediario
-- **Producto:** Guante (para otra persona)
-- **Contacto inicial:** 6/6/2026 — **6 días**
-- **Estado:** "Déjeme decirle a la persona que requiere eso" — consultando con el paciente — nunca volvió
-- **Señal:** 🟡 Intermediario — la decisión es de otro
-- **Técnica:** Facilitar la consulta — mensaje listo para reenviar al paciente
-- **Mensaje:** "¡Hola! 😊 ¿qué le dijo la persona del guante? Si le sirve, le paso un resumen cortito que puede reenviarle tal cual: incluye guante robótico + guante espejo + controlador + pelota, $49.99 con envío, y se paga solo al retirar en Servientrega — sin anticipos ✅"
+- **Producto:** Guante
+- **Contacto inicial:** 6/6/2026 — 6 días
+- **Estado:** "Déjeme decirle a la persona..." → bot genérico enviado 12/6. "¿qué le dijo?" no enviado.
+- **Acción:** Enviar hoy
+- **Mensaje:** "Hola! 😊 ¿qué le dijo la persona del guante? Si le sirve le paso un resumen que puede reenviarle: $49.99 con envío, pago al retirar ✅"
 
 ### Chat 4634 (+593 93 996 4634) — sin ciudad
 - **Producto:** Guante
-- **Contacto inicial:** 6/6/2026 — **6 días**
-- **Estado:** Solo preguntó precio — se le dio — nunca respondió nada más
-- **D actual:** Ningún D enviado → regla de salto: UN mensaje único de última oportunidad
-- **Mensaje:** "Hola! cómo le va 😊 noto que aún no me ha dado una respuesta — ¿qué opina sobre el guante?"
-- **Si no responde → CHAT MUERTO**
+- **Contacto inicial:** 6/6/2026 — 6 días
+- **Estado:** D4 ENVIADO 12/6 — si no responde = CHAT MUERTO
 
 ### Chat 6167 (+593 93 946 6167) — Portoviejo — ❌ CERRADO
 - **Estado:** "Gracias pero no me alcanza" + sin agencia cerca de su sector
@@ -247,6 +202,8 @@ Sin urgentes activos — todos resueltos el 12/6/2026.
 | Rose | +593 99 743 7282 | "POR AHORA NO GRACIAS" |
 | Gregorio Barzallo | +593 99 758 0200 | "Ya no lo necesito" |
 | ivanojeda | +593 98 946 0509 | Blacklist — esperó 5.5h sin respuesta, nunca compró |
+| Chat 9622 | +593 93 991 9622 | "Ya no gracias" — 11/6/2026 9:31pm — después de que se le pidieron los 5 datos |
+| Chat 8379 | +593 96 787 8379 | Descartado por operador 12/6/2026 |
 
 ### Por cobertura / producto
 | Cliente | Contacto | Motivo |

@@ -259,6 +259,15 @@ Un "estamos revisando" sin fecha es gasolina al fuego. Cliente con reclamo + din
 
 ---
 
+## "RECOMENDADO POR FISIOTERAPEUTAS" — PROHIBIDO
+
+- NUNCA decir "recomendado por fisioterapeutas" ni ninguna afirmación de respaldo institucional no verificado
+- Error documentado: Chat 3067 (Chone, 7/6) — se usó esta frase y el cliente se detuvo justo ahí
+- La venta se sostiene sin avales institucionales: explicación médica específica + cero riesgo (pago al retirar) + garantía 3 meses
+- Si el cliente pregunta "¿lo recomienda algún médico?" → "muchas familias lo usan para rehabilitación en casa — y el pago es al retirar, así que puede probarlo sin adelantar nada 😊"
+
+---
+
 ## TESTIMONIOS — PROHIBIDO PEDIRLOS
 
 - **NUNCA pedir testimonio al cliente** — ni foto, ni reseña, ni mensaje de agradecimiento

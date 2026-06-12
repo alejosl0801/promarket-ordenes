@@ -176,6 +176,7 @@
 
 ### /agencia
 *(DESPUÉS de confirmar agencia exacta con referencia del cliente)*
+⚠️ El 5to dato es SIEMPRE "Guante izquierdo o derecho" — NUNCA "Agencia más cercana" (la agencia ya fue confirmada en este paso)
 > Ya revisé — la agencia [NOMBRE EXACTO DE AGENCIA] está habilitada ✅ llega en 2-3 días hábiles 😊
 > Su kit incluye: guante robótico + guante espejo + controlador de potencia + pelota de rehabilitación 💪
 > ¿Me ayuda con sus datos para generarle la orden?

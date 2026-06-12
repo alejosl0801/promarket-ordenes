@@ -141,3 +141,6 @@ Los mensajes enviados antes del 8/6/2026 mencionan "Alejandro de ProMarket" — 
 | 12/6 | 05_objeciones.md tuteaba al cliente: "hayas visto" / "el que viste" | Corregido a "haya visto" / "el que vio" — siempre "usted" |
 | 12/6 | 07_reglas.md seguía mencionando D1AM/D1PM (eliminadas en CLAUDE.md pero olvidadas aquí) | Eliminadas también de 07_reglas.md — definición correcta de D1 |
 | 12/6 | 07_reglas.md mencionaba "secuencia de 10 mensajes" contradiciéndose con D1-D4 | Reemplazado con descripción correcta de la secuencia D1-D4 |
+| 12/6 | Chat 3067 (Chone): 5to dato pedido fue "Agencia más cercana" en vez de "Guante izquierdo o derecho" | La agencia ya estaba confirmada — 5to dato es SIEMPRE la mano |
+| 12/6 | Chat 3067 (Chone): "Recomendado por fisioterapeutas" — afirmación no verificada usada en conversación | NUNCA usar avales institucionales no verificados — viola regla de verdad |
+| 12/6 | Chat 9622 (Santa Rosa): dijo "ya no gracias" inmediatamente después de que se le pidieron los 5 datos tras confirmar agencia — agencia + datos en el mismo mensaje puede ser demasiado para perfil indeciso | Considerar micro-cierre intermedio antes de pedir datos en perfiles dudosos |
