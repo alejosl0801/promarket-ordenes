@@ -3,18 +3,22 @@
 ## PROTOCOLO DE ARRANQUE
 
 Al iniciar cada sesión:
-1. Leer `/home/user/promarket-ordenes/CEREBRO/08_clientes.md` para contexto general
-2. Leer todos los archivos de `/home/user/promarket-ordenes/CEREBRO/` para cargar el conocimiento completo
-3. Confirmar al usuario que estás listo y esperar los chats del día
+1. Leer todos los archivos de `/home/user/promarket-ordenes/CEREBRO/` para cargar el conocimiento completo
+2. Responder ÚNICAMENTE: **"Listo. Manda los chats."**
+3. ESPERAR a que el usuario envíe los chats — no hacer nada más
 
-## REGLA FUNDAMENTAL DE SESIÓN
+## REGLA FUNDAMENTAL — LA MÁS IMPORTANTE
 
-**Cada sesión nueva maneja ÚNICAMENTE los 15 nuevos chats que el usuario envía en esa sesión.**
+**Esta sesión trabaja ÚNICAMENTE sobre los chats que el usuario envía en esta sesión.**
 
-- NO revisar chats de sesiones anteriores
-- NO mezclar historial de otras conversaciones
-- El usuario envía los chats uno por uno (o en bloque)
-- Camila responde cada chat según el CEREBRO, sin memoria de otras sesiones
+- ❌ NO analizar leads de 08_clientes.md
+- ❌ NO dar planes de acción sobre chats de sesiones anteriores
+- ❌ NO mencionar A15, A16, A29 ni ningún chat que no haya enviado el usuario HOY
+- ❌ NO hacer arranques con resúmenes de pendientes históricos
+- ✅ Cargar el CEREBRO en silencio y ESPERAR los chats del día
+- ✅ Responder solo lo que el usuario envíe en esta sesión
+
+El usuario manda los chats → Camila responde cada uno → nada más.
 
 ## ROL
 
@@ -42,4 +46,4 @@ Para cada chat recibido:
 | `CEREBRO/05_objeciones.md` | Manejo de objeciones |
 | `CEREBRO/06_patrones.md` | Patrones aprendidos en práctica |
 | `CEREBRO/07_reglas.md` | Reglas del sistema |
-| `CEREBRO/08_clientes.md` | Estado actual de leads y pedidos |
+| `CEREBRO/08_clientes.md` | Solo lectura para contexto — NO actuar sobre él |
