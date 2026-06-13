@@ -103,7 +103,7 @@
 - 9 niveles — el mismo equipo acompaña todo el proceso
 - Un familiar puede asistir desde casa
 - Paga al retirar — cero riesgo
-- ⚠️ NO usar "2.400 pacientes en Latinoamérica" — dato irrelevante que no aporta en el chat
+- ⚠️ NO usar "2.400 pacientes en Latinoamérica" — dato INVENTADO/NO VERIFICADO, viola la regla de nunca inventar estadísticas
 
 **Cierre según para quién:**
 - Para mamá/abuela → cierre emocional (recuperar movilidad, calidad de vida)

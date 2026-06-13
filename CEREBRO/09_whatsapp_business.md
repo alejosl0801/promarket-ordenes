@@ -62,12 +62,9 @@
 
 | Atajo | Contenido |
 |---|---|
-| /io | inicio_ollas |
 | /ig | inicio_guante |
 | /conf | confianza |
-| /po | precio_ollas |
 | /pg | precio_guante |
-| /dpo | duda_precio_ollas |
 | /dpg | duda_precio_guante |
 | /gm | guante_para_mama |
 | /gmi | guante_para_mi |
@@ -77,6 +74,7 @@
 | /lp | lopienso |
 | /pe | precio_especial |
 | /dr | datos_recibidos |
+*(Atajos de ollas `/io`, `/po`, `/dpo` — ELIMINADOS — producto descontinuado desde 6/6. Borrarlos también de la configuración real de WhatsApp Business.)*
 | /ol | orden_lista |
 | /emp | empaquetando |
 | /gl | guia_lista |

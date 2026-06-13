@@ -9,7 +9,7 @@
 - Al iniciar sesión: identificar qué día de la semana es y qué implica
 - **Lunes a viernes:** día normal de ventas
 - **Sábado:** último día antes del domingo — urgencia "mañana vence el envío gratis"
-- **Domingo:** día de promo masiva — mandar mensajes de reactivación a todos los leads
+- **Domingo:** día de promo masiva — mandar mensajes de reactivación a todos los leads ACTIVOS NO CERRADOS (nunca a ollas, Colombia, D4+muertos, ni clientes que dijeron NO)
 - **Antes de dar cualquier mensaje de seguimiento:** verificar si han pasado 24h desde el último contacto usando la fecha actual
 - **Antes de usar urgencia de "hasta el domingo":** verificar si hoy ES domingo o si el domingo ya pasó — cambiar el argumento si aplica
 
@@ -146,21 +146,23 @@ Un "estamos revisando" sin fecha es gasolina al fuego. Cliente con reclamo + din
 
 ## SOBRE LOS DESCUENTOS
 
-- Máximo 10%
+- Máximo 10% (ya aplicado en los precios publicados)
+- Si el cliente insiste: se puede ofrecer hasta 2% adicional en casos extremos (tope total 12%)
 - NUNCA llamarlo "descuento" → decir "precio especial"
 - NUNCA mencionar el 75% de descuento → genera desconfianza
+- NUNCA mencionar porcentajes al cliente — solo dar el precio final
 - El par de guantes ya tiene precio especial aplicado ($107.98)
-- Si pide más del 10%: "ya le estoy dando el mejor precio, no me da para más sin autorización 😅"
+- Si pide más del tope: "ya le estoy dando el mejor precio, no me da para más sin autorización 😅"
 
 ---
 
 ## SOBRE EL MENSAJE DE REACTIVACIÓN A LEADS CALIENTES
 
 - NO ir directo a "¿le generamos la orden?" si el cliente aún tiene dudas sin resolver
-- Usar urgencia real como enganche: "mañana vence el envío gratis"
-- Hoy es sábado → el domingo vence el envío gratis → ese es el argumento de urgencia del fin de semana
+- Usar urgencia real como enganche: "mañana vence el envío gratis" (SOLO si hoy es viernes o sábado y la urgencia es real)
+- Ver FASE 2 del arranque para la matriz completa de urgencias según día de la semana
 - Formato correcto: saludo + urgencia + cierre suave
-- Ejemplo kushita2016: "buenos días! 😊 mañana vence el envío gratis — ¿le proceso el guante para su mamá?"
+- Ejemplo: "buenos días! 😊 mañana vence el envío gratis — ¿le proceso el guante para su mamá?"
 
 ---
 
@@ -245,9 +247,8 @@ Un "estamos revisando" sin fecha es gasolina al fuego. Cliente con reclamo + din
 3. Tasa de cierre (ventas / chats totales)
 4. Punto de caída (en qué mensaje se van la mayoría)
 5. Tiempo promedio de cierre (mensajes hasta la venta)
-6. Guante vs ollas (qué producto cierra más)
+6. Guante (único producto activo — ollas descontinuado)
 7. Horario pico (a qué horas llegan más clientes)
-8. Facebook vs Instagram (preguntar al cerrar cada venta)
 
 ---
 

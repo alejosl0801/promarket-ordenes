@@ -105,7 +105,8 @@
 > imagino que hay días muy difíciles — para él/ella y para toda la familia 🙏
 > lo bueno del guante es que no requiere que el paciente mueva nada — el dispositivo genera el movimiento por sí solo mediante presión de aire. Un familiar coloca el guante y el equipo hace el trabajo.
 > para este caso lo ideal es el par completo (izquierdo + derecho) para trabajar ambas manos — $107.98 con envío gratis, paga al retirar ✅
-> ¿le genero el pedido?
+> ¿se anima con el par? ¿de qué ciudad nos escribe?
+*(NOTA: NO usar "¿le genero el pedido?" aquí — es primera explicación médica, el cliente aún no confirmó compra. "¿se anima?" sube un peldaño sin saltar la escalera)*
 
 ### /guante_cuadriplejia_espastica
 *(espasticidad — el guante trabaja exactamente contra el tono muscular elevado)*
@@ -260,14 +261,14 @@
 ### /fff_desconfianza
 *(cliente duda de la empresa o del producto — Feel-Felt-Found)*
 > lo entiendo — es completamente normal desconfiar cuando es la primera vez que escucha de nosotros 😊
-> muchos de nuestros clientes empezaron exactamente igual — sin saber nada de ProMarket, un poco escépticos
-> lo que encontraron es que la contra entrega elimina el riesgo: paga en Servientrega solo cuando va a retirar, no antes. Nadie pierde dinero en el aire ✅
+> muchos que buscan opciones de rehabilitación pasan por ese momento — "¿será confiable?" es la pregunta natural
+> lo que resuelve eso es la contra entrega: paga en Servientrega solo cuando va a retirar, no antes. No hay nada que perder porque no anticipa nada ✅ Y somos empresa ecuatoriana con Servientrega — todo verificable.
 
 ### /fff_no_funciona
 *(duda sobre si el producto da resultados — Feel-Felt-Found)*
 > lo entiendo — cuando uno ha buscado opciones y ninguna funcionó, es difícil confiar en algo nuevo 🙏
-> muchos de nuestros clientes llegaron con esa misma duda — especialmente cuando ya habían probado fisioterapia con resultados inconsistentes
-> lo que encontraron es que la diferencia está en la constancia: el guante trabaja todos los días, en casa, sin depender de turnos. Y si llega y no convence, el pago es al retirar — no hay nada que perder al intentarlo ✅
+> la duda de "¿funcionará para mi caso?" es muy válida — especialmente cuando ya se intentó fisioterapia con resultados inconsistentes
+> la diferencia está en la constancia: el guante trabaja todos los días, en casa, sin depender de turnos. Es estimulación continua a un costo fijo. Y si llega y no convence, el pago es al retirar — no hay nada que perder al intentarlo ✅
 
 ### /fff_esposo_decide
 *(pareja toma la decisión conjunta)*
@@ -410,8 +411,12 @@
 
 ### /retomar_lopienso
 *(dijo "lo pienso" o "ya le aviso")*
-⚠️ SOLO usar viernes, sábado o domingo — si hoy es lunes-jueves, reemplazar "hasta el domingo" con "¿qué le generó duda?" + cero riesgo
+
+**Viernes / Sábado / Domingo:**
 > Hola [nombre]! 😊 el guante sigue disponible con envío gratis hasta el domingo — ¿le genero la orden?
+
+**Lunes a Jueves:**
+> Hola [nombre]! 😊 el guante sigue disponible — ¿qué parte le generó duda? el pago es al retirar, no hay ningún compromiso hasta que lo tenga en manos ✅
 
 ### /retomar_medico
 *(se cortó después del diagnóstico médico — antes de dar ciudad)*

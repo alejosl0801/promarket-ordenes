@@ -61,7 +61,7 @@
 
 ## REGLAS DESCUBIERTAS EN PRÁCTICA REAL
 
-1. Mínimo 24h entre mensajes al mismo lead
+1. Mínimo 24h entre mensajes de SEGUIMIENTO al mismo lead (secuencia D) — esta regla aplica a mensajes iniciados por Camila, NO a respuestas a un cliente que acaba de escribir: si el cliente responde, contestar de inmediato siempre
 2. Verificar SIEMPRE en el chat real la fecha del último mensaje — el registro puede estar desactualizado
 3. "¿le genero la orden?" solo si el cliente confirmó explícitamente que quiere comprar
 4. Límite de 3 mensajes seguidos sin respuesta — parar y esperar

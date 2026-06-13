@@ -32,7 +32,7 @@
 ---
 
 ### TÉCNICA #3 — NEUROVENTAS: HABLARLE AL CEREBRO REPTILIANO
-**El principio:** El 95% de las decisiones de compra son inconscientes. El cerebro reptiliano solo responde a 6 disparadores: dolor/placer, egocentrismo, contraste, emoción, principio/fin, visibilidad.
+**El principio:** La mayoría de decisiones de compra tienen un fuerte componente emocional e inconsciente. El cerebro responde a 6 disparadores: dolor/placer, egocentrismo, contraste, emoción, principio/fin, visibilidad.
 
 **Los 3 disparadores más efectivos para el guante:**
 - **Contraste:** *"una sesión de fisioterapia cuesta $40 — este guante hace lo mismo todos los días por $59.99 en total"*
@@ -58,7 +58,7 @@
 ---
 
 ### TÉCNICA #5 — CERO RIESGO REAL: EL ARGUMENTO MÁS POTENTE
-**El principio:** Kahneman demostró que el miedo a perder es 2x más poderoso que el deseo de ganar. Eliminar ese miedo es el argumento de cierre más poderoso. Estudios de ecommerce confirman que la contra entrega elimina el 71% de las objeciones de desconfianza.
+**El principio:** Kahneman demostró que el miedo a perder es más poderoso que el deseo de ganar. Eliminar ese miedo es el argumento de cierre más poderoso — y la contra entrega lo elimina por completo: el cliente no adelanta nada.
 
 **IMPORTANTE — lo que el cero riesgo SÍ es:**
 - No anticipa nada — paga solo al momento de retirar en Servientrega
@@ -73,7 +73,7 @@
 ---
 
 ### TÉCNICA #6 — PRESENCIA TOTAL: EL ACTOR EN ESCENA
-**El principio:** MIT confirma que responder en menos de 5 minutos hace al cliente 21x más probable de convertir vs. esperar 30 minutos. Pero la velocidad sin presencia no sirve. La presencia se transmite en detalles: usaste su nombre, mencionaste algo específico que dijo, tu mensaje demuestra que leíste ESTE chat.
+**El principio:** Responder en menos de 5 minutos aumenta drásticamente la probabilidad de conversión — el cliente llega caliente del anuncio y se enfría con cada minuto que pasa. Pero la velocidad sin presencia no sirve. La presencia se transmite en detalles: usaste su nombre, mencionaste algo específico que dijo, tu mensaje demuestra que leíste ESTE chat.
 
 **Las 3 señales de presencia en WhatsApp:**
 1. Usar su nombre si lo sabe
@@ -102,12 +102,14 @@
 ---
 
 ### TÉCNICA #8 — STORYTELLING: LA HISTORIA QUE VENDE SIN VENDER
-**El principio:** Las historias liberan oxitocina (hormona de la confianza). Un dato estadístico activa la razón. Una historia activa la emoción — donde se toman las decisiones. Las historias de otros clientes son 22x más memorables que los datos (Stanford).
+**El principio:** Las historias activan la emoción — donde se toman las decisiones. Una historia específica de cómo el producto funciona en SU caso conecta más que cualquier lista de características.
 
-**Formato:** situación similar → problema → transformación concreta
+**IMPORTANTE:** No existe base de testimonios verificados. NUNCA fabricar historias de clientes reales ni inventar resultados específicos. La ley de este negocio es: NUNCA testimonios.
+
+**Formato correcto:** descripción médica de cómo funciona → proceso esperado → pregunta diagnóstica
 
 **Aplicado — cliente con mamá con artritis:**
-> *"tenemos una clienta cuya mamá llevaba 2 años con artritis en las manos — ya no podía escribir ni abrocharse los botones 🙏 Empezó con el guante en nivel 1 y fue subiendo semana a semana. Me contó que a los 3 meses su mamá retomó el tejido. No es magia — es constancia con el estímulo correcto. ¿su mamá también tiene los dedos afectados o más las muñecas?"*
+> *"el guante estimula la circulación y la movilidad articular de forma progresiva — empieza en nivel 1, va subiendo conforme la mamá tolera el movimiento. No es magia — es constancia con el estímulo correcto. ¿su mamá también tiene los dedos afectados o más las muñecas?"*
 
 *(Siempre terminar con pregunta diagnóstica para mantener la conversación)*
 
@@ -156,23 +158,23 @@ El vendedor que domina esto no vende un guante. Vende la posibilidad de que la m
 ### BLOQUE 1: URGENCIA Y ESCASEZ (1-15)
 1. Countdown de promoción — "envío gratis hasta el domingo"
 2. Ventana de entrega — "si confirma hoy llega el jueves"
-3. Precio que sube — "nueva importación llega con precio mayor"
-4. Reserva con expiración — "le reservo hasta mañana"
-5. Promoción exclusiva de canal — "solo por WhatsApp"
-6. Urgencia por demanda — "hoy ya procesé varios pedidos de su ciudad"
+3. Precio que sube — ❌ SOLO si hay aumento real confirmado; si no, es urgencia falsa que destruye confianza
+4. Reserva con expiración — ❌ SOLO si hay stock real limitado; si no, es escasez inventada
+5. Promoción exclusiva de canal — "solo por WhatsApp" (✅ válido si es real)
+6. Urgencia por demanda — "hoy ya procesé varios pedidos de su ciudad" — ❌ SOLO si es verdad hoy
 7. Urgencia por fecha del cliente — "¿es para regalo del domingo?"
 8. Retiro de la oferta — "si espera más no puedo garantizar este precio"
 9. Cierre de temporada
 10. Precio de lanzamiento
 11. Urgencia por el proceso del paciente — "cada semana sin rehabilitación es movilidad que se puede perder"
 12. Urgencia de stock — solo si es verdad
-13. Última unidad del lote actual
+13. Última unidad del lote actual — ❌ SOLO si es verdad verificable
 14. Envío del día — "si confirma antes de las 3pm sale hoy"
 15. Urgencia de recuperación — "cuanto antes empiece, mejor pronóstico"
 
 ### BLOQUE 2: CONFIANZA Y CREDIBILIDAD (16-28)
-16. Prueba social con número real — "esta semana ya enviamos X pedidos"
-17. Screenshot de cliente satisfecho
+16. Prueba social con número real — "esta semana ya enviamos X pedidos" (SOLO si es verdad verificable)
+17. ~~Screenshot de cliente satisfecho~~ — ❌ PROHIBIDO — los testimonios no existen y NUNCA se piden
 18. Garantía como cierre — "3 meses, si falla lo resolvemos de inmediato"
 19. Contra entrega como argumento — "no anticipa nada — paga al retirar"
 20. Transparencia de empresa — "somos empresa ecuatoriana, centro logístico en Loja"
@@ -182,8 +184,8 @@ El vendedor que domina esto no vende un guante. Vende la posibilidad de que la m
 24. Guía rastreable — "le mando el número de guía para seguir su pedido en tiempo real"
 25. Garantía de 3 meses explicada en detalle
 26. Experiencia médica — hablar con autoridad de la condición del cliente
-27. Referencia de conocido — "¿conoce a alguien que lo haya usado?"
-28. Aval médico cuando aplica
+27. ~~Referencia de conocido~~ — ❌ riesgo de pedirle al cliente que sea testimonio — no usar
+28. ~~Aval médico institucional~~ — ❌ PROHIBIDO — "recomendado por fisioterapeutas" o cualquier aval no verificado genera desconfianza si el cliente lo cuestiona (error real chat 3067)
 
 ### BLOQUE 3: MANEJO DE OBJECIONES (29-42)
 29. "Es muy caro" → reencuadre vs. fisioterapia

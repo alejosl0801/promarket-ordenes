@@ -127,12 +127,17 @@ Cuando Servientrega autoriza (guía disponible):
 Le acompañaremos en todo el proceso 😊"
       ↓
 Cuando llega a la agencia:
-MAÑANA: "Buenos días! su pedido ya llegó a la agencia Servientrega 🎉
-         ¿pudo pasar a retirarlo? recuerde que tiene 4 días 😊"
-NOCHE:  "Buenas noches! solo para recordarle que su pedido sigue en la agencia
-         esperándole 📦 ¿logró pasar hoy?"
+DÍA 1 (UN solo mensaje — mañana o tarde):
+"Buenos días! su pedido ya llegó a la agencia Servientrega 🎉 recuerde que tiene 4 días para retirarlo 😊"
       ↓
-Repetir mensaje mañana/noche cada día hasta confirmar retiro
+DÍA 3 (si no confirma retiro — UN solo mensaje):
+"Hola! 😊 su pedido sigue en la agencia — hoy es el tercer día, tiene hasta mañana sin cargo adicional"
+      ↓
+DÍA 4 URGENTE (si no retira — UN solo mensaje):
+"Hola! hoy es el último día para retirar sin cargo adicional 📦 ¿logró pasar?"
+      ↓
+⚠️ REGLA: UN SOLO MENSAJE POR DÍA — nunca MAÑANA + NOCHE el mismo día (viola la regla de 24h entre contactos)
+NO escribir en días 1-2 si el cliente ya confirmó que irá
       ↓
 Cliente confirma que retiró → "Un gusto haberle ayudado 🙌 que le vaya muy bien!"
 → CONVERSACIÓN TERMINADA

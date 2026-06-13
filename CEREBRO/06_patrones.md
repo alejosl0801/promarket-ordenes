@@ -126,15 +126,15 @@
 
 ---
 
-## DATOS DEL NEGOCIO (actualizado 12/6/2026)
+## DATOS DEL NEGOCIO (actualizado 13/6/2026)
 
-- **Ventas cerradas junio 2026:** 6 pedidos confirmados
-- **Órdenes activas:** #151381 (César), #151380 (Jimmy), #146271 (Alex x2), #146504 (Carmen x2), #146110 (Willman)
-- **Reclamo activo:** #144356 Blanca Rodríguez — guante equivocado enviado
-- **Producto que más cierra:** Guante (5 pedidos) vs Ollas (1 pedido)
+- **Ventas cerradas junio 2026:** 6 pedidos retirados confirmados (Blanca, Alex, Carmen, Willman, César, Jimmy — todos RETIRADOS 12/6)
+- **Órdenes activas:** ninguna en tránsito o agencia al 13/6
+- **Reclamo activo:** ninguno — #144356 Blanca Rodríguez resuelto (guante izquierdo enviado, retirado 12/6)
+- **Producto activo:** Guante — ollas DESCONTINUADO
 - **Ciudades que compraron:** Ambato (3), Quito (1), Puyo (1)
-- **Error operativo registrado:** orden #144356 — enviaron guante derecho siendo pedido izquierdo
-- **Archivo en la nube:** 51 clientes con historial individual en `CLIENTES/` (35 de los ZIPs + 16 creados 12/6) — el índice es `08_clientes.md`
+- **Error operativo registrado:** orden #144356 — enviaron guante derecho siendo pedido izquierdo → resuelto
+- **Archivo en la nube:** 51 clientes con historial individual en `CLIENTES/` — el índice es `08_clientes.md`
 
 ---
 
@@ -170,13 +170,14 @@
 
 ---
 
-## PATRÓN kushita2016 — CLIENTE DE ALTO VALOR
-- Mandó 2 audios en 2 días
+## PATRÓN kushita2016 — LECCIÓN DE LEAD PERDIDO (junio 2026)
+- ❌ CERRADO 12/6 — nunca compró a pesar de señales de compra muy fuertes
+- Mandó 2 audios en 2 días (señal fortísima)
 - Preguntó por edad, niveles, funcionamiento
-- Tiene a su mamá con necesidad real del producto
 - Agencia confirmada: Pelileo
-- Lección: este tipo de cliente está convencido — solo necesita "¿le genero la orden?"
-- No sobre-explicar, no más videos — ir directo al cierre
+- **Por qué se perdió:** respuestas lentas (1.5h, 4h) + 5 mensajes seguidos → cliente se enfrió esperando
+- **Lección real:** señales de compra fuertes NO garantizan venta — la velocidad de respuesta es igual de crítica
+- **Si aparece un cliente así:** ir directo al cierre, UN mensaje, responder en menos de 5 min
 
 ---
 
@@ -224,11 +225,11 @@
 - **Moraspungo** — sin agencia directa — alternativa: Quinsaloma
 - **Colombia (+57)** — SIN COBERTURA — cerrar chat inmediatamente
 
-### Ciudades con leads activos (junio 2026):
-- **Santo Domingo** — Chat 3065 (agencia disponible)
-- **Santa Rosa (El Oro)** — Chat 9622 (agencia disponible)
+### Ciudades con leads activos (actualizar en cada arranque — ver `08_clientes.md`):
+- **Santo Domingo** — Chat 3065 (agencia disponible), Chat 4409
 - **Calceta (Manabí)** — Chat 5804 (verificar agencia)
-- **Pelileo** — kushita2016 (agencia confirmada)
+- **Machachi** — Chat 1337
+*(9622 y kushita2016 — CERRADOS 12/6 — ya no están activos)*
 
 ### Regla de agencia:
 Antes de confirmar "llega a su ciudad", verificar en servientrega.com.ec o Google. No asumir. Si no hay agencia: "¿tiene familiar en ciudad cercana donde pueda llegar el pedido? 💛"

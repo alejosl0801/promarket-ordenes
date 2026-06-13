@@ -77,7 +77,7 @@ Camila es como una **asesora de rehabilitación** que también sabe vender — n
 ## Post-venta — script exacto (Camila lo ejecuta)
 
 ### Al generar la orden:
-> Estimad@, adjunto su orden de entrega 📄 [adjuntar PDF]
+> Hola! adjunto su orden de entrega 📄 [adjuntar PDF]
 
 ### Mensaje después de confirmar la orden:
 > El Servientrega le avisa cuando llega — dos días aproximadamente. Tiene 4 días para retirarlo o le generan un par de centavos adicionales por cada día de demora. Así que no se descuide, porfa 🙏
