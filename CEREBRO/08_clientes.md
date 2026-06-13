@@ -1,5 +1,5 @@
 # REGISTRO DE CLIENTES — PROMARKET ECUADOR
-## Última actualización: 10 de junio 2026 — 08:35
+## Última actualización: 12 de junio 2026 — arranque
 
 ---
 
@@ -7,10 +7,10 @@
 
 | Orden | Cliente | Contacto | Producto | Ciudad | Estado |
 |---|---|---|---|---|---|
-| #146271 | Alex Fernando Lara | +593 97 926 9065 | Guante x2 | Ambato | 📍 En agencia desde 5/6 — prometió retirar 8/6 |
-| #146504 | Carmen Sosa | +593 99 965 2705 | Guante x2 | Ambato | 📍 En agencia desde 5/6 — fue 7/6 pero estaba cerrado. Necesita dirección exacta |
-| #146110 | Willman Zúñiga | +593 99 823 5058 | Ollas x1 | Puyo | 📍 En agencia desde 8/6 — informar llegada |
-| #144356 | Blanca Rodríguez | +593 98 175 4740 | Guante izq. M | Quito | ⚠️ RECLAMO ACTIVO: enviaron guante derecho — pendiente resolución |
+| #146271 | Alex Fernando Lara | +593 97 926 9065 | Guante x2 | Ambato | ⚠️ DÍA 8 en agencia — VENCIDO — verificar si sigue disponible o fue devuelto |
+| #146504 | Carmen Sosa | +593 99 965 2705 | Guante x2 | Ambato | ⚠️ DÍA 8 en agencia — VENCIDA — además fue 7/6 y estaba cerrado, nunca recibió dirección |
+| #146110 | Willman Zúñiga | +593 99 823 5058 | Ollas x1 | Puyo | 🔴 DÍA 5 — ÚLTIMO DÍA — escribir AHORA |
+| #144356 | Blanca Rodríguez | +593 98 175 4740 | Guante izq. M | Quito | ⚠️ RECLAMO 7 DÍAS SIN RESOLVER — último mensaje 5/6 "ya le reviso" — URGENTE |
 
 ---
 
@@ -18,8 +18,8 @@
 
 | Orden | Cliente | Contacto | Producto | Fecha envío |
 |---|---|---|---|---|
-| #151381 | César Augusto López | +593 96 833 9428 | Guante x1 | 7/6/2026 |
-| #151380 | Jimmy Vera Peñafiel | +593 93 918 4423 | Guante x1 | 7/6/2026 |
+| #151381 | César Augusto López | +593 96 833 9428 | Guante x1 | 7/6/2026 | 🔴 4 días hábiles — VERIFICAR GUÍA HOY — probablemente en agencia |
+| #151380 | Jimmy Vera Peñafiel | +593 93 918 4423 | Guante x1 | 7/6/2026 | 🔴 4 días hábiles — VERIFICAR GUÍA HOY — probablemente en agencia |
 
 ---
 
@@ -27,16 +27,16 @@
 
 | Alias | Contacto | Producto | Ciudad | Estado / Notas |
 |---|---|---|---|---|
-| Chat 2863 | +593 96 254 2863 | Guante izq | — | Para esposa, mano izquierda. Llegó con intención de compra. Bot cometió 3 errores (urgencia falsa ×2, preguntó para quién ×2). Respondió "cómo puedo adquirir". **Pendiente ciudad.** |
-| Chat 4970 | +593 98 220 4970 | Guante | — | Llegó con intención de compra. Vio precio $49.99 en anuncio. Bot generó confusión con "liquidación de $59.99 a $49.99". Cliente: "En el anuncio dice 49.99". **Confirmar $49.99 + pedir ciudad.** |
+| Chat 2863 | +593 96 254 2863 | Guante izq | — | Para esposa, mano izquierda. 3 días sin ciudad. Mensaje pendiente: "$59.99 guante izq + ciudad" | 12/6 mañana |
+| Chat 4970 | +593 98 220 4970 | Guante | — | Precio $49.99 (vio en anuncio). 3 días sin ciudad. Mensaje pendiente: confirmar $49.99 + ciudad | 12/6 tarde/noche |
 
 ## LEADS NUEVOS 9/6 — EN CONVERSACIÓN ACTIVA
 
 | Alias | Contacto | Producto | Ciudad | Estado / Notas |
 |---|---|---|---|---|
-| Chat 3391 | +593 99 563 3391 | Guante | — | **DEDO GATILLO** — para familiar. Respondió condición. Esperando ciudad. Bot cometió error: preguntó "¿para quién?" cuando ya quería comprar y usó urgencia falsa. Ir directo al cierre cuando dé ciudad. |
-| Chat 1337 | +593 99 916 1337 | Guante | Quito | Hermano operado de **tumor craneal** — pérdida parcial de movilidad post-cirugía. Ciudad confirmada: Quito. Respuesta enviada: estimulación neurológica + agencia Quito. Pendiente respuesta. |
-| Chat 3775 | +593 98 432 3775 | Guante | — | Familiar con **ACV** — no puede abrir/cerrar la mano. Respuesta enviada: mecanismo ACV + pedir ciudad. Pendiente ciudad. |
+| Chat 3391 | +593 99 563 3391 | Guante | — | Dedo gatillo — familiar. 3 días sin ciudad. Próxima: urgencia viernes + ciudad | 12/6 tarde |
+| Chat 1337 | +593 99 916 1337 | Guante | Quito | Tumor craneal post-cirugía — ciudad confirmada, pidió datos 9/6, sin respuesta 3 días | 12/6 tarde/noche |
+| Chat 3775 | +593 98 432 3775 | Guante | — | ACV — no puede abrir mano. 3 días sin ciudad. VENTANA NEUROPLASTICIDAD. Próxima: argumento neuroplasticidad + ciudad | 12/6 tarde/noche |
 
 ---
 
@@ -44,11 +44,11 @@
 
 | Alias | Contacto | Producto | Ciudad | Estado / Notas |
 |---|---|---|---|---|
-| Chat 6469 | +593 96 009 6469 | Guante + Rodilla | — | Interés en combo guante + masajeador rodilla $39.20 |
-| Chat 4065 | +593 96 790 4065 | Guante | — | Para hijo — esperando ciudad |
-| Chat 0433 | +593 99 305 0433 | Guante | — | Familiar con cuadriplejia espástica — esperando ciudad |
-| Chat 8581 | +593 99 343 8581 | Guante | Loja | Sin tienda física explicado. Preguntó por otros aparatos. En conversación |
-| Chat 4148 | +593 99 981 4148 | Guante par | Ambato | Cuadriplejia 95%, no mueve ninguna mano. Quiso ir al local → explicado no hay tienda. Ofrecerle PAR $107.98 |
+| Chat 6469 | +593 96 009 6469 | Guante + Rodilla | — | Interés combo $59.99+$39.20 — sin archivo individual — 4 días sin seguimiento |
+| Chat 4065 | +593 96 790 4065 | Guante | — | Para hijo — 4 días sin ciudad. Próxima: urgencia viernes | 12/6 tarde |
+| Chat 0433 | +593 99 305 0433 | Guante | — | Cuadriplejia espástica — 4 días sin ciudad. Próxima: urgencia viernes | 12/6 tarde |
+| Chat 8581 | +593 99 343 8581 | Guante izq | — | Listo para comprar. Preguntó "¿de dónde son?" sin respuesta. 4 días. RESPONDER CONFIANZA + ciudad | 12/6 |
+| Chat 4148 | +593 99 981 4148 | Guante PAR | Ambato | Cuadriplejia 95% — OFRECER PAR $107.98 DIRECTO — NUNCA preguntar mano. 4 días. Próxima: mensaje con PAR + pedir datos | 12/6 tarde/noche |
 
 ---
 
@@ -56,7 +56,7 @@
 
 | Cliente | Contacto | Producto | Inicio | Notas |
 |---|---|---|---|---|
-| kushita2016 | +593 99 920 0994 | Guante | 6/6 | MUY CALIENTE — 2 audios enviados — solo necesita cierre directo |
+| kushita2016 | +593 99 920 0994 | Guante | 6/6 | Enfriado — 6 días silencio — último intento: RETIRO DE ATENCIÓN hoy | 12/6 |
 | Nuevo 1730 | +593 97 987 1730 | Guante | 6/6 | Secuencia activa |
 | Mendez | +593 98 887 6692 | Guante | 6/6 | No respondió pregunta de confianza — ignorado |
 | Norma Chavarría | +593 98 480 0900 | Guante | 5/6 | Mandó audio — fue ignorado — usar /cierre_conversacion |
@@ -81,7 +81,7 @@
 | Maggi | +593 96 700 4465 | Ollas | 4/6 | Mandó audio — fue ignorado |
 | Ita Vera | +593 96 705 3789 | Ollas | 4/6 | Secuencia activa |
 | Cecilia Maruri | +593 98 737 1421 | Ollas | 4/6 | Secuencia activa |
-| Chat Colombia | +57 321 4757337 | Guante | 7/6 | Conversación activa — preguntar condición del familiar |
+| Chat Colombia | +57 321 4757337 | Guante | 7/6 | 5 días sin seguimiento. Colombia SÍ válido (07_reglas). Verificar cobertura Servientrega ciudad antes de procesar. Próxima: reactivar hoy | 12/6 |
 
 ---
 
@@ -96,17 +96,25 @@
 
 ---
 
-## NOTAS OPERATIVAS
+## NOTAS OPERATIVAS — ACTUALIZADO 12/6/2026
 
-- **Todos los leads sin respuesta** → secuencia 10 mensajes automática en app Seguim.
-- **Colombia (+57):** verificar cobertura Servientrega antes de procesar pedido
-- **Blanca Rodríguez:** URGENTE — reclamo guante equivocado — resolver antes de que pierda los 5 días de retiro
-- **Carmen Sosa:** dar dirección exacta de agencia Ambato — fue y estaba cerrado
-- **Alex Fernando Lara:** confirmar si retiró el 8/6
-- **Chat 4148:** NO preguntar qué mano → ofrecer PAR $107.98 directamente
-- **Chat 3391 (dedo gatillo):** cuando dé ciudad → ir directo al cierre, ya tiene intención de compra desde el primer mensaje
-- **Chat 1337 (tumor craneal):** en Quito, tiene agencia Servientrega — pedir datos cuando confirme
-- **Chat 3775 (ACV):** pendiente ciudad — cuando responda ir a confirmar agencia y cerrar
-- **Chat 2863:** mano izquierda para esposa — cuando dé ciudad → precio $59.99 → nombre, cel, dirección
-- **Chat 4970:** vio anuncio $49.99 — confirmar ese precio + pedir ciudad, sin dar explicaciones
-- **Precios:** guante $59.99 lead nuevo / $49.99 anuncio activo / $49.99 + Kit Hybrid D3+
+### ACCIONES CRÍTICAS DE HOY (en orden):
+1. ⚠️ **Blanca Rodríguez** — verificar stock guante izq. M → mensaje con solución concreta (7 días sin resolver)
+2. 🔴 **Willman Zúñiga** — "ÚLTIMO DÍA, retire hoy" — ENVIAR AHORA
+3. 🔴 **Alex Lara** — verificar guía #146271 si sigue en agencia o fue devuelto
+4. 🔴 **Carmen Sosa** — verificar guía #146504 + conseguir dirección exacta agencia Ambato
+5. 🔴 **César y Jimmy** — verificar guías #151381 y #151380 (4 días hábiles = probablemente llegaron)
+
+### REGLAS CRÍTICAS RECORDATORIO:
+- **Colombia (+57) SÍ opera** — verificar agencia antes de procesar (07_reglas.md)
+- **Chat 4148 cuadriplejia:** NUNCA preguntar mano — PAR $107.98 directo
+- **Chat 3065:** pregunta "¿en cuántos pagos?" lleva 6 días sin respuesta — responder HOY
+- **Chat 8581:** preguntó "¿de dónde son?" sin respuesta — responder confianza HOY
+- **Hoy viernes:** argumento urgencia = "envío gratis vence el domingo"
+
+### PRECIOS VIGENTES 12/6:
+- Guante lead nuevo: $59.99
+- Guante anuncio/D2+: $49.99
+- Par de guantes: $107.98
+- Masajeador rodilla: $39.20
+- Ollas liquidación: $39.99
