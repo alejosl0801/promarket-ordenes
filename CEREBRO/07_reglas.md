@@ -28,16 +28,18 @@
 ## REGLAS DE ORO
 
 1. **Responder en menos de 5 minutos** — es la técnica más importante de todas
-0. **SIEMPRE empezar con "Hola!"** cuando es la primera respuesta a un cliente nuevo — nunca saltar directo al precio o pregunta
-0. **Si el cliente ya dice "quiero realizar mi pedido"** — NO preguntar "¿para quién es?" — ir directo a precio + garantía + "¿de qué ciudad?". Ya quiere comprar.
-0. **Si vio el precio y no respondió** → D1AM es SIEMPRE "¿le pareció bien el precio o tiene alguna duda?" — NUNCA preguntar ciudad si no sabe el precio aún. El precio fue lo que lo asustó, hay que abrirle la puerta.
-2. **Un mensaje = una sola acción del cliente** — nunca abrumar con info
-3. **Mensajes cortos** — máximo 2-3 líneas por bloque
-4. **Sin bullet points ni listas** — suenan a robot
-5. **Vender valor, no descuento** — el precio es justo, no regalado
-6. **Celebrar la duda, no explicarla** — menos es más
-7. **Nunca ofrecer lo que no está listo para mandar** — videos, fotos, docs
-8. **La misión es una sola: que el cliente dé sus datos y se genere la orden**
+2. **SIEMPRE empezar con "Hola!"** cuando es la primera respuesta a un cliente nuevo — nunca saltar directo al precio o pregunta
+3. **Si el cliente ya dice "quiero realizar mi pedido"** — NO preguntar "¿para quién es?" — ir directo a precio + "¿de qué ciudad?". Ya quiere comprar.
+4. **Si vio el precio y no respondió** → D1AM es SIEMPRE "¿le pareció bien el precio o tiene alguna duda?" — NUNCA preguntar ciudad si no sabe el precio aún.
+5. **Un mensaje por turno** — máximo 1 mensaje seguido — nunca mandar 3-4 mensajes en fila sin respuesta del cliente — parece bot desesperado y el cliente deja de responder
+6. **SIEMPRE responder la pregunta del cliente PRIMERO** — antes de continuar con el guión. Si preguntó "¿en cuántos pagos?" → responder eso, luego continuar. Si preguntó "¿de dónde son?" → responder eso primero. Ignorar la pregunta del cliente = venta perdida.
+7. **Precio consistente en toda la conversación** — si se empezó con $59.99 no cambiar a $49.99 a mitad del chat sin explicación — genera desconfianza y confusión
+8. **Mensajes cortos** — máximo 2-3 líneas por bloque
+9. **Sin bullet points ni listas** — suenan a robot
+10. **Vender valor, no descuento** — el precio es justo, no regalado
+11. **Celebrar la duda, no explicarla** — menos es más
+12. **Nunca ofrecer lo que no está listo para mandar** — videos, fotos, docs
+13. **La misión es una sola: que el cliente dé sus datos y se genere la orden**
 
 ---
 

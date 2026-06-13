@@ -1,5 +1,5 @@
 # APRENDIZAJES ACUMULADOS — PROMARKET ECUADOR
-## Última actualización: 5 de junio 2026
+## Última actualización: 12 de junio 2026
 
 ---
 
@@ -60,6 +60,27 @@
 - Ciudades activas: Ambato, Quito, Puyo, Pelileo, Moraspungo (sin cobertura)
 - Moraspungo sin Servientrega — agencia más cercana: Quinsaloma
 - Clientes compran para familiar enfermo (guante) o para hogar (ollas)
+
+---
+
+## SESIÓN 12 DE JUNIO — NUEVOS APRENDIZAJES
+
+### Errores críticos del bot detectados en 16 chats reales
+
+1. **Urgencia falsa repetida diariamente** — "liquidación hasta mañana" usada el 7, 8, 9 y 10 de junio. Daña credibilidad. Eliminada del mensaje de bienvenida.
+2. **Múltiples mensajes seguidos** — el bot mandaba 3-4 mensajes en fila sin esperar respuesta → el cliente deja de responder. Regla: 1 mensaje por turno.
+3. **Ignorar la pregunta del cliente** — A19 preguntó "de dónde son" y "¿pago contra entrega?" → bot mandó guión genérico ignorando ambas → venta perdida. Regla: siempre responder la pregunta antes de continuar el guión.
+4. **Precio inconsistente en la misma conversación** — A18 recibió primero $59.99, luego el bot le mandó $49.99 en otro mensaje → confusión total.
+5. **Asumir ciudad sin confirmación** — A28: bot confirmó agencia de Naranjal sin que el cliente mencionara esa ciudad.
+6. **Pedir cédula** — no está en el guión estándar, genera fricción innecesaria.
+7. **Preguntar "¿para quién es?"** a clientes que ya dijeron "quiero realizar mi pedido" — ocurrió en 7 de 16 chats.
+8. **Bot dejó a A17 sin respuesta 3 días** — cliente dijo "Para mí" y el bot nunca respondió.
+
+### Reglas nuevas aprendidas esta sesión
+1. Reactivación 24h+: objetivo = conseguir el SÍ. No preguntar ciudad ni datos hasta que el cliente confirme interés.
+2. Frase de cierre en reactivación: **"¿Si le interesa el dispositivo?"**
+3. Urgencia correcta por día: viernes = "hasta el domingo" / sábado = "mañana vence el envío gratis"
+4. Cero riesgo: solo ante objeciones reales — no como reactivación genérica (suena sospechoso)
 
 ---
 

@@ -3,27 +3,14 @@
 ---
 
 ## MENSAJE DE BIENVENIDA AUTOMÁTICO
-### Actualizado 6 de junio 2026 — campaña liquidación guante
+### Actualizado 12 de junio 2026
 
 > Hola! 👋 qué gusto saludarte 😊
-> liquidación especial solo hasta mañana — el guante robótico de rehabilitación baja de $59.99 a $49.99 con envío gratis 🚚
+> el guante robótico de rehabilitación está a $59.99 con envío gratis 🚚
 > pago únicamente al retirar ✅
 > ¿de qué ciudad nos escribe?
 
-**Flujo después del mensaje de bienvenida:**
-1. Cliente responde ciudad
-2. Camila verifica agencia Servientrega
-3. Confirma agencia + detalla kit obligatoriamente:
-   - Guante robótico de rehabilitación (izq o der)
-   - Guante modo espejo
-   - Dispositivo medidor de potencia
-   - Pelota de plástico para terapias
-4. Pide datos → genera orden
-
-**Por qué así:**
-- Responde inmediatamente aunque el vendedor no esté disponible
-- Filtra el producto de interés antes de que el vendedor abra el chat
-- El vendedor sabe qué quiere el cliente antes de escribir una palabra
+**⚠️ IMPORTANTE:** NO usar "liquidación hasta mañana" ni porcentajes de descuento en el mensaje automático — es urgencia falsa que se repite cada día y daña la credibilidad cuando el cliente regresa y la "liquidación" sigue activa.
 
 ---
 
