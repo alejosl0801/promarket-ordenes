@@ -25,6 +25,20 @@
 
 ---
 
+## PRIMERA RESPUESTA AL CLIENTE — ORDEN OBLIGATORIO
+
+1. **Saludo** ("Hola! 😊")
+2. **Precio** ("$59.99 con envío incluido 🚚")
+3. **Modelo de pago** ("paga al retirar ✅")
+4. **Pregunta ciudad** ("¿de qué ciudad nos escribe?")
+
+- ❌ NUNCA mandar ficha técnica sin dar precio primero
+- ❌ NUNCA dar ciudad antes de precio
+- ❌ NUNCA preguntar "¿para quién es?" si el cliente dijo "quiero realizar mi pedido"
+- La ficha técnica es un complemento — no un reemplazo del precio
+
+---
+
 ## REGLAS DE ORO
 
 1. **Responder en menos de 5 minutos** — es la técnica más importante de todas
@@ -132,6 +146,7 @@
 - NUNCA mencionar el 75% de descuento → genera desconfianza
 - El par de guantes ya tiene precio especial aplicado ($107.98)
 - Si pide más del 10%: "ya le estoy dando el mejor precio, no me da para más sin autorización 😅"
+- **PRECIO DEL PAR: SIEMPRE $107.98 FIJO** — NUNCA calcular como porcentaje manualmente ($113.98 es incorrecto)
 
 ---
 

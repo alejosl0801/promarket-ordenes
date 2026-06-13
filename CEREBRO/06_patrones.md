@@ -89,6 +89,18 @@
 - ProMarket tiene bodega en Guayaquil, envía a todo Ecuador
 - Dar información falsa genera desconfianza si el cliente verifica
 
+### Causa #15 — Ficha técnica mandada SIN dar precio primero (NUEVO — confirmado revisión general)
+- Dr. Barros, Rosa Torres, Alvita, Gustavo: todos recibieron ficha técnica sin precio previo
+- El cliente preguntó precio, no recibió respuesta directa — confusión y abandono
+- Regla: PRIMERO precio → LUEGO ficha técnica si el cliente la pide
+- NUNCA mandar ficha como primer mensaje de respuesta
+
+### Causa #16 — Precio del par calculado manualmente como % (NUEVO — caso Mangu)
+- El bot calculó "5% de descuento en dos unidades" → $113.98 (incorrecto)
+- El precio fijo del par es $107.98 — punto
+- Nunca calcular el precio del par como porcentaje — siempre usar el valor fijo
+- Error de $6 en precio + confusión = cliente dubitativo
+
 ---
 
 ## PATRONES DE COMPORTAMIENTO DEL CLIENTE
