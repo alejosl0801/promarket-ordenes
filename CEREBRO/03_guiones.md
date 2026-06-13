@@ -157,6 +157,10 @@
 
 ## OBJECIONES
 
+### /esposo_decide
+> *(cuando dice "ya le aviso a mi esposo/esposa/familiar")*
+> claro! 😊 ¿quiere que le prepare un resumen fácil de mostrarle?
+
 ### /lopienso
 > claro! solo le cuento que el envío está incluido solo por esta temporada 😊
 > ¿le reservo una unidad mientras decide?

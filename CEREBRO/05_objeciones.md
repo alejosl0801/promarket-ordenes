@@ -29,8 +29,13 @@ GUANTE: > una sola sesión de fisioterapia cuesta $30-50 — este guante hace lo
 ### "¿Tienen garantía?"
 > 3 meses contra defectos de fábrica ✅ cualquier problema nos escribe y lo resolvemos
 
-### "Mi esposo/esposa decide"
+### "Mi esposo/esposa decide" / "ya le aviso"
 > claro! ¿quiere que le prepare un resumen fácil de mostrarle? 😊
+**Regla:** NO responder "a la orden" y cerrar — eso es dejar ir la venta. Ofrecer el resumen mantiene el hilo y da una razón para que el cliente vuelva.
+
+### "¿En cuántos pagos?" / "¿Cómo es el pago?"
+> es un solo pago al retirar en Servientrega 😊 no adelanta nada — paga cuando tiene el producto en sus manos ✅
+**Regla:** Responder PRIMERO esta pregunta antes de continuar con ciudad/datos — ignorarla mata la venta.
 
 ### "No hay Servientrega cerca"
 > ¿tiene algún familiar o conocido en una ciudad cercana donde pueda llegar el pedido? 💛
