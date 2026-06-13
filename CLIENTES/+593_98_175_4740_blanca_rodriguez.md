@@ -2,7 +2,7 @@
 ## Fecha: 2 de junio 2026
 ## Producto: Guante izquierdo talla M — $59.99
 ## Ciudad: Quito | Agencia: Martha Bucaram
-## Estado: ⚠️ VENTA CERRADA CON ERROR — Orden #144356 — ENVIARON GUANTE DERECHO (RECLAMO ABIERTO)
+## Estado: ✅ RETIRADO 12/6/2026 — RECLAMO RESUELTO — CASO COMPLETAMENTE CERRADO — NO CONTACTAR
 
 ---
 

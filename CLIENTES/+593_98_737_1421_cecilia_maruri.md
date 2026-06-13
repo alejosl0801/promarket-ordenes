@@ -1,7 +1,7 @@
 # CLIENTE: +593 98 737 1421 (Cecilia Maruri)
 ## Fecha primer contacto: 3 de junio 2026
 ## Producto: Ollas
-## Estado: 🟡 Frío — ghosteó tras precio + ficha. Contactada 5/6
+## Estado: ❌ CERRADO — producto descontinuado (OLLAS) — NO CONTACTAR JAMÁS
 ## NOTA: tiene mensajes temporales activados (desaparecen a 7 días)
 
 ---

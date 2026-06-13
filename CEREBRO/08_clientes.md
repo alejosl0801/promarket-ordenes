@@ -1,5 +1,5 @@
 # REGISTRO DE CLIENTES — PROMARKET ECUADOR
-## Última actualización: 12 de junio 2026 — sesión activa
+## Última actualización: 13 de junio 2026 — archivos CLIENTES/ sincronizados
 
 ---
 
@@ -217,11 +217,11 @@ Sin urgentes — 2050 respondido a las ~5pm 12/6.
 
 ---
 
-## 📊 RESUMEN 12/6/2026 — actualizado noche
+## 📊 RESUMEN 13/6/2026 — archivos individuales CLIENTES/ sincronizados
 
 - **Total clientes en la nube:** 51 archivos en `CLIENTES/` — NADIE se borra
 - **Ventas cerradas junio 2026:** 6 pedidos retirados confirmados (Blanca, Alex, Carmen, Willman, César, Jimmy)
-- **🚨 URGENTES:** 1 (Chat 2050 — responder AHORA)
+- **🚨 URGENTES:** 0 (2050 ya respondido)
 - **Leads calientes activos:** 2 (5804, 4409)
 - **Recuperados pendientes:** 3 (3065 ⭐, 8035, 7773) + 1 D4 (4634)
 - **En seguimiento D:** 7 leads con mensajes pendientes hoy o mañana
